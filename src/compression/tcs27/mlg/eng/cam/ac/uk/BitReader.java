@@ -1,4 +1,4 @@
-/* Automated copy from build process */
+package compression.tcs27.mlg.eng.cam.ac.uk;/* Automated copy from build process */
 /* $Id: BitReader.java,v 1.4 2012/11/18 00:00:26 chris Exp $ */
 
 import java.io.IOException;

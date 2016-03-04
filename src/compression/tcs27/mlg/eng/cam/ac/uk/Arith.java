@@ -1,4 +1,4 @@
-/* Automated copy from build process */
+package compression.tcs27.mlg.eng.cam.ac.uk;/* Automated copy from build process */
 /* $Id: Arith.java,v 1.28 2015/08/11 11:28:16 chris Exp $ */
 
 import java.util.Vector;

@@ -1,4 +1,4 @@
-/* Automated copy from build process */
+package compression.tcs27.mlg.eng.cam.ac.uk;/* Automated copy from build process */
 /* $Id: InputStreamBitReader.java,v 1.3 2015/07/31 15:10:42 chris Exp $ */
 
 import java.io.InputStream;

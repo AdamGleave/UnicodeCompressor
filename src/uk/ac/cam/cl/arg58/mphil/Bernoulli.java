@@ -47,8 +47,6 @@ public class Bernoulli<X> implements Codable<X> {
         long range = ec.getRange();
         long mid = computeMid(range);
 
-        System.err.println("mid: " + mid + ", range: " + range);
-
         if (x.equals(zero)) {
             ec.storeRegion(0, mid);
         } else if (x.equals(one)) {
@@ -70,8 +68,6 @@ public class Bernoulli<X> implements Codable<X> {
         long range = dc.getRange();
         long mid = computeMid(range);
 
-        System.err.println("target: " + target + ", mid: " + mid
-                                      + ", range: " + range);
         if (target < mid) {
             dc.loadRegion(0, mid);
             return zero;

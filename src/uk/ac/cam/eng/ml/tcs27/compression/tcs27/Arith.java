@@ -137,7 +137,6 @@ public class Arith implements Coder {
       R <<= 1;
       D <<= 1;
       D &= mask;
-      System.err.println("discard_bits: read bit");
       D += input.readBit();
     }
   }
@@ -279,7 +278,6 @@ public class Arith implements Coder {
     // fill data pointer with bits
     for (int k=0; k<b; k++) {
       D <<= 1;
-      System.err.println("start_decode: read bit");
       D += input.readBit();
     }
     L = 0;  // hb

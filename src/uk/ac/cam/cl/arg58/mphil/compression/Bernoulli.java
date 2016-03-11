@@ -1,8 +1,8 @@
-package uk.ac.cam.cl.arg58.mphil;
+package uk.ac.cam.cl.arg58.mphil.compression;
 
-import uk.ac.cam.eng.ml.tcs27.compression.tcs27.Codable;
-import uk.ac.cam.eng.ml.tcs27.compression.tcs27.Decoder;
-import uk.ac.cam.eng.ml.tcs27.compression.tcs27.Encoder;
+import uk.ac.cam.eng.ml.tcs27.compression.Codable;
+import uk.ac.cam.eng.ml.tcs27.compression.Decoder;
+import uk.ac.cam.eng.ml.tcs27.compression.Encoder;
 
 import java.util.Collection;
 

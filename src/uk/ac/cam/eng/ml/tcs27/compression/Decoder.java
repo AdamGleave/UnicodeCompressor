@@ -1,4 +1,5 @@
-package uk.ac.cam.eng.ml.tcs27.compression.tcs27;/* Automated copy from build process */
+package uk.ac.cam.eng.ml.tcs27.compression;
+/* Automated copy from build process */
 /* $Id: Decoder.java,v 1.3 2013/01/03 01:55:15 chris Exp $ */
 
 /** Interface implemented by arithmetic decoders.

@@ -1,4 +1,5 @@
-package uk.ac.cam.eng.ml.tcs27.compression.tcs27;/* Automated copy from build process */
+package uk.ac.cam.eng.ml.tcs27.compression;
+/* Automated copy from build process */
 /* $Id: Tuple.java,v 1.3 2015/08/11 11:28:16 chris Exp $ */
 
 import java.io.Serializable;

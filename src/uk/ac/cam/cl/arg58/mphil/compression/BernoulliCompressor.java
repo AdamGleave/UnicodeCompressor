@@ -1,6 +1,6 @@
-package uk.ac.cam.cl.arg58.mphil;
+package uk.ac.cam.cl.arg58.mphil.compression;
 
-import uk.ac.cam.eng.ml.tcs27.compression.tcs27.*;
+import uk.ac.cam.eng.ml.tcs27.compression.*;
 
 import java.io.IOException;
 import java.util.Iterator;

@@ -1,4 +1,5 @@
-package uk.ac.cam.eng.ml.tcs27.compression.tcs27;/* Automated copy from build process */
+package uk.ac.cam.eng.ml.tcs27.compression;
+/* Automated copy from build process */
 /* $Id: BitWriter.java,v 1.4 2015/07/30 15:58:56 chris Exp $ */
 
 import java.io.IOException;

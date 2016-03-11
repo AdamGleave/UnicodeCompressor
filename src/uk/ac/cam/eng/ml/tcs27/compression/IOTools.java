@@ -1,4 +1,5 @@
-package uk.ac.cam.eng.ml.tcs27.compression.tcs27;/* Automated copy from build process */
+package uk.ac.cam.eng.ml.tcs27.compression;
+/* Automated copy from build process */
 /* $Id: IOTools.java,v 1.20 2015/07/30 18:15:48 chris Exp $ */
 
 import java.util.Iterator;
@@ -650,11 +651,11 @@ public class IOTools {
     String envenc = null;
     String lc_all = System.getenv("LC_ALL");
     if (lc_all != null) {
-      envenc = lc_all.substring(lc_all.indexOf("")+1);
+      envenc = lc_all.substring(lc_all.indexOf(".")+1);
     } else {
       String lc_ctype = System.getenv("LC_CTYPE");
       if (lc_ctype != null) {
-        envenc = lc_ctype.substring(lc_ctype.indexOf("")+1);
+        envenc = lc_ctype.substring(lc_ctype.indexOf(".")+1);
       } /* else {
         String lang = System.getenv("LANG");
         if (lang != null) {

@@ -1,8 +1,6 @@
-package compression.tcs27.mlg.eng.cam.ac.uk;/* Automated copy from build process */
+package uk.ac.cam.eng.ml.tcs27.compression.tcs27;/* Automated copy from build process */
 /* $Id: Arith.java,v 1.28 2015/08/11 11:28:16 chris Exp $ */
 
-import java.util.Vector;
-import java.util.Hashtable;
 import java.io.IOException;
 
 /** Implements arithmetic coding (TCS 2011).
@@ -139,6 +137,7 @@ public class Arith implements Coder {
       R <<= 1;
       D <<= 1;
       D &= mask;
+      System.err.println("discard_bits: read bit");
       D += input.readBit();
     }
   }
@@ -280,6 +279,7 @@ public class Arith implements Coder {
     // fill data pointer with bits
     for (int k=0; k<b; k++) {
       D <<= 1;
+      System.err.println("start_decode: read bit");
       D += input.readBit();
     }
     L = 0;  // hb

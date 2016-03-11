@@ -1,8 +1,7 @@
-package compression.tcs27.mlg.eng.cam.ac.uk;/* Automated copy from build process */
+package uk.ac.cam.eng.ml.tcs27.compression.tcs27;/* Automated copy from build process */
 /* $Id: Codable.java,v 1.6 2011/09/13 23:55:22 chris Exp $ */
 
 import java.util.Collection;
-import java.util.Collections;
 
 /** An interface for connecting a data model to an arithmetic coder. */
 public interface Codable<X> {

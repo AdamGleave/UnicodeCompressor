@@ -1,4 +1,4 @@
-package compression.tcs27.mlg.eng.cam.ac.uk;/* Automated copy from build process */
+package uk.ac.cam.eng.ml.tcs27.compression.tcs27;/* Automated copy from build process */
 /* $Id: Bit.java,v 1.5 2015/07/28 01:49:21 chris Exp $ */
 
 import java.io.Externalizable;

@@ -1,8 +1,8 @@
-package mphil.arg58.cl.cam.ac.uk;
+package uk.ac.cam.cl.arg58.mphil;
 
-import compression.tcs27.mlg.eng.cam.ac.uk.Codable;
-import compression.tcs27.mlg.eng.cam.ac.uk.Decoder;
-import compression.tcs27.mlg.eng.cam.ac.uk.Encoder;
+import uk.ac.cam.eng.ml.tcs27.compression.tcs27.Codable;
+import uk.ac.cam.eng.ml.tcs27.compression.tcs27.Decoder;
+import uk.ac.cam.eng.ml.tcs27.compression.tcs27.Encoder;
 
 import java.util.Collection;
 
@@ -13,14 +13,10 @@ public class Bernoulli<X> implements Codable<X> {
     private double bias;
     private X zero, one;
 
-    private long mid;
-
     public Bernoulli(double bias, X zero, X one) {
         this.bias = bias;
         this.zero = zero;
         this.one = one;
-
-        mid = (long)((double)(Long.MAX_VALUE) * bias);
     }
 
     public double getBias() {
@@ -35,12 +31,28 @@ public class Bernoulli<X> implements Codable<X> {
         return one;
     }
 
+    private long computeMid(long range) {
+        long mid = (long)((double)range * bias);
+        if (mid == 0) {
+            mid = 1;
+        } else if (mid == range) {
+            mid = range - 1;
+        }
+
+        return mid;
+    }
+
     @Override
     public void encode(X x, Encoder ec) {
+        long range = ec.getRange();
+        long mid = computeMid(range);
+
+        System.err.println("mid: " + mid + ", range: " + range);
+
         if (x.equals(zero)) {
-            ec.storeRegion(0, mid, Long.MAX_VALUE);
+            ec.storeRegion(0, mid);
         } else if (x.equals(one)) {
-            ec.storeRegion(mid, Long.MAX_VALUE, Long.MAX_VALUE);
+            ec.storeRegion(mid, range);
         } else {
             throw new IllegalArgumentException("x is neither zero or one.");
         }
@@ -54,10 +66,17 @@ public class Bernoulli<X> implements Codable<X> {
 
     @Override
     public X decode(Decoder dc) {
-        long target = dc.getTarget(Long.MAX_VALUE);
+        long target = dc.getTarget();
+        long range = dc.getRange();
+        long mid = computeMid(range);
+
+        System.err.println("target: " + target + ", mid: " + mid
+                                      + ", range: " + range);
         if (target <= mid) {
+            dc.loadRegion(0, mid);
             return zero;
         } else {
+            dc.loadRegion(mid, range);
             return one;
         }
     }

@@ -1,4 +1,4 @@
-package compression.tcs27.mlg.eng.cam.ac.uk;/* Automated copy from build process */
+package uk.ac.cam.eng.ml.tcs27.compression.tcs27;/* Automated copy from build process */
 /* $Id: Coder.java,v 1.4 2012/10/22 21:46:49 chris Exp $ */
 
 import java.io.IOException;

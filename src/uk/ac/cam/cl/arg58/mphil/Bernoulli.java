@@ -72,7 +72,7 @@ public class Bernoulli<X> implements Codable<X> {
 
         System.err.println("target: " + target + ", mid: " + mid
                                       + ", range: " + range);
-        if (target <= mid) {
+        if (target < mid) {
             dc.loadRegion(0, mid);
             return zero;
         } else {

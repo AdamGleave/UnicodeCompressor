@@ -9,7 +9,7 @@ object Encoder {
   private def computeNumOctets(codePoint: Int) : Int = {
     val res = UTF8.CodePoints.indexWhere(range => range.contains(codePoint))
     assert(res >= 0); assert(res <= 4)
-    res
+    res + 1
   }
 
   private def codepointToBytes(codePoint: Int, numOctets: Int) : Array[Byte] = {
@@ -22,7 +22,7 @@ object Encoder {
     }
     res(0) = firstOctet
 
-    var codePointAcc = codePoint
+    var codePointAcc = codePointRem
     for (octet <- 1 to numOctets-1) {
       res(octet) = (0x80 | (codePointAcc & 0x3f)).toByte
       codePointAcc = codePointAcc >>> 6
@@ -39,9 +39,9 @@ object Encoder {
 
   def tokenToBytes(token: Token) : Array[Byte] = token match {
     case UnicodeCharacter (codePoint) => encode(codePoint)
-    case IllegalByte (byte) => new Array(byte)
+    case IllegalByte (byte) => Array(byte)
     case Overlong (codePoint, numOctets) => codepointToBytes(codePoint, numOctets)
     case SurrogateCodePoint (codePoint) => encode(codePoint)
-    case TooHigh (codePoint) => encode(codePoint)
+    case TooHigh (codePoint) => codepointToBytes(codePoint, 4)
   }
 }

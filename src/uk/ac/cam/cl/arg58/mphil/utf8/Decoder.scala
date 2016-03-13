@@ -8,31 +8,64 @@ import java.io.InputStream
 class Decoder(is: InputStream) {
   private val buffer = new Array[Byte](4)
   private var bytesRead = 0
+  private var numTokens = 0
 
   private def consume(n : Int) {
-    val m = math.min(bytesRead, n)
-    for (i <- 0 to bytesRead - m) {
-      buffer(i) = buffer(i + m)
+    assert(n <= bytesRead)
+    for (i <- 0 until bytesRead - n) {
+      buffer(i) = buffer(i + n)
     }
-    bytesRead -= m
+    bytesRead -= n
   }
 
-  def multiOctet(octets : Int) : Option[Int] = {
-    var res : Option[Int] = Some (0)
-    for (octet <- octets to 1) {
-      val v = buffer(octet)
-      if ((octet & 0xc0) != 0x80) { // matches 10xxxxxx
-        res = None
-      } else {
-        res = res match {
-          case None => None
-          case Some (old_codepoint) =>
-            val new_codepoint = old_codepoint << 6
-            Some (new_codepoint + (octet & 0x3f))
+  private def multiOctet(seqLength : Int) : Token = {
+    val firstByte = buffer(0)
+
+    if (seqLength > bytesRead) {
+      // hit EOF before we got enough bytes
+      consume(1)
+      IllegalByte(firstByte)
+    } else {
+      val bitsInTail = 7 - seqLength
+      val mask = (1 << bitsInTail) - 1
+      val tail = firstByte & mask
+
+      var acc : Option[Int] = Some (tail)
+      for (octet <- 1 to (seqLength - 1)) {
+        val v = buffer(octet)
+        if ((v & 0xc0) != 0x80) { // matches 10xxxxxx
+          acc = None
+        } else {
+          acc = acc match {
+            case None => None
+            case Some (oldCodePoint) =>
+              val newCodePoint = oldCodePoint << 6
+              Some (newCodePoint + (v & 0x3f))
+          }
         }
       }
+
+      acc match {
+        case None =>
+          consume(1)
+          IllegalByte(firstByte)
+        case Some (codePoint) =>
+          consume(seqLength)
+          if (UTF8.SurrogateCodePoints.contains(codePoint)) {
+            SurrogateCodePoint(codePoint)
+          } else {
+            val legalRange = UTF8.CodePoints(seqLength - 1)
+            if (legalRange.contains(codePoint)) {
+              UnicodeCharacter(codePoint)
+            } else if (codePoint < legalRange.head) {
+              Overlong(codePoint, seqLength)
+            } else { // codePoint > legalRange.tail
+              // this only happens if seqLength == 4, and codePoint > 10FFFF.
+              TooHigh(codePoint)
+            }
+          }
+      }
     }
-    res
   }
 
   def nextToken() : Option[Token] = {
@@ -40,20 +73,20 @@ class Decoder(is: InputStream) {
     if (bytesRead == 0) {
       None
     } else {
-      val firstByte = buffer(0)
+      val firstByte : Byte = buffer(0)
+      numTokens += 1
       if ((firstByte & 0x80) == 0x00) { // firstByte matches 0xxxxxxx
-        Some (Character(firstByte))
+        consume(1)
+        Some (UnicodeCharacter (firstByte))
       } else if ((firstByte & 0xe0) == 0xc0) { // firstByte matches 110xxxxx
-        multiOctet(2) match {
-          case None =>
-            consume(1)
-            Some(IllegalByte(firstByte))
-          case Some(codepoint) =>
-            consume(2)
-            Some(Character(codepoint))
-        }
+        Some (multiOctet(2))
+      } else if ((firstByte & 0xf0) == 0xe0) { // firstByte matches 1110xxxx
+        Some (multiOctet(3))
+      } else if ((firstByte & 0xf8) == 0xf0) { // firstByte matches 11110xxx
+        Some (multiOctet(4))
       } else {
-        None // TODO
+        consume(1)
+        Some (IllegalByte (firstByte))
       }
     }
   }

@@ -8,6 +8,10 @@ import java.lang.Character
 abstract class Token
 
 case class UnicodeCharacter(codePoint: Int) extends Token {
+  def this(char: Char) = {
+    this(char.toInt)
+  }
+
   override def toString() = String.valueOf(Character.toChars(codePoint))
 }
 

@@ -303,6 +303,4 @@ public class Arith implements Coder {
   public static void debugout(String d) {
     //System.err.print(d);
   }
-
-
 }

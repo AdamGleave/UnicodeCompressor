@@ -1,11 +1,12 @@
 package uk.ac.cam.cl.arg58.mphil.utf8
 
 import java.io.InputStream
+import java.util.NoSuchElementException
 
 /**
   * Created by adam on 11/03/16.
   */
-class Decoder(is: InputStream) {
+class Decoder(is: InputStream) extends Iterator[Token] {
   private val buffer = new Array[Byte](4)
   private var bytesRead = 0
   private var numTokens = 0
@@ -68,25 +69,30 @@ class Decoder(is: InputStream) {
     }
   }
 
-  def nextToken() : Option[Token] = {
-    bytesRead += is.read(buffer, bytesRead, buffer.length - bytesRead)
+  def hasNext() : Boolean = {
+    bytesRead += Math.max(is.read(buffer, bytesRead, buffer.length - bytesRead), 0)
+    bytesRead > 0
+  }
+
+  def next() : Token = {
+    bytesRead += Math.max(is.read(buffer, bytesRead, buffer.length - bytesRead), 0)
     if (bytesRead == 0) {
-      None
+      throw new NoSuchElementException()
     } else {
       val firstByte : Byte = buffer(0)
       numTokens += 1
       if ((firstByte & 0x80) == 0x00) { // firstByte matches 0xxxxxxx
         consume(1)
-        Some (UnicodeCharacter (firstByte))
+        UnicodeCharacter (firstByte)
       } else if ((firstByte & 0xe0) == 0xc0) { // firstByte matches 110xxxxx
-        Some (multiOctet(2))
+        multiOctet(2)
       } else if ((firstByte & 0xf0) == 0xe0) { // firstByte matches 1110xxxx
-        Some (multiOctet(3))
+        multiOctet(3)
       } else if ((firstByte & 0xf8) == 0xf0) { // firstByte matches 11110xxx
-        Some (multiOctet(4))
+        multiOctet(4)
       } else {
         consume(1)
-        Some (IllegalByte (firstByte))
+        IllegalByte (firstByte)
       }
     }
   }

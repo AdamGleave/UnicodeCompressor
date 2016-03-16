@@ -23,8 +23,6 @@ abstract class IllegalCodePoint(codePoint: Int) extends Error {
   override def toString() = "%s(%X)".format(this.getClass.getSimpleName, codePoint)
 }
 
-// TODO: Include error for non-characters? Or allow SurrogateCodePoint as a legal CodePoint,
-// just with some tag. (This is probably better.)
 case class SurrogateCodePoint(codePoint: Int) extends IllegalCodePoint(codePoint)
 case class Overlong(codePoint: Int, length: Int) extends IllegalCodePoint(codePoint) {
   override def toString() = "Overlong(%X, %d)".format(codePoint, length)

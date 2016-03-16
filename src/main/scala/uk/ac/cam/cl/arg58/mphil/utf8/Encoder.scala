@@ -14,21 +14,22 @@ object Encoder {
 
   private def codepointToBytes(codePoint: Int, numOctets: Int) : Array[Byte] = {
     val res = new Array[Byte](numOctets)
-    val (firstOctet : Byte, codePointRem : Int) = numOctets match {
-      case 1 => ((codePoint & 0x7f).toByte, codePoint >>> 7)
-      case 2 => ((0xc0 | (codePoint & 0x1f)).toByte, codePoint >>> 5)
-      case 3 => ((0xe0 | (codePoint & 0xf)).toByte, codePoint >>> 4)
-      case 4 => ((0xf0 | (codePoint & 0x7)).toByte, codePoint >>> 3)
+
+    var cp = codePoint
+    for (octet <- (numOctets - 1) to 1 by -1) {
+      res(octet) = (0x80 | (cp & 0x3f)).toByte
+      cp = cp >>> 6
+    }
+
+    val (firstOctet : Byte, cpRem : Int) = numOctets match {
+      case 1 => ((cp & 0x7f).toByte, cp >>> 7)
+      case 2 => ((0xc0 | (cp & 0x1f)).toByte, cp >>> 5)
+      case 3 => ((0xe0 | (cp & 0xf)).toByte, cp >>> 4)
+      case 4 => ((0xf0 | (cp & 0x7)).toByte, cp >>> 3)
     }
     res(0) = firstOctet
 
-    var codePointAcc = codePointRem
-    for (octet <- 1 to numOctets-1) {
-      res(octet) = (0x80 | (codePointAcc & 0x3f)).toByte
-      codePointAcc = codePointAcc >>> 6
-    }
-
-    assert(codePointAcc == 0)
+    assert(cpRem == 0)
     res
   }
 

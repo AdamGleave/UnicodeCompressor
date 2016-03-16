@@ -8,19 +8,12 @@ import java.io.{FileInputStream, InputStream}
 object DecoderProgram {
   private def decode(in : InputStream, encode_after_decode : Boolean) = {
     val decoder = new Decoder(in)
-    def parse() : Unit = {
-      decoder.nextToken() match {
-        case None =>
-        case Some (token) =>
-          if (encode_after_decode) {
-            System.out.write(Encoder.tokenToBytes(token))
-          } else {
-            System.out.print(token)
-          }
-          parse()
+    for (token <- decoder)
+      if (encode_after_decode) {
+        System.out.write(Encoder.tokenToBytes(token))
+      } else {
+        System.out.print(token)
       }
-    }
-    parse()
   }
 
   private def usage(): Unit = {

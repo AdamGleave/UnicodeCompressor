@@ -1,4 +1,3 @@
-package uk.ac.cam.eng.ml.tcs27.compression;
 /* Automated copy from build process */
 /* $Id: Bit.java,v 1.5 2015/07/28 01:49:21 chris Exp $ */
 
@@ -6,6 +5,7 @@ import java.io.Externalizable;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.io.IOException;
+import java.lang.Iterable;
 import java.lang.Comparable;
 import java.util.Iterator;
 import java.util.NoSuchElementException;

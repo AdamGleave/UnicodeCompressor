@@ -1,6 +1,5 @@
-package uk.ac.cam.eng.ml.tcs27.compression;
 /* Automated copy from build process */
-/* $Id: IOTools.java,v 1.20 2015/07/30 18:15:48 chris Exp $ */
+/* $Id: IOTools.java,v 1.21 2016/02/28 19:40:22 chris Exp $ */
 
 import java.util.Iterator;
 import java.util.ArrayList;
@@ -20,8 +19,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.EOFException;
 import java.nio.charset.Charset;
 
 
@@ -145,13 +146,16 @@ public class IOTools {
         try {
           next = br.readBit();
         }
-        catch (IOException e1) {
+        catch (EOFException e1) {
           next = 3;  // end of stream
           try {
             br.close();
           } catch (IOException e2) {
             // ignore it
           }
+        }
+        catch (IOException e1) {
+          throw new RuntimeException(e1);
         }
       }
       public boolean hasNext() {
@@ -507,7 +511,7 @@ public class IOTools {
   
   
 
-  /** Returns a BitReader which reads bits from a file or from stdin.
+  /** Returns a BitReader that reads bits from a file or from stdin.
     * @param fnm the filename, or empty string "" for standard input. */
   public static BitReader getBitReader(String fnm) throws IOException {
     if (fnm.equals("")) {
@@ -518,7 +522,7 @@ public class IOTools {
     }
   }
   
-  /** Returns a BitWriter which writes bits to a file or to stdout.
+  /** Returns a BitWriter that writes bits to a file or to stdout.
     * @param fnm the filename, or empty string "" for standard output. */
   public static BitWriter getBitWriter(String fnm) throws IOException {
     if (fnm.equals("")) {
@@ -526,6 +530,28 @@ public class IOTools {
     } else {
       OutputStream os = new BufferedOutputStream(new FileOutputStream(fnm));
       return new OutputStreamBitWriter(os);
+    }
+  }
+  
+  /** Returns a BitReader that reads ASCII chars {0,1} from a file or from stdin.
+    * @param fnm the filename, or empty string "" for standard input. */
+  public static BitReader getASCIIBitReader(String fnm) throws IOException {
+    if (fnm.equals("")) {
+      return new InputStreamASCIIBitReader(System.in);
+    } else {
+      BufferedInputStream bis = new BufferedInputStream(new FileInputStream(fnm));
+      return new InputStreamASCIIBitReader(bis);
+    }
+  }
+  
+  /** Returns a BitWriter that writes ASCII chars {0,1} to a file or to stdout.
+    * @param fnm the filename, or empty string "" for standard output. */
+  public static BitWriter getASCIIBitWriter(String fnm) throws IOException {
+    if (fnm.equals("")) {
+      return new OutputStreamASCIIBitWriter(System.out);
+    } else {
+      OutputStream os = new BufferedOutputStream(new FileOutputStream(fnm));
+      return new OutputStreamASCIIBitWriter(os);
     }
   }
 

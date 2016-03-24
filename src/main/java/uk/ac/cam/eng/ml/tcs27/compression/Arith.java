@@ -1,7 +1,8 @@
-package uk.ac.cam.eng.ml.tcs27.compression;
 /* Automated copy from build process */
-/* $Id: Arith.java,v 1.28 2015/08/11 11:28:16 chris Exp $ */
+/* $Id: Arith.java,v 1.32 2016/03/03 19:38:13 chris Exp $ */
 
+import java.util.Vector;
+import java.util.Hashtable;
 import java.io.IOException;
 
 /** Implements arithmetic coding (TCS 2011).
@@ -260,8 +261,8 @@ public class Arith implements Coder {
 
   /** Starts a decoding process.
     * @param pad1 prefixes the input bit sequence with a 1 bit */
-  public void start_decode(BitReader input, boolean pad1) throws IOException {
-    this.input = input;
+  public void start_decode(BitReader in, boolean pad1) throws IOException {
+    this.input = BitReaderSequence.appendZeros(in);
     debugout("\033[34mDecoding...\033[m\n");
     /*
     if (pad1) {
@@ -287,8 +288,8 @@ public class Arith implements Coder {
   }
 
   /** Starts a decoding process. */
-  public void start_decode(BitReader input) throws IOException {
-    start_decode(input, false);
+  public void start_decode(BitReader in) throws IOException {
+    start_decode(in, false);
   }
 
   /** Finishes a decoding process. */
@@ -303,4 +304,6 @@ public class Arith implements Coder {
   public static void debugout(String d) {
     //System.err.print(d);
   }
+
+
 }

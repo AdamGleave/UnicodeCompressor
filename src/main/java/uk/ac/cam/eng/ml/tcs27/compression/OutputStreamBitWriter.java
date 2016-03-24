@@ -1,4 +1,3 @@
-package uk.ac.cam.eng.ml.tcs27.compression;
 /* Automated copy from build process */
 /* $Id: OutputStreamBitWriter.java,v 1.3 2013/04/29 17:26:53 chris Exp $ */
 

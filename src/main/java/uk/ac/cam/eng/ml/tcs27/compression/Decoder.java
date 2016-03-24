@@ -1,4 +1,3 @@
-package uk.ac.cam.eng.ml.tcs27.compression;
 /* Automated copy from build process */
 /* $Id: Decoder.java,v 1.3 2013/01/03 01:55:15 chris Exp $ */
 

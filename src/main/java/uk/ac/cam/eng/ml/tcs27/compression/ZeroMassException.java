@@ -1,6 +1,5 @@
-package uk.ac.cam.eng.ml.tcs27.compression;
 /* Automated copy from build process */
-/* $Id: ZeroMassException.java,v 1.3 2012/10/12 09:09:41 chris Exp $ */
+/* $Id: ZeroMassException.java,v 1.4 2016/03/02 02:15:45 chris Exp $ */
 
 /** An exception thrown by events of zero probability mass.
   * This exception is thrown, for example, when attempting
@@ -14,5 +13,6 @@ public class ZeroMassException extends RuntimeException {
   public ZeroMassException() { super(); }
   public ZeroMassException(String s) { super(s); }
   public ZeroMassException(Exception e) { super(e); }
+  public ZeroMassException(String s, Exception e) { super(s,e); }
 
 }

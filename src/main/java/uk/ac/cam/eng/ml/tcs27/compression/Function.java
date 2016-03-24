@@ -1,4 +1,3 @@
-package uk.ac.cam.eng.ml.tcs27.compression;
 /* Automated copy from build process */
 /* $Id: Function.java,v 1.1 2012/04/11 15:38:41 chris Exp $ */
 

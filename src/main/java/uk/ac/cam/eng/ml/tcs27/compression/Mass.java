@@ -1,5 +1,6 @@
 /* Automated copy from build process */
 /* $Id: Mass.java,v 1.1 2012/10/01 21:19:34 chris Exp $ */
+package uk.ac.cam.eng.ml.tcs27.compression;
 
 /** The interface of probability mass functions. */
 public interface Mass<X> {

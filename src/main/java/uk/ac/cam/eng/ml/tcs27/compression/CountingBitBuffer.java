@@ -1,5 +1,6 @@
 /* Automated copy from build process */
 /* $Id: CountingBitBuffer.java,v 1.1 2012/03/25 09:43:58 chris Exp $ */
+package uk.ac.cam.eng.ml.tcs27.compression;
 
 import java.io.InputStream;
 import java.io.IOException;

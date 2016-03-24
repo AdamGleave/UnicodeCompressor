@@ -1,5 +1,6 @@
 /* Automated copy from build process */
 /* $Id: ByteCompressor.java,v 1.48 2015/08/11 11:28:16 chris Exp $ */
+package uk.ac.cam.eng.ml.tcs27.compression;
 
 import java.io.IOException;
 import java.io.OutputStream;

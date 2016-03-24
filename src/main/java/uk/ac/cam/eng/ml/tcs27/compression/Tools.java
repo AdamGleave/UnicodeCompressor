@@ -1,5 +1,6 @@
 /* Automated copy from build process */
 /* $Id: Tools.java,v 1.26 2015/12/07 04:53:29 chris Exp $ */
+package uk.ac.cam.eng.ml.tcs27.compression;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;

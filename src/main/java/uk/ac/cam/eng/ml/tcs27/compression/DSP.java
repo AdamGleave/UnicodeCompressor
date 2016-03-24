@@ -1,5 +1,6 @@
 /* Automated copy from build process */
 /* $Id: DSP.java,v 1.1 2010/05/22 08:38:20 chris Exp $ */
+package uk.ac.cam.eng.ml.tcs27.compression;
 import java.util.Random;
 
 /** Interface common to discrete stochastic processes.

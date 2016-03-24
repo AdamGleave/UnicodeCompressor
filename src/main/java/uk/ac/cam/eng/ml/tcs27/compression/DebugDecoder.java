@@ -1,5 +1,6 @@
 /* Automated copy from build process */
 /* $Id: DebugDecoder.java,v 1.6 2014/10/10 12:44:06 chris Exp $ */
+package uk.ac.cam.eng.ml.tcs27.compression;
 
 /** A debug wrapper around an existing decoder. */
 public class DebugDecoder implements Decoder {

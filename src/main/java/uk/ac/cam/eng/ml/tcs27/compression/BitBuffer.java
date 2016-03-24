@@ -1,5 +1,6 @@
 /* Automated copy from build process */
 /* $Id: BitBuffer.java,v 1.8 2013/06/04 01:39:25 chris Exp $ */
+package uk.ac.cam.eng.ml.tcs27.compression;
 
 import java.io.InputStream;
 import java.io.IOException;

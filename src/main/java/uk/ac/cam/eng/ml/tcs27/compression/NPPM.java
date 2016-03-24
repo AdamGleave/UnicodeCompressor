@@ -1,5 +1,6 @@
 /* Automated copy from build process */
 /* $Id: NPPM.java,v 1.52 2015/08/11 11:28:16 chris Exp $ */
+package uk.ac.cam.eng.ml.tcs27.compression;
 
 import java.util.Iterator;
 import java.util.Hashtable;

@@ -1,5 +1,6 @@
 /* Automated copy from build process */
 /* $Id: PPMUrn.java,v 1.12 2013/10/12 18:19:38 chris Exp $ */
+package uk.ac.cam.eng.ml.tcs27.compression;
 
 import java.util.Random;
 import java.util.ArrayList;

@@ -1,5 +1,6 @@
 /* Automated copy from build process */
 /* $Id: MacOpt.java,v 1.7 2014/09/18 16:35:14 chris Exp $ */
+package uk.ac.cam.eng.ml.tcs27.compression;
 
 import java.util.ArrayList;
 

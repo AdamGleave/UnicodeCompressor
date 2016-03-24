@@ -1,5 +1,6 @@
 /* Automated copy from build process */
 /* $Id: Codable.java,v 1.6 2011/09/13 23:55:22 chris Exp $ */
+package uk.ac.cam.eng.ml.tcs27.compression;
 
 import java.util.Collection;
 import java.util.Collections;

@@ -1,5 +1,6 @@
 /* Automated copy from build process */
 /* $Id: DiscreteLookup.java,v 1.9 2015/07/23 21:14:07 chris Exp $ */
+package uk.ac.cam.eng.ml.tcs27.compression;
 
 import java.util.Collection;
 import java.util.Hashtable;

@@ -1,5 +1,6 @@
 /* Automated copy from build process */
 /* $Id: Encoder.java,v 1.3 2013/01/03 01:55:15 chris Exp $ */
+package uk.ac.cam.eng.ml.tcs27.compression;
 
 /** Interface implemented by arithmetic encoders.
   * @see Decoder */

@@ -1,5 +1,6 @@
 /* Automated copy from build process */
 /* $Id: SBST.java,v 1.7 2014/08/06 10:58:21 chris Exp $ */
+package uk.ac.cam.eng.ml.tcs27.compression;
 
 import java.util.Random;
 import java.util.Collection;

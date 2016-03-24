@@ -1,5 +1,6 @@
 /* Automated copy from build process */
 /* $Id: Arith.java,v 1.32 2016/03/03 19:38:13 chris Exp $ */
+package uk.ac.cam.eng.ml.tcs27.compression;
 
 import java.util.Vector;
 import java.util.Hashtable;

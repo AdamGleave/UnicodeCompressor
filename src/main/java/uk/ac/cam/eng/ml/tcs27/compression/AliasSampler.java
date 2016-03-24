@@ -1,5 +1,6 @@
 /* Automated copy from build process */
 /* $Id: AliasSampler.java,v 1.8 2015/08/11 11:28:16 chris Exp $ */
+package uk.ac.cam.eng.ml.tcs27.compression;
 import java.util.Random;
 import java.util.Vector;
 import java.util.Arrays;

@@ -1,5 +1,6 @@
 /* Automated copy from build process */
 /* $Id: Bernoulli.java,v 1.27 2016/03/03 19:39:02 chris Exp $ */
+package uk.ac.cam.eng.ml.tcs27.compression;
 import java.util.Random;
 import java.util.Iterator;
 import java.util.Collection;

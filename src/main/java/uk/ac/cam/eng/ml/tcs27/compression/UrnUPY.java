@@ -1,5 +1,6 @@
 /* Automated copy from build process */
 /* $Id: UrnUPY.java,v 1.4 2014/09/04 13:48:48 chris Exp $ */
+package uk.ac.cam.eng.ml.tcs27.compression;
 
 import java.util.Iterator;
 import java.util.Collection;

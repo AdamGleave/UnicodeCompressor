@@ -1,5 +1,6 @@
 /* Automated copy from build process */
 /* $Id: RandomBitReader.java,v 1.3 2012/11/18 00:00:26 chris Exp $ */
+package uk.ac.cam.eng.ml.tcs27.compression;
 
 import java.io.IOException;
 import java.util.Random;

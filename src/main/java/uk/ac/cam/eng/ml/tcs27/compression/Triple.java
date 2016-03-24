@@ -1,5 +1,6 @@
 /* Automated copy from build process */
 /* $Id: Triple.java,v 1.2 2015/08/11 02:16:12 chris Exp $ */
+package uk.ac.cam.eng.ml.tcs27.compression;
 
 import java.io.Serializable;
 

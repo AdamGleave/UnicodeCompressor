@@ -1,5 +1,6 @@
 /* Automated copy from build process */
 /* $Id: InputStreamASCIIBitReader.java,v 1.1 2016/02/28 19:07:49 chris Exp $ */
+package uk.ac.cam.eng.ml.tcs27.compression;
 
 import java.io.InputStream;
 import java.io.IOException;

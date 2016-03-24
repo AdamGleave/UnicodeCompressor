@@ -1,5 +1,6 @@
 /* Automated copy from build process */
 /* $Id: CumulativeLookup.java,v 1.3 2012/10/12 14:07:11 chris Exp $ */
+package uk.ac.cam.eng.ml.tcs27.compression;
 
 import java.util.Collection;
 import java.util.Hashtable;

@@ -1,4 +1,5 @@
 /* Automated copy from build process */
+package uk.ac.cam.eng.ml.tcs27.compression;
 
 import java.util.NoSuchElementException;
 import java.util.Random;

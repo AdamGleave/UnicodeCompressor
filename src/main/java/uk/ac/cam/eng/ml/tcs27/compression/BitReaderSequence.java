@@ -1,5 +1,6 @@
 /* Automated copy from build process */
 /* $Id: BitReaderSequence.java,v 1.5 2016/03/02 02:22:51 chris Exp $ */
+package uk.ac.cam.eng.ml.tcs27.compression;
 
 import java.io.IOException;
 import java.io.EOFException;

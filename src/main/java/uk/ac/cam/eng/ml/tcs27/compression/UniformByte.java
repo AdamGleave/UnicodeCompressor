@@ -1,5 +1,6 @@
 /* Automated copy from build process */
 /* $Id: UniformByte.java,v 1.1 2013/06/30 14:13:28 chris Exp $ */
+package uk.ac.cam.eng.ml.tcs27.compression;
 
 import java.util.Random;
 import java.util.Iterator;

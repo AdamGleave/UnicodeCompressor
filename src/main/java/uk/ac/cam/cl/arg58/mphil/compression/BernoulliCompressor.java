@@ -1,9 +1,9 @@
 package uk.ac.cam.cl.arg58.mphil.compression;
 
-import uk.ac.cam.eng.ml.tcs27.compression.*;
-
 import java.io.IOException;
 import java.util.Iterator;
+
+import uk.ac.cam.eng.ml.tcs27.compression.*;
 
 /**
  * Created by adam on 04/03/16.
@@ -11,8 +11,7 @@ import java.util.Iterator;
 public class BernoulliCompressor {
     public static void main(String[] args) throws IOException {
         if (args.length < 2 || args.length > 4) {
-            System.err.println("USAGE: <COMPRESS|DECOMPRESS> <bias> [in] [out]\n" +
-                    "Reads from stdin, writes to stdout.");
+            System.err.println("USAGE: <COMPRESS|DECOMPRESS> <bias> [in] [out]\n");
             System.exit(-1);
         }
 
@@ -42,7 +41,6 @@ public class BernoulliCompressor {
             for (int i = 0; i < 80; i++) {
                 Bit b = it.next();
                 bernoulli.encode(b, arith);
-                System.err.println("encoding: " + b);
             }
 
             arith.finish_encode();
@@ -53,7 +51,6 @@ public class BernoulliCompressor {
             for (int i = 0; i < 80; i++) {
                 Bit b = bernoulli.decode(arith);
                 out.writeBit(b);
-                System.err.println("decoded: " + b);
             }
 
             arith.finish_decode();

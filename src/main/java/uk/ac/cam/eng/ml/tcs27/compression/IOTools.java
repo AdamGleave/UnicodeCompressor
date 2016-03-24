@@ -1,5 +1,6 @@
 /* Automated copy from build process */
 /* $Id: IOTools.java,v 1.21 2016/02/28 19:40:22 chris Exp $ */
+package uk.ac.cam.eng.ml.tcs27.compression;
 
 import java.util.Iterator;
 import java.util.ArrayList;

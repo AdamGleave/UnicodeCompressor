@@ -3,6 +3,8 @@
 /* FIXME: this class uses outdated methods, not taking advantage of
  * Encoder.getRange()! Compression effectiveness might thus be lower. */
 
+package uk.ac.cam.eng.ml.tcs27.compression;
+
 import java.util.Collection;
 import java.util.Hashtable;
 

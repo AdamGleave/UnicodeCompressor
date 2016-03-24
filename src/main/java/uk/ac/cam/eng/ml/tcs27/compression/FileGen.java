@@ -1,5 +1,6 @@
 /* Automated copy from build process */
 /* $Id: FileGen.java,v 1.20 2015/07/30 15:51:02 chris Exp $ */
+package uk.ac.cam.eng.ml.tcs27.compression;
 import java.util.Random;
 import java.io.*;
 import java.util.Vector;

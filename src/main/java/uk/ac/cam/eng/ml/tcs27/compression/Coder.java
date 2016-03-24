@@ -1,5 +1,6 @@
 /* Automated copy from build process */
 /* $Id: Coder.java,v 1.4 2012/10/22 21:46:49 chris Exp $ */
+package uk.ac.cam.eng.ml.tcs27.compression;
 
 import java.io.IOException;
 

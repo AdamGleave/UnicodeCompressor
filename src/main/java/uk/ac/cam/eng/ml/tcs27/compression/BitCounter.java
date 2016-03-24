@@ -1,5 +1,6 @@
 /* Automated copy from build process */
 /* $Id: BitCounter.java,v 1.2 2013/01/02 23:10:05 chris Exp $ */
+package uk.ac.cam.eng.ml.tcs27.compression;
 
 import java.io.IOException;
 

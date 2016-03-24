@@ -1,4 +1,5 @@
 /* $Id: CRPU.java,v 1.13 2015/07/23 19:34:10 chris Exp $ */
+package uk.ac.cam.eng.ml.tcs27.compression;
 
 import java.util.Vector;
 import java.util.Random;

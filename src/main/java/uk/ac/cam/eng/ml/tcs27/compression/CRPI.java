@@ -1,5 +1,6 @@
 /* Automated copy from build process */
 /* $Id: CRPI.java,v 1.10 2012/10/12 08:59:28 chris Exp $ */
+package uk.ac.cam.eng.ml.tcs27.compression;
 
 import java.util.Vector;
 import java.util.Random;

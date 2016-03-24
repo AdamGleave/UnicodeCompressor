@@ -1,5 +1,6 @@
 /* Automated copy from build process */
 /* $Id: UniformInteger.java,v 1.11 2014/05/14 15:46:38 chris Exp $ */
+package uk.ac.cam.eng.ml.tcs27.compression;
 
 import java.util.Random;
 import java.util.Collection;

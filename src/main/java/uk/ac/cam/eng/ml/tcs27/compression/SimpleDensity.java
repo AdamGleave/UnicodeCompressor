@@ -1,5 +1,6 @@
 /* Automated copy from build process */
 /* $Id: SimpleDensity.java,v 1.6 2012/10/19 17:02:33 chris Exp $ */
+package uk.ac.cam.eng.ml.tcs27.compression;
 
 /** A parent class of probability distributions defined by a
   * probability density function.

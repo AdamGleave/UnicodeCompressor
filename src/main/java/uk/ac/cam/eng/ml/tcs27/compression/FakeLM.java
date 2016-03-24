@@ -1,5 +1,6 @@
 /* Automated copy from build process */
 /* $Id: FakeLM.java,v 1.1 2012/06/01 01:36:55 chris Exp $ */
+package uk.ac.cam.eng.ml.tcs27.compression;
 
 import java.util.Random;
 import java.util.Collection;

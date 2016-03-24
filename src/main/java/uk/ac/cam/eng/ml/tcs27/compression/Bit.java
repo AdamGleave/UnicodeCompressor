@@ -1,5 +1,6 @@
 /* Automated copy from build process */
 /* $Id: Bit.java,v 1.5 2015/07/28 01:49:21 chris Exp $ */
+package uk.ac.cam.eng.ml.tcs27.compression;
 
 import java.io.Externalizable;
 import java.io.ObjectInput;

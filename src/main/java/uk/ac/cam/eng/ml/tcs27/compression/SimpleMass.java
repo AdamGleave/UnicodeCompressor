@@ -1,5 +1,6 @@
 /* Automated copy from build process */
 /* $Id: SimpleMass.java,v 1.4 2012/01/13 14:10:15 chris Exp $ */
+package uk.ac.cam.eng.ml.tcs27.compression;
 
 /** A parent class of probability distributions defined by a
   * probability mass function.

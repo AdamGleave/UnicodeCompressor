@@ -1,5 +1,6 @@
 /* Automated copy from build process */
 /* $Id: RSTree.java,v 1.31 2014/08/07 13:35:34 chris Exp $ */
+package uk.ac.cam.eng.ml.tcs27.compression;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;

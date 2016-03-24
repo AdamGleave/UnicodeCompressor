@@ -1,5 +1,6 @@
 /* Automated copy from build process */
 /* $Id: OutputStreamASCIIBitWriter.java,v 1.1 2016/02/28 19:07:49 chris Exp $ */
+package uk.ac.cam.eng.ml.tcs27.compression;
 
 import java.io.OutputStream;
 import java.io.IOException;

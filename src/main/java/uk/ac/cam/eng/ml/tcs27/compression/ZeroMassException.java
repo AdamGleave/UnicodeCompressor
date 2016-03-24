@@ -1,5 +1,6 @@
 /* Automated copy from build process */
 /* $Id: ZeroMassException.java,v 1.4 2016/03/02 02:15:45 chris Exp $ */
+package uk.ac.cam.eng.ml.tcs27.compression;
 
 /** An exception thrown by events of zero probability mass.
   * This exception is thrown, for example, when attempting

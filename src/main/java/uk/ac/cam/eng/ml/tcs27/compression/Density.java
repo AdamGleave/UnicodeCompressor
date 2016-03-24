@@ -1,5 +1,6 @@
 /* Automated copy from build process */
 /* $Id: Density.java,v 1.1 2012/10/01 21:19:34 chris Exp $ */
+package uk.ac.cam.eng.ml.tcs27.compression;
 
 /** The interface of probability density functions. */
 public interface Density<X> {

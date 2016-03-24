@@ -1,5 +1,6 @@
 /* Automated copy from build process */
 /* $Id: MTF.java,v 1.5 2014/12/18 03:26:21 chris Exp $ */
+package uk.ac.cam.eng.ml.tcs27.compression;
 
 import java.util.LinkedList;
 import java.util.Hashtable;

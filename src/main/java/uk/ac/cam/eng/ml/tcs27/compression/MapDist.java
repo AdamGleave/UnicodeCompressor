@@ -1,5 +1,6 @@
 /* Automated copy from build process */
 /* $Id: MapDist.java,v 1.9 2015/08/11 11:28:16 chris Exp $ */
+package uk.ac.cam.eng.ml.tcs27.compression;
 
 import java.util.Random;
 import java.util.Iterator;

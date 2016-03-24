@@ -1,5 +1,6 @@
 /* Automated copy from build process */
 /* $Id: DiscreteUniform.java,v 1.2 2013/05/15 17:31:21 chris Exp $ */
+package uk.ac.cam.eng.ml.tcs27.compression;
 
 import java.util.ArrayList;
 import java.util.Collection;

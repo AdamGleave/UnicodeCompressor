@@ -1,5 +1,6 @@
 /* Automated copy from build process */
 /* $Id: Discrete.java,v 1.56 2016/03/01 01:30:48 chris Exp $ */
+package uk.ac.cam.eng.ml.tcs27.compression;
 import java.util.Random;
 import java.util.Vector;
 import java.util.Arrays;

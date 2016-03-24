@@ -1,5 +1,6 @@
 /* Automated copy from build process */
 /* $Id: UniformChar.java,v 1.12 2013/04/08 15:49:11 chris Exp $ */
+package uk.ac.cam.eng.ml.tcs27.compression;
 
 import java.util.Random;
 import java.util.Vector;

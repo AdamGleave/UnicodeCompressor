@@ -1,5 +1,6 @@
 /* Automated copy from build process */
 /* $Id: PPMTrie.java,v 1.6 2013/01/10 14:12:23 chris Exp $ */
+package uk.ac.cam.eng.ml.tcs27.compression;
 
 import java.util.Iterator;
 import java.util.Hashtable;

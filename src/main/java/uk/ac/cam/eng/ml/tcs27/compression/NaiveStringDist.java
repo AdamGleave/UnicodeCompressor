@@ -1,5 +1,6 @@
 /* Automated copy from build process */
 /* $Id: NaiveStringDist.java,v 1.8 2012/07/09 00:45:15 chris Exp $ */
+package uk.ac.cam.eng.ml.tcs27.compression;
 
 import java.util.Random;
 import java.util.Vector;

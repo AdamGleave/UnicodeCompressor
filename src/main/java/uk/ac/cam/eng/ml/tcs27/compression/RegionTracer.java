@@ -1,5 +1,6 @@
 /* Automated copy from build process */
 /* $Id: RegionTracer.java,v 1.6 2014/10/07 01:18:16 chris Exp $ */
+package uk.ac.cam.eng.ml.tcs27.compression;
 
 import java.util.Queue;
 import java.util.LinkedList;

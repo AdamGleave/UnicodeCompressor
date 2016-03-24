@@ -1,5 +1,6 @@
 /* Automated copy from build process */
 /* $Id: Histogram.java,v 1.48 2013/09/02 16:17:29 chris Exp $ */
+package uk.ac.cam.eng.ml.tcs27.compression;
 
 import java.util.Random;
 import java.util.Vector;

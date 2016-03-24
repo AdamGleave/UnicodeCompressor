@@ -2,6 +2,7 @@
 /* JAVA Probability and Inference Tools
  * $Id: Distribution.java,v 1.46 2015/08/09 23:28:15 chris Exp $
  * Author: Christian Steinruecken */
+package uk.ac.cam.eng.ml.tcs27.compression;
 
 import java.util.Random;
 import java.util.Collection;

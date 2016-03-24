@@ -1,5 +1,6 @@
 /* Automated copy from build process */
 /* $Id: AdaptiveCode.java,v 1.6 2015/08/11 11:28:16 chris Exp $ */
+package uk.ac.cam.eng.ml.tcs27.compression;
 
 /** Interface for adaptive data models with coding support.
   * <p>Such data models can be used for sequence compression,

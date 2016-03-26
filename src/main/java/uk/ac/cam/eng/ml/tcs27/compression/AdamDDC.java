@@ -1,5 +1,7 @@
 package uk.ac.cam.eng.ml.tcs27.compression;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Random;
 import java.util.Vector;
 
@@ -8,13 +10,21 @@ import java.util.Vector;
  * by a <var>K</var>-length vector <b>α</b> whose components are positive real numbers
  * greater than zero.</p>
  */
-public class AdamDDC extends SimpleMass<Integer> {
+public class AdamDDC extends SimpleMass<Integer> implements Iterable<Integer> {
   Dirichlet dirichlet;
+/*  Vector<Double> cdfUnnormalised;*/
 
   /** Constructs a Dirichlet-discrete categorical distribution from a
    * Dirichlet distribution, <var>prior</var>. */
   public AdamDDC(Dirichlet prior) {
     dirichlet = prior;
+
+/*    cdfUnnormalised = new Vector<Double>(dirichlet.dim);
+    double acc = 0.0;
+    for (int k=0; k < dirichlet.dim; k++) {
+      acc += dirichlet.alpha.get(k);
+      cdfUnnormalised.set(k, acc);
+    }*/
   }
 
   /** Copy constructor */
@@ -35,6 +45,11 @@ public class AdamDDC extends SimpleMass<Integer> {
   public void learn(Integer k) {
     dirichlet.alpha.set(k, dirichlet.alpha.get(k) + 1);
     dirichlet.sum++;
+  }
+
+  @Override
+  public boolean isFinite() {
+    return true;
   }
 
   /** Returns a string description of this distribution. */
@@ -97,5 +112,31 @@ public class AdamDDC extends SimpleMass<Integer> {
     Vector<Double> p = dirichlet.sample(rnd);
     Discrete<Integer> d = Discrete.integers(p);
     return d.sample(rnd);
+  }
+
+  class RangeIterator implements Iterator<Integer> {
+    private int value;
+    private final int end;
+
+    RangeIterator(int end) {
+      this.value = 0;
+      this.end = end;
+    }
+
+    public boolean hasNext() {
+      return value < end;
+    }
+
+    public Integer next() {
+      if (!hasNext()) {
+        throw new NoSuchElementException();
+      }
+      return value++;
+    }
+  }
+
+  @Override
+  public Iterator<Integer> iterator() {
+    return new RangeIterator(dirichlet.dim);
   }
 }

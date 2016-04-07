@@ -5,7 +5,7 @@ import java.io.OutputStream
 /**
   * Created by adam on 13/03/16.
   */
-object Encoder {
+object UTF8Encoder {
   private def computeNumOctets(codePoint: Int) : Int = {
     val res = UTF8.CodePoints.indexWhere(range => range.contains(codePoint))
     assert(res >= 0); assert(res <= 4)
@@ -39,10 +39,11 @@ object Encoder {
   }
 
   def tokenToBytes(token: Token) : Array[Byte] = token match {
-    case UnicodeCharacter (codePoint) => encode(codePoint)
-    case IllegalByte (byte) => Array(byte)
-    case Overlong (codePoint, numOctets) => codepointToBytes(codePoint, numOctets)
-    case SurrogateCodePoint (codePoint) => encode(codePoint)
-    case TooHigh (codePoint) => codepointToBytes(codePoint, 4)
+    case UnicodeCharacter(codePoint) => encode(codePoint)
+    case IllegalByte (byte)=> Array(byte)
+    case Overlong(codePoint, numOctets) => codepointToBytes(codePoint, numOctets)
+    case SurrogateCodePoint(codePoint) => encode(codePoint)
+    case TooHigh(codePoint) => codepointToBytes(codePoint, 4)
+    case EOF() => throw new AssertionError("EOF has no byte representation.")
   }
 }

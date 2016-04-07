@@ -6,7 +6,7 @@ import java.util.NoSuchElementException
 /**
   * Created by adam on 11/03/16.
   */
-class Decoder(is: InputStream) extends Iterator[Token] {
+class UTF8Decoder(is: InputStream) extends Iterator[Token] {
   private val buffer = new Array[Byte](4)
   private var bytesRead = 0
   private var numTokens = 0

@@ -97,7 +97,7 @@ class CoderSpec extends FlatSpec {
     for ((utf8Input, expectedOutput) <- testCases) {
       assertResult(expectedOutput, "input was [" + utf8Input.deep.mkString(",") + "]") {
         val is = new ByteArrayInputStream(utf8Input)
-        val d = new Decoder(is)
+        val d = new UTF8Decoder(is)
         d.toArray
       }
     }
@@ -106,7 +106,7 @@ class CoderSpec extends FlatSpec {
   "An encoder" should "produce the bytes in testCases" in {
     for ((expectedOutput, tokenInput) <- testCases) {
       assertResult(expectedOutput, "input was [" + tokenInput.deep.mkString(", ") + "]") {
-        tokenInput.flatMap(Encoder.tokenToBytes)
+        tokenInput.flatMap(UTF8Encoder.tokenToBytes)
       }
     }
   }
@@ -123,8 +123,8 @@ class CoderSpec extends FlatSpec {
   "A decoder and encoder" should "be the identity under composition" in {
     for (fname <- utf8Files) {
       val is1 = getClass.getResourceAsStream(fname)
-      val d = new Decoder(is1)
-      val decodedThenEncoded = d.flatMap(Encoder.tokenToBytes).toStream
+      val d = new UTF8Decoder(is1)
+      val decodedThenEncoded = d.flatMap(UTF8Encoder.tokenToBytes).toStream
 
       val is2 = getClass.getResourceAsStream(fname)
       val original = Stream.continually(is2.read).takeWhile(-1 !=).map(_.toByte)

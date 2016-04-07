@@ -7,15 +7,13 @@ import java.lang.Character
   */
 
 object Token {
-  final val TotalRange = 4259840
+  final val TotalRange = 2164993
 
   def toInt(t: Token) : Int = t match {
     case UnicodeCharacter(codePoint) => codePoint
     case SurrogateCodePoint(codePoint) => codePoint
     case TooHigh(codePoint) => codePoint
     case Overlong(codePoint, length) =>
-      // XXX: This doesn't handle surrogates correctly. But that's OK, maybe?
-      // Decoder will stick surrogates here anyway.
       val (range, index) = UTF8.CodePoints
         .zipWithIndex
         .find({case (r, i) => r.contains(codePoint)})
@@ -24,7 +22,8 @@ object Token {
       val offset = codePoint - range.start
       val overlong_by = length - correct_length
       0x200000 + (overlong_by * range.size) + codePoint
-    case IllegalByte(byte) => (0x200000 + 2160512) + (byte - 0x7f)
+    case IllegalByte(byte) => (0x200000 + 67712) + (byte - 0x7f)
+    case EOF() => Token.TotalRange
   }
 
   def ofInt(n: Int): Token = {
@@ -37,7 +36,7 @@ object Token {
       } else {
         UnicodeCharacter(codePoint)
       }
-    } else if (n < 0x200000 + 2160512) {
+    } else if (n < 0x200000 + 67712) {
       val overlongCodePoint = n - 0x200000
       var index = 0
       var size = 0
@@ -49,14 +48,17 @@ object Token {
       } while (size < overlongCodePoint)
       val width = UTF8.CodePoints(index - 1).size
       val offset = overlongCodePoint - previousSize
-      val length = offset / width
+      val correct_length = index
+      val length = offset / width + correct_length
       val codePoint = overlongCodePoint % width
       Overlong(codePoint, length)
-    } else if (n <= 0x200000 + 2160512 + 0x80) {
-      val byte = n - (0x200000 + 2160512)
+    } else if (n <= 0x200000 + 67712 + 0x80) {
+      val byte = n - (0x200000 + 67712)
       IllegalByte(byte.toByte)
+    } else if (n == Token.TotalRange) {
+      EOF()
     } else {
-      throw new AssertionError("Bug.")
+      throw new AssertionError("Bug: n == " + n.toString)
     }
   }
 }
@@ -97,7 +99,7 @@ case class SurrogateCodePoint(codePoint: Int) extends IllegalCodePoint(codePoint
 
 case class Overlong(codePoint: Int, length: Int) extends IllegalCodePoint(codePoint) {
   // computed from UTF8.CodePoints.zipWithIndex.map({ case (r, i) => (r.size * (3-i))}).sum
-  final val Range = 2160512
+  final val Range = 67712
 
   override def toString() = "Overlong(%X, %d)".format(codePoint, length)
 }
@@ -105,4 +107,10 @@ case class TooHigh(codePoint: Int) extends IllegalCodePoint(codePoint) {
   // TooHigh if 0x10ffff < codePoint <= 0x1fffff
   // So range is 0x1fffff - 0x10ffff = 0xf0000
   final val Range = 0xf0000
+}
+
+case class EOF() extends Token {
+  final val Range = 1
+
+  override def toString() = "EOF"
 }

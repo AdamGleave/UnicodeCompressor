@@ -57,9 +57,7 @@ class UniformToken() extends compression.SimpleMass[Token] with compression.Coda
 
   override def isFinite() = true
 
-  override def toString(): Unit = {
-    return "UniformToken"
-  }
+  override def toString() = "UniformToken"
 
   def sample(rnd: util.Random): Token = {
     Token.ofInt(u.sample(rnd))

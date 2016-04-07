@@ -7,8 +7,12 @@ import java.util
 
 import uk.ac.cam.eng.ml.tcs27.compression
 
+import scala.collection.JavaConversions
+
 // TODO: Could make it support AdaptiveCode, like UniformInteger, but not sure on the benefits.
-class UniformToken extends compression.SimpleMass[Token] with compression.Codable[Token] {
+class UniformToken() extends compression.SimpleMass[Token] with compression.Codable[Token] {
+  val u = new compression.UniformInteger(0, Token.TotalRange)
+
   def mass(t: Token): Double = {
     1 / Token.TotalRange
   }
@@ -18,25 +22,46 @@ class UniformToken extends compression.SimpleMass[Token] with compression.Codabl
   }
 
   override def encode(t: Token, ec: compression.Encoder): Unit = {
-    val code = Token.toInt(t)
-    ec.storeRegion(code, code + 1, Token.TotalRange)
+    u.encode(Token.toInt(t), ec)
+  }
+
+  private def tokensToInt(tokens: util.Collection[Token]) = {
+    val tokensIterable = JavaConversions.collectionAsScalaIterable(tokens)
+    val integersIterable = tokensIterable.map(t => Token.toInt(t) : Integer)
+    JavaConversions.asJavaCollection(integersIterable)
   }
 
   override def encode(t: Token, omit: util.Collection[Token], ec: compression.Encoder): Unit = {
-    encode(t, ec) // TODO
+    u.encode(Token.toInt(t), tokensToInt(omit), ec)
   }
 
   override def decode(dc: compression.Decoder): Token = {
-    val aim = dc.getTarget(Token.TotalRange).toInt
-    dc.loadRegion(aim, aim + 1, Token.TotalRange)
-    Token.ofInt(aim)
+    Token.ofInt(u.decode(dc))
   }
 
   override def decode(omit: util.Collection[Token], dc: compression.Decoder): Token = {
-    decode(dc) // TODO
+    Token.ofInt(u.decode(tokensToInt(omit), dc))
   }
 
-  def sample(rnd : util.Random): Token = {
-    Token.ofInt(rnd.nextInt(Token.TotalRange))
+  override def discreteMass(t: Token) = {
+    1
+  }
+
+  override def discreteTotalMass() = {
+    Token.TotalRange
+  }
+
+  override def discreteTotalMass(col: java.lang.Iterable[Token]) = {
+    JavaConversions.iterableAsScalaIterable(col).size
+  }
+
+  override def isFinite() = true
+
+  override def toString(): Unit = {
+    return "UniformToken"
+  }
+
+  def sample(rnd: util.Random): Token = {
+    Token.ofInt(u.sample(rnd))
   }
 }

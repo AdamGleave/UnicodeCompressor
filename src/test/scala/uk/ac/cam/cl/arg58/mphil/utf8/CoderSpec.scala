@@ -113,11 +113,11 @@ class CoderSpec extends FlatSpec {
 
   // in test resources
   val utf8Files = Array(
-    "/kuhn-baddata.txt",
-    "/kuhn-demo.txt",
-    "/kuhn-quickbrown.txt",
-    "/icaneatglass.txt",
-    "/beowulf.txt"
+    "/corpora/unit/kuhn-baddata.txt",
+    "/corpora/unit/kuhn-demo.txt",
+    "/corpora/unit/kuhn-quickbrown.txt",
+    "/corpora/unit/icaneatglass.txt",
+    "/corpora/unit/beowulf.txt"
   )
 
   "A decoder and encoder" should "be the identity under composition" in {

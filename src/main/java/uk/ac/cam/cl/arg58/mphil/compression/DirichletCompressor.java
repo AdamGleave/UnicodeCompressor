@@ -3,7 +3,6 @@ package uk.ac.cam.cl.arg58.mphil.compression;
 import uk.ac.cam.eng.ml.tcs27.compression.*;
 
 import java.io.*;
-import java.util.Iterator;
 
 public class DirichletCompressor {
   private static final Integer EOF = 256;

@@ -9,16 +9,16 @@ import uk.ac.cam.eng.ml.tcs27.compression
 
 import scala.collection.JavaConversions
 
-// TODO: Could make it support AdaptiveCode, like UniformInteger, but not sure on the benefits.
-class UniformToken() extends compression.SimpleMass[Token] with compression.Codable[Token] {
-  val u = new compression.UniformInteger(0, Token.TotalRange)
+class UniformToken() extends compression.SimpleMass[Token] with compression.Codable[Token]
+                                                           with compression.AdaptiveCode[Token] {
+  val u = new compression.UniformInteger(0, Token.Range)
 
   def mass(t: Token): Double = {
-    1 / Token.TotalRange
+    1 / Token.Range
   }
 
   def logMass(t: Token): Double = {
-    -Math.log(Token.TotalRange)
+    -Math.log(Token.Range)
   }
 
   override def encode(t: Token, ec: compression.Encoder): Unit = {
@@ -48,7 +48,7 @@ class UniformToken() extends compression.SimpleMass[Token] with compression.Coda
   }
 
   override def discreteTotalMass() = {
-    Token.TotalRange
+    Token.Range
   }
 
   override def discreteTotalMass(col: java.lang.Iterable[Token]) = {
@@ -61,5 +61,13 @@ class UniformToken() extends compression.SimpleMass[Token] with compression.Coda
 
   def sample(rnd: util.Random): Token = {
     Token.ofInt(u.sample(rnd))
+  }
+
+  override def learn(t: Token): Unit = {
+    // no-op
+  }
+
+  override def getPredictiveDistribution(): compression.Mass[Token] = {
+    this
   }
 }

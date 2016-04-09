@@ -1,16 +1,5 @@
 package uk.ac.cam.cl.arg58.mphil.utf8
 
-import java.lang.Character
-import java.util.IllegalFormatCodePointException
-
-/**
-  * Created by adam on 11/03/16.
-  */
-
-trait IntegerConvertable {
-  //TODO
-}
-
 abstract class Token
 
 object Token {
@@ -36,6 +25,7 @@ object Token {
     case eof: EOF => UnicodeCharacter.Range + Error.Range + EOF.toInt(eof)
   }
 }
+
 
 case class UnicodeCharacter(codePoint: Int) extends Token {
   override def toString() = String.valueOf(Character.toChars(codePoint))
@@ -98,6 +88,7 @@ object Error {
   }
 }
 
+
 case class IllegalByte(byte: Byte) extends Error {
   override def toString() = "IllegalByte(%02X)".format(byte)
 }
@@ -108,13 +99,17 @@ object IllegalByte {
   final val Range = 0x80
 
   def toInt(o: IllegalByte): Int = {
-    o.byte - 0x80
+    // Were o.byte unsigned, we would want to return o.byte - 0x80
+    // However, it is signed with 0x80 = -127 and 0xff = -1.
+    // So 0x80 + o.byte gives the appropriate result (0 at 0x80, going up to 0x7f for 0xff)
+    0x80 + o.byte
   }
 
   def ofInt(n: Int): IllegalByte = {
     IllegalByte((n + 0x80).toByte)
   }
 }
+
 
 abstract class IllegalCodePoint(codePoint: Int) extends Error {
   override def toString() = "%s(%X)".format(this.getClass.getSimpleName, codePoint)
@@ -168,7 +163,11 @@ case class Overlong(codePoint: Int, length: Int) extends IllegalCodePoint(codePo
 
 object Overlong {
   // computed from UTF8.CodePoints.zipWithIndex.map({ case (r, i) => (r.size * (3-i))}).sum
-  final val Range = 67712
+  final val AccumulatedSizes = UTF8.CodePoints
+    .zipWithIndex
+    .map({ case (r, i) => r.size * (3 - i)})
+    .scanLeft(0)(_ + _)
+  final val Range = AccumulatedSizes.last
 
   def toInt(o: Overlong): Int = {
     val (range, index) = UTF8.CodePoints
@@ -176,29 +175,28 @@ object Overlong {
       .find({case (r, i) => r.contains(o.codePoint)})
       .get
     val correctLength = index + 1
+    val previousSize = AccumulatedSizes(index)
     val offset = o.codePoint - range.start
     val overlongBy = o.length - correctLength
-    (overlongBy * range.size) + o.codePoint
+    previousSize + (overlongBy - 1) * range.size + offset
   }
 
   def ofInt(n: Int): Overlong = {
-    var index = 0
-    var size = 0
-    var previousSize = 0
-    do {
-      previousSize = size
-      size += UTF8.CodePoints(index).size * (3 - index)
-      index += 1
-    } while (size < n)
-
-    val width = UTF8.CodePoints(index - 1).size
+    val (size, index) = AccumulatedSizes
+      .zipWithIndex
+      .find({case (s, i) => n < s})
+      .get
+    val previousSize = AccumulatedSizes(index - 1)
+    val range = UTF8.CodePoints(index - 1)
+    val width = range.size
     val offset = n - previousSize
     val correctLength = index
-    val length = offset / width + correctLength
-    val codePoint = n % width
+    val length = offset / width + correctLength + 1
+    val codePoint = offset % width + range.start
     Overlong(codePoint, length)
   }
 }
+
 
 case class TooHigh(codePoint: Int) extends IllegalCodePoint(codePoint)
 

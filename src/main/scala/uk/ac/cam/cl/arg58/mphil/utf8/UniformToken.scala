@@ -11,7 +11,7 @@ import scala.collection.JavaConversions
 
 class UniformToken() extends compression.SimpleMass[Token] with compression.Codable[Token]
                                                            with compression.AdaptiveCode[Token] {
-  val u = new compression.UniformInteger(0, Token.Range)
+  val u = new compression.UniformInteger(0, Token.Range-1)
 
   def mass(t: Token): Double = {
     1 / Token.Range

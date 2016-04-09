@@ -1,9 +1,5 @@
 package uk.ac.cam.cl.arg58.mphil.utf8
 
-/**
-  * Created by adam on 13/03/16.
-  */
-
 import scala.io.Source
 import java.io.{FileInputStream, ByteArrayOutputStream, ByteArrayInputStream}
 

@@ -2,9 +2,7 @@
 /* $Id: UniformInteger.java,v 1.11 2014/05/14 15:46:38 chris Exp $ */
 package uk.ac.cam.eng.ml.tcs27.compression;
 
-import java.util.Random;
-import java.util.Collection;
-import java.util.Iterator;
+import java.util.*;
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
@@ -104,7 +102,7 @@ public class UniformInteger extends SimpleMass<Integer>
   }
   
   public Integer decode(Collection<Integer> omit, Decoder dc) {
-    long rtotal  = 0;
+    int rtotal  = 0;
     for (int o : omit) {
       if (o >= lo && o <= hi) {
         // count "to be omitted" integers which are in range
@@ -115,21 +113,57 @@ public class UniformInteger extends SimpleMass<Integer>
       // fall back on cheap and simple method
       return decode(dc);
     } else {
-      long i = dc.getTarget(n-rtotal);
-      int  x = lo;
-      long k = 0;
-      // this could probably be done more efficiently...
-      while (omit.contains(x)) {
-        x++;
-      }
-      while (k < i) {
-        k++; x++;
-        while (omit.contains(x)) {
-          x++;
+      long target = dc.getTarget(n-rtotal);
+
+      // copy omit into an array (unboxing as we go), then sort
+      int[] sortedOmit = new int[rtotal];
+      int i = 0;
+      for (int e : omit) {
+        if (e >= lo && e <= hi) {
+          sortedOmit[i++] = e;
         }
       }
-      dc.loadRegion(i,i+1,n-rtotal);
-      return x;
+      Arrays.sort(sortedOmit);
+
+      /* target specifies an index into the range [lo,hi], with the elements in omit removed.
+         To decode val, we initialise it to lo. We then take target 'steps'. Moving from x to x+1
+         costs 1 step, *unless* x+1 is in omit, in which case it is free.
+
+         While the number of steps taken is less than the target, we compute delta, the number
+         of steps before the target is hit. If taking this many steps would jump over or onto
+         an omitted element (omit_delta <= delta), val is incremented 'for free' (without
+         incrementing num_steps), and delta is set to omit_delta. Both num_steps and val are
+         incremented by delta (the number of steps taken).
+
+         It's possible we take target steps but end on an element that is omitted. In this case,
+         we step over it, repeating the process if the next element is also omitted.
+       */
+      int val = lo;
+      long num_steps = 0;
+      i = 0;
+
+      while (num_steps < target) {
+        long delta = target - num_steps;
+        if (i < sortedOmit.length) {
+          // there's still omissions left
+          long omit_delta = sortedOmit[i] - val;
+          if (omit_delta <= delta) {
+            val++;
+            i++;
+            delta = omit_delta;
+          }
+        }
+        num_steps += delta;
+        val += delta;
+      }
+
+      while (i < sortedOmit.length && sortedOmit[i] == val) {
+        val++;
+        i++;
+      }
+
+      dc.loadRegion(target,target+1,n-rtotal);
+      return val;
     }
   }
   

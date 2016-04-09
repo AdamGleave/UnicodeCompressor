@@ -1,7 +1,6 @@
 package uk.ac.cam.cl.arg58.mphil.utf8
 
-import scala.io.Source
-import java.io.{FileInputStream, ByteArrayOutputStream, ByteArrayInputStream}
+import java.io.ByteArrayInputStream
 
 import org.scalatest._
 

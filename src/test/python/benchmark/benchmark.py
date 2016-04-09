@@ -7,9 +7,9 @@ from mode import CompressionMode
 import config
 
 def find_compressors(patterns):
-  patterns = map(re.compile, patterns)
+  patterns = list(map(re.compile, patterns))
   res = set()
-  for k in config.COMPRESSORS.keys:
+  for k in config.COMPRESSORS.keys():
     for p in patterns:
       if p.match(k):
         res.add(k)
@@ -25,14 +25,17 @@ def find_files(patterns):
     acc = acc.union(matches)
   return acc
 
-def check_file(original, compressed, decompressed):
-  if filecmp.cmp(original, decompressed):
-    return os.path.getsize(compressed)
+def check_file(original, output_prefix):
+  if filecmp.cmp(original, output_prefix + ".decompressed"):
+    return os.path.getsize(output_prefix + ".compressed")
   else:
     return "Error: decompressed file differs from original."
 
-def execute_compressor(compressor_name, input_fname, compressed_fname, decompressed_fname):
+def execute_compressor(compressor_name, input_fname, output_prefix):
   compressor = config.COMPRESSORS[compressor_name]
+  compressed_fname = output_prefix + ".compressed"
+  decompressed_fname = output_prefix + ".decompressed"
+  cached_fname = output_prefix + ".done"
 
   with open(input_fname, 'r') as inFile:
     with open(compressed_fname, 'w') as outFile:
@@ -42,7 +45,24 @@ def execute_compressor(compressor_name, input_fname, compressed_fname, decompres
     with open(decompressed_fname, 'w') as outFile:
       compressor(inFile, outFile, CompressionMode.decompress)
 
-  return check_file(input_fname, compressed_fname, decompressed_fname)
+  with open(cached_fname, 'w') as cachedFile:
+    pass # just create the file to indicate we're finished
+
+  return check_file(input_fname, output_prefix)
+
+def cleanup(prefix):
+  try:
+    os.unlink(prefix + ".compressed")
+  except FileNotFoundError: # ignore error if removing files that don't exist
+    pass
+  try:
+    os.unlink(prefix + ".decompressed")
+  except FileNotFoundError:
+    pass
+  try:
+    os.unlink(prefix + ".done")
+  except FileNotFoundError:
+    pass
 
 def run_test(pool, results, compressor_name, fname):
   input_fname = os.path.join(config.CORPUS_DIR, fname)
@@ -55,35 +75,19 @@ def run_test(pool, results, compressor_name, fname):
     if e.errno != errno.EEXIST:
       raise # if the error is due to something else, raise
 
-  compressed_fname = output_prefix + ".compressed"
-  decompressed_fname = output_prefix + ".decompressed"
-
   if invalidate:
-    try:
-      os.unlink(compressed_fname)
-    except FileNotFoundError: # ignore error if removing files that don't exist
-      pass
-    try:
-      os.unlink(decompressed_fname)
-    except FileNotFoundError:
-      pass
+    cleanup(output_prefix)
 
   if run:
-    compressed_exists = os.path.exists(compressed_fname)
-    decompressed_exists = os.path.exists(decompressed_fname)
-    if compressed_exists and decompressed_exists:
+    cached = os.path.exists(output_prefix + ".done")
+    if cached:
       if verbose:
         print("{0} on {1}: cached".format(compressor_name, fname))
 
-      results[compressor_name][fname] = check_file(input_fname,
-                                                   compressed_fname, decompressed_fname)
+      results[compressor_name][fname] = check_file(input_fname, output_prefix)
     else:
-      if compressed_exists != decompressed_exists:
-        print("{0} on {1}: WARNING: previous run must have aborted, rerunning"
-              .format(compressor_name, fname))
-      else:
-        if verbose:
-          print("{0} on {1}: testing".format(compressor_name, fname))
+      if verbose:
+        print("{0} on {1}: testing".format(compressor_name, fname))
 
       def callback(compressor_name, fname, size):
         results[compressor_name][fname] = size
@@ -92,11 +96,9 @@ def run_test(pool, results, compressor_name, fname):
         results[compressor_name][fname] = "Exception: " + str(e)
 
       pool.apply_async(execute_compressor,
-                       (compressor_name, input_fname, compressed_fname, decompressed_fname),
+                       (compressor_name, input_fname, output_prefix),
                        callback=functools.partial(callback, compressor_name, fname),
                        error_callback=functools.partial(error_callback, compressor_name, fname))
-
-    return os.path.getsize(compressed_fname)
 
 if __name__ == "__main__":
   description = 'Benchmark and test the correctness of compression algorithms.'
@@ -131,8 +133,6 @@ if __name__ == "__main__":
 
   path_patterns = args['path'] if args['path'] else ['**/*']
   files = find_files(path_patterns)
-
-  # TODO: summarise results in some nice way?
 
   results = {'Original': {}}
   for fname in files:

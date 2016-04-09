@@ -1,4 +1,4 @@
-import os, subprocess
+import os, subprocess, sys
 
 from mode import CompressionMode
 
@@ -25,9 +25,25 @@ def build_compressor(standard_args, compress_args, decompress_args):
     subprocess.check_call(args, stdin=inFile, stdout=outFile)
   return run_compressor
 
+sbt_classpath = None
+
 def my_compressor(classname):
-  class_qualified = 'uk.ac.cam.cl.arg58.mphil.compression.' + classname
-  return build_compressor(['scala', '-cp', BIN_DIR, class_qualified], ['COMPRESS'], ['DECOMPRESS'])
+  def run_compressor(inFile, outFile, mode):
+    global sbt_classpath
+    if sbt_classpath == None:
+      cwd = os.getcwd()
+      os.chdir(PROJECT_DIR)
+      res = subprocess.check_output(['sbt', 'export compile:dependencyClasspath'])
+      os.chdir(cwd)
+
+      sbt_classpath = res.splitlines()[-1].decode("utf-8")
+      print("Found classpath: {0}".format(sbt_classpath))
+    classpath = sbt_classpath + ':' + BIN_DIR
+    class_qualified = 'uk.ac.cam.cl.arg58.mphil.compression.' + classname
+    compressor = build_compressor(['scala', '-classpath', classpath, class_qualified],
+                                  ['compress'], ['decompress'])
+    compressor(inFile, outFile, mode)
+  return run_compressor
 
 COMPRESSORS = {}
 COMPRESSORS['gzip'] = build_compressor(['gzip', '-c'], [], ['-d'])

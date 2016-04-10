@@ -27,7 +27,7 @@ def build_compressor(standard_args, compress_args, decompress_args):
 
 sbt_classpath = None
 
-def my_compressor(classname):
+def my_compressor(algorithm):
   def run_compressor(inFile, outFile, mode):
     global sbt_classpath
     if sbt_classpath == None:
@@ -39,8 +39,8 @@ def my_compressor(classname):
       sbt_classpath = res.splitlines()[-1].decode("utf-8")
       print("Found classpath: {0}".format(sbt_classpath))
     classpath = sbt_classpath + ':' + BIN_DIR
-    class_qualified = 'uk.ac.cam.cl.arg58.mphil.compression.' + classname
-    compressor = build_compressor(['scala', '-classpath', classpath, class_qualified],
+    class_qualified = 'uk.ac.cam.cl.arg58.mphil.compression.UTF8Compressor'
+    compressor = build_compressor(['scala', '-classpath', classpath, class_qualified, algorithm],
                                   ['compress'], ['decompress'])
     compressor(inFile, outFile, mode)
   return run_compressor
@@ -48,4 +48,5 @@ def my_compressor(classname):
 COMPRESSORS = {}
 COMPRESSORS['gzip'] = build_compressor(['gzip', '-c'], [], ['-d'])
 COMPRESSORS['bzip2'] = build_compressor(['bzip2', '-c', '--best'], ['-z'], ['-d'])
-COMPRESSORS['crputf8'] = my_compressor('CRPUTF8Compressor')
+COMPRESSORS['crp_uniform'] = my_compressor('crp_uniform')
+COMPRESSORS['crp_categorical'] = my_compressor('crp_categorical')

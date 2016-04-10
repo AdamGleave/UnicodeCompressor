@@ -8,7 +8,7 @@ import scala.collection.JavaConversions
 
 class CategoricalToken extends compression.SimpleMass[Token] with compression.Codable[Token]
                                                              with compression.AdaptiveCode[Token] {
-  // TOODO: these weights could be improved; empirical study, perhaps.
+  // TODO: these weights could be improved; empirical study, perhaps.
   final val weights = Array(90, 5, 2, 1, 1, 1)
   val cat : compression.SimpleMass[Integer] = new WeightedInteger(0, weights)
   val bases : Array[compression.SimpleMass[Integer]] = Array(
@@ -62,6 +62,7 @@ class CategoricalToken extends compression.SimpleMass[Token] with compression.Co
   }
 
   override def decode(omit: util.Collection[Token], dc: compression.Decoder): Token = {
+    // TODO: exclusion coding for omitted tokens of other types?
     val tokenTypeId = cat.decode(dc)
     val tokenType = TokenTypes(tokenTypeId)
     val omitCodes = JavaConversions.collectionAsScalaIterable(omit)

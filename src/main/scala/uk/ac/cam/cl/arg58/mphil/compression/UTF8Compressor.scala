@@ -25,28 +25,30 @@ object UTF8Compressor {
     "crp_categorical" -> crpCategorical
   )
 
-  val parser = new scopt.OptionParser[Config]("CRPUTF8Compressor") {
+  val parser = new scopt.OptionParser[Config]("UTF8Compressor") {
     arg[String]("<algorithm>") action { (x, c) =>
       c.copy(algorithm = compressors(x)) } validate { x =>
         if (compressors.contains(x)) success else failure("unknown algorithm " + x)
       } text("method to compress with")
-    cmd("compress") action { (_, c) =>
-      c.copy(compress = true) } text("compress") children(
-      arg[File]("input") optional() action { (x,c) =>
-        c.copy(inFile = Some(x)) } text("uncompressed input"),
-      arg[File]("output") optional() action { (x,c) =>
-        c.copy(outFile = Some(x)) } text("compressed output")
-    )
-    cmd("decompress") action { (_,c) =>
-      c.copy(compress = false) } text("decompress") children (
-      opt[Unit]("tokens") action { (_, c) =>
-        c.copy(outputTokens = true) } text("write serialised representation of Unicode tokens"),
-      arg[File]("input") optional() action { (x,c) =>
-        c.copy(inFile = Some(x)) } text("compressed input"),
-      arg[File]("output") optional() action { (x,c) =>
-        c.copy(outFile = Some(x)) } text("decompressed output")
-    )
+    arg[String]("<mode>") action { (x, c) => x match {
+        case "compress" => c.copy(compress = true)
+        case "decompress" => c.copy(compress = false)
+      } } validate { x => x match {
+        case "compress" => success
+        case "decompress" => success
+        case x => failure("Unrecognised argument " + x + ", should be compress or decompress.")
+      } } text("mode, either compress or decompress")
+    arg[File]("input") optional() action { (x,c) =>
+      c.copy(inFile = Some(x)) } text("input file (default: stdin)")
+    arg[File]("output") optional() action { (x,c) =>
+      c.copy(outFile = Some(x)) } text("output file (default: stdout)")
+    opt[Unit]("tokens") action { (_, c) =>
+      c.copy(outputTokens = true)
+    } text("write serialised representation of Unicode tokens (decompress mode only)")
   }
+
+
+
 
   def crpUniform(): Unit = {
     prior = new UniformToken()

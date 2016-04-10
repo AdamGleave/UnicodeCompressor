@@ -100,6 +100,27 @@ def run_test(pool, results, compressor_name, fname):
                        callback=functools.partial(callback, compressor_name, fname),
                        error_callback=functools.partial(error_callback, compressor_name, fname))
 
+def human_readable_size(s):
+  for unit in ['B', 'KB', 'MB', 'GB']:
+    if s < 1024.0:
+      return '{0:3.1f}{1}'.format(s, unit)
+    s /= 1024.0
+  return '{0:3.1f}TB'.format(s)
+
+def table_convert(original, compressed, table_type):
+  if type(compressed) == str:
+    # an error message, not a number
+    return compressed
+
+  if table_type == 'bits':
+    return '{0:.3f}'.format(compressed / original * 8)
+  elif table_type == 'per':
+    return '{0:.1f}%'.format(compressed / original * 100)
+  elif table_type == 'size':
+    return human_readable_size(compressed)
+  else:
+    assert(False)
+
 if __name__ == "__main__":
   description = 'Benchmark and test the correctness of compression algorithms.'
   parser = argparse.ArgumentParser(description=description)
@@ -110,6 +131,10 @@ if __name__ == "__main__":
                            '(default: {0}).'.format(config.NUM_THREADS))
   parser.add_argument('--csv', dest='csv_fname', metavar='PATH',
                       help='write the results to a CSV file (default: ASCII table).')
+  parser.add_argument('--table', dest='table_type', metavar='UNIT',
+                      help='write the resutlts to stdout in an ASCII table in specified units, ' +
+                      'one of bits (bits output/byte input), per (percentage output/input), ' +
+                      'size (output file size) (default: bits).')
   parser.add_argument('--invalidate', dest='invalidate', action='store_true',
                       help='remove any cached results matching the pattern.')
   parser.add_argument('--rerun', dest='rerun', action='store_true',
@@ -121,6 +146,16 @@ if __name__ == "__main__":
                       help='regex of compression algorithms to match; if unspecified, defaults to *.')
 
   args = vars(parser.parse_args())
+
+  table_type = 'bits'
+  csv_fname = None
+  if args['csv_fname']:
+    table_type = ''
+    csv_fname = args['csv_fname']
+  if args['table_type']:
+    table_type = args['table_type']
+    if table_type not in {"bits", "per", "size"}:
+      parser.error("Unrecognised table type: " + table_type)
 
   verbose = args['verbose']
   num_threads = args['threads']
@@ -134,41 +169,44 @@ if __name__ == "__main__":
   path_patterns = args['path'] if args['path'] else ['**/*']
   files = find_files(path_patterns)
 
-  results = {'Original': {}}
+  results = {'Size': {}}
   for fname in files:
     input_fname = os.path.join(config.CORPUS_DIR, fname)
-    results['Original'][fname] = os.path.getsize(input_fname)
+    results['Size'][fname] = os.path.getsize(input_fname)
 
   with Pool(num_threads) as p:
     if verbose:
       print("Splitting work across {0} processes".format(num_threads))
-    for col in compressors:
-      results[col] = {}
+    for compressor in compressors:
+      results[compressor] = {}
       for fname in files:
-        run_test(p, results, col, fname)
+        run_test(p, results, compressor, fname)
 
     p.close()
     p.join()
 
   if run:
-    cols = ['Original'] + list(compressors)
+    cols = ['Size'] + list(compressors)
     fieldnames = ['File'] + cols
 
-    if args['csv_fname']:
-      with open(args['csv_fname'], 'w') as out:
+    if csv_fname:
+      with open(csv_fname, 'w') as out:
         writer = csv.DictWriter(out, fieldnames=fieldnames)
 
         writer.writeheader()
         for fname in files:
           row = {'File': fname}
-          for col in cols:
-            row[col] = results[col][fname]
+          for compressor in cols:
+            row[compressor] = results[compressor][fname]
           writer.writerow(row)
-    else:
+    if table_type:
       tableResults = {}
       tableResults['File'] = list(files)
-      for col in cols:
-        tableResults[col] = []
+      tableResults['Size'] = [human_readable_size(results['Size'][fname]) for fname in files]
+
+      for compressor in compressors:
+        tableResults[compressor] = []
         for fname in files:
-          tableResults[col].append(str(results[col][fname]))
+          res = table_convert(results['Size'][fname], results[compressor][fname], table_type)
+          tableResults[compressor].append(res)
       asciitable.write(tableResults, sys.stdout, names=fieldnames, Writer=asciitable.FixedWidth)

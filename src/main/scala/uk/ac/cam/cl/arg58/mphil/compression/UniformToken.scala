@@ -1,10 +1,11 @@
-package uk.ac.cam.cl.arg58.mphil.utf8
+package uk.ac.cam.cl.arg58.mphil.compression
 
 /**
   * Created by adam on 06/04/16.
   */
 import java.util
 
+import uk.ac.cam.cl.arg58.mphil.utf8.Token
 import uk.ac.cam.eng.ml.tcs27.compression
 
 import scala.collection.JavaConversions
@@ -43,11 +44,11 @@ class UniformToken() extends compression.SimpleMass[Token] with compression.Coda
     Token.ofInt(u.decode(tokensToInt(omit), dc))
   }
 
-  override def discreteMass(t: Token) = {
+  override def discreteMass(t: Token): Long = {
     1
   }
 
-  override def discreteTotalMass() = {
+  override def discreteTotalMass(): Long = {
     Token.Range
   }
 

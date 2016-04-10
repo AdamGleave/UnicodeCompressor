@@ -32,6 +32,7 @@ object CRPUTF8Compressor {
 
   val arith: Coder = new Arith()
   val prior: Distribution[Token] = new UniformToken()
+//  val prior: Distribution[Token] = new CategoricalToken()
   val model: AdaptiveCode[Token] = new CRPU[Token](1, 1, 0, 1, prior)
 
   var inStream: InputStream = null

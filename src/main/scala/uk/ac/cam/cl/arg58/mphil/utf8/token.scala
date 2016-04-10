@@ -1,5 +1,45 @@
 package uk.ac.cam.cl.arg58.mphil.utf8
 
+object TokenTypes extends Enumeration {
+  val TUnicodeCharacter, TIllegalByte, TOverlong, TSurrogateCodePoint, TTooHigh, TEOF = Value
+
+  def fromToken(t: Token): TokenTypes.Value = t match {
+    case _: UnicodeCharacter => TUnicodeCharacter
+    case _: IllegalByte => TIllegalByte
+    case _: Overlong => TOverlong
+    case _: SurrogateCodePoint => TSurrogateCodePoint
+    case _: TooHigh => TTooHigh
+    case _: EOF => TEOF
+  }
+
+  def numTokens(t: TokenTypes.Value): Integer = t match {
+    case TUnicodeCharacter => UnicodeCharacter.Range
+    case TIllegalByte => IllegalByte.Range
+    case TOverlong => Overlong.Range
+    case TSurrogateCodePoint => SurrogateCodePoint.Range
+    case TTooHigh => TooHigh.Range
+    case TEOF => EOF.Range
+  }
+
+  def toInt(t: Token): Int = t match {
+    case c: UnicodeCharacter => UnicodeCharacter.toInt(c)
+    case b: IllegalByte => IllegalByte.toInt(b)
+    case o: Overlong => Overlong.toInt(o)
+    case s : SurrogateCodePoint => SurrogateCodePoint.toInt(s)
+    case t: TooHigh => TooHigh.toInt(t)
+    case e: EOF => EOF.toInt(e)
+  }
+
+  def ofInt(t: TokenTypes.Value, n: Int): Token = t match {
+    case TUnicodeCharacter => UnicodeCharacter.ofInt(n)
+    case TIllegalByte => IllegalByte.ofInt(n)
+    case TOverlong => Overlong.ofInt(n)
+    case TSurrogateCodePoint => SurrogateCodePoint.ofInt(n)
+    case TTooHigh => TooHigh.ofInt(n)
+    case TEOF => EOF.ofInt(n)
+  }
+}
+
 abstract class Token
 
 object Token {

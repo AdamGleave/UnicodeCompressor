@@ -79,10 +79,6 @@ class CategoricalToken extends compression.SimpleMass[Token] with compression.Co
     TokenTypes.ofInt(tokenType, code)
   }
 
-  override def getPredictiveDistribution(): compression.Mass[Token] = {
-    this
-  }
-
   override def discreteMass(t: Token): Long = {
     val tokenTypeId = TokenTypes.fromToken(t).id
     val catDiscreteMass = cat.discreteMass(tokenTypeId)
@@ -97,5 +93,13 @@ class CategoricalToken extends compression.SimpleMass[Token] with compression.Co
       total += cat.discreteMass(i) * bases(i).discreteTotalMass()
     }
     total
+  }
+
+  override def learn(t: Token): Unit = {
+    // no-op
+  }
+
+  override def getPredictiveDistribution(): compression.Mass[Token] = {
+    this
   }
 }

@@ -3,7 +3,7 @@ import os, subprocess, sys
 from mode import CompressionMode
 
 ### General
-NUM_THREADS = 4
+NUM_THREADS = 2
 
 ### Directories
 
@@ -39,8 +39,9 @@ def my_compressor(algorithm):
       sbt_classpath = res.splitlines()[-1].decode("utf-8")
       print("Found classpath: {0}".format(sbt_classpath))
     classpath = sbt_classpath + ':' + BIN_DIR
-    class_qualified = 'uk.ac.cam.cl.arg58.mphil.compression.UTF8Compressor'
-    compressor = build_compressor(['scala', '-classpath', classpath, class_qualified, algorithm],
+    class_qualified = 'uk.ac.cam.cl.arg58.mphil.compression.Compressor'
+    compressor = build_compressor(['scala', '-J-Xms1024M', '-J-Xmx2048M',
+                                   '-classpath', classpath, class_qualified, algorithm],
                                   ['compress'], ['decompress'])
     compressor(inFile, outFile, mode)
   return run_compressor
@@ -48,5 +49,6 @@ def my_compressor(algorithm):
 COMPRESSORS = {}
 COMPRESSORS['gzip'] = build_compressor(['gzip', '-c'], [], ['-d'])
 COMPRESSORS['bzip2'] = build_compressor(['bzip2', '-c', '--best'], ['-z'], ['-d'])
-COMPRESSORS['crp_uniform'] = my_compressor('crp_uniform')
-COMPRESSORS['crp_categorical'] = my_compressor('crp_categorical')
+for x in ['uniform_token', 'categorical_token', 'crp_uniform_token', 'crp_categorical_token',
+          'ppm_uniform_byte', 'ppm_uniform_token']:
+  COMPRESSORS[x] = my_compressor(x)

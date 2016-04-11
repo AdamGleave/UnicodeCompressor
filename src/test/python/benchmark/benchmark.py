@@ -25,6 +25,15 @@ def find_files(patterns):
     acc = acc.union(matches)
   return acc
 
+def find_all_files():
+  acc = set()
+  for path, subdirs, files in os.walk(config.CORPUS_DIR):
+    for name in files:
+      abspath = os.path.join(path, name)
+      relpath = os.path.relpath(abspath, config.CORPUS_DIR)
+      acc.add(relpath)
+  return acc
+
 def check_file(original, output_prefix):
   if filecmp.cmp(original, output_prefix + ".decompressed"):
     return os.path.getsize(output_prefix + ".compressed")
@@ -165,9 +174,20 @@ if __name__ == "__main__":
   compressors = config.COMPRESSORS.keys()
   if args['compressor']:
     compressors = find_compressors(args['compressor'])
+  compressors = list(compressors)
+  compressors.sort()
 
-  path_patterns = args['path'] if args['path'] else ['**/*']
-  files = find_files(path_patterns)
+  files = []
+  if args['path']:
+    files = find_files(args['path'])
+  else:
+    files = find_all_files()
+  files = list(files)
+  files.sort()
+
+  if files == []:
+    print("ERROR: " + str(args['path']) + " does not match any files.")
+    sys.exit(1)
 
   results = {'Size': {}}
   for fname in files:

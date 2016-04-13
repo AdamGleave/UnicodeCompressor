@@ -77,8 +77,8 @@ priors = {'uniform_token': 'uniform_token',
           'polya_byte': 'polya_byte' }
 
 EXCLUDED = ['crp_polya_.*', # fails as Polya doesn't implement discreteMass
-            'ppm._categorical_token' # possible but not particularly interesting
-            'ppm._polya_byte' # possible but not particularly interesting
+            'ppm._categorical_token', # possible but not particularly interesting
+            'ppm._polya_byte', # possible but not particularly interesting
            ]
 EXCLUDED = list(map(lambda x: re.compile(x), EXCLUDED))
 

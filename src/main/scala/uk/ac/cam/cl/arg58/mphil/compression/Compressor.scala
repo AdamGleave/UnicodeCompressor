@@ -8,6 +8,7 @@ import uk.ac.cam.eng.ml.tcs27.compression._
 import scala.collection.JavaConversions
 
 case class Config(compress: Boolean = true,
+                  debug: Boolean = false,
                   algorithm: String => Unit = null,
                   params: String = "",
                   inFile: Option[File] = None,
@@ -19,6 +20,8 @@ object Compressor {
 
   val arith: Coder = new Arith()
 
+  var tokenPrior: Distribution[Token] = null
+  var bytePrior: Distribution[Integer] = null
   var tokenModel: AdaptiveCode[Token] = null
   var byteModel: AdaptiveCode[Integer] = null
 
@@ -26,15 +29,20 @@ object Compressor {
   var outStream: OutputStream = null
 
   val compressors: Map[String, String => Unit] = Map(
-    "uniform_token" -> uniformToken,
-    "categorical_token" -> categoricalToken,
+    "none_uniform_token" -> uniformToken,
+    "none_categorical_token" -> categoricalToken,
+    "none_polya_token" -> polyaToken,
     "crp_uniform_token" -> crpUniformToken,
     "crp_categorical_token" -> crpCategoricalToken,
+    "crp_polya_token" -> crpPolyaToken,
     "ppm_uniform_byte" -> ppmUniformByte,
-    "ppm_uniform_token" -> ppmUniformToken
+    "ppm_uniform_token" -> ppmUniformToken,
+    "ppm_polya_token" -> ppmPolyaToken
   )
 
   val parser = new scopt.OptionParser[Config]("Compressor") {
+    opt[Unit]("debug") action { (_, c) => c.copy(debug = true)
+      } text("write debugging output to stderr")
     opt[Unit]("tokens") action { (_, c) => c.copy(outputTokens = true)
       } text("write serialised representation of Unicode tokens (decompress mode only)")
     opt[String]("params") action { (x,c) => c.copy(params = x)
@@ -58,68 +66,99 @@ object Compressor {
   }
 
   def uniformToken(params: String): Unit = {
-    tokenModel = new UniformToken()
+    tokenModel = FlatToken.UniformToken
   }
 
   def categoricalToken(params: String): Unit = {
     tokenModel = new CategoricalToken()
   }
 
+  def polyaToken(params: String): Unit = {
+    tokenModel = FlatToken.PolyaToken()
+  }
+
   def crpUniformToken(params: String): Unit = {
-    val prior = new UniformToken()
-    tokenModel = new CRPU[Token](1, 1, 0, 1, prior)
+    tokenPrior = FlatToken.UniformToken
+    tokenModel = new CRPU[Token](1, 1, 0, 1, tokenPrior)
   }
 
   def crpCategoricalToken(params: String): Unit = {
-    val prior = new CategoricalToken()
-    tokenModel = new CRPU[Token](1, 1, 0, 1, prior)
+    tokenPrior = new CategoricalToken()
+    tokenModel = new CRPU[Token](1, 1, 0, 1, tokenPrior)
+  }
+
+  def crpPolyaToken(params: String): Unit = {
+    tokenPrior = FlatToken.PolyaToken()
+    tokenModel = new CRPU[Token](1, 1, 0, 1, tokenPrior)
   }
 
   def ppmUniformByte(params: String): Unit = {
-    val prior = new UniformInteger(0, byteEOF)
-    byteModel = new PPM(params, prior)
+    bytePrior = new UniformInteger(0, byteEOF)
+    byteModel = new PPM(params, bytePrior)
   }
 
   def ppmUniformToken(params: String): Unit = {
-    val prior = new UniformToken()
-    tokenModel = new PPM(params, prior)
+    tokenPrior = FlatToken.UniformToken
+    tokenModel = new PPM(params, tokenPrior)
   }
 
-  def compress(): Unit = {
+  def ppmPolyaToken(params: String): Unit = {
+    tokenPrior = FlatToken.PolyaToken()
+    tokenModel = new PPM(params, tokenPrior)
+  }
+
+  def compress(debug: Boolean): Unit = {
     val out = new OutputStreamBitWriter(outStream)
     arith.start_encode(out)
+
+    val ec =
+      if (debug)
+        new DebugEncoder(arith)
+      else
+        arith
 
     if (tokenModel != null) {
       val utf8Decoder = new UTF8Decoder(inStream)
       for (token <- utf8Decoder) {
-        tokenModel.encode(token, arith)
+        tokenModel.encode(token, ec)
+        if (tokenPrior != null)
+          tokenPrior.learn(token)
         tokenModel.learn(token)
       }
-      tokenModel.encode(EOF(), arith)
+      tokenModel.encode(EOF(), ec)
     } else {
       val byteIterable = JavaConversions.iterableAsScalaIterable(
         IOTools.byteSequenceFromInputStream(inStream))
       for (byte <- byteIterable) {
         val c = byte.toInt & 0xff // get its unsigned value
-        byteModel.encode(c, arith)
+        byteModel.encode(c, ec)
+        if (bytePrior != null)
+          bytePrior.learn(c)
         byteModel.learn(c)
       }
-      byteModel.encode(byteEOF, arith)
+      byteModel.encode(byteEOF, ec)
     }
 
     arith.finish_encode()
     out.close()
   }
 
-  def decompress(outputTokens: Boolean): Unit = {
+  def decompress(debug: Boolean, outputTokens: Boolean): Unit = {
     val in = new InputStreamBitReader(inStream)
 
     arith.start_decode(in)
+    val dc =
+      if (debug)
+        new DebugDecoder(arith)
+      else
+        arith
 
     if (tokenModel != null) {
       def decompress(): Unit = {
-        val token = tokenModel.decode(arith)
+        val token = tokenModel.decode(dc)
         if (!token.equals(EOF())) {
+          if (tokenPrior != null)
+            tokenPrior.learn(token)
           tokenModel.learn(token)
           val bytes =
             if (outputTokens) {
@@ -134,8 +173,10 @@ object Compressor {
       decompress()
     } else {
       def decompress(): Unit = {
-        val byte = byteModel.decode(arith)
+        val byte = byteModel.decode(dc)
         if (byte != byteEOF) {
+          if (bytePrior != null)
+            bytePrior.learn(byte)
           byteModel.learn(byte)
           outStream.write(byte)
           decompress()
@@ -168,10 +209,10 @@ object Compressor {
         // compress/decompress
         if (config.compress) {
           // compress
-          compress()
+          compress(config.debug)
         } else {
           // decompress
-          decompress(config.outputTokens)
+          decompress(config.debug, config.outputTokens)
         }
       case None =>
         // invalid arguments, terminate

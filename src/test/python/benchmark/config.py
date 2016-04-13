@@ -66,6 +66,9 @@ COMPRESSORS = {}
 COMPRESSORS['ref_gzip'] = build_compressor(['gzip', '-c'], [], ['-d'])
 COMPRESSORS['ref_bzip2'] = build_compressor(['bzip2', '-c', '--best'], ['-z'], ['-d'])
 
+PPMd_EXECUTABLE = os.path.join(PROJECT_DIR, 'ext', 'ppmdj1', 'PPMd')
+COMPRESSORS['ref_PPMd'] = build_compressor([PPMd_EXECUTABLE], ['e'], ['d'])
+
 algos = {'none': [], 'crp': ['crp:a=1:b=0']}
 for d in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]:
   algos['ppm{0}'.format(d)] = ['ppm:d={0}'.format(d)]

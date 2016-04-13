@@ -197,23 +197,6 @@ static const char* const MTxt[] = { "Can`t open file %s\n",
 
 void _STDCALL PrintInfo(_PPMD_FILE* DecodedFile,_PPMD_FILE* EncodedFile)
 {
-    char WrkStr[320];
-    UINT NDec=ftell(DecodedFile);
-    NDec += (NDec == 0);
-    UINT NEnc=ftell(EncodedFile)-StartFilePosition;
-    UINT n1=(8U*NEnc)/NDec;
-    UINT n2=(100U*(8U*NEnc-NDec*n1)+NDec/2U)/NDec;
-    if (n2 == 100) { n1++;                  n2=0; }
-    int RunTime=((clock()-StartClock) << 10)/int(CLOCKS_PER_SEC);
-    UINT Speed=NDec/(RunTime+(RunTime == 0));
-    UINT UsedMemory=GetUsedMemory() >> 10;
-    UINT m1=UsedMemory >> 10;
-    UINT m2=(10U*(UsedMemory-(m1 << 10))+(1 << 9)) >> 10;
-    if (m2 == 10) { m1++;                   m2=0; }
-    if ( !EncodeFlag )                      SWAP(NDec,NEnc);
-    sprintf(WrkStr,"%14s:%7d >%7d, %1d.%02d bpb, used:%3d.%1dMB, speed: %d KB/sec",
-            pFName,NDec,NEnc,n1,n2,m1,m2,Speed);
-    printf("%-79.79s\r",WrkStr);            fflush(stdout);
 }
 static char* _STDCALL ChangeExtRare(const char* In,char* Out,const char* Ext)
 {
@@ -258,57 +241,28 @@ inline void PrepareCoding(int SASize,FILE* fp)
     }
     StartClock=clock();                     StartFilePosition=ftell(fp);
 }
-inline void EncodeFile(const ENV_FIND_RESULT& efr,int MaxOrder,int SASize,BOOL CutOff,const char* ArcName)
+inline void EncodeFile(int MaxOrder,int SASize,BOOL CutOff,const char* ArcName)
 {
-    char WrkStr[260];
-    strcpy(WrkStr,ArcName);
-    if (!WrkStr[0] && !TestAccessRare(ChangeExtRare(efr.getFName(),WrkStr,"pmd")))
-                return;
-    FILE* fpIn = FOpen(efr.getFName(),"rb"), * fpOut = FOpen(WrkStr,"a+b");
-    pFName=strrchr(efr.getFName(),BACKSLASH);
-    pFName=( pFName )?(pFName+1):(efr.getFName());
-    efr.copyDateTimeAttr();
-    ai.signature=PPMdSignature;             ai.FNLen=strlen(pFName)+(CutOff << 14);
+    ai.signature=PPMdSignature;             ai.FNLen=(CutOff << 14);
     ai.info=(MaxOrder-1) | ((SASize-1) << 4) | ((PROG_VAR-'A') << 12);
-    fwrite(&ai,sizeof(ai),1,fpOut);         fwrite(pFName,ai.FNLen & 0x1FF,1,fpOut);
-    PrepareCoding(SASize,fpOut);            EncodeFile(fpOut,fpIn,MaxOrder,CutOff);
-    putchar('\n');
-    if (ferror(fpOut) || ferror(fpIn)) {
-        printf(MTxt[1],efr.getFName(),WrkStr);
-        exit(-1);
-    }
-    fclose(fpIn);                           fclose(fpOut);
+    fwrite(&ai,sizeof(ai),1,stdout);         
+    PrepareCoding(SASize,stdout);            EncodeFile(stdout,stdin,MaxOrder,CutOff);
 }
-inline BOOL DecodeOneFile(FILE* fpIn)
+inline BOOL DecodeFile()
 {
-    char WrkStr[260];
     int MaxOrder, SASize;
     BOOL CutOff;
-    if ( !fread(&ai,sizeof(ai),1,fpIn) )    return FALSE;
+    if ( !fread(&ai,sizeof(ai),1,stdin) )    return FALSE;
     CutOff=ai.FNLen >> 14;
-    ai.FNLen=CLAMP(int(ai.FNLen & 0x1FF),1,260-1);
-    fread(WrkStr,ai.FNLen,1,fpIn);          WrkStr[ai.FNLen]=0;
-    if ( !TestAccessRare(WrkStr) )          return FALSE;
-    FILE* fpOut = FOpen(pFName=WrkStr,"wb");
     MaxOrder=(ai.info & 0x0F)+1;            SASize=((ai.info >> 4) & 0xFF)+1;
     DWORD Variant=(ai.info >> 12)+'A';
     if (ai.signature != PPMdSignature || Variant != PROG_VAR) {
-        printf(MTxt[0],WrkStr);             exit(-1);
+        printf(MTxt[0],"stdin");             exit(-1);
     }
-    PrepareCoding(SASize,fpIn);             DecodeFile(fpOut,fpIn,MaxOrder,CutOff);
-    putchar('\n');
-    if (ferror(fpOut) || ferror(fpIn) || feof(fpIn)) {
-        printf(MTxt[1],WrkStr,WrkStr);      exit(-1);
-    }
-    fclose(fpOut);                          EnvSetDateTimeAttr(WrkStr);
+    PrepareCoding(SASize,stdin);             DecodeFile(stdout,stdin,MaxOrder,CutOff);
     return TRUE;
 }
-inline void DecodeFile(const ENV_FIND_RESULT& efr)
-{
-    FILE* fpIn=FOpen(efr.getFName(),"rb");
-    while ( DecodeOneFile(fpIn) )           ;
-    fclose(fpIn);
-}
+
 inline void TestArchive(char* ArcName,const char* Pattern)
 {
     if ( !Pattern[0] ) {
@@ -344,8 +298,7 @@ int main(int argc, char *argv[])
     char ArcName[260];
     BOOL DeleteFile=FALSE, CutOff=FALSE;
     int i, MaxOrder=4, SASize=10;
-    printf("Fast PPMII compressor for textual data, variant %c, "__DATE__"\n",PROG_VAR);
-    if (argc < 3) { printf(MTxt[6],SASize,MAX_O,MaxOrder);      return -1; }
+    if (argc < 2) { printf(MTxt[6],SASize,MAX_O,MaxOrder);      return -1; }
     switch ( toupper(argv[1][0]) ) {
         case 'E': EncodeFlag=TRUE;                              break;
         case 'D': EncodeFlag=FALSE;                             break;
@@ -353,7 +306,6 @@ int main(int argc, char *argv[])
     }
     for (ArcName[0]=0,i=2;i < argc && (argv[i][0] == '-' || argv[i][0] == '/');i++)
         switch ( toupper(argv[i][1]) ) {
-            case 'D': DeleteFile=TRUE;                          break;
             case 'F': TestArchive(ArcName,argv[i]+2);           break;
             case 'M': SASize=CLAMP(atoi(argv[i]+2),1,256);      break;
             case 'O': MaxOrder=CLAMP(atoi(argv[i]+2),2,int(MAX_O));
@@ -361,27 +313,8 @@ int main(int argc, char *argv[])
             case 'R': CutOff=CLAMP(atoi(argv[i]+2),0,1);        break;
             default : printf(MTxt[5],argv[i]);   				return -1;
         }
-    FILE_LIST_NODE* pNode, * pFirstNode=NULL, ** ppNode=&pFirstNode;
-    for (ENV_FILE_FINDER eff;i < argc;i++) {
-        if ( eff.findFirst(argv[i]) )
-            do {
-                if ( eff.isFileValid() ) {
-                    pNode = new FILE_LIST_NODE(eff.getResult(),ppNode);
-                    if ( !pNode ) {
-                        printf(MTxt[2]);    return -1;
-                    }
-                    ppNode=&(pNode->next);
-                }
-            } while ( eff.findNext() );
-        eff.findStop();
-    }
-    while ((pNode=pFirstNode) != NULL) {
-        ENV_FIND_RESULT& efr=pNode->efr;
-        if ( EncodeFlag )                   EncodeFile(efr,MaxOrder,SASize,CutOff,ArcName);
-        else                                DecodeFile(efr);
-        if ( DeleteFile )                   remove(efr.getFName());
-        pNode->destroy(&pFirstNode);        
-    }
+    if ( EncodeFlag )                   EncodeFile(MaxOrder,SASize,CutOff,ArcName);
+    else                                DecodeFile();
     StopSubAllocator();
     return 0;
 }

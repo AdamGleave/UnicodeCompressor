@@ -9,102 +9,139 @@ import scala.collection.JavaConversions
 
 case class Config(compress: Boolean = true,
                   debug: Boolean = false,
-                  algorithm: String => Unit = null,
+                  base: (String => Unit, String) = null,
+                  models: Seq[(String => Unit, String)] = Seq(),
                   params: String = "",
                   inFile: Option[File] = None,
                   outFile: Option[File] = None,
                   outputTokens: Boolean = false)
+
+abstract class Model()
+case class ByteModel(models: Seq[Distribution[Integer]]) extends Model
+case class TokenModel(models: Seq[Distribution[Token]]) extends Model
+case class NoModel() extends Model
 
 object Compressor {
   final val byteEOF = 256
 
   val arith: Coder = new Arith()
 
-  var tokenPrior: Distribution[Token] = null
-  var bytePrior: Distribution[Integer] = null
-  var tokenModel: AdaptiveCode[Token] = null
-  var byteModel: AdaptiveCode[Integer] = null
+  var models : Model = NoModel()
 
   var inStream: InputStream = null
   var outStream: OutputStream = null
 
-  val compressors: Map[String, String => Unit] = Map(
-    "none_uniform_token" -> uniformToken,
-    "none_categorical_token" -> categoricalToken,
-    "none_polya_token" -> polyaToken,
-    "crp_uniform_token" -> crpUniformToken,
-    "crp_categorical_token" -> crpCategoricalToken,
-    "crp_polya_token" -> crpPolyaToken,
-    "ppm_uniform_byte" -> ppmUniformByte,
-    "ppm_uniform_token" -> ppmUniformToken,
-    "ppm_polya_token" -> ppmPolyaToken
+  val base: Map[String, String => Unit] = Map(
+    "uniform_token" -> uniformToken,
+    "categorical_token" -> categoricalToken,
+    "polya_token" -> polyaToken,
+    "uniform_byte" -> uniformByte,
+    "polya_byte" -> polyaByte
   )
+  val compressors: Map[String, String => Unit] = Map(
+    "crp" -> crp,
+    "ppm" -> ppm
+  )
+
+  private def lookup(table: Map[String, String => Unit],
+                     config: String): Either[String, (String => Unit, String)] = {
+    val kp = config.split(":", 2) match {
+      case Array(key) => Right(key, "")
+      case Array(key, params) => Right(key, params)
+      case _ => Left("Illegal configuration string '" + config + "'")
+    }
+    kp match {
+      case Left(err) => Left(err)
+      case Right(x) =>
+        val (key, params) = x
+        table.get(key) match {
+          case Some(compressor) => Right(compressor, params)
+          case None => Left("Unknown algorithm '" + key + "'")
+        }
+    }
+  }
+
+  private def lookup_copy(table: Map[String, String => Unit],
+                          config: String): (String => Unit, String) =
+    lookup(table, config).right.get
+
+  private def lookup_validate(table: Map[String, String => Unit],
+                          config: String): Either[String, Unit] = lookup(table, config) match {
+    case Left(err) => Left(err)
+    case Right(_) => Right()
+  }
 
   val parser = new scopt.OptionParser[Config]("Compressor") {
     opt[Unit]("debug") action { (_, c) => c.copy(debug = true)
       } text("write debugging output to stderr")
     opt[Unit]("tokens") action { (_, c) => c.copy(outputTokens = true)
       } text("write serialised representation of Unicode tokens (decompress mode only)")
-    opt[String]("params") action { (x,c) => c.copy(params = x)
-      } text("parameters to be passed to the compression algorithm (implementation specific)")
-    arg[String]("<algorithm>") action { (x, c) =>
-      c.copy(algorithm = compressors(x)) } validate { x =>
-        if (compressors.contains(x)) success else failure("unknown algorithm " + x)
-      } text("method to compress with")
     arg[String]("<mode>") action { (x, c) => x match {
-        case "compress" => c.copy(compress = true)
-        case "decompress" => c.copy(compress = false)
-      } } validate { x => x match {
-        case "compress" => success
-        case "decompress" => success
-        case x => failure("Unrecognised argument " + x + ", should be compress or decompress.")
-      } } text("mode, either compress or decompress")
+      case "compress" => c.copy(compress = true)
+      case "decompress" => c.copy(compress = false)
+    } } validate { x => x match {
+      case "compress" => success
+      case "decompress" => success
+      case x => failure("Unrecognised argument " + x + ", should be compress or decompress.")
+    } } text("mode, either compress or decompress")
     arg[File]("input") optional() action { (x,c) =>
       c.copy(inFile = Some(x)) } text("input file (default: stdin)")
     arg[File]("output") optional() action { (x,c) =>
       c.copy(outFile = Some(x)) } text("output file (default: stdout)")
+    opt[String]("base") required() action { (x, c) =>
+      c.copy(base = lookup_copy(base, x)) } validate { x =>
+      lookup_validate(base, x) } text("method to compress with")
+    opt[String]("model") unbounded() action { (x,c) =>
+      val model = lookup_copy(compressors, x)
+      c.copy(models = c.models :+ model) } validate { x =>
+      lookup_validate(compressors, x) } text("models to apply, in order given")
   }
 
-  def uniformToken(params: String): Unit = {
-    tokenModel = FlatToken.UniformToken
+  private def tokenBase(model: Distribution[Token]): Unit = models match {
+    case NoModel() =>
+      models = TokenModel(Array(model))
+    case _ =>
+      throw new AssertionError("Base distribution cannot be layered on top of existing models")
   }
 
-  def categoricalToken(params: String): Unit = {
-    tokenModel = new CategoricalToken()
+  def uniformToken(params: String): Unit = tokenBase(FlatToken.UniformToken)
+  def categoricalToken(params: String): Unit = tokenBase(CategoricalToken)
+  def polyaToken(params: String): Unit = tokenBase(FlatToken.PolyaToken(params))
+
+  private def byteBase(model: Distribution[Integer]): Unit = models match {
+    case NoModel() =>
+      models = ByteModel(Array(model))
+    case _ =>
+      throw new AssertionError("Base distribution cannot be layered on top of existing models")
   }
 
-  def polyaToken(params: String): Unit = {
-    tokenModel = FlatToken.PolyaToken()
+  def uniformByte(params: String): Unit = byteBase(new UniformInteger(0, 257))
+  def polyaByte(params: String): Unit = byteBase(new SBST(0, 257))
+
+  def crp(params: String): Unit = {
+    models = models match {
+      case NoModel() =>
+        throw new AssertionError("CRP needs a base distribution.")
+      case ByteModel(models) =>
+        val model = CRPU.createNew(params, models.last)
+        ByteModel(models:+model)
+      case TokenModel(models) =>
+        val model = CRPU.createNew(params, models.last)
+        TokenModel(models:+model)
+    }
   }
 
-  def crpUniformToken(params: String): Unit = {
-    tokenPrior = FlatToken.UniformToken
-    tokenModel = new CRPU[Token](1, 1, 0, 1, tokenPrior)
-  }
-
-  def crpCategoricalToken(params: String): Unit = {
-    tokenPrior = new CategoricalToken()
-    tokenModel = new CRPU[Token](1, 1, 0, 1, tokenPrior)
-  }
-
-  def crpPolyaToken(params: String): Unit = {
-    tokenPrior = FlatToken.PolyaToken()
-    tokenModel = new CRPU[Token](1, 1, 0, 1, tokenPrior)
-  }
-
-  def ppmUniformByte(params: String): Unit = {
-    bytePrior = new UniformInteger(0, byteEOF)
-    byteModel = new PPM(params, bytePrior)
-  }
-
-  def ppmUniformToken(params: String): Unit = {
-    tokenPrior = FlatToken.UniformToken
-    tokenModel = new PPM(params, tokenPrior)
-  }
-
-  def ppmPolyaToken(params: String): Unit = {
-    tokenPrior = FlatToken.PolyaToken()
-    tokenModel = new PPM(params, tokenPrior)
+  def ppm(params: String): Unit = {
+    models = models match {
+      case NoModel() =>
+        throw new AssertionError("CRP needs a base distribution.")
+      case ByteModel(models) =>
+        val model = new PPM(params, models.last)
+        ByteModel(models:+model)
+      case TokenModel(models) =>
+        val model = new PPM(params, models.last)
+        TokenModel(models:+model)
+    }
   }
 
   def compress(debug: Boolean): Unit = {
@@ -117,26 +154,25 @@ object Compressor {
       else
         arith
 
-    if (tokenModel != null) {
-      val utf8Decoder = new UTF8Decoder(inStream)
-      for (token <- utf8Decoder) {
-        tokenModel.encode(token, ec)
-        if (tokenPrior != null)
-          tokenPrior.learn(token)
-        tokenModel.learn(token)
-      }
-      tokenModel.encode(EOF(), ec)
-    } else {
-      val byteIterable = JavaConversions.iterableAsScalaIterable(
-        IOTools.byteSequenceFromInputStream(inStream))
-      for (byte <- byteIterable) {
-        val c = byte.toInt & 0xff // get its unsigned value
-        byteModel.encode(c, ec)
-        if (bytePrior != null)
-          bytePrior.learn(c)
-        byteModel.learn(c)
-      }
-      byteModel.encode(byteEOF, ec)
+    models match {
+      case TokenModel(models) =>
+        val utf8Decoder = new UTF8Decoder(inStream)
+        for (token <- utf8Decoder) {
+          models.last.encode(token, ec)
+          models.foreach(d => d.learn(token))
+        }
+        models.last.encode(EOF(), ec)
+      case ByteModel(models) =>
+        val byteIterable = JavaConversions.iterableAsScalaIterable(
+          IOTools.byteSequenceFromInputStream(inStream))
+        for (byte <- byteIterable) {
+          val c = byte.toInt & 0xff // get its unsigned value
+          models.last.encode(c, ec)
+          models.foreach(d => d.learn(c))
+        }
+        models.last.encode(byteEOF, ec)
+      case NoModel() =>
+        throw new AssertionError("No model.")
     }
 
     arith.finish_encode()
@@ -153,36 +189,35 @@ object Compressor {
       else
         arith
 
-    if (tokenModel != null) {
-      def decompress(): Unit = {
-        val token = tokenModel.decode(dc)
-        if (!token.equals(EOF())) {
-          if (tokenPrior != null)
-            tokenPrior.learn(token)
-          tokenModel.learn(token)
-          val bytes =
-            if (outputTokens) {
-              token.toString().getBytes()
-            } else {
-              UTF8Encoder.tokenToBytes(token)
-            }
-          outStream.write(bytes)
-          decompress()
+    models match {
+      case TokenModel(models) =>
+        def decompress(): Unit = {
+          val token = models.last.decode(dc)
+          if (!token.equals(EOF())) {
+            models.foreach(d => d.learn(token))
+            val bytes =
+              if (outputTokens) {
+                token.toString().getBytes()
+              } else {
+                UTF8Encoder.tokenToBytes(token)
+              }
+            outStream.write(bytes)
+            decompress()
+          }
         }
-      }
-      decompress()
-    } else {
-      def decompress(): Unit = {
-        val byte = byteModel.decode(dc)
-        if (byte != byteEOF) {
-          if (bytePrior != null)
-            bytePrior.learn(byte)
-          byteModel.learn(byte)
-          outStream.write(byte)
-          decompress()
+        decompress()
+      case ByteModel(models) =>
+        def decompress(): Unit = {
+          val byte = models.last.decode(dc)
+          if (byte != byteEOF) {
+            models.foreach(d => d.learn(byte))
+            outStream.write(byte)
+            decompress()
+          }
         }
-      }
-      decompress()
+        decompress()
+      case NoModel() =>
+        throw new AssertionError("No model.");
     }
 
     arith.finish_decode()
@@ -203,8 +238,13 @@ object Compressor {
           case None => System.out
         }
 
-        // initialise the model
-        config.algorithm(config.params)
+        // set up the base distribution first
+        val (base_algo, base_params) = config.base
+        base_algo(base_params)
+        // apply transforms in order (there need not be any)
+        for ((algo, params) <- config.models) {
+          algo(params)
+        }
 
         // compress/decompress
         if (config.compress) {

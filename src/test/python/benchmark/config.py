@@ -47,26 +47,39 @@ def find_sbt_classpath():
 
 sbt_classpath = find_sbt_classpath()
 
-def my_compressor(algorithm, params=None):
+def my_compressor(base, algorithms=None):
   def run_compressor(inFile, outFile, mode):
     classpath = sbt_classpath + ':' + BIN_DIR
     class_qualified = 'uk.ac.cam.cl.arg58.mphil.compression.Compressor'
-    args = ['scala', '-J-Xms1024M', '-J-Xmx2048M',
-            '-classpath', classpath, class_qualified, algorithm]
-    if params:
-      args += ['--params', params]
-    compressor = build_compressor(args, ['compress'], ['decompress'])
+    starting_args = ['scala', '-J-Xms1024M', '-J-Xmx2048M',
+                     '-classpath', classpath, class_qualified]
+    ending_args = ['--base', base]
+    if algorithms:
+      ending_args += ['--model'] + algorithms
+    compressor = build_compressor(starting_args,
+                                  ['compress'] + ending_args,
+                                  ['decompress'] + ending_args)
     compressor(inFile, outFile, mode)
   return run_compressor
 
 COMPRESSORS = {}
 COMPRESSORS['ref_gzip'] = build_compressor(['gzip', '-c'], [], ['-d'])
 COMPRESSORS['ref_bzip2'] = build_compressor(['bzip2', '-c', '--best'], ['-z'], ['-d'])
-for x in ['none_uniform_token', 'none_categorical_token', 'none_polya_token',
-          'crp_uniform_token', 'crp_categorical_token', 'crp_polya_token']:
-  COMPRESSORS[x] = my_compressor(x)
 
+algos = {'none': [], 'crp': ['crp:a=1:b=0']}
 for d in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]:
-  name = 'ppm{0}'.format(d)
-  for suffix in ['uniform_token', 'uniform_byte', 'polya_token']:
-    COMPRESSORS[name + '_' + suffix] = my_compressor('ppm_' + suffix, 'd={0}'.format(d))
+  algos['ppm{0}'.format(d)] = ['ppm:d={0}'.format(d)]
+
+priors = {'uniform_token': 'uniform_token',
+          'categorical_token': 'categorical_token',
+          'polya_token': 'polya_token',
+          'uniform_byte': 'uniform_byte',
+          'polya_byte': 'polya_byte' }
+
+EXCLUDED = ['crp_polya_byte', 'crp_polya_token'] # fails as Polya doesn't implement discreteMass
+
+for (algo_name, algo_config) in algos.items():
+  for (prior_name, prior_config) in priors.items():
+    name = algo_name + '_' + prior_name
+    if not name in EXCLUDED:
+      COMPRESSORS[name] = my_compressor(prior_name, algo_config)

@@ -6,8 +6,8 @@ import java.util
 
 import scala.collection.JavaConversions
 
-class CategoricalToken extends compression.SimpleMass[Token] with compression.Codable[Token]
-                                                             with compression.AdaptiveCode[Token] {
+object CategoricalToken extends compression.SimpleMass[Token] with compression.Codable[Token]
+                                                              with compression.AdaptiveCode[Token] {
   // TODO: these weights could be improved; empirical study, perhaps.
   final val weights = Array(90, 5, 2, 1, 1, 1)
   val cat : compression.SimpleMass[Integer] = new WeightedInteger(0, weights)

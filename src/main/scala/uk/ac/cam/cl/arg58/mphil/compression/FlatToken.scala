@@ -10,8 +10,14 @@ import scala.collection.JavaConversions
 object FlatToken {
   final val UniformToken = new FlatToken(new compression.UniformInteger(0, Token.Range - 1))
 
-  def PolyaToken(a1: Int = 1, a2: Int = 2) = {
-    val polya = new compression.SBST(0, Token.Range - 1, a1, a2)
+  private final val PolyaParser = new ParamsParser(Array("a"))
+  def PolyaToken(params: String) = {
+    val config = PolyaParser.parse(params)
+    val alpha = config.get("a") match {
+      case None => 0.5
+      case Some(a) => a.toDouble
+    }
+    val polya = new compression.SBST(0, Token.Range - 1, alpha)
     new FlatToken(polya)
   }
 }

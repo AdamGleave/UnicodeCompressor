@@ -187,11 +187,11 @@ public class BernoulliProcess<X> extends SimpleMass<X>
     long det = a1b1*(na-ra) + a0b1;
     if (det == num) {
       // certain event
-      return xb;
+      return xa;
     } else
     if (det == 0) {
       // certain event
-      return xa;
+      return xb;
     } else {
       long t = dc.getTarget(num);
       if (t < det) {

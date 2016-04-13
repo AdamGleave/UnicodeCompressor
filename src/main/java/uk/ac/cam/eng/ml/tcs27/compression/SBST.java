@@ -50,7 +50,7 @@ public class SBST extends SimpleMass<Integer>
       this.le = le;
       this.ge = ge;
       //this.proc = new BernoulliProcess<Boolean>(true,false);
-      this.proc = new BernoulliProcess<Boolean>(true,false, g1,g2, g1,g2);
+      this.proc = new BernoulliProcess<Boolean>(false,true, g1,g2, g1,g2);
     }
 
     /** Samples an integer from the range <var>min</var> to <var>max</var>
@@ -257,14 +257,14 @@ public class SBST extends SimpleMass<Integer>
         if (k < mid && k >= min) {
           proc.encode(false, rle, rge, nle-ole, nle, nge-oge, nge, ec);
           if (le == null) {
-            le = new Node(min, mid-1, null, null); 
+            le = new Node(min, mid-1, null, null);
           }
           le.encode(k, omit.headSet(mid,false), ec);
         } else
         if (k >= mid && k <= max) {
           proc.encode(true, rle, rge, nle-ole, nle, nge-oge, nge, ec);
           if (ge == null) {
-            ge = new Node(mid, max, null, null); 
+            ge = new Node(mid, max, null, null);
           }
           ge.encode(k, omit.tailSet(mid,true), ec);
         } else {
@@ -341,12 +341,12 @@ public class SBST extends SimpleMass<Integer>
         boolean b = proc.decode(rle, rge, nle-ole, nle, nge-oge, nge, dc);
         if (b) {
           if (ge == null) {
-            ge = new Node(mid, max, null, null); 
+            ge = new Node(mid, max, null, null);
           }
           return ge.decode(omit.tailSet(mid,true), dc);
         } else {
           if (le == null) {
-            le = new Node(min, mid-1, null, null); 
+            le = new Node(min, mid-1, null, null);
           }
           return le.decode(omit.headSet(mid,false), dc);
         }
@@ -359,9 +359,12 @@ public class SBST extends SimpleMass<Integer>
         } else
         if (emax && !emin) {
           return min;  // certain event
-        } else {
+        } else
+        if (!emin && !emax) {
           boolean b = proc.decode(dc);
           return b ? max : min;
+        } else {
+          throw new AssertionError("omit contains all possible elements");
         }
       }
     }

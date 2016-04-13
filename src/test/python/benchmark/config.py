@@ -1,4 +1,4 @@
-import os, subprocess, sys
+import os, subprocess, re
 
 from mode import CompressionMode
 
@@ -76,10 +76,20 @@ priors = {'uniform_token': 'uniform_token',
           'uniform_byte': 'uniform_byte',
           'polya_byte': 'polya_byte' }
 
-EXCLUDED = ['crp_polya_byte', 'crp_polya_token'] # fails as Polya doesn't implement discreteMass
+EXCLUDED = ['crp_polya_.*', # fails as Polya doesn't implement discreteMass
+            'ppm._categorical_token' # possible but not particularly interesting
+            'ppm._polya_byte' # possible but not particularly interesting
+           ]
+EXCLUDED = list(map(lambda x: re.compile(x), EXCLUDED))
+
+def is_excluded(name):
+  for p in EXCLUDED:
+    if p.match(name):
+      return True
+  return False
 
 for (algo_name, algo_config) in algos.items():
   for (prior_name, prior_config) in priors.items():
     name = algo_name + '_' + prior_name
-    if not name in EXCLUDED:
+    if not is_excluded(name):
       COMPRESSORS[name] = my_compressor(prior_name, algo_config)

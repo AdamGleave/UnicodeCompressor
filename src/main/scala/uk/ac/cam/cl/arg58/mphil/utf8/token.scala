@@ -1,41 +1,41 @@
 package uk.ac.cam.cl.arg58.mphil.utf8
 
 object TokenTypes extends Enumeration {
-  val TUnicodeCharacter, TIllegalByte, TOverlong, TSurrogateCodePoint, TTooHigh, TEOF = Value
+  val TUnicodeCharacter, TOverlong, TSurrogateCodePoint, TTooHigh, TIllegalByte, TEOF = Value
 
   def fromToken(t: Token): TokenTypes.Value = t match {
     case _: UnicodeCharacter => TUnicodeCharacter
-    case _: IllegalByte => TIllegalByte
     case _: Overlong => TOverlong
     case _: SurrogateCodePoint => TSurrogateCodePoint
     case _: TooHigh => TTooHigh
+    case _: IllegalByte => TIllegalByte
     case _: EOF => TEOF
   }
 
   def numTokens(t: TokenTypes.Value): Integer = t match {
     case TUnicodeCharacter => UnicodeCharacter.Range
-    case TIllegalByte => IllegalByte.Range
     case TOverlong => Overlong.Range
     case TSurrogateCodePoint => SurrogateCodePoint.Range
     case TTooHigh => TooHigh.Range
+    case TIllegalByte => IllegalByte.Range
     case TEOF => EOF.Range
   }
 
   def toInt(t: Token): Int = t match {
     case c: UnicodeCharacter => UnicodeCharacter.toInt(c)
-    case b: IllegalByte => IllegalByte.toInt(b)
     case o: Overlong => Overlong.toInt(o)
     case s : SurrogateCodePoint => SurrogateCodePoint.toInt(s)
     case t: TooHigh => TooHigh.toInt(t)
+    case b: IllegalByte => IllegalByte.toInt(b)
     case e: EOF => EOF.toInt(e)
   }
 
   def ofInt(t: TokenTypes.Value, n: Int): Token = t match {
     case TUnicodeCharacter => UnicodeCharacter.ofInt(n)
-    case TIllegalByte => IllegalByte.ofInt(n)
     case TOverlong => Overlong.ofInt(n)
     case TSurrogateCodePoint => SurrogateCodePoint.ofInt(n)
     case TTooHigh => TooHigh.ofInt(n)
+    case TIllegalByte => IllegalByte.ofInt(n)
     case TEOF => EOF.ofInt(n)
   }
 }
@@ -106,8 +106,8 @@ object UnicodeCharacter {
 abstract class Error extends Token
 
 object Error {
-  private final val ranges = Array(IllegalByte.Range, IllegalCodePoint.Range)
-  private final val ofIntConversions = Array(IllegalByte.ofInt _, IllegalCodePoint.ofInt _)
+  private final val ranges = Array(IllegalCodePoint.Range, IllegalByte.Range)
+  private final val ofIntConversions = Array(IllegalCodePoint.ofInt _, IllegalByte.ofInt _)
 
   final val Range = ranges.sum
 
@@ -123,30 +123,8 @@ object Error {
   }
 
   def toInt(t: Token): Int = t match {
-    case b: IllegalByte => IllegalByte.toInt(b)
-    case c: IllegalCodePoint => IllegalByte.Range + IllegalCodePoint.toInt(c)
-  }
-}
-
-
-case class IllegalByte(byte: Byte) extends Error {
-  override def toString() = "IllegalByte(%02X)".format(byte)
-}
-
-object IllegalByte {
-  // ASCII characters never illegal. All other bytes can be illegal (depending on context).
-  // So 0xff - 0x7f = 0x80
-  final val Range = 0x80
-
-  def toInt(o: IllegalByte): Int = {
-    // Were o.byte unsigned, we would want to return o.byte - 0x80
-    // However, it is signed with 0x80 = -127 and 0xff = -1.
-    // So 0x80 + o.byte gives the appropriate result (0 at 0x80, going up to 0x7f for 0xff)
-    0x80 + o.byte
-  }
-
-  def ofInt(n: Int): IllegalByte = {
-    IllegalByte((n + 0x80).toByte)
+    case c: IllegalCodePoint => IllegalCodePoint.toInt(c)
+    case b: IllegalByte => IllegalCodePoint.Range + IllegalByte.toInt(b)
   }
 }
 
@@ -251,6 +229,28 @@ object TooHigh {
 
   def ofInt(n: Int): TooHigh = {
     TooHigh(n + 0x110000)
+  }
+}
+
+
+case class IllegalByte(byte: Byte) extends Error {
+  override def toString() = "IllegalByte(%02X)".format(byte)
+}
+
+object IllegalByte {
+  // ASCII characters never illegal. All other bytes can be illegal (depending on context).
+  // So 0xff - 0x7f = 0x80
+  final val Range = 0x80
+
+  def toInt(o: IllegalByte): Int = {
+    // Were o.byte unsigned, we would want to return o.byte - 0x80
+    // However, it is signed with 0x80 = -127 and 0xff = -1.
+    // So 0x80 + o.byte gives the appropriate result (0 at 0x80, going up to 0x7f for 0xff)
+    0x80 + o.byte
+  }
+
+  def ofInt(n: Int): IllegalByte = {
+    IllegalByte((n + 0x80).toByte)
   }
 }
 

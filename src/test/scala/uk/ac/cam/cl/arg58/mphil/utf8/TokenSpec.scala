@@ -21,7 +21,6 @@ class TokenSpec extends FlatSpec  {
     val unicodeCharacters = (0 to 0x10ffff)
       .filter(cp => !UTF8.SurrogateCodePoints.contains(cp))
       .map(cp => UnicodeCharacter(cp))
-    val illegalBytes = (0x80 to 0xff).map(b => IllegalByte(b.toByte))
     val surrogates = UTF8.SurrogateCodePoints.map(cp => SurrogateCodePoint(cp))
     val overlong =
       for ((range, index) <- UTF8.CodePoints.zipWithIndex;
@@ -29,9 +28,10 @@ class TokenSpec extends FlatSpec  {
             cp <- range)
         yield Overlong(cp, wrong_length)
     val tooHigh = (0x110000 to 0x1fffff).map(cp => TooHigh(cp))
+    val illegalBytes = (0x80 to 0xff).map(b => IllegalByte(b.toByte))
     val eof = Array(EOF())
 
-    val allTokens = unicodeCharacters ++ illegalBytes ++ surrogates ++ overlong ++ tooHigh ++ eof
+    val allTokens = unicodeCharacters ++ surrogates ++ overlong ++ tooHigh ++ illegalBytes ++ eof
     for (t <- allTokens) {
       val c = Token.toInt(t)
       assert(c < Token.Range)

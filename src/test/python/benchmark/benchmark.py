@@ -41,6 +41,10 @@ def check_file(original, output_prefix):
     return "Error: decompressed file differs from original."
 
 def execute_compressor(compressor_name, input_fname, output_prefix):
+  if verbose:
+    print("Running {0} on {1}".format(compressor_name, input_fname))
+    sys.stdout.flush()
+
   compressor = config.COMPRESSORS[compressor_name]
   compressed_fname = output_prefix + ".compressed"
   decompressed_fname = output_prefix + ".decompressed"
@@ -97,6 +101,7 @@ def run_test(pool, results, compressor_name, fname):
     else:
       if verbose:
         print("{0} on {1}: testing".format(compressor_name, fname))
+        sys.stdout.flush()
 
       def callback(compressor_name, fname, size):
         results[compressor_name][fname] = size
@@ -188,6 +193,9 @@ if __name__ == "__main__":
   if files == []:
     print("ERROR: " + str(args['path']) + " does not match any files.")
     sys.exit(1)
+
+  if verbose:
+    print("Compressing files: " + str(files))
 
   results = {'Size': {}}
   for fname in files:

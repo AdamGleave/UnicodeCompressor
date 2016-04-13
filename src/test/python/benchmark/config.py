@@ -25,30 +25,48 @@ def build_compressor(standard_args, compress_args, decompress_args):
     subprocess.check_call(args, stdin=inFile, stdout=outFile)
   return run_compressor
 
-sbt_classpath = None
+def find_sbt_classpath():
+  classpath_cache = os.path.join(OUTPUT_DIR, 'classpath.cached')
 
-def my_compressor(algorithm):
+  sbt_classpath = None
+  if os.path.exists(classpath_cache):
+    with open(classpath_cache, 'r') as f:
+      sbt_classpath = f.read().strip()
+  else:
+    cwd = os.getcwd()
+    os.chdir(PROJECT_DIR)
+    res = subprocess.check_output(['sbt', 'export compile:dependencyClasspath'])
+    os.chdir(cwd)
+
+    sbt_classpath = res.splitlines()[-1].decode("utf-8")
+
+    with open(classpath_cache, 'w') as f:
+      f.write(sbt_classpath)
+
+  return sbt_classpath
+
+sbt_classpath = find_sbt_classpath()
+
+def my_compressor(algorithm, params=None):
   def run_compressor(inFile, outFile, mode):
-    global sbt_classpath
-    if sbt_classpath == None:
-      cwd = os.getcwd()
-      os.chdir(PROJECT_DIR)
-      res = subprocess.check_output(['sbt', 'export compile:dependencyClasspath'])
-      os.chdir(cwd)
-
-      sbt_classpath = res.splitlines()[-1].decode("utf-8")
-      print("Found classpath: {0}".format(sbt_classpath))
     classpath = sbt_classpath + ':' + BIN_DIR
     class_qualified = 'uk.ac.cam.cl.arg58.mphil.compression.Compressor'
-    compressor = build_compressor(['scala', '-J-Xms1024M', '-J-Xmx2048M',
-                                   '-classpath', classpath, class_qualified, algorithm],
-                                  ['compress'], ['decompress'])
+    args = ['scala', '-J-Xms1024M', '-J-Xmx2048M',
+            '-classpath', classpath, class_qualified, algorithm]
+    if params:
+      args += ['--params', params]
+    compressor = build_compressor(args, ['compress'], ['decompress'])
     compressor(inFile, outFile, mode)
   return run_compressor
 
 COMPRESSORS = {}
-COMPRESSORS['gzip'] = build_compressor(['gzip', '-c'], [], ['-d'])
-COMPRESSORS['bzip2'] = build_compressor(['bzip2', '-c', '--best'], ['-z'], ['-d'])
-for x in ['uniform_token', 'categorical_token', 'crp_uniform_token', 'crp_categorical_token',
-          'ppm_uniform_byte', 'ppm_uniform_token']:
+COMPRESSORS['ref_gzip'] = build_compressor(['gzip', '-c'], [], ['-d'])
+COMPRESSORS['ref_bzip2'] = build_compressor(['bzip2', '-c', '--best'], ['-z'], ['-d'])
+for x in ['none_uniform_token', 'none_categorical_token', 'none_polya_token',
+          'crp_uniform_token', 'crp_categorical_token', 'crp_polya_token']:
   COMPRESSORS[x] = my_compressor(x)
+
+for d in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]:
+  name = 'ppm{0}'.format(d)
+  for suffix in ['uniform_token', 'uniform_byte', 'polya_token']:
+    COMPRESSORS[name + '_' + suffix] = my_compressor('ppm_' + suffix, 'd={0}'.format(d))

@@ -22,7 +22,7 @@ case class TokenModel(models: Seq[Distribution[Token]]) extends Model
 case class NoModel() extends Model
 
 object Compressor {
-  final val byteEOF = 256
+  final val ByteEOF = 256
 
   val arith: Coder = new Arith()
 
@@ -36,6 +36,7 @@ object Compressor {
     "categorical_token" -> categoricalToken,
     "polya_token" -> polyaToken,
     "uniform_byte" -> uniformByte,
+    "lzw_byte" -> lzwByte,
     "polya_byte" -> polyaByte
   )
   val compressors: Map[String, String => Unit] = Map(
@@ -115,8 +116,15 @@ object Compressor {
       throw new AssertionError("Base distribution cannot be layered on top of existing models")
   }
 
-  def uniformByte(params: String): Unit = byteBase(new UniformInteger(0, 257))
-  def polyaByte(params: String): Unit = byteBase(new SBST(0, 257))
+  def uniformByte(params: String): Unit = byteBase(new UniformInteger(0, ByteEOF))
+  def polyaByte(params: String): Unit = byteBase(new SBST(0, ByteEOF))
+  def lzwByte(params: String): Unit = {
+    val alphabet = JavaConversions
+      .asJavaIterable(0 to ByteEOF)
+      .asInstanceOf[java.lang.Iterable[Integer]]
+    val lzw = new LZW[Integer](alphabet, ByteEOF)
+    byteBase(lzw)
+  }
 
   def crp(params: String): Unit = {
     models = models match {
@@ -170,7 +178,7 @@ object Compressor {
           models.last.encode(c, ec)
           models.foreach(d => d.learn(c))
         }
-        models.last.encode(byteEOF, ec)
+        models.last.encode(ByteEOF, ec)
       case NoModel() =>
         throw new AssertionError("No model.")
     }
@@ -209,7 +217,7 @@ object Compressor {
       case ByteModel(models) =>
         def decompress(): Unit = {
           val byte = models.last.decode(dc)
-          if (byte != byteEOF) {
+          if (byte != ByteEOF) {
             models.foreach(d => d.learn(byte))
             outStream.write(byte)
             decompress()

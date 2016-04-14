@@ -75,6 +75,7 @@ for d in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]:
 
 priors = {'uniform_token': 'uniform_token',
           'categorical_token': 'categorical_token',
+          'lzw_byte': 'lzw_byte',
           'polya_token': 'polya_token',
           'uniform_byte': 'uniform_byte',
           'polya_byte': 'polya_byte' }
@@ -82,6 +83,7 @@ priors = {'uniform_token': 'uniform_token',
 EXCLUDED = ['crp_polya_.*', # fails as Polya doesn't implement discreteMass
             'ppm._categorical_token', # possible but not particularly interesting
             'ppm._polya_byte', # possible but not particularly interesting
+            '^(?!none).*_lzw_byte', # only permit none_lzw_byte, not any other algo
            ]
 EXCLUDED = list(map(lambda x: re.compile(x), EXCLUDED))
 

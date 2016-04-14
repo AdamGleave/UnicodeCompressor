@@ -69,7 +69,7 @@ COMPRESSORS['ref_bzip2'] = build_compressor(['bzip2', '-c', '--best'], ['-z'], [
 PPMd_EXECUTABLE = os.path.join(PROJECT_DIR, 'ext', 'ppmdj1', 'PPMd')
 COMPRESSORS['ref_PPMd'] = build_compressor([PPMd_EXECUTABLE], ['e'], ['d'])
 
-algos = {'none': [], 'crp': ['crp:a=1:b=0']}
+algos = {'none': [], 'crp': ['crp:a=1:b=0'], 'lzw': ['lzwEscape']}
 for d in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]:
   algos['ppm{0}'.format(d)] = ['ppm:d={0}'.format(d)]
 
@@ -81,8 +81,10 @@ priors = {'uniform_token': 'uniform_token',
           'polya_byte': 'polya_byte' }
 
 EXCLUDED = ['crp_polya_.*', # fails as Polya doesn't implement discreteMass
-            'ppm._categorical_token', # possible but not particularly interesting
-            'ppm._polya_byte', # possible but not particularly interesting
+            # only permit none_categorical_token: possible to run with algos, but it's just not
+            # that different from uniform_token
+            '(?!none).*_categorical_token',
+            '(?!none).*_polya_byte', # possible but not particularly interesting
             '^(?!none).*_lzw_byte', # only permit none_lzw_byte, not any other algo
            ]
 EXCLUDED = list(map(lambda x: re.compile(x), EXCLUDED))

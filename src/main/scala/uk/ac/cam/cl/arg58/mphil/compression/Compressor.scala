@@ -41,6 +41,7 @@ object Compressor {
   )
   val compressors: Map[String, String => Unit] = Map(
     "crp" -> crp,
+    "lzwEscape" -> lzwEscape,
     "ppm" -> ppm
   )
 
@@ -135,6 +136,19 @@ object Compressor {
         ByteModel(models:+model)
       case TokenModel(models) =>
         val model = CRPU.createNew(params, models.last)
+        TokenModel(models:+model)
+    }
+  }
+
+  def lzwEscape(params: String): Unit = {
+    models = models match {
+      case NoModel() =>
+        throw new AssertionError("LZWEscape needs a base distribution.")
+      case ByteModel(models) =>
+        val model = new LZWEscape[Integer](models.last, ByteEOF)
+        ByteModel(models:+model)
+      case TokenModel(models) =>
+        val model = new LZWEscape[Token](models.last, EOF())
         TokenModel(models:+model)
     }
   }

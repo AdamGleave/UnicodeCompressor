@@ -18,10 +18,6 @@ import java.io.InputStream;
   * flushes the remaining input symbol queue.  If an EOF symbol
   * is not desired, a manual call to the <code>flush(..)</code>
   * method can be made to complete encoding.</p>
-  * <p><b>Warning:</b> The <code>learn(..)</code> method is not
-  * doing any learning; the learning is different for encoding
-  * and decoding and implemented directly in <code>encode(..)</code>
-  * and <code>decode(..)</code>.</p>
   * <dl><dt><b>References:</b></dt>
   * <dd><ul><li alt="[1]"><a name="welch1984a">T. A. Welch.&nbsp;
   * <i>A Technique for High-Performance Data Compression,</i>
@@ -268,35 +264,24 @@ public class LZW<X> extends SimpleMass<X>
       flush(ec);
     }
   }
-  
+
+  boolean newword = false;
   public X decode(Decoder dc) {
     decoding = true;
+
     if (wbuf.size() == 0) {
+      newword = true;
       int k = u.decode(dc);         // decode dictionary index
       wbuf = new Vector<X>(wdict.get(k));  // copy word from dictionary
-      X x = wbuf.get(0);            // fetch first symbol
-      // complete last dictionary entry
-      if (last != -1) {
-        Vector<X> obuf = new Vector<X>(wdict.get(last));
-        obuf.add(x);               // add missing last symbol: x
-        wdict.put(last,obuf);      // write completed word back to dict
-      }
+
       if (k == last) {
-        wbuf.add(x);
+        wbuf.add(wbuf.get(0)); // wbuf is only partially complete, patch it up
       }
-      // add partial new word to dictionary
-      Vector<X> nbuf = new Vector<X>(wbuf);
-      wdict.put(words,nbuf);      // write incomplete word to dict
-      last = words;
-      words++;
-      u.expand(1);
-      wbuf.remove(0);
-      return x;
-    } else {
-      X x = wbuf.get(0);
-      wbuf.remove(0);
-      return x;
     }
+
+    X x = wbuf.get(0);
+    wbuf.remove(0);
+    return x;
   }
 
   public void encode(X x, Collection<X> col, Encoder ec) {
@@ -398,19 +383,33 @@ public class LZW<X> extends SimpleMass<X>
   Vector<X> newentry = null;
   
   public void learn(X x) {
-    /* Case 1: buffer is empty: simply append x.
-     * Case 2: buffer+x is in dictionary: append x.
-     * Case 3: buffer+x is NOT in dictionary:
-     *            output index(buffer),
-     *            add "buffer+x" to dictionary,
-     *            and set buffer to x.
-     */
     if (decoding) {
-      // otherwise the u.expand(1) call messes up the
-      // decoder state.
-      // FIXME
-      return;
+      if (newword) {
+        newword = false;
+
+        // complete last dictionary entry
+        if (last != -1) {
+          Vector<X> obuf = new Vector<X>(wdict.get(last));
+          obuf.add(x);               // add missing last symbol: x
+          wdict.put(last,obuf);      // write completed word back to dict
+        }
+
+        // add partial new word to dictionary
+        Vector<X> nbuf = new Vector<X>(wbuf);
+        nbuf.add(0, x);
+        wdict.put(words,nbuf);      // write incomplete word to dict
+        last = words;
+        words++;
+        u.expand(1);
+      }
     } else {
+      /* Case 1: buffer is empty: simply append x.
+       * Case 2: buffer+x is in dictionary: append x.
+       * Case 3: buffer+x is NOT in dictionary:
+       *            output index(buffer),
+       *            add "buffer+x" to dictionary,
+       *            and set buffer to x.
+       */
       if (rbuf.size() == 0) {
         // CASE 1: buffer is empty
         rbuf.add(x);

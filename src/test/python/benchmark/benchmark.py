@@ -158,8 +158,11 @@ if __name__ == "__main__":
   parser.add_argument('--rerun', dest='rerun', action='store_true',
                       help='run the test, even if there is a cached result; ' +
                            'equivalent to invalidating and then rerunning the program.')
-  parser.add_argument('--path', dest='path', nargs='+',
-                      help='regex of paths to match; if unspecified, defaults to *.')
+  parser.add_argument('--include', dest='include', nargs='+',
+                      help='paths which match the specified regex are included; ' +
+                           'if unspecified, defaults to *.')
+  parser.add_argument('--exclude', dest='exclude', nargs='+',
+                      help='paths which match the specified regex are excluded.')
   parser.add_argument('compressor', nargs='*',
                       help='regex of compression algorithms to match; if unspecified, defaults to *.')
 
@@ -186,20 +189,26 @@ if __name__ == "__main__":
   compressors = list(compressors)
   compressors.sort()
 
-  files = []
-  if args['path']:
-    files = find_files(args['path'])
+  include_files = []
+  if args['include']:
+    include_files = find_files(args['include'])
   else:
-    files = find_all_files()
-  files = list(files)
+    include_files = find_all_files()
+
+  exclude_files = []
+  if args['exclude']:
+    exclude_files = find_files(args['exclude'])
+
+  files = list(include_files.difference(exclude_files))
   files.sort()
 
   if files == []:
-    print("ERROR: " + str(args['path']) + " does not match any files.")
+    print("ERROR: " + str(args['include']) + " - " + str(args['exclude']) +
+          " does not match any files.")
     sys.exit(1)
 
   if verbose:
-    print("Compressing files: " + str(files))
+    print("Compressing files: " + str(include_files))
 
   results = {'Size': {}}
   for fname in files:
@@ -233,7 +242,7 @@ if __name__ == "__main__":
           writer.writerow(row)
     if table_type:
       tableResults = {}
-      tableResults['File'] = list(files)
+      tableResults['File'] = files
       tableResults['Size'] = [human_readable_size(results['Size'][fname]) for fname in files]
 
       for compressor in compressors:

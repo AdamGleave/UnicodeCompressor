@@ -22,25 +22,10 @@ kokoro: Japanese. Similar to Genji.
 
 Can the model learn two (or more) distinct clusters of codepoints?
 
-## mixedlanguage/japanese-english
+cedict.txt: Chinese to English dictionary, from http://www.mdbg.net/chindict/chindict.php?page=cedict. It's licensed under a Creative Commons Attribution-Share Alike 3.0 License. Chinese symbols with English (ASCII) text interspersed. Big: 8.4M. 
+cedict_small.txt: a random selection of 10,000 entries from the above. 748K.
 
-Japanese text with side-by-side English translations.
-
-Credit to the Japan Foundation, http://www.jpf.go.jp/e/project/culture/media/supportlist_publish/worth_sharing/index.html
-
-License unknown.
-
-Converted from PDF with pdftotext.
-
-all.txt is simply concatenation of the four volumes.
-
-## creativecommonsukranian.html
-
-From https://creativecommons.org/licenses/by/4.0/legalcode.uk
-
-Ukranian translation of the international license.
-
-Hybrid HTML/Ukranian.
+creativecommonsukranian.html: from https://creativecommons.org/licenses/by/4.0/legalcode.uk Ukranian translation of the international license. Cryillic characters with HTML tags (ASCII) interspersed. Small: 40K. 
 
 # text_binary
 

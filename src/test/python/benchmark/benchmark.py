@@ -206,11 +206,6 @@ if __name__ == "__main__":
     input_fname = os.path.join(config.CORPUS_DIR, fname)
     results['Size'][fname] = os.path.getsize(input_fname)
 
-  try:
-    os.makedirs(config.OUTPUT_DIR, 0o755)
-  except FileExistsError:
-    pass
-
   with Pool(num_threads) as p:
     if verbose:
       print("Splitting work across {0} processes".format(num_threads))

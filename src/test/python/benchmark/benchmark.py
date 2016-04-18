@@ -35,10 +35,14 @@ def find_all_files():
   return acc
 
 def check_file(original, output_prefix):
-  if filecmp.cmp(original, output_prefix + ".decompressed"):
-    return os.path.getsize(output_prefix + ".compressed")
-  else:
-    return "Error: decompressed file differs from original."
+  decompressed_fname = output_prefix + ".decompressed"
+  if os.path.exists(decompressed_fname):
+    if filecmp.cmp(original, decompressed_fname):
+      os.unlink(decompressed_fname) # cleanup
+    else:
+      return "Error: decompressed file differs from original."
+  return os.path.getsize(output_prefix + ".compressed")
+
 
 def execute_compressor(compressor_name, input_fname, output_prefix):
   if verbose:
@@ -201,6 +205,11 @@ if __name__ == "__main__":
   for fname in files:
     input_fname = os.path.join(config.CORPUS_DIR, fname)
     results['Size'][fname] = os.path.getsize(input_fname)
+
+  try:
+    os.makedirs(config.OUTPUT_DIR, 0o755)
+  except FileExistsError:
+    pass
 
   with Pool(num_threads) as p:
     if verbose:

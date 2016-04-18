@@ -14,6 +14,9 @@ import java.util.*;
   * flushes the remaining input symbol queue.  If an EOF symbol
   * is not desired, a manual call to the <code>flush(..)</code>
   * method can be made to complete encoding.</p>
+  * <p><b>Warning:</b> This has encoding and decoding support, but
+  * cannot directly compute the probability mass of elements in X,
+  * nor can it sample from X.</p>
   * <p><b>Warning:</b> The <code>learn(..)</code> method is not
   * doing any learning; the learning is different for encoding
   * and decoding and implemented directly in <code>encode(..)</code>
@@ -47,28 +50,21 @@ public class LZWEscape<X> extends SimpleMass<X>
   HashMap<Vector<X>,Integer> rdict = new HashMap<Vector<X>,Integer>();
   HashMap<Integer,Vector<X>> wdict = new HashMap<Integer,Vector<X>>();
 
-  //HashMap<List<X>,Integer> prefixcount = new HashMap<List<X>,Integer>();
-  HashMap<List<X>,Integer> prefixcount = null;
-
   Set<X> alphabet = new HashSet<X>();
   Distribution<X> base;
 
   /** Last used dictionary index while decoding. */
   private int last = -1;
 
-  private boolean decoding = false;
 
-
-  /** Constructs a new LZW process with given alphabet. */
+  /** Constructs a new LZW process with given base distribution. */
   public LZWEscape(Distribution<X> base) {
-    int n = 1;
-
     rdict.put(new Vector<X>(), 0);
     wdict.put(0, new Vector<X>());
 
-    u = new UniformInteger(0,n-1);
-    size = n;   // alphabet size
-    words = n;  // (initial) dictionary size
+    u = new UniformInteger(0,0);
+    size = 1;   // alphabet size
+    words = 1;  // (initial) dictionary size
     this.base = base;
   }
 
@@ -78,70 +74,6 @@ public class LZWEscape<X> extends SimpleMass<X>
     EOF = eof;
   }
 
-  /** Returns the number of entries in the r-dictionary which
-    * start with a given prefix, by brute-force counting. */
-  protected int prefixCount1(Vector<X> prefix) {
-    int count = 0;
-    for (Vector<X> w : rdict.keySet()) {
-      if (prefix.size() <= w.size()) {
-        List<X> pre = w.subList(0,prefix.size());
-        if (prefix.equals(pre)) {
-          count++;
-        }
-      }
-    }
-    return count;
-  }
-  
-  /** Returns the number of entries in the r-dictionary which
-    * start with a given prefix, by smart lookup. */
-  protected int prefixCount(Vector<X> prefix) {
-    if (prefixcount != null) {
-      // fast, with lookup
-      Integer num = prefixcount.get(prefix);
-      return (num != null) ? num : 0;
-    } else {
-      // slow, with manual counting
-      return prefixCount1(prefix);
-    }
-  }
-  
-  /** Returns the number of entries in the r-dictionary that
-    * would start with x if buf:x were in the dictionary. */
-  protected int prefixCountX1(Vector<X> buf, X x) {
-    // an awful, inefficient method
-    Vector<X> bufx = new Vector<X>(buf.size()+1);
-    bufx.addAll(buf); bufx.add(x);
-    Vector<X> vx = new Vector<X>(1); vx.add(x);
-    if (rdict.containsKey(bufx)) {
-      int nx = prefixCount(vx); // we can use the fast count
-      return nx;
-    } else {
-      /*
-      rdict.put(bufx,words);
-      words++;
-      // we must use the slow method for counting,
-      // because the prefixcount cache isn't up to date.
-      int nx = prefixCount1(vx);
-      // FIXME: this can be done in a faster + smarter way
-      rdict.remove(bufx);
-      words--;
-      */
-      int nx = prefixCount(vx);
-      if (bufx.get(0).equals(x)) {
-        return nx+1;
-      } else {
-        return nx;
-      }
-    }
-  }
-  
-  /** Returns the number of entries in the r-dictionary that
-    * would start with x if buf:x were in the dictionary. */
-  protected int prefixCountX(Vector<X> buf, X x) {
-    // FIXME: we should do something smarter here
-    return prefixCountX1(buf,x);
-  }
 
   /** Inserts a word into rdict, the read dictionary. */
   protected void insertR(Vector<X> newentry) {
@@ -150,36 +82,6 @@ public class LZWEscape<X> extends SimpleMass<X>
     }
     rdict.put(newentry, words);
     words++;
-    // also update prefix counts
-    if (prefixcount != null) {
-      for (int k=1; k<=newentry.size(); k++) {
-        List<X> pre = newentry.subList(0,k);
-        Integer pcount = prefixcount.get(pre);
-        if (pcount == null) {
-          prefixcount.put(pre,1);
-        } else {
-          prefixcount.put(pre,pcount+1);
-        }
-      }
-    }
-  }
-  
- 
-  /** Builds (or rebuilds) the hashmap of prefix counts. */
-  protected void rebuildPrefixCounts() {
-    System.err.println("Rebuilding prefix counts...");
-    prefixcount = new HashMap<List<X>,Integer>();
-    for (Vector<X> w : rdict.keySet()) {
-      for (int k=1; k<w.size()+1; k++) {
-        List<X> pre = w.subList(0,k);
-        Integer pcount = prefixcount.get(pre);
-        if (pcount == null) {
-          prefixcount.put(pre,1);
-        } else {
-          prefixcount.put(pre,pcount+1);
-        }
-      }
-    }
   }
   
 
@@ -200,7 +102,6 @@ public class LZWEscape<X> extends SimpleMass<X>
       System.err.println(k+": "+wdict.get(k));
     }
   }
-
 
 
   public void flush(Encoder ec) {
@@ -226,7 +127,6 @@ public class LZWEscape<X> extends SimpleMass<X>
     tmpbuf.add(x);
     // check if new rbuf is still contained in dictionary
     if (rdict.containsKey(tmpbuf)) {
-      newentry = null;
       rbuf.add(x);
     } else {
       /* current buffer is no longer in the dictionary:
@@ -235,8 +135,7 @@ public class LZWEscape<X> extends SimpleMass<X>
       int k = rdict.get(rbuf);
       u.encode(k, ec); // dictionary index
 
-      newentry = tmpbuf;
-      insertR(newentry);
+      insertR(tmpbuf);
       u.expand(1);
       rbuf.clear();
 
@@ -258,8 +157,6 @@ public class LZWEscape<X> extends SimpleMass<X>
   }
 
   public X decode(Decoder dc) {
-    decoding = true;
-
     X x;
     if (wbuf.size() == 0) {
       int k = u.decode(dc);         // decode dictionary index
@@ -309,105 +206,13 @@ public class LZWEscape<X> extends SimpleMass<X>
     throw new UnsupportedOperationException();
   }
 
-  public double logMass(X x) {
-    return Math.log(mass(x));
-  }
+  public double logMass(X x) { throw new UnsupportedOperationException(); }
   
-  public double mass(X x) {
-    if (prefixcount == null) {
-      // enable operational speed-up for extra memory
-      rebuildPrefixCounts();
-    }
-    Vector<X> vx = new Vector<X>(1);
-    vx.add(x);
-    /* what is the probability that the next symbol is x? */
-    if (rbuf.size() == 0) {
-      /* if nothing is in the buffer, the probability is proportional
-         to the number of words starting with x, weighted appropriately
-         by the word distribution u. */
-      int num = prefixCount(vx);
-      //System.err.println("!"+x+": "+num+" / "+words);
-      // TODO: warning -- assumes that u is uniform:
-      return (double) num / (double) words;
-    } else {
-      /* if something is in the buffer rbuf, then the probability is
-       * proportional to the number of words starting with "rbuf:x",
-       * dividing out the number of words starting with "rbuf"
-       * (but excluding THOSE words that are ruled out).
-       * If no dictionary entry starts with "rbuf:x", then "rbuf"
-       * was the last word, "rbuf:x" is the new word, and "x"
-       * remains in the buffer.
-       * 
-       * More information on "words that are ruled out":
-       * Suppose we want to compute the probability of the symbol "X"
-       * in the string "aaX", if all information about "aa" has
-       * already been conveyed.
-       * Before seeing X, the receiver cannot know which dictionary
-       * entry was used for the second a: there are two possibilities.
-       * This information is part of X and contributes 1 bit.
-       * If the choice of X means that a new word is used,
-       * then X also contributes information about the set of
-       * words that it could start:
-       * One might THINK that this probability equals the number of
-       * entries starting with X divided by the total number
-       * of entries: however, the probability is slightly higher,
-       * as some entries can be ruled out using existing
-       * knowledge (the preceding string "aa").  In particular,
-       * X cannot be any symbol that the matching set of words in
-       * the dictionary would have predicted (in which case a new
-       * word wouldn't have been started).
-       * For example, if "az" was in the dictionary, then LZW cannot
-       * possibly have chosen a unigram entry for "a" and "z" if the
-       * bigram "az" was available.  Therefore, knowing that "az"
-       * was in the dictionary rules out the unigram "z".
-       *
-       * HOWEVER, the actual compression algorithm is deficient in
-       * the same way: it uses a uniform distribution to encode
-       * each dictionary entry without excluding those that are
-       * ruled out in the more. So the current "broken" logp
-       * calculation matches what the algorithm does in reality.
-       * The probabilities don't sum to one, and that information
-       * leak applies to the real algorithm as well.
-       * Both should be fixed, and perhaps called LZW+. :) */
-      //Vector<X> rbufx = new Vector<X>(rbuf.size()+1);
-      Vector<X> rbufx = new Vector<X>();
-      rbufx.addAll(rbuf);
-      rbufx.add(x);
-      int rbufcount  = prefixCount(rbuf);
-      int rbufxcount = prefixCount(rbufx);
-      //System.err.println("!  rbuf ="+rbuf+", rbufcount = "+rbufcount);
-      //System.err.println("!  rbufx="+rbufx+", rbufxcount = "+rbufxcount);
-      if (rbufxcount > 0) { // contained in dictionary: marginalise
-        //System.err.println("! "+rbufxcount+" / "+rbufcount);
-        // TODO: warning -- assumes that u is uniform:
-        return (double) rbufxcount / (double) rbufcount;
-      } else {
-        // Count how many words would start with x if rbufx were in
-        // the dictionary.
-        int nx = prefixCountX(rbuf,x);
-        double mass = (double) nx / ((double) (words+1) * (double) rbufcount);
-        //System.err.println("! "+nx+" / ("+(words+1)+"*"+rbufcount+")");
-        return mass;
-      }
-    }
-    // FIXME: handle EOF specially?
-  }
-
-  /** A pointer to the newest dictionary entry, if known. */
-  Vector<X> newentry = null;
+  public double mass(X x) { throw new UnsupportedOperationException("Not implemented: sample."); }
   
   public void learn(X x) {
     // no-op
   }
 
-  public X sample(Random rnd) {
-    DiscreteLookup<X> d = new DiscreteLookup<X>(this,alphabet);
-    X x = d.sample(rnd);
-    learn(x);
-    return x;
-  }
-
-  public String getStateInfo() {
-    return "w="+words+", "+newentry;
-  }
+  public X sample(Random rnd) { throw new UnsupportedOperationException(); }
 }

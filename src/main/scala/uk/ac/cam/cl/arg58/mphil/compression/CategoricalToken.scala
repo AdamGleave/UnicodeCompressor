@@ -12,12 +12,12 @@ object CategoricalToken extends compression.SimpleMass[Token] with compression.C
   final val weights = Array(90, 5, 2, 1, 1, 1)
   val cat : compression.SimpleMass[Integer] = new WeightedInteger(0, weights)
   val bases : Array[compression.SimpleMass[Integer]] = Array(
-    new compression.UniformInteger(0, UnicodeCharacter.Range),
-    new compression.UniformInteger(0, IllegalByte.Range),
-    new compression.UniformInteger(0, Overlong.Range),
-    new compression.UniformInteger(0, SurrogateCodePoint.Range),
-    new compression.UniformInteger(0, TooHigh.Range),
-    new compression.UniformInteger(0, EOF.Range)
+    new compression.UniformInteger(0, UnicodeCharacter.Range - 1),
+    new compression.UniformInteger(0, Overlong.Range - 1),
+    new compression.UniformInteger(0, SurrogateCodePoint.Range - 1),
+    new compression.UniformInteger(0, TooHigh.Range - 1),
+    new compression.UniformInteger(0, IllegalByte.Range - 1),
+    new compression.UniformInteger(0, EOF.Range - 1)
   )
 
   def mass(t: Token): Double = {

@@ -13,6 +13,10 @@ BIN_DIR = os.path.join(PROJECT_DIR, 'target', 'scala-2.11', 'classes')
 CORPUS_DIR = os.path.join(PROJECT_DIR, 'src', 'test', 'resources', 'corpora')
 OUTPUT_DIR = os.path.join(PROJECT_DIR, 'compressed')
 
+### Local overrides (optional)
+if os.path.exists(os.path.join(THIS_DIR, 'config_local.py')):
+  from config_local import *
+
 ### Compression algorithms
 
 def build_compressor(standard_args, compress_args, decompress_args):

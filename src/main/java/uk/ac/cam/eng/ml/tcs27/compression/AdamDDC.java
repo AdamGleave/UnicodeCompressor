@@ -18,13 +18,6 @@ public class AdamDDC extends SimpleMass<Integer> implements Iterable<Integer> {
    * Dirichlet distribution, <var>prior</var>. */
   public AdamDDC(Dirichlet prior) {
     dirichlet = prior;
-
-/*    cdfUnnormalised = new Vector<Double>(dirichlet.dim);
-    double acc = 0.0;
-    for (int k=0; k < dirichlet.dim; k++) {
-      acc += dirichlet.alpha.get(k);
-      cdfUnnormalised.set(k, acc);
-    }*/
   }
 
   /** Copy constructor */

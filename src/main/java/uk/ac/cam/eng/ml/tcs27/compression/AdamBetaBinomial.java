@@ -1,6 +1,7 @@
 /* Automated copy from build process */
 /* $Id: Binomial.java,v 1.11 2015/08/11 11:28:16 chris Exp $ */
 package uk.ac.cam.eng.ml.tcs27.compression;
+
 import java.util.Random;
 
 /** The Beta-binomial compound distribution.
@@ -57,7 +58,6 @@ public class AdamBetaBinomial extends SimpleMass<Integer> {
  
   /** Returns the mode of this distribution. */
   public Integer mode() {
-    // TODO
     throw new UnsupportedOperationException("Cannot compute mode for Beta-binomial");
   }
 

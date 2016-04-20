@@ -208,7 +208,7 @@ public class LZWEscape<X> extends SimpleMass<X>
 
   public double logMass(X x) { throw new UnsupportedOperationException(); }
   
-  public double mass(X x) { throw new UnsupportedOperationException("Not implemented: sample."); }
+  public double mass(X x) { throw new UnsupportedOperationException(); }
   
   public void learn(X x) {
     // no-op

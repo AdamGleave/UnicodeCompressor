@@ -4,7 +4,7 @@ import asciitable, argparse, csv, errno, filecmp, glob, functools, os, re, sys
 from multiprocessing import Pool
 
 from mode import CompressionMode
-import config
+import config_benchmark as config
 
 def find_compressors(patterns):
   patterns = list(map(re.compile, patterns))

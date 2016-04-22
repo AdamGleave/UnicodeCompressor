@@ -555,7 +555,7 @@ public class Tools {
     long a = 1; long b = 0;
     long c = 0; long d = 1;
     long ai = (long) r;
-    while (c * ai + d <= max) {
+    while (Math.abs(c * ai + d) <= max) {
       long tmp = a * ai + b;
       b = a;
       a = tmp;

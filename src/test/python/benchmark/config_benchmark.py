@@ -12,7 +12,8 @@ algos = {'none': [], 'crp': ['crp:a=1:b=0'], 'lzw': ['lzwEscape']}
 
 for d in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]:
   algos['ppm{0}'.format(d)] = ['ppm:d={0}'.format(d)]
-algos['ppm5alice'] = ['ppm:d=5:a=1.0:b=0.99']
+algos['ppm5alice'] = ['ppm:d=5:a=0.16875:b=0.38379687']
+algos['ppm5alice_christian'] = ['ppm:d=5:a=0.223:b=0.366']
 
 priors = {'uniform_token': 'uniform_token',
           'categorical_token': 'categorical_token',

@@ -1,12 +1,13 @@
 #!/usr/bin/env python3.4
 
 import functools, os, sys
+from multiprocessing import Pool
 
 import numpy as np
 from scipy import optimize
-import matplotlib
 import matplotlib.pyplot as plt
 
+import general
 from mode import CompressionMode
 import config_optimise as config
 
@@ -25,31 +26,51 @@ def efficiency(params, compressor, in_fname):
   else:
     return float('inf')
 
+def optimal_alpha_beta(compressor, in_fname):
+  '''compressor(a,b) should be a function taking two floating-point values
+     and returning a floating point value to minimise.'''
+  # SOMEDAY: try other optimisation methods, e.g. Powell?
+  # SOMEDAY: strictly the optimisation should be bounded, a + b >= 0. But optimiser is unlikely to
+  # explore this space if given a sensible initial guess.
+  initial_guess = (0, 0.5) # PPMD
+  return optimize.minimize(fun=efficiency,
+                           args=(compressor, in_fname),
+                           x0=initial_guess,
+                           method='Nelder-Mead',
+                           options={'disp': verbose})
 
 def range_around(point, old_range, factor):
   old_width = old_range[1] - old_range[0]
   new_width = old_width / factor
   return (point - new_width / 2, point + new_width / 2)
 
-def grid_search(compressor, fname, n, a_range, b_range, Ns):
-  def helper(n, a_range, b_range):
+def grid_search(compressor, fname, n,
+                alpha_range=config.PPM_ALPHA_RANGE,
+                beta_range=config.PPM_BETA_RANGE,
+                Ns=config.PPM_GRID_GRANULARITY):
+  def helper(n, alpha_range, beta_range):
+    finish = None
+    if n <= 1:
+      # on finest grid, use Nelder-Mead to find optimum
+      finish = optimize.fmin
     res = optimize.brute(func=efficiency,
                          args=(compressor, fname),
-                         ranges=(a_range, b_range), Ns=Ns,
+                         ranges=(alpha_range, beta_range),
+                         Ns=Ns,
                          full_output=True,
-                         finish=None,
+                         finish=finish,
                          disp=verbose)
 
     if n <= 1:
       return (res[0:2], [res[2:]])
     else:
       argmin = res[0]
-      new_a_range = range_around(argmin[0], a_range, 4)
-      new_b_range = range_around(argmin[1], b_range, 4)
+      new_a_range = range_around(argmin[0], alpha_range, 4)
+      new_b_range = range_around(argmin[1], beta_range, 4)
       optimum, evals = helper(n - 1, new_a_range, new_b_range)
 
       return (optimum, [res[2:]] + evals)
-  return helper(n, a_range, b_range)
+  return helper(n, alpha_range, beta_range)
 
 def combine_evals(evals):
   acc_x = np.zeros((0,))
@@ -70,28 +91,29 @@ def combine_evals(evals):
 def contour(grid_res, delta=config.CONTOUR_DELTA, num_levels=config.CONTOUR_NUM_LEVELS):
   # process data
   optimum, evals = grid_res
-  a, b, z = combine_evals(evals)
-  #(a, b), z = evals[0]
 
   plt.figure()
   # plot optimum
-  # TODO: this isn't really the optimum. Could use finish to find it, perhaps?
-  optimum_i = np.argmin(z)
-  optimum_a, optimum_b, optimum_z = a.flat[optimum_i], b.flat[optimum_i], z.flat[optimum_i]
+  (optimum_a, optimum_b), optimum_z = optimum
   plt.scatter(optimum_b, optimum_a, marker='x')
   plt.annotate('OPT', xy=(optimum_b, optimum_a), xycoords='data',
                xytext=(2,2), textcoords='offset points')
 
   # plot contours
-  levels = optimum_z + np.arange(1, num_levels + 1)*delta
-  #TODO: tricontour is noisier than contour, but more flexible. Anyway to get best of both?
-  plt.tricontour(b, a, z, levels=levels)
+  levels = optimum_z + np.arange(1, num_levels + 1)*0.1
+  (a, b), z = evals[0]
+  plt.contour(b, a, z, levels=levels, linewidths=1)
+  # levels = optimum_z + np.arange(1, num_levels + 1)*0.01
+  # (a, b), z = evals[1]
+  # plt.contour(b, a, z, levels=levels, linewidths=0.2, )
 
   # shade illegal parameter region, a + b <= 0
-  b_vertices = [np.min(b), np.min(b), np.max(b)]
-  lowest = min(np.min(a), -np.max(b))
-  a_vertices = [-np.min(b), lowest, lowest]
-  plt.fill(b_vertices, a_vertices, 'gray', alpha=0.5)
+  min_x, max_x = config.CONTOUR_XLIM
+  min_y, max_y = config.CONTOUR_YLIM
+  x_vertices = [min_x, min_x, max_x]
+  lowest = min(min_y, -max_x)
+  y_vertices = [-min_x, lowest, lowest]
+  plt.fill(x_vertices, y_vertices, 'gray', alpha=0.5)
 
   # axes
   plt.xlim(config.CONTOUR_XLIM)
@@ -100,41 +122,30 @@ def contour(grid_res, delta=config.CONTOUR_DELTA, num_levels=config.CONTOUR_NUM_
   plt.xlabel(r'discount $\beta$')
   plt.ylabel(r'strength $\alpha$')
 
-
   plt.show()
 
-def optimal_alpha_beta(compressor, in_fname):
-  '''compressor(a,b) should be a function taking two floating-point values
-     and returning a floating point value to minimise.'''
-  # TODO: try other methods, e.g. Powell?
-  # TODO: impose bounds? Not all parameters are valid. But it's unlikely to end up searching that space...
-  initial_guess = (0, 0.5) # PPMD
-  return optimize.minimize(fun=efficiency,
-                           args=(compressor, in_fname),
-                           x0=initial_guess,
-                           method='Nelder-Mead',
-                           options={'disp': verbose})
-
-def optimal_alpha_beta_grid(compressor, fname):
-  '''compressor(a,b) should be a function taking two floating-point values
-     and returning a floating point value to minimise.
-     Coarse grid search, followed by optimisation to 'polish'.'''
-  # TODO: try other methods, e.g. Powell?
-  # TODO: impose bounds? Not all parameters are valid. But it's unlikely to end up searching that space...
-  res = optimize.brute(func=efficiency,
-                       args=(compressor, fname),
-                       ranges=(config.PPM_ALPHA_RANGE, config.PPM_BETA_RANGE),
-                       Ns=config.PPM_GRID_GRANULARITY,
-                       finish=optimize.fmin,
-                       disp=verbose)
-  return res
-
-verbose = True
-
-# TODO: what output should it produce?
 if __name__ == "__main__":
-  # TODO: specify file with regexp as in benchmark
-  fname = os.path.join(config.CORPUS_DIR,  'canterbury/canterbury/alice29.txt') #'unit_tests/quickbrown.txt'
-  ppm5ub = functools.partial(config.ppm, 'uniform_byte', 5)
-  res = optimal_alpha_beta_grid(ppm5ub, fname)
-  print(res)
+  description = "Produce visualisations and find optimal parameters of compression algorithms"
+  parser = argparse.ArgumentParser(description=description)
+  parser.add_argument('--verbose', dest='verbose', action='store_true',
+                      help='produce detailed output showing work performed.')
+  parser.add_argument('--threads', dest='threads', type=int, default=config.NUM_THREADS,
+                      help='number of compression algorithms to run concurrently ' +
+                           '(default: {0}).'.format(config.NUM_THREADS))
+  parser.add_argument('--include', dest='include', nargs='+',
+                      help='paths which match the specified regex are included; ' +
+                           'if unspecified, defaults to *.')
+  parser.add_argument('--exclude', dest='exclude', nargs='+',
+                      help='paths which match the specified regex are excluded.')
+
+  args = vars(parser.parse_args())
+  verbose = args['verbose']
+  num_threads = args['threads']
+
+  files = general.include_exclude_files(args['include'], args['exclude'])
+
+  with Pool(num_threads) as p:
+    if verbose:
+      print("Splitting work across {0} processes".format(num_threads))
+
+  # TBC

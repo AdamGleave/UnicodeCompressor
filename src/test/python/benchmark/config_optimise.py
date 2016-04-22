@@ -20,7 +20,7 @@ PPM_DEPTHS = range(0, 10, 1) # 0..9
 PPM_GRID_GRANULARITY = 3 # TODO: bump, this is just for testing
 
 CONTOUR_DELTA = 0.025 # bits/byte
-CONTOUR_NUM_LEVELS = 6
+CONTOUR_NUM_LEVELS = 10
 CONTOUR_XLIM = (0, 1)
 CONTOUR_YLIM = (-1, 3)
 

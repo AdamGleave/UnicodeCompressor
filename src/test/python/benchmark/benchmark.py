@@ -1,10 +1,11 @@
 #!/usr/bin/env python3.4
 
-import asciitable, argparse, csv, errno, filecmp, glob, functools, os, re, sys
+import asciitable, argparse, csv, errno, filecmp, functools, os, re, sys
 from multiprocessing import Pool
 
 from mode import CompressionMode
 import config_benchmark as config
+import general
 
 def find_compressors(patterns):
   patterns = list(map(re.compile, patterns))
@@ -16,24 +17,6 @@ def find_compressors(patterns):
         break
   return res
 
-def find_files(patterns):
-  acc = set()
-  for p in patterns:
-    matches = glob.glob(os.path.join(config.CORPUS_DIR, p))
-    matches = filter(os.path.isfile, matches)
-    matches = map(lambda p: os.path.relpath(p, config.CORPUS_DIR), matches)
-    acc = acc.union(matches)
-  return acc
-
-def find_all_files():
-  acc = set()
-  for path, subdirs, files in os.walk(config.CORPUS_DIR):
-    for name in files:
-      abspath = os.path.join(path, name)
-      relpath = os.path.relpath(abspath, config.CORPUS_DIR)
-      acc.add(relpath)
-  return acc
-
 def check_file(original, output_prefix):
   decompressed_fname = output_prefix + ".decompressed"
   if os.path.exists(decompressed_fname):
@@ -42,7 +25,6 @@ def check_file(original, output_prefix):
     else:
       return "Error: decompressed file differs from original."
   return os.path.getsize(output_prefix + ".compressed")
-
 
 def execute_compressor(compressor_name, input_fname, output_prefix):
   if verbose:
@@ -131,7 +113,7 @@ def table_convert(original, compressed, table_type):
     return compressed
 
   if table_type == 'bits':
-    return '{0:.3f}'.format(compressed / original * 8)
+    return '{0:.4f}'.format(compressed / original * 8)
   elif table_type == 'per':
     return '{0:.1f}%'.format(compressed / original * 100)
   elif table_type == 'size':
@@ -189,26 +171,9 @@ if __name__ == "__main__":
   compressors = list(compressors)
   compressors.sort()
 
-  include_files = []
-  if args['include']:
-    include_files = find_files(args['include'])
-  else:
-    include_files = find_all_files()
-
-  exclude_files = []
-  if args['exclude']:
-    exclude_files = find_files(args['exclude'])
-
-  files = list(include_files.difference(exclude_files))
-  files.sort()
-
-  if files == []:
-    print("ERROR: " + str(args['include']) + " - " + str(args['exclude']) +
-          " does not match any files.")
-    sys.exit(1)
-
+  files = general.include_exclude_files(args['include'], args['exclude'])
   if verbose:
-    print("Compressing files: " + str(include_files))
+    print("Compressing files: " + str(files))
 
   results = {'Size': {}}
   for fname in files:

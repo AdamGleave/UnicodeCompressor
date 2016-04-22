@@ -26,7 +26,10 @@ def build_compressor(standard_args, compress_args, decompress_args):
       args += compress_args
     else:
       args += decompress_args
-    subprocess.check_call(args, stdin=inFile, stdout=outFile)
+    if outFile:
+      subprocess.check_call(args, stdin=inFile, stdout=outFile)
+    else:
+      return subprocess.check_output(args, stdin=inFile)
   return run_compressor
 
 def find_sbt_classpath():
@@ -63,5 +66,5 @@ def my_compressor(base, algorithms=None):
     compressor = build_compressor(starting_args,
                                   ['compress'] + ending_args,
                                   ['decompress'] + ending_args)
-    compressor(in_file, out_file, mode)
+    return compressor(in_file, out_file, mode)
   return run_compressor

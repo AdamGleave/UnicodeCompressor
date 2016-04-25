@@ -1,6 +1,6 @@
 #!/usr/bin/env python3.4
 
-import functools, os, sys
+import filecmp, functools, os, sys, tempfile
 from multiprocessing import Pool
 
 import numpy as np
@@ -12,19 +12,32 @@ from mode import CompressionMode
 import config_optimise as config
 
 BUFSIZE = 1024 * 1024 # 1 MB
-def efficiency(params, compressor, in_fname):
-  original_size = os.path.getsize(in_fname)
-
+def efficiency(params, compressor, original_fname):
   c = compressor(*params)
   if verbose:
     print(params)
     sys.stdout.flush()
-  if c:
-    with open(in_fname, 'r') as f:
-      compressed = c(f, None, CompressionMode.compress)
-      return len(compressed) / original_size * 8
-  else:
+  if not c:
     return float('inf')
+
+  compressed_file, compressed_fname = tempfile.mkstemp(suffix='compression_optimise_en')
+  with open(original_fname, 'r') as original:
+    c(original, compressed_file, CompressionMode.compress)
+  if paranoia:
+    decompressed_file, decompressed_fname = tempfile.mkstemp(suffix='compression_optimised_de')
+    with open(compressed_fname, 'r') as compressed:
+      c(compressed, decompressed_file, CompressionMode.decompress)
+    if not filecmp.cmp(original_fname, decompressed_fname):
+      print("WARNING: decompressed file differs from original, with compressor " +
+            str(compressor) + " under parameters " + str(params))
+      return float('inf')
+    os.unlink(decompressed_fname)
+
+  original_size = os.path.getsize(original_fname)
+  compressed_size = os.path.getsize(compressed_fname)
+  os.unlink(compressed_fname)
+
+  return compressed_size / original_size * 8
 
 def optimal_alpha_beta(compressor, in_fname):
   '''compressor(a,b) should be a function taking two floating-point values
@@ -65,8 +78,8 @@ def grid_search(compressor, fname, n,
       return (res[0:2], [res[2:]])
     else:
       argmin = res[0]
-      new_a_range = range_around(argmin[0], alpha_range, 4)
-      new_b_range = range_around(argmin[1], beta_range, 4)
+      new_a_range = range_around(argmin[0], alpha_range, 2)
+      new_b_range = range_around(argmin[1], beta_range, 2)
       optimum, evals = helper(n - 1, new_a_range, new_b_range)
 
       return (optimum, [res[2:]] + evals)
@@ -124,11 +137,17 @@ def contour(grid_res, delta=config.CONTOUR_DELTA, num_levels=config.CONTOUR_NUM_
 
   plt.show()
 
+verbose=True
+paranoia=True
+
 if __name__ == "__main__":
   description = "Produce visualisations and find optimal parameters of compression algorithms"
   parser = argparse.ArgumentParser(description=description)
   parser.add_argument('--verbose', dest='verbose', action='store_true',
                       help='produce detailed output showing work performed.')
+  parser.add_argument('--paranoia', dest='paranoia', action='store_true',
+                      help='verify correct operation of compression algorithms by decompressing ' +
+                           'their output and comparing to the original file.')
   parser.add_argument('--threads', dest='threads', type=int, default=config.NUM_THREADS,
                       help='number of compression algorithms to run concurrently ' +
                            '(default: {0}).'.format(config.NUM_THREADS))
@@ -141,6 +160,7 @@ if __name__ == "__main__":
   args = vars(parser.parse_args())
   verbose = args['verbose']
   num_threads = args['threads']
+  paranoia = args['paranoia']
 
   files = general.include_exclude_files(args['include'], args['exclude'])
 

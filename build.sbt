@@ -6,7 +6,8 @@ lazy val root = (project in file(".")).
     libraryDependencies += "org.scalactic" %% "scalactic" % "2.2.6",
     libraryDependencies += "org.scalatest" %% "scalatest" % "2.2.6" % "test",
     libraryDependencies += "com.github.scopt" %% "scopt" % "3.4.0",
-    resolvers += Resolver.sonatypeRepo("public")
+    resolvers += Resolver.sonatypeRepo("public"),
+    unmanagedSourceDirectories in Compile += baseDirectory.value / "steinruecken"
   )
   /* These were generating some errors in ScalaDoc, but not Javadoc! */
   sources in (Compile, doc) <<= sources in (Compile, doc) map { _.filterNot(_.getName startsWith "Urn") }

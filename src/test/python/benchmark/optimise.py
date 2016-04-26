@@ -176,38 +176,37 @@ def parse_depths(depths):
   else:
     return depths
 
+def ppm_optimal_parameters_helper(compressor, granularity, depths, fname):
+  best_alpha = float('nan')
+  best_beta = float('nan')
+  best_depth = -1
+  best_val = float('inf')
+  # SOMEDAY: this could run in parallel, but awkward to do with Python's multiprocessing framework
+  for d in depths:
+    (alpha, beta), val = optimal_alpha_beta(compressor, d, fname, granularity)
+    if val < best_val:
+      best_val = val
+      best_alpha, best_beta = alpha, beta
+      best_depth = d
+  return (fname, (best_depth, best_alpha, best_beta, best_val))
+
 def ppm_optimal_parameters(pool, files, test_name, prior,
                            granularity=config.PPM_PARAMETER_GRANULARITY,
                            depths=config.PPM_PARAMETER_DEPTHS):
+  def callback(res):
+    csv_path = os.path.join(config.TABLE_DIR, test_name + '.csv')
+    with open(csv_path, 'w') as f:
+      writer = csv.writer(f)
+      fieldnames = ['file', 'depth', 'alpha', 'beta', 'efficiency']
+      writer.writerow(fieldnames)
+      for fname, values in res:
+        rel_fname = os.path.relpath(fname, config.CORPUS_DIR)
+        writer.writerow([rel_fname] + list(values))
   depths = parse_depths(depths)
   compressor = functools.partial(config.ppm, prior)
-  # TODO: parallelise (callback?)
-  # TODO: less messing around with the data
 
-  optimal = {}
-  for fname in files:
-    best_alpha = float('nan')
-    best_beta = float('nan')
-    best_depth = -1
-    best_val = float('inf')
-    for d in depths:
-      (alpha, beta), val = optimal_alpha_beta(compressor, d, fname, granularity)
-      if val < best_val:
-        best_val = val
-        best_alpha, best_beta = alpha, beta
-        best_depth = d
-    optimal[fname] = (best_depth, best_alpha, best_beta, best_val)
-
-  csv_path = os.path.join(config.TABLE_DIR, test_name + '.csv')
-  with open(csv_path, 'w') as f:
-    writer = csv.writer(f)
-    fieldnames = ['file', 'depth', 'alpha', 'beta', 'efficiency']
-    writer.writerow(fieldnames)
-    for fname, values in optimal.items():
-      rel_fname = os.path.relpath(fname, config.CORPUS_DIR)
-      writer.writerow([rel_fname] + list(values))
-
-  return csv_path
+  runner = functools.partial(ppm_optimal_parameters_helper, compressor, granularity, depths)
+  return pool.map_async(runner, files, callback=callback)
 
 def ppm_optimal_alpha_beta_helper(test_name, fname, prior,
                                   granularity=config.PPM_PARAMETER_GRANULARITY,

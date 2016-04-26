@@ -11,7 +11,7 @@ THIS_DIR = os.path.dirname(os.path.abspath(__file__)) # src/test/python/benchmar
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(THIS_DIR))))
 BIN_DIR = os.path.join(PROJECT_DIR, 'target', 'scala-2.11', 'classes')
 CORPUS_DIR = os.path.join(PROJECT_DIR, 'src', 'test', 'resources', 'corpora')
-OUTPUT_DIR = os.path.join(PROJECT_DIR, 'compressed')
+OUTPUT_DIR = os.path.join(PROJECT_DIR, 'experiments')
 
 ### Local overrides (optional)
 if os.path.exists(os.path.join(THIS_DIR, 'config_local.py')):

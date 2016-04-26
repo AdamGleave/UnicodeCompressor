@@ -65,7 +65,7 @@ def cleanup(prefix):
 
 def run_test(pool, results, compressor_name, fname):
   input_fname = os.path.join(config.CORPUS_DIR, fname)
-  output_prefix = os.path.join(config.OUTPUT_DIR, compressor_name, fname)
+  output_prefix = os.path.join(config.COMPRESSED_DIR, compressor_name, fname)
   output_dir = os.path.dirname(output_prefix)
 
   try:

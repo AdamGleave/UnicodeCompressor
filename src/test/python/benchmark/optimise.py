@@ -1,15 +1,28 @@
 #!/usr/bin/env python3.4
 
-import filecmp, functools, os, sys, tempfile
+import argparse, filecmp, functools, os, sys, tempfile
 from multiprocessing import Pool
 
 import numpy as np
 from scipy import optimize
+
 import matplotlib.pyplot as plt
+from matplotlib.backends.backend_pdf import PdfPages
 
 import general
 from mode import CompressionMode
 import config_optimise as config
+
+def ppm(prior, d, a, b):
+  assert(int(d) == d)
+
+  if a + b <= 0.01:
+    # a + b > 0 to be legal; make it 0.01 to ensure numerical stability
+    return None
+  else:
+    algo_config = ['ppm:d={0}:a={1}:b={2}'.format(int(d),a,b)]
+    #TODO: nasty this is calling config, factor out?
+    return config.my_compressor(prior, algo_config)
 
 BUFSIZE = 1024 * 1024 # 1 MB
 def efficiency(params, compressor, original_fname):
@@ -32,10 +45,12 @@ def efficiency(params, compressor, original_fname):
             str(compressor) + " under parameters " + str(params))
       return float('inf')
     os.unlink(decompressed_fname)
+    os.close(decompressed_file)
 
   original_size = os.path.getsize(original_fname)
   compressed_size = os.path.getsize(compressed_fname)
   os.unlink(compressed_fname)
+  os.close(compressed_file)
 
   return compressed_size / original_size * 8
 
@@ -57,13 +72,10 @@ def range_around(point, old_range, factor):
   new_width = old_width / factor
   return (point - new_width / 2, point + new_width / 2)
 
-def grid_search(compressor, fname, n,
-                alpha_range=config.PPM_ALPHA_RANGE,
-                beta_range=config.PPM_BETA_RANGE,
-                Ns=config.PPM_GRID_GRANULARITY):
-  def helper(n, alpha_range, beta_range):
+def grid_search(compressor, fname, iterations, shrink_factor, alpha_range, beta_range, Ns):
+  def helper(iterations, alpha_range, beta_range):
     finish = None
-    if n <= 1:
+    if iterations <= 1:
       # on finest grid, use Nelder-Mead to find optimum
       finish = optimize.fmin
     res = optimize.brute(func=efficiency,
@@ -74,16 +86,16 @@ def grid_search(compressor, fname, n,
                          finish=finish,
                          disp=verbose)
 
-    if n <= 1:
+    if iterations <= 1:
       return (res[0:2], [res[2:]])
     else:
       argmin = res[0]
-      new_a_range = range_around(argmin[0], alpha_range, 2)
-      new_b_range = range_around(argmin[1], beta_range, 2)
-      optimum, evals = helper(n - 1, new_a_range, new_b_range)
+      new_a_range = range_around(argmin[0], alpha_range, shrink_factor)
+      new_b_range = range_around(argmin[1], beta_range, shrink_factor)
+      optimum, evals = helper(iterations - 1, new_a_range, new_b_range)
 
       return (optimum, [res[2:]] + evals)
-  return helper(n, alpha_range, beta_range)
+  return helper(iterations, alpha_range, beta_range)
 
 def combine_evals(evals):
   acc_x = np.zeros((0,))
@@ -101,11 +113,11 @@ def combine_evals(evals):
     M = M[:, M[2,:] != float('inf')] # filter out illegal values
     return (M[0, :], M[1, :], M[2, :])
 
-def contour(grid_res, delta=config.CONTOUR_DELTA, num_levels=config.CONTOUR_NUM_LEVELS):
+def contour(grid_res, delta, num_levels, xlim, ylim):
   # process data
   optimum, evals = grid_res
 
-  plt.figure()
+  fig = plt.figure()
   # plot optimum
   (optimum_a, optimum_b), optimum_z = optimum
   plt.scatter(optimum_b, optimum_a, marker='x')
@@ -113,7 +125,7 @@ def contour(grid_res, delta=config.CONTOUR_DELTA, num_levels=config.CONTOUR_NUM_
                xytext=(2,2), textcoords='offset points')
 
   # plot contours
-  levels = optimum_z + np.arange(1, num_levels + 1)*0.1
+  levels = optimum_z + np.arange(1, num_levels + 1)*delta
   (a, b), z = evals[0]
   plt.contour(b, a, z, levels=levels, linewidths=1)
   # levels = optimum_z + np.arange(1, num_levels + 1)*0.01
@@ -121,26 +133,85 @@ def contour(grid_res, delta=config.CONTOUR_DELTA, num_levels=config.CONTOUR_NUM_
   # plt.contour(b, a, z, levels=levels, linewidths=0.2, )
 
   # shade illegal parameter region, a + b <= 0
-  min_x, max_x = config.CONTOUR_XLIM
-  min_y, max_y = config.CONTOUR_YLIM
+  min_x, max_x = xlim
+  min_y, max_y = ylim
   x_vertices = [min_x, min_x, max_x]
   lowest = min(min_y, -max_x)
   y_vertices = [-min_x, lowest, lowest]
   plt.fill(x_vertices, y_vertices, 'gray', alpha=0.5)
 
   # axes
-  plt.xlim(config.CONTOUR_XLIM)
-  plt.ylim(config.CONTOUR_YLIM)
+  plt.xlim(xlim)
+  plt.ylim(ylim)
 
   plt.xlabel(r'discount $\beta$')
   plt.ylabel(r'strength $\alpha$')
 
-  plt.show()
+  return fig
 
-verbose=True
-paranoia=True
+def save_figure_wrapper(output_dir, test, fname, **kwargs):
+  fig = test(fname, **kwargs)
 
-if __name__ == "__main__":
+  fig_fname = os.path.relpath(fname, config.CORPUS_DIR)
+  fig_fname = fig_fname.replace('/', '_') + ".pdf"
+
+  fig_dir = os.path.join(config.FIGURE_DIR, output_dir)
+  os.makedirs(fig_dir, exist_ok=True)
+
+  fig_path = os.path.join(fig_dir, fig_fname)
+  with PdfPages(fig_path) as out:
+    if verbose:
+      print("Writing figure to " + fig_path)
+    out.savefig(fig)
+  return fig_path
+
+def per_file_test(test):
+  def f(pool, files, test_name, **kwargs):
+    runner = functools.partial(save_figure_wrapper, test_name, test, **kwargs)
+    return pool.map_async(runner, files)
+  return f
+
+def ppm_contour_plot_helper(fname, prior, d, granularity=config.PPM_CONTOUR_GRANULARITY,
+                            alpha_start=config.PPM_ALPHA_START, alpha_end=config.PPM_ALPHA_END,
+                            beta_start=config.PPM_BETA_START, beta_end=config.PPM_BETA_END,
+                            iterations=config.PPM_CONTOUR_NUM_ITERATIONS,
+                            shrink_factor=config.PPM_CONTOUR_SHRINK_FACTOR,
+                            num_levels=config.PPM_CONTOUR_NUM_LEVELS,
+                            delta=config.PPM_CONTOUR_DELTA):
+  compressor = functools.partial(ppm, prior, int(d))
+  alpha_range = (float(alpha_start), float(alpha_end))
+  beta_range = (float(beta_start), float(beta_end))
+  grid = grid_search(compressor, fname, int(iterations), int(shrink_factor),
+                     alpha_range, beta_range, granularity)
+  return contour(grid, num_levels=int(num_levels), delta=float(delta),
+                 xlim=beta_range, ylim=alpha_range)
+
+ppm_contour_plot = per_file_test(ppm_contour_plot_helper)
+
+def ppm_optimal_parameters(p, files, prior, granularity=config.PPM_PARAMETER_GRANULARITY):
+  # TODO
+  pass
+
+def to_kwargs(xs):
+  d = {}
+  for x in xs:
+    kv = x.split("=", 1)
+    if len(kv) < 2:
+      print("ERROR: malformed key-value pair '" + x + "'")
+    else:
+      k, v = kv
+      d[k] = v
+  return d
+
+verbose=False
+paranoia=True # TODO: disable by default for speed
+
+TESTS = {
+  'ppm_contour_plot': ppm_contour_plot,
+  'ppm_optimal_parameters': ppm_optimal_parameters,
+}
+
+def main():
   description = "Produce visualisations and find optimal parameters of compression algorithms"
   parser = argparse.ArgumentParser(description=description)
   parser.add_argument('--verbose', dest='verbose', action='store_true',
@@ -156,16 +227,41 @@ if __name__ == "__main__":
                            'if unspecified, defaults to *.')
   parser.add_argument('--exclude', dest='exclude', nargs='+',
                       help='paths which match the specified regex are excluded.')
+  parser.add_argument('tests', nargs='*',
+                      help='list of tests to conduct; format is test_name[:parameter1=value1[:...]]')
 
   args = vars(parser.parse_args())
+  global verbose, paranoia
   verbose = args['verbose']
-  num_threads = args['threads']
   paranoia = args['paranoia']
 
   files = general.include_exclude_files(args['include'], args['exclude'])
+  files = list(map(lambda fname: os.path.join(config.CORPUS_DIR, fname), files))
 
-  with Pool(num_threads) as p:
-    if verbose:
-      print("Splitting work across {0} processes".format(num_threads))
+  pool = Pool(args['threads'])
+  if verbose:
+    print("Splitting work across {0} processes".format(args['threads']))
 
-  # TBC
+  res = {}
+  if not args['tests']:
+    print("WARNING: no tests specified", file=sys.stderr)
+  for test in args['tests']:
+    if not test: # empty string
+      print("ERROR: test name cannot be an empty string", file=sys.stderr)
+      continue
+    test_name, *test_args = test.split(":")
+    test_kwargs = to_kwargs(test_args)
+
+    if test_name in TESTS:
+      test_runner = TESTS[test_name]
+      res[test] = test_runner(pool, files, test, **test_kwargs)
+    else:
+      print("ERROR: unrecognised test '" + test_name + "'")
+
+  pool.close()
+  pool.join()
+
+if __name__ == "__main__":
+  main()
+
+# TODO: cache data

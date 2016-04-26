@@ -1,6 +1,8 @@
 import os, re
 from config import *
 
+COMPRESSED_DIR = os.path.join(OUTPUT_DIR, 'compressed')
+
 COMPRESSORS = {}
 COMPRESSORS['ref_gzip'] = build_compressor(['gzip', '-c'], [], ['-d'])
 COMPRESSORS['ref_bzip2'] = build_compressor(['bzip2', '-c', '--best'], ['-z'], ['-d'])

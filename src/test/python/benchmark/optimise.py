@@ -9,9 +9,25 @@ from scipy import optimize
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
 
+from joblib import Memory
+
 import general
 from mode import CompressionMode
 import config_optimise as config
+
+memory = Memory(cachedir=config.CACHE_DIR, verbose=0)
+use_cache = True
+
+def maybe_cache(*args, **kwargs):
+  memoized = memory.cache(*args, **kwargs)
+  def wrapper(*args, **kwargs):
+    print("wrapper: " + str(args) + " / " + str(kwargs))
+    if use_cache:
+      memoized(*args, **kwargs)
+    else:
+      # still persist result to cache, but don't read from it
+      memoized.call(*args, **kwargs)
+  return wrapper
 
 def ppm(prior, d, a, b):
   assert(int(d) == d)
@@ -54,6 +70,7 @@ def efficiency(params, compressor, original_fname):
 
   return compressed_size / original_size * 8
 
+@maybe_cache
 def optimal_alpha_beta(compressor, in_fname):
   '''compressor(a,b) should be a function taking two floating-point values
      and returning a floating point value to minimise.'''
@@ -72,6 +89,7 @@ def range_around(point, old_range, factor):
   new_width = old_width / factor
   return (point - new_width / 2, point + new_width / 2)
 
+@maybe_cache
 def grid_search(compressor, fname, iterations, shrink_factor, alpha_range, beta_range, Ns):
   def helper(iterations, alpha_range, beta_range):
     finish = None
@@ -165,6 +183,7 @@ def save_figure_wrapper(output_dir, test, fname, **kwargs):
     out.savefig(fig)
   return fig_path
 
+# SOMEDAY: Can't seem to use as a decorator, limitation of multiprocessing perhaps?
 def per_file_test(test):
   def f(pool, files, test_name, **kwargs):
     runner = functools.partial(save_figure_wrapper, test_name, test, **kwargs)
@@ -185,7 +204,6 @@ def ppm_contour_plot_helper(fname, prior, d, granularity=config.PPM_CONTOUR_GRAN
                      alpha_range, beta_range, granularity)
   return contour(grid, num_levels=int(num_levels), delta=float(delta),
                  xlim=beta_range, ylim=alpha_range)
-
 ppm_contour_plot = per_file_test(ppm_contour_plot_helper)
 
 def ppm_optimal_parameters(p, files, prior, granularity=config.PPM_PARAMETER_GRANULARITY):
@@ -219,6 +237,8 @@ def main():
   parser.add_argument('--paranoia', dest='paranoia', action='store_true',
                       help='verify correct operation of compression algorithms by decompressing ' +
                            'their output and comparing to the original file.')
+  parser.add_argument('--rerun', dest='rerun', action='store_true',
+                      help='regenerate the data, even if there is a cached result.')
   parser.add_argument('--threads', dest='threads', type=int, default=config.NUM_THREADS,
                       help='number of compression algorithms to run concurrently ' +
                            '(default: {0}).'.format(config.NUM_THREADS))
@@ -231,9 +251,10 @@ def main():
                       help='list of tests to conduct; format is test_name[:parameter1=value1[:...]]')
 
   args = vars(parser.parse_args())
-  global verbose, paranoia
+  global verbose, paranoia, use_cache
   verbose = args['verbose']
   paranoia = args['paranoia']
+  use_cache = not args['rerun']
 
   files = general.include_exclude_files(args['include'], args['exclude'])
   files = list(map(lambda fname: os.path.join(config.CORPUS_DIR, fname), files))
@@ -254,6 +275,8 @@ def main():
 
     if test_name in TESTS:
       test_runner = TESTS[test_name]
+      if verbose:
+        print("Running " + test_name + " with parameters " + str(test_kwargs))
       res[test] = test_runner(pool, files, test, **test_kwargs)
     else:
       print("ERROR: unrecognised test '" + test_name + "'")

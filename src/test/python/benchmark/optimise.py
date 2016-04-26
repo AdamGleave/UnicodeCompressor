@@ -1,6 +1,6 @@
 #!/usr/bin/env python3.4
 
-import argparse, filecmp, functools, os, sys, tempfile
+import argparse, csv, filecmp, functools, os, sys, tempfile
 from multiprocessing import Pool
 
 import numpy as np
@@ -21,24 +21,34 @@ use_cache = True
 def maybe_cache(*args, **kwargs):
   memoized = memory.cache(*args, **kwargs)
   def wrapper(*args, **kwargs):
-    print("wrapper: " + str(args) + " / " + str(kwargs))
     if use_cache:
-      memoized(*args, **kwargs)
+      return memoized(*args, **kwargs)
     else:
       # still persist result to cache, but don't read from it
-      memoized.call(*args, **kwargs)
+      return memoized.call(*args, **kwargs)
   return wrapper
 
-def ppm(prior, d, a, b):
-  assert(int(d) == d)
+def sanitize_fname(fname):
+  fname = os.path.relpath(fname, config.CORPUS_DIR)
+  return fname.replace('/', '_')
 
-  if a + b <= 0.01:
-    # a + b > 0 to be legal; make it 0.01 to ensure numerical stability
-    return None
-  else:
-    algo_config = ['ppm:d={0}:a={1}:b={2}'.format(int(d),a,b)]
-    #TODO: nasty this is calling config, factor out?
-    return config.my_compressor(prior, algo_config)
+def save_figure(fig, output_dir, fname):
+  fig_fname = sanitize_fname(fname) + ".pdf"
+  fig_dir = os.path.join(config.FIGURE_DIR, output_dir)
+  os.makedirs(fig_dir, exist_ok=True)
+
+  fig_path = os.path.join(fig_dir, fig_fname)
+  with PdfPages(fig_path) as out:
+    if verbose:
+      print("Writing figure to " + fig_path)
+    out.savefig(fig)
+  return fig_path
+
+def per_file_test(test):
+  def f(pool, files, test_name, **kwargs):
+    runner = functools.partial(test, test_name, **kwargs)
+    return pool.map_async(runner, files)
+  return f
 
 BUFSIZE = 1024 * 1024 # 1 MB
 def efficiency(params, compressor, original_fname):
@@ -69,20 +79,6 @@ def efficiency(params, compressor, original_fname):
   os.close(compressed_file)
 
   return compressed_size / original_size * 8
-
-@maybe_cache
-def optimal_alpha_beta(compressor, in_fname):
-  '''compressor(a,b) should be a function taking two floating-point values
-     and returning a floating point value to minimise.'''
-  # SOMEDAY: try other optimisation methods, e.g. Powell?
-  # SOMEDAY: strictly the optimisation should be bounded, a + b >= 0. But optimiser is unlikely to
-  # explore this space if given a sensible initial guess.
-  initial_guess = (0, 0.5) # PPMD
-  return optimize.minimize(fun=efficiency,
-                           args=(compressor, in_fname),
-                           x0=initial_guess,
-                           method='Nelder-Mead',
-                           options={'disp': verbose})
 
 def range_around(point, old_range, factor):
   old_width = old_range[1] - old_range[0]
@@ -115,22 +111,6 @@ def grid_search(compressor, fname, iterations, shrink_factor, alpha_range, beta_
       return (optimum, [res[2:]] + evals)
   return helper(iterations, alpha_range, beta_range)
 
-def combine_evals(evals):
-  acc_x = np.zeros((0,))
-  acc_y = np.zeros((0,))
-  acc_z = np.zeros((0,))
-
-  for eval in evals:
-    (x, y), z = eval
-
-    acc_x = np.concatenate((acc_x, np.ndarray.flatten(x)))
-    acc_y = np.concatenate((acc_y, np.ndarray.flatten(y)))
-    acc_z = np.concatenate((acc_z, np.ndarray.flatten(z)))
-
-    M = np.array([acc_x, acc_y, acc_z])
-    M = M[:, M[2,:] != float('inf')] # filter out illegal values
-    return (M[0, :], M[1, :], M[2, :])
-
 def contour(grid_res, delta, num_levels, xlim, ylim):
   # process data
   optimum, evals = grid_res
@@ -146,9 +126,7 @@ def contour(grid_res, delta, num_levels, xlim, ylim):
   levels = optimum_z + np.arange(1, num_levels + 1)*delta
   (a, b), z = evals[0]
   plt.contour(b, a, z, levels=levels, linewidths=1)
-  # levels = optimum_z + np.arange(1, num_levels + 1)*0.01
-  # (a, b), z = evals[1]
-  # plt.contour(b, a, z, levels=levels, linewidths=0.2, )
+  # TODO: multi-resolution
 
   # shade illegal parameter region, a + b <= 0
   min_x, max_x = xlim
@@ -167,48 +145,89 @@ def contour(grid_res, delta, num_levels, xlim, ylim):
 
   return fig
 
-def save_figure_wrapper(output_dir, test, fname, **kwargs):
-  fig = test(fname, **kwargs)
-
-  fig_fname = os.path.relpath(fname, config.CORPUS_DIR)
-  fig_fname = fig_fname.replace('/', '_') + ".pdf"
-
-  fig_dir = os.path.join(config.FIGURE_DIR, output_dir)
-  os.makedirs(fig_dir, exist_ok=True)
-
-  fig_path = os.path.join(fig_dir, fig_fname)
-  with PdfPages(fig_path) as out:
-    if verbose:
-      print("Writing figure to " + fig_path)
-    out.savefig(fig)
-  return fig_path
-
-# SOMEDAY: Can't seem to use as a decorator, limitation of multiprocessing perhaps?
-def per_file_test(test):
-  def f(pool, files, test_name, **kwargs):
-    runner = functools.partial(save_figure_wrapper, test_name, test, **kwargs)
-    return pool.map_async(runner, files)
-  return f
-
-def ppm_contour_plot_helper(fname, prior, d, granularity=config.PPM_CONTOUR_GRANULARITY,
+def ppm_contour_plot_helper(test_name, fname, prior, d, granularity=config.PPM_CONTOUR_GRANULARITY,
                             alpha_start=config.PPM_ALPHA_START, alpha_end=config.PPM_ALPHA_END,
                             beta_start=config.PPM_BETA_START, beta_end=config.PPM_BETA_END,
                             iterations=config.PPM_CONTOUR_NUM_ITERATIONS,
                             shrink_factor=config.PPM_CONTOUR_SHRINK_FACTOR,
                             num_levels=config.PPM_CONTOUR_NUM_LEVELS,
                             delta=config.PPM_CONTOUR_DELTA):
-  compressor = functools.partial(ppm, prior, int(d))
+  compressor = functools.partial(config.ppm, prior, int(d))
   alpha_range = (float(alpha_start), float(alpha_end))
   beta_range = (float(beta_start), float(beta_end))
   grid = grid_search(compressor, fname, int(iterations), int(shrink_factor),
                      alpha_range, beta_range, granularity)
-  return contour(grid, num_levels=int(num_levels), delta=float(delta),
-                 xlim=beta_range, ylim=alpha_range)
+  fig = contour(grid, num_levels=int(num_levels), delta=float(delta),
+                xlim=beta_range, ylim=alpha_range)
+
+  return save_figure(fig, test_name, fname)
 ppm_contour_plot = per_file_test(ppm_contour_plot_helper)
 
-def ppm_optimal_parameters(p, files, prior, granularity=config.PPM_PARAMETER_GRANULARITY):
-  # TODO
-  pass
+def optimal_alpha_beta(compressor, d, fname, granularity):
+  res, _eval = grid_search(functools.partial(compressor, d), fname, iterations=1, shrink_factor=1,
+                           alpha_range=(config.PPM_ALPHA_START, config.PPM_ALPHA_END),
+                           beta_range=(config.PPM_BETA_START, config.PPM_BETA_END),
+                           Ns=granularity)
+  return res
+
+def parse_depths(depths):
+  if type(depths) == str: # parameter passed at CLI
+    return list(map(int, depths.split(",")))
+  else:
+    return depths
+
+def ppm_optimal_parameters(pool, files, test_name, prior,
+                           granularity=config.PPM_PARAMETER_GRANULARITY,
+                           depths=config.PPM_PARAMETER_DEPTHS):
+  depths = parse_depths(depths)
+  compressor = functools.partial(config.ppm, prior)
+  # TODO: parallelise (callback?)
+  # TODO: less messing around with the data
+
+  optimal = {}
+  for fname in files:
+    best_alpha = float('nan')
+    best_beta = float('nan')
+    best_depth = -1
+    best_val = float('inf')
+    for d in depths:
+      (alpha, beta), val = optimal_alpha_beta(compressor, d, fname, granularity)
+      if val < best_val:
+        best_val = val
+        best_alpha, best_beta = alpha, beta
+        best_depth = d
+    optimal[fname] = (best_depth, best_alpha, best_beta, best_val)
+
+  csv_path = os.path.join(config.TABLE_DIR, test_name + '.csv')
+  with open(csv_path, 'w') as f:
+    writer = csv.writer(f)
+    fieldnames = ['file', 'depth', 'alpha', 'beta', 'efficiency']
+    writer.writerow(fieldnames)
+    for fname, values in optimal.items():
+      rel_fname = os.path.relpath(fname, config.CORPUS_DIR)
+      writer.writerow([rel_fname] + list(values))
+
+  return csv_path
+
+def ppm_optimal_alpha_beta_helper(test_name, fname, prior,
+                                  granularity=config.PPM_PARAMETER_GRANULARITY,
+                                  depths=config.PPM_PARAMETER_DEPTHS):
+  depths = parse_depths(depths)
+  compressor = functools.partial(config.ppm, prior)
+
+  csv_dir = os.path.join(config.TABLE_DIR, test_name)
+  os.makedirs(csv_dir, exist_ok=True)
+  csv_path = os.path.join(csv_dir, sanitize_fname(fname) + '.csv')
+  with open(csv_path, 'w') as f:
+    fieldnames = ['depth', 'alpha', 'beta', 'efficiency']
+    writer = csv.writer(f)
+    writer.writerow(fieldnames)
+
+    for d in depths:
+      (alpha, beta), efficiency = optimal_alpha_beta(compressor, d, fname, granularity)
+      writer.writerow([d, alpha, beta, efficiency])
+    return csv_path
+ppm_optimal_alpha_beta = per_file_test(ppm_optimal_alpha_beta_helper)
 
 def to_kwargs(xs):
   d = {}
@@ -227,6 +246,7 @@ paranoia=True # TODO: disable by default for speed
 TESTS = {
   'ppm_contour_plot': ppm_contour_plot,
   'ppm_optimal_parameters': ppm_optimal_parameters,
+  'ppm_optimal_alpha_beta': ppm_optimal_alpha_beta,
 }
 
 def main():
@@ -284,7 +304,9 @@ def main():
   pool.close()
   pool.join()
 
+  for test_name, test_async_res in res.items():
+    test_res = test_async_res.get()
+    print("{0}: {1}".format(test_name, test_res))
+
 if __name__ == "__main__":
   main()
-
-# TODO: cache data

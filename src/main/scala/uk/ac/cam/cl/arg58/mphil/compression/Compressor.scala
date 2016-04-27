@@ -251,12 +251,12 @@ object Compressor {
       case Some(config) =>
         // input and output files
         inStream = config.inFile match {
-          case Some(f) => new FileInputStream(f)
+          case Some(f) => new BufferedInputStream(new FileInputStream(f))
           case None => System.in
         }
 
         outStream = config.outFile match {
-          case Some(f) => new FileOutputStream(f)
+          case Some(f) => new BufferedOutputStream(new FileOutputStream(f))
           case None => System.out
         }
 

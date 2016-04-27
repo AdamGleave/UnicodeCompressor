@@ -1,6 +1,6 @@
 #!/usr/bin/env python3.4
 
-import argparse, csv, filecmp, functools, os, sys, tempfile
+import argparse, csv, filecmp, functools, os, sys, tempfile, time
 from multiprocessing import Pool
 
 import numpy as np
@@ -163,11 +163,29 @@ def ppm_contour_plot_helper(test_name, fname, prior, d, granularity=config.PPM_C
   return save_figure(fig, test_name, fname)
 ppm_contour_plot = per_file_test(ppm_contour_plot_helper)
 
-def optimal_alpha_beta(compressor, d, fname, granularity):
-  res, _eval = grid_search(functools.partial(compressor, d), fname, iterations=1, shrink_factor=1,
-                           alpha_range=(config.PPM_ALPHA_START, config.PPM_ALPHA_END),
-                           beta_range=(config.PPM_BETA_START, config.PPM_BETA_END),
-                           Ns=granularity)
+def optimal_alpha_beta(compressor, d, fname, granularity, method='Nelder-Mead'):
+  d = int(d)
+  granularity = int(granularity)
+
+  res = None
+  start_time = time.time()
+  if granularity >= 1:
+    res, _eval = grid_search(functools.partial(compressor, d), fname, iterations=1, shrink_factor=1,
+                             alpha_range=(config.PPM_ALPHA_START, config.PPM_ALPHA_END),
+                             beta_range=(config.PPM_BETA_START, config.PPM_BETA_END),
+                             Ns=granularity)
+  else:
+    initial_guess = (0, 0.5) # PPMD
+    optres = optimize.minimize(fun=efficiency,
+                               args=(functools.partial(compressor, d), fname),
+                               x0=initial_guess,
+                               method=method,
+                               options={'disp': verbose})
+    res = (optres.x, optres.fun)
+  end_time = time.time()
+  time_elapsed = end_time - start_time
+  print("TIME: {0} at depth {1}, granularity {2} (method {3}): {4}"
+        .format(fname, d, granularity, method, time_elapsed))
   return res
 
 def parse_depths(depths):

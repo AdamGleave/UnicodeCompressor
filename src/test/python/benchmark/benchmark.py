@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.4
+#!/usr/bin/env python3
 
 import asciitable, argparse, csv, errno, filecmp, functools, os, pickle, re, sys, time
 from multiprocessing import Pool

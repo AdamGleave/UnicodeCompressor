@@ -194,14 +194,14 @@ def parse_depths(depths):
   else:
     return depths
 
-def ppm_optimal_parameters_helper(compressor, granularity, depths, fname):
+def ppm_optimal_parameters_helper(compressor, granularity, depths, method, fname):
   best_alpha = float('nan')
   best_beta = float('nan')
   best_depth = -1
   best_val = float('inf')
   # SOMEDAY: this could run in parallel, but awkward to do with Python's multiprocessing framework
   for d in depths:
-    (alpha, beta), val = optimal_alpha_beta(compressor, d, fname, granularity)
+    (alpha, beta), val = optimal_alpha_beta(compressor, d, fname, granularity, method)
     if val < best_val:
       best_val = val
       best_alpha, best_beta = alpha, beta
@@ -210,7 +210,8 @@ def ppm_optimal_parameters_helper(compressor, granularity, depths, fname):
 
 def ppm_optimal_parameters(pool, files, test_name, prior,
                            granularity=config.PPM_PARAMETER_GRANULARITY,
-                           depths=config.PPM_PARAMETER_DEPTHS):
+                           depths=config.PPM_PARAMETER_DEPTHS,
+                           method='Nelder-Mead'):
   def callback(res):
     csv_path = os.path.join(config.TABLE_DIR, test_name + '.csv')
     with open(csv_path, 'w') as f:
@@ -223,12 +224,13 @@ def ppm_optimal_parameters(pool, files, test_name, prior,
   depths = parse_depths(depths)
   compressor = functools.partial(config.ppm, prior)
 
-  runner = functools.partial(ppm_optimal_parameters_helper, compressor, granularity, depths)
+  runner = functools.partial(ppm_optimal_parameters_helper, compressor, granularity, depths, method)
   return pool.map_async(runner, files, callback=callback)
 
 def ppm_optimal_alpha_beta_helper(test_name, fname, prior,
                                   granularity=config.PPM_PARAMETER_GRANULARITY,
-                                  depths=config.PPM_PARAMETER_DEPTHS):
+                                  depths=config.PPM_PARAMETER_DEPTHS,
+                                  method='Nelder-Mead'):
   depths = parse_depths(depths)
   compressor = functools.partial(config.ppm, prior)
 
@@ -241,7 +243,7 @@ def ppm_optimal_alpha_beta_helper(test_name, fname, prior,
     writer.writerow(fieldnames)
 
     for d in depths:
-      (alpha, beta), efficiency = optimal_alpha_beta(compressor, d, fname, granularity)
+      (alpha, beta), efficiency = optimal_alpha_beta(compressor, d, fname, granularity, method)
       writer.writerow([d, alpha, beta, efficiency])
     return csv_path
 ppm_optimal_alpha_beta = per_file_test(ppm_optimal_alpha_beta_helper)

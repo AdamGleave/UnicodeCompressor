@@ -76,11 +76,7 @@ def run_test(pool, results, compressor_name, fname):
   output_prefix = os.path.join(config.COMPRESSED_DIR, compressor_name, fname)
   output_dir = os.path.dirname(output_prefix)
 
-  try:
-    os.makedirs(output_dir)
-  except OSError as e: # ignore error due to recreating directory
-    if e.errno != errno.EEXIST:
-      raise # if the error is due to something else, raise
+  os.makedirs(output_dir, exist_ok=True)
 
   if invalidate:
     cleanup(output_prefix)

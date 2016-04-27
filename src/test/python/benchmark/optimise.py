@@ -213,6 +213,7 @@ def ppm_optimal_parameters(pool, files, test_name, prior,
                            depths=config.PPM_PARAMETER_DEPTHS,
                            method='Nelder-Mead'):
   def callback(res):
+    os.makedirs(config.TABLE_DIR, exist_ok=True)
     csv_path = os.path.join(config.TABLE_DIR, test_name + '.csv')
     with open(csv_path, 'w') as f:
       writer = csv.writer(f)

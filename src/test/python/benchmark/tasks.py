@@ -70,8 +70,7 @@ def compressed_filesize(compressor, input_fname, paranoia):
         compressor(compressed.name, decompressed.name, CompressionMode.decompress)
         if not filecmp.cmp(input_fname, decompressed.name):
           return "ERROR: decompressed file differs from original"
-        else:
-          return os.path.getsize(compressed.name)
+    return os.path.getsize(compressed.name)
 
 #SOMEDAY: if result is in cache, quicker to hit DB locally rather than farming it out via Celery.
 @app.task
@@ -111,6 +110,13 @@ def optimise_brute_callback(res, alphas, betas, granularity):
 
   return optimum, evals
 
+def create_range(start, stop, N):
+  return start + np.arange(0, N) * (stop - start) / (N - 1)
+
+def legal_parameters(x):
+  a, b = x
+  return a + b >= 0.01 # mathematically legal if >0, but set 0.01 threshold for numerical stability
+
 def optimise_brute(fname, paranoia, prior, depth, alpha_range, beta_range, granularity):
   alphas = create_range(alpha_range[0], alpha_range[1], granularity)
   betas = create_range(beta_range[0], beta_range[1], granularity)
@@ -120,64 +126,6 @@ def optimise_brute(fname, paranoia, prior, depth, alpha_range, beta_range, granu
   work = [my_compressor.s(fname, paranoia, prior, ['ppm:d={0}:a={1}:b={2}'.format(int(depth),a,b)])
           for (a,b) in grid]
   return celery.chord(work, optimise_brute_callback.s(alphas, betas, granularity))
-
-def create_range(start, stop, N):
-  return start + np.arange(0, N) * (stop - start) / (N - 1)
-
-def range_around(point, old_range, factor):
-  old_width = old_range[1] - old_range[0]
-  new_width = old_width / factor
-  # clamp to end points
-  new_start = max(point - new_width / 2, old_range[0])
-  new_stop = min(point + new_width / 2, old_range[1])
-  return (new_start, new_stop)
-
-def legal_parameters(x):
-  a, b = x
-  return a + b >= 0.01 # mathematically legal if >0, but set 0.01 threshold for numerical stability
-
-@app.task
-def ppm_grid_search_callback2(res, fname, paranoia, prior, depth, iterations,
-                             shrink_factor, alpha_range, beta_range, granularity):
-  if iterations <= 1:
-    return (res[0], [res[1]])
-  else:
-    argmin, min = res[0]
-    evals = res[1]
-
-    new_alpha_range = range_around(argmin[0], alpha_range, shrink_factor)
-    new_beta_range = range_around(argmin[0], beta_range, shrink_factor)
-
-    new_res = ppm_grid_search(fname, paranoia, prior, depth, iterations - 1, shrink_factor,
-                              new_alpha_range, new_beta_range, granularity)().get()
-    new_optimum, new_evals = new_res
-
-    return (new_optimum, [evals] + new_evals)
-
-def ppm_grid_search2(fname, paranoia, prior, depth, iterations,
-                    shrink_factor, alpha_range, beta_range, granularity):
-  res = optimise_brute(fname, paranoia, prior, depth, alpha_range, beta_range, granularity)
-
-  return (res | ppm_grid_search_callback.s(fname, paranoia, prior, depth, iterations,
-                                           shrink_factor, alpha_range, beta_range, granularity))
-
-def ppm_grid_search_callback(res, fname, paranoia, prior, depth, shrink_factor, granularity):
-  argmin, min = res[0]
-  evals = res[1]
-
-  # TODO
-  new_alpha_range = range_around(argmin[0], alpha_range, shrink_factor)
-  new_beta_range = range_around(argmin[0], beta_range, shrink_factor)
-
-  new_res = optimise_brute(fname, paranoia, prior, depth, new_alpha_range, new_beta_range, granularity)
-
-def ppm_grid_search(fname, paranoia, prior, depth, iterations,
-                    shrink_factor, alpha_range, beta_range, granularity):
-  res = optimise_brute(fname, paranoia, prior, depth, alpha_range, beta_range, granularity)
-
-  while iterations > 1:
-    res = res | ppm_grid_search_callback.s(fname, paranoia, prior, depth, shrink_factor, granularity)
-    iterations -= 1
 
 @app.task
 def ppm_minimize(fname, paranoia, prior, depth, initial_guess, method='Nelder-Mead'):

@@ -64,6 +64,26 @@ def efficiency(params, compressor, original_fname):
 
   return compressed_size / original_size * 8
 
+def range_around(point, old_range, factor):
+  old_width = old_range[1] - old_range[0]
+  new_width = old_width / factor
+  return (point - new_width / 2, point + new_width / 2)
+
+def ppm_grid_search(fname, paranoia, prior, depth, iterations, shrink_factor,
+                    alpha_range, beta_range, granularity):
+  optimum = None
+  evals = []
+  for i in range(iterations):
+    res = benchmark.tasks.optimise_brute(fname, paranoia, prior, depth,
+                                          alpha_range, beta_range, granularity)
+    optimum, eval = res().get()
+    evals.append(eval)
+
+    argmin = optimum[0]
+    alpha_range = range_around(argmin[0], alpha_range, shrink_factor)
+    beta_range = range_around(argmin[1], beta_range, shrink_factor)
+  return optimum, evals
+
 def contour(optimum, evals, delta, num_levels, xlim, ylim):
   fig = plt.figure()
   # plot optimum
@@ -108,12 +128,10 @@ def ppm_contour_plot_helper(test_name, fname, prior, depth,
 
   alpha_range = (float(alpha_start), float(alpha_end))
   beta_range = (float(beta_start), float(beta_end))
-  grid_res = benchmark.tasks.ppm_grid_search.delay(fname, paranoia, prior, depth, int(iterations),
-              int(shrink_factor), alpha_range, beta_range, granularity)
-  optimum, evals = grid_res.get()
-  print(optimum, evals)
-  optimum = benchmark.tasks.ppm_minimize(fname, paranoia, prior, depth, optimum[0]).get()
-  print(optimum)
+  optimum, evals = ppm_grid_search(fname, paranoia, prior, depth, int(iterations),
+                                   int(shrink_factor), alpha_range, beta_range, granularity)
+  optres = benchmark.tasks.ppm_minimize.delay(fname, paranoia, prior, depth, optimum[0]).get()
+  optimum = optres.x, optres.fun
   fig = contour(optimum, evals, num_levels=int(num_levels), delta=float(delta),
                 xlim=beta_range, ylim=alpha_range)
 

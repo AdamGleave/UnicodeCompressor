@@ -1,4 +1,5 @@
 import filecmp, itertools, tempfile, os, subprocess
+import celery
 from redis import Redis
 import memoize.redis
 
@@ -46,7 +47,6 @@ def find_sbt_classpath():
 sbt_classpath = find_sbt_classpath()
 
 def build_my_compressor(base, algorithms=None):
-  print(base, algorithms)
   def run_compressor(in_file, out_file, mode):
     classpath = sbt_classpath + ':' + config.BIN_DIR
     class_qualified = 'uk.ac.cam.cl.arg58.mphil.compression.Compressor'
@@ -54,7 +54,6 @@ def build_my_compressor(base, algorithms=None):
                      '-classpath', classpath, class_qualified]
     ending_args = ['--base', base]
     if algorithms:
-      print(algorithms)
       ending_args += ['--model'] + algorithms
     compressor = build_compressor(starting_args,
                                   ['compress'] + ending_args,
@@ -90,22 +89,14 @@ def ext_compressor(fname, paranoia, name):
 
 # The below functions aren't memoized, as the individual values are memoized
 @app.task
-def optimise_brute(fname, paranoia, prior, depth, alpha_range, beta_range, granularity):
-  print("alpha: {0}, beta: {1}".format(alpha_range, beta_range))
-  alphas = create_range(alpha_range[0], alpha_range[1], granularity)
-  betas = create_range(beta_range[0], beta_range[1], granularity)
-  grid = filter(legal_parameters, itertools.product(alphas, betas))
-
-  work = [(fname, paranoia, prior, ['ppm:d={0}:a={1}:b={2}'.format(int(depth),a,b)])
-          for (a,b) in grid]
-  async_res = my_compressor.chunks(work, 10).apply_async()
-  res = itertools.chain(*async_res.get())
-
+def optimise_brute_callback(res, alphas, betas, granularity):
   results = np.empty((granularity, granularity))
+  k = 0
   for i, a in enumerate(alphas):
     for j, b in enumerate(betas):
       if legal_parameters((a, b)):
-        results[i][j] = res.__next__()
+        results[i][j] = res[k]
+        k += 1
       else:
         results[i][j] = np.inf
 
@@ -120,6 +111,16 @@ def optimise_brute(fname, paranoia, prior, depth, alpha_range, beta_range, granu
 
   return optimum, evals
 
+def optimise_brute(fname, paranoia, prior, depth, alpha_range, beta_range, granularity):
+  alphas = create_range(alpha_range[0], alpha_range[1], granularity)
+  betas = create_range(beta_range[0], beta_range[1], granularity)
+  grid = filter(legal_parameters, itertools.product(alphas, betas))
+
+  # SOMEDAY: this would be more efficient using chunks, but can't get it to work with chaining
+  work = [my_compressor.s(fname, paranoia, prior, ['ppm:d={0}:a={1}:b={2}'.format(int(depth),a,b)])
+          for (a,b) in grid]
+  return celery.chord(work, optimise_brute_callback.s(alphas, betas, granularity))
+
 def create_range(start, stop, N):
   return start + np.arange(0, N) * (stop - start) / (N - 1)
 
@@ -132,26 +133,60 @@ def range_around(point, old_range, factor):
   return (new_start, new_stop)
 
 def legal_parameters(x):
-  (a, b) = x
+  a, b = x
   return a + b >= 0.01 # mathematically legal if >0, but set 0.01 threshold for numerical stability
 
 @app.task
-# N.B. don't memoize as the atomic results are memoized
-def grid_search(fname, paranoia, prior, depth, iterations,
-                shrink_factor, alpha_range, beta_range, granularity):
-  res = optimise_brute(fname, paranoia, prior, depth, alpha_range, beta_range, granularity)
-
+def ppm_grid_search_callback2(res, fname, paranoia, prior, depth, iterations,
+                             shrink_factor, alpha_range, beta_range, granularity):
   if iterations <= 1:
     return (res[0], [res[1]])
   else:
     argmin, min = res[0]
     evals = res[1]
-    
+
     new_alpha_range = range_around(argmin[0], alpha_range, shrink_factor)
     new_beta_range = range_around(argmin[0], beta_range, shrink_factor)
 
-    new_res = grid_search(fname, paranoia, prior, depth, iterations - 1, shrink_factor,
-                          new_alpha_range, new_beta_range, granularity)
+    new_res = ppm_grid_search(fname, paranoia, prior, depth, iterations - 1, shrink_factor,
+                              new_alpha_range, new_beta_range, granularity)().get()
     new_optimum, new_evals = new_res
 
     return (new_optimum, [evals] + new_evals)
+
+def ppm_grid_search2(fname, paranoia, prior, depth, iterations,
+                    shrink_factor, alpha_range, beta_range, granularity):
+  res = optimise_brute(fname, paranoia, prior, depth, alpha_range, beta_range, granularity)
+
+  return (res | ppm_grid_search_callback.s(fname, paranoia, prior, depth, iterations,
+                                           shrink_factor, alpha_range, beta_range, granularity))
+
+def ppm_grid_search_callback(res, fname, paranoia, prior, depth, shrink_factor, granularity):
+  argmin, min = res[0]
+  evals = res[1]
+
+  # TODO
+  new_alpha_range = range_around(argmin[0], alpha_range, shrink_factor)
+  new_beta_range = range_around(argmin[0], beta_range, shrink_factor)
+
+  new_res = optimise_brute(fname, paranoia, prior, depth, new_alpha_range, new_beta_range, granularity)
+
+def ppm_grid_search(fname, paranoia, prior, depth, iterations,
+                    shrink_factor, alpha_range, beta_range, granularity):
+  res = optimise_brute(fname, paranoia, prior, depth, alpha_range, beta_range, granularity)
+
+  while iterations > 1:
+    res = res | ppm_grid_search_callback.s(fname, paranoia, prior, depth, shrink_factor, granularity)
+    iterations -= 1
+
+@app.task
+def ppm_minimize(fname, paranoia, prior, depth, initial_guess, method='Nelder-Mead'):
+  # optimisation has to proceed sequentially (compression with one set of parameters at a time),
+  # so don't distribute the tasks for this
+  def ppm(x):
+    (a, b) = x
+    return my_compressor(fname, paranoia, prior, ['ppm:d={0}:a={1}:b={2}'.format(int(depth),a,b)])
+  return optimize.minimize(fun=ppm,
+                           args=(),
+                           x0=initial_guess,
+                           method=method)

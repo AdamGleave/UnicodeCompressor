@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
 
 import benchmark.general
+import benchmark.tasks
 import benchmark.config_optimise as config
 
 def sanitize_fname(fname):
@@ -28,9 +29,9 @@ def save_figure(fig, output_dir, fname):
   return fig_path
 
 def per_file_test(test):
-  def f(pool, files, test_name, **kwargs):
+  def f(files, test_name, **kwargs):
     runner = functools.partial(test, test_name, **kwargs)
-    return pool.map_async(runner, files)
+    return list(map(runner, files))
   return f
 
 BUFSIZE = 1024 * 1024 # 1 MB
@@ -63,10 +64,7 @@ def efficiency(params, compressor, original_fname):
 
   return compressed_size / original_size * 8
 
-def contour(grid_res, delta, num_levels, xlim, ylim):
-  # process data
-  optimum, evals = grid_res
-
+def contour(optimum, evals, delta, num_levels, xlim, ylim):
   fig = plt.figure()
   # plot optimum
   (optimum_a, optimum_b), optimum_z = optimum
@@ -97,109 +95,104 @@ def contour(grid_res, delta, num_levels, xlim, ylim):
 
   return fig
 
-def ppm_contour_plot_helper(test_name, fname, prior, d, granularity=config.PPM_CONTOUR_GRANULARITY,
+def ppm_contour_plot_helper(test_name, fname, prior, depth,
+                            granularity=config.PPM_CONTOUR_GRANULARITY,
                             alpha_start=config.PPM_ALPHA_START, alpha_end=config.PPM_ALPHA_END,
                             beta_start=config.PPM_BETA_START, beta_end=config.PPM_BETA_END,
                             iterations=config.PPM_CONTOUR_NUM_ITERATIONS,
                             shrink_factor=config.PPM_CONTOUR_SHRINK_FACTOR,
                             num_levels=config.PPM_CONTOUR_NUM_LEVELS,
                             delta=config.PPM_CONTOUR_DELTA):
-  compressor = functools.partial(config.ppm, prior, int(d))
+  depth = int(depth)
+  granularity = int(granularity)
+
   alpha_range = (float(alpha_start), float(alpha_end))
   beta_range = (float(beta_start), float(beta_end))
-  grid = grid_search(compressor, fname, int(iterations), int(shrink_factor),
-                     alpha_range, beta_range, granularity)
-  fig = contour(grid, num_levels=int(num_levels), delta=float(delta),
+  grid_res = benchmark.tasks.ppm_grid_search.delay(fname, paranoia, prior, depth, int(iterations),
+              int(shrink_factor), alpha_range, beta_range, granularity)
+  optimum, evals = grid_res.get()
+  print(optimum, evals)
+  optimum = benchmark.tasks.ppm_minimize(fname, paranoia, prior, depth, optimum[0]).get()
+  print(optimum)
+  fig = contour(optimum, evals, num_levels=int(num_levels), delta=float(delta),
                 xlim=beta_range, ylim=alpha_range)
 
   return save_figure(fig, test_name, fname)
 ppm_contour_plot = per_file_test(ppm_contour_plot_helper)
 
-def optimal_alpha_beta(compressor, d, fname, granularity, method='Nelder-Mead'):
-  d = int(d)
-  granularity = int(granularity)
-
-  res = None
-  start_time = time.time()
-  if granularity >= 1:
-    res, _eval = grid_search(functools.partial(compressor, d), fname, iterations=1, shrink_factor=1,
-                             alpha_range=(config.PPM_ALPHA_START, config.PPM_ALPHA_END),
-                             beta_range=(config.PPM_BETA_START, config.PPM_BETA_END),
-                             Ns=granularity)
-  else:
-    initial_guess = (0, 0.5) # PPMD
-    optres = optimize.minimize(fun=efficiency,
-                               args=(functools.partial(compressor, d), fname),
-                               x0=initial_guess,
-                               method=method,
-                               options={'disp': verbose})
-    res = (optres.x, optres.fun)
-  end_time = time.time()
-  time_elapsed = end_time - start_time
-  print("TIME: {0} at depth {1}, granularity {2} (method {3}): {4}"
-        .format(fname, d, granularity, method, time_elapsed))
-  return res
-
-def parse_depths(depths):
-  if type(depths) == str: # parameter passed at CLI
-    return list(map(int, depths.split(",")))
-  else:
-    return depths
-
-def ppm_optimal_parameters_helper(compressor, granularity, depths, method, fname):
-  best_alpha = float('nan')
-  best_beta = float('nan')
-  best_depth = -1
-  best_val = float('inf')
-  # SOMEDAY: this could run in parallel, but awkward to do with Python's multiprocessing framework
-  for d in depths:
-    (alpha, beta), val = optimal_alpha_beta(compressor, d, fname, granularity, method)
-    if val < best_val:
-      best_val = val
-      best_alpha, best_beta = alpha, beta
-      best_depth = d
-  return (fname, (best_depth, best_alpha, best_beta, best_val))
-
-def ppm_optimal_parameters(pool, files, test_name, prior,
-                           granularity=config.PPM_PARAMETER_GRANULARITY,
-                           depths=config.PPM_PARAMETER_DEPTHS,
-                           method='Nelder-Mead'):
-  def callback(res):
-    os.makedirs(config.TABLE_DIR, exist_ok=True)
-    csv_path = os.path.join(config.TABLE_DIR, test_name + '.csv')
-    with open(csv_path, 'w') as f:
-      writer = csv.writer(f)
-      fieldnames = ['file', 'depth', 'alpha', 'beta', 'efficiency']
-      writer.writerow(fieldnames)
-      for fname, values in res:
-        rel_fname = os.path.relpath(fname, config.CORPUS_DIR)
-        writer.writerow([rel_fname] + list(values))
-  depths = parse_depths(depths)
-  compressor = functools.partial(config.ppm, prior)
-
-  runner = functools.partial(ppm_optimal_parameters_helper, compressor, granularity, depths, method)
-  return pool.map_async(runner, files, callback=callback)
-
-def ppm_optimal_alpha_beta_helper(test_name, fname, prior,
-                                  granularity=config.PPM_PARAMETER_GRANULARITY,
-                                  depths=config.PPM_PARAMETER_DEPTHS,
-                                  method='Nelder-Mead'):
-  depths = parse_depths(depths)
-  compressor = functools.partial(config.ppm, prior)
-
-  csv_dir = os.path.join(config.TABLE_DIR, test_name)
-  os.makedirs(csv_dir, exist_ok=True)
-  csv_path = os.path.join(csv_dir, sanitize_fname(fname) + '.csv')
-  with open(csv_path, 'w') as f:
-    fieldnames = ['depth', 'alpha', 'beta', 'efficiency']
-    writer = csv.writer(f)
-    writer.writerow(fieldnames)
-
-    for d in depths:
-      (alpha, beta), efficiency = optimal_alpha_beta(compressor, d, fname, granularity, method)
-      writer.writerow([d, alpha, beta, efficiency])
-    return csv_path
-ppm_optimal_alpha_beta = per_file_test(ppm_optimal_alpha_beta_helper)
+# def optimal_alpha_beta(fname, paranoia, prior, depth, granularity, method='Nelder-Mead'):
+#   if granularity >= 1:
+#     async_res = benchmark.tasks.ppm_grid_search.delay(fname, paranoia, prior, depth,
+#                              iterations=1, shrink_factor=1, granularity=granularity,
+#                              alpha_range=(config.PPM_ALPHA_START, config.PPM_ALPHA_END),
+#                              beta_range=(config.PPM_BETA_START, config.PPM_BETA_END))
+#     res, _ = async_res.get()
+#   else:
+#     initial_guess = (0, 0.5) # PPMD
+#     optres = benchmark.tasks.ppm_minimize(fname, paranoia, prior, depth, initial_guess).get()
+#     res = (optres.x, optres.fun)
+#   return res
+#
+# def parse_depths(depths):
+#   if type(depths) == str: # parameter passed at CLI
+#     return list(map(int, depths.split(",")))
+#   else:
+#     return depths
+#
+# def ppm_optimal_parameters_helper(compressor, granularity, depths, method, fname):
+#   best_alpha = float('nan')
+#   best_beta = float('nan')
+#   best_depth = -1
+#   best_val = float('inf')
+#   # SOMEDAY: this could run in parallel, but awkward to do with Python's multiprocessing framework
+#   for d in depths:
+#     (alpha, beta), val = optimal_alpha_beta(compressor, d, fname, granularity, method)
+#     if val < best_val:
+#       best_val = val
+#       best_alpha, best_beta = alpha, beta
+#       best_depth = d
+#   return (fname, (best_depth, best_alpha, best_beta, best_val))
+#
+# def ppm_optimal_parameters(pool, files, test_name, prior,
+#                            granularity=config.PPM_PARAMETER_GRANULARITY,
+#                            depths=config.PPM_PARAMETER_DEPTHS,
+#                            method='Nelder-Mead'):
+#   def callback(res):
+#     os.makedirs(config.TABLE_DIR, exist_ok=True)
+#     csv_path = os.path.join(config.TABLE_DIR, test_name + '.csv')
+#     with open(csv_path, 'w') as f:
+#       writer = csv.writer(f)
+#       fieldnames = ['file', 'depth', 'alpha', 'beta', 'efficiency']
+#       writer.writerow(fieldnames)
+#       for fname, values in res:
+#         rel_fname = os.path.relpath(fname, config.CORPUS_DIR)
+#         writer.writerow([rel_fname] + list(values))
+#   depths = parse_depths(depths)
+#   compressor = functools.partial(config.ppm, prior)
+#
+#   runner = functools.partial(ppm_optimal_parameters_helper, compressor, granularity, depths, method)
+#   return pool.map_async(runner, files, callback=callback)
+#
+# def ppm_optimal_alpha_beta_helper(test_name, fname, prior,
+#                                   granularity=config.PPM_PARAMETER_GRANULARITY,
+#                                   depths=config.PPM_PARAMETER_DEPTHS,
+#                                   method='Nelder-Mead'):
+#   depths = parse_depths(depths)
+#   compressor = functools.partial(config.ppm, prior)
+#
+#   csv_dir = os.path.join(config.TABLE_DIR, test_name)
+#   os.makedirs(csv_dir, exist_ok=True)
+#   csv_path = os.path.join(csv_dir, sanitize_fname(fname) + '.csv')
+#   with open(csv_path, 'w') as f:
+#     fieldnames = ['depth', 'alpha', 'beta', 'efficiency']
+#     writer = csv.writer(f)
+#     writer.writerow(fieldnames)
+#
+#     for d in depths:
+#       (alpha, beta), efficiency = optimal_alpha_beta(compressor, d, fname, granularity, method)
+#       writer.writerow([d, alpha, beta, efficiency])
+#     return csv_path
+# ppm_optimal_alpha_beta = per_file_test(ppm_optimal_alpha_beta_helper)
 
 def to_kwargs(xs):
   d = {}
@@ -217,8 +210,8 @@ paranoia=True # TODO: disable by default for speed
 
 TESTS = {
   'ppm_contour_plot': ppm_contour_plot,
-  'ppm_optimal_parameters': ppm_optimal_parameters,
-  'ppm_optimal_alpha_beta': ppm_optimal_alpha_beta,
+  # 'ppm_optimal_parameters': ppm_optimal_parameters,
+  # 'ppm_optimal_alpha_beta': ppm_optimal_alpha_beta,
 }
 
 def main():
@@ -231,9 +224,6 @@ def main():
                            'their output and comparing to the original file.')
   parser.add_argument('--rerun', dest='rerun', action='store_true',
                       help='regenerate the data, even if there is a cached result.')
-  parser.add_argument('--threads', dest='threads', type=int, default=config.NUM_THREADS,
-                      help='number of compression algorithms to run concurrently ' +
-                           '(default: {0}).'.format(config.NUM_THREADS))
   parser.add_argument('--include', dest='include', nargs='+',
                       help='paths which match the specified regex are included; ' +
                            'if unspecified, defaults to *.')
@@ -251,7 +241,6 @@ def main():
   files = benchmark.general.include_exclude_files(args['include'], args['exclude'])
   files = list(map(lambda fname: os.path.join(config.CORPUS_DIR, fname), files))
 
-  pool = Pool(args['threads'])
   if verbose:
     print("Splitting work across {0} processes".format(args['threads']))
 
@@ -269,15 +258,11 @@ def main():
       test_runner = TESTS[test_name]
       if verbose:
         print("Running " + test_name + " with parameters " + str(test_kwargs))
-      res[test] = test_runner(pool, files, test, **test_kwargs)
+      res[test] = test_runner(files, test, **test_kwargs)
     else:
       print("ERROR: unrecognised test '" + test_name + "'")
 
-  pool.close()
-  pool.join()
-
-  for test_name, test_async_res in res.items():
-    test_res = test_async_res.get()
+  for test_name, test_res in res.items():
     print("{0}: {1}".format(test_name, test_res))
 
 if __name__ == "__main__":

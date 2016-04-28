@@ -1,9 +1,13 @@
-import os, subprocess
+import os
 
-from mode import CompressionMode
-
-### General
-NUM_THREADS = 2
+### Celery
+REDIS_HOST = 'localhost'
+REDIS_PORT = 6379
+CELERY = {
+  'BROKER_URL': 'amqp://guest@localhost:5672//',
+  'CELERY_RESULT_BACKEND': 'redis://{0}:{1}'.format(REDIS_HOST, REDIS_PORT),
+  'CELERY_TRACK_STARTED': True,
+}
 
 ### Directories
 
@@ -19,52 +23,9 @@ if os.path.exists(os.path.join(THIS_DIR, 'config_local.py')):
 
 ### Compression algorithms
 
-def build_compressor(standard_args, compress_args, decompress_args):
-  def run_compressor(inFile, outFile, mode):
-    args = standard_args.copy()
-    if mode == CompressionMode.compress:
-      args += compress_args
-    else:
-      args += decompress_args
-    if outFile:
-      subprocess.check_call(args, stdin=inFile, stdout=outFile)
-    else:
-      return subprocess.check_output(args, stdin=inFile)
-  return run_compressor
-
-def find_sbt_classpath():
-  classpath_cache = os.path.join(OUTPUT_DIR, 'classpath.cached')
-
-  sbt_classpath = None
-  if os.path.exists(classpath_cache):
-    with open(classpath_cache, 'r') as f:
-      sbt_classpath = f.read().strip()
-  else:
-    cwd = os.getcwd()
-    os.chdir(PROJECT_DIR)
-    res = subprocess.check_output(['sbt', 'export compile:dependencyClasspath'])
-    os.chdir(cwd)
-
-    sbt_classpath = res.splitlines()[-1].decode("utf-8")
-
-    with open(classpath_cache, 'w') as f:
-      f.write(sbt_classpath)
-
-  return sbt_classpath
-
-sbt_classpath = find_sbt_classpath()
-
-def my_compressor(base, algorithms=None):
-  def run_compressor(in_file, out_file, mode):
-    classpath = sbt_classpath + ':' + BIN_DIR
-    class_qualified = 'uk.ac.cam.cl.arg58.mphil.compression.Compressor'
-    starting_args = ['scala', '-J-Xms1024M', '-J-Xmx2048M',
-                     '-classpath', classpath, class_qualified]
-    ending_args = ['--base', base]
-    if algorithms:
-      ending_args += ['--model'] + algorithms
-    compressor = build_compressor(starting_args,
-                                  ['compress'] + ending_args,
-                                  ['decompress'] + ending_args)
-    return compressor(in_file, out_file, mode)
-  return run_compressor
+PPMd_EXECUTABLE = os.path.join(PROJECT_DIR, 'ext', 'ppmdj1', 'PPMd')
+EXT_COMPRESSORS = {
+  'gzip': (['gzip', '-c'], [], ['-d']),
+  'bzip2': (['bzip2', '-c', '--best'], ['-z'], ['-d']),
+  'PPMd': ([PPMd_EXECUTABLE], ['e'], ['d']),
+}

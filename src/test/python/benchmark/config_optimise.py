@@ -2,6 +2,8 @@ import functools, os
 
 from config import *
 
+from benchmark.config import *
+
 CACHE_DIR = os.path.join(OUTPUT_DIR, 'cache')
 FIGURE_DIR = os.path.join(OUTPUT_DIR, 'figures')
 TABLE_DIR = os.path.join(OUTPUT_DIR, 'tables')

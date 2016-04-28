@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import argparse, csv, filecmp, functools, os, sys, tempfile, time
-from multiprocessing import Pool
 
 import numpy as np
 from scipy import optimize
@@ -9,24 +8,8 @@ from scipy import optimize
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
 
-from joblib import Memory
-
-import general
-from mode import CompressionMode
-import config_optimise as config
-
-memory = Memory(cachedir=config.CACHE_DIR, verbose=0)
-use_cache = True
-
-def maybe_cache(*args, **kwargs):
-  memoized = memory.cache(*args, **kwargs)
-  def wrapper(*args, **kwargs):
-    if use_cache:
-      return memoized(*args, **kwargs)
-    else:
-      # still persist result to cache, but don't read from it
-      return memoized.call(*args, **kwargs)
-  return wrapper
+import benchmark.general
+import benchmark.config_optimise as config
 
 def sanitize_fname(fname):
   fname = os.path.relpath(fname, config.CORPUS_DIR)
@@ -79,37 +62,6 @@ def efficiency(params, compressor, original_fname):
   os.close(compressed_file)
 
   return compressed_size / original_size * 8
-
-def range_around(point, old_range, factor):
-  old_width = old_range[1] - old_range[0]
-  new_width = old_width / factor
-  return (point - new_width / 2, point + new_width / 2)
-
-@maybe_cache
-def grid_search(compressor, fname, iterations, shrink_factor, alpha_range, beta_range, Ns):
-  def helper(iterations, alpha_range, beta_range):
-    finish = None
-    if iterations <= 1:
-      # on finest grid, use Nelder-Mead to find optimum
-      finish = optimize.fmin
-    res = optimize.brute(func=efficiency,
-                         args=(compressor, fname),
-                         ranges=(alpha_range, beta_range),
-                         Ns=Ns,
-                         full_output=True,
-                         finish=finish,
-                         disp=verbose)
-
-    if iterations <= 1:
-      return (res[0:2], [res[2:]])
-    else:
-      argmin = res[0]
-      new_a_range = range_around(argmin[0], alpha_range, shrink_factor)
-      new_b_range = range_around(argmin[1], beta_range, shrink_factor)
-      optimum, evals = helper(iterations - 1, new_a_range, new_b_range)
-
-      return (optimum, [res[2:]] + evals)
-  return helper(iterations, alpha_range, beta_range)
 
 def contour(grid_res, delta, num_levels, xlim, ylim):
   # process data
@@ -296,7 +248,7 @@ def main():
   paranoia = args['paranoia']
   use_cache = not args['rerun']
 
-  files = general.include_exclude_files(args['include'], args['exclude'])
+  files = benchmark.general.include_exclude_files(args['include'], args['exclude'])
   files = list(map(lambda fname: os.path.join(config.CORPUS_DIR, fname), files))
 
   pool = Pool(args['threads'])

@@ -210,6 +210,18 @@ class MemoizedFunction(object):
     def __repr__(self):
         return '<%s of %s via %s>' % (self.__class__.__name__, self.func, self.cache)
 
+    @property
+    def __name__(self):
+        return self.func.__name__
+
+    @property
+    def __module__(self):
+        return self.func.__module__
+
+    @property
+    def __doc__(self):
+        return self.func.__doc__
+
     def bind(self, *args, **kwargs):
         args, kwargs = self._expand_args(args, kwargs)
         return self.__class__(

@@ -1,5 +1,5 @@
 import glob, os
-import config
+import benchmark.config as config
 
 def find_files(patterns):
   acc = set()

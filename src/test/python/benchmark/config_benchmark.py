@@ -1,14 +1,11 @@
-import os, re
-from config import *
+import re
 
-COMPRESSED_DIR = os.path.join(OUTPUT_DIR, 'compressed')
+from benchmark.tasks import my_compressor, ext_compressor
 
 COMPRESSORS = {}
-COMPRESSORS['ref_gzip'] = build_compressor(['gzip', '-c'], [], ['-d'])
-COMPRESSORS['ref_bzip2'] = build_compressor(['bzip2', '-c', '--best'], ['-z'], ['-d'])
-
-PPMd_EXECUTABLE = os.path.join(PROJECT_DIR, 'ext', 'ppmdj1', 'PPMd')
-COMPRESSORS['ref_PPMd'] = build_compressor([PPMd_EXECUTABLE], ['e'], ['d'])
+COMPRESSORS['ref_gzip'] = (ext_compressor, {'name': 'gzip'})
+COMPRESSORS['ref_bzip2'] = (ext_compressor, {'name': 'bzip2'})
+COMPRESSORS['ref_PPMd'] = (ext_compressor, {'name': 'PPMd'})
 
 algos = {'none': [], 'crp': ['crp:a=1:b=0'], 'lzw': ['lzwEscape']}
 
@@ -41,4 +38,4 @@ for (algo_name, algo_config) in algos.items():
   for (prior_name, prior_config) in priors.items():
     name = algo_name + '_' + prior_name
     if not is_excluded(name):
-      COMPRESSORS[name] = my_compressor(prior_name, algo_config)
+      COMPRESSORS[name] = (my_compressor, {'base': prior_name, 'algorithms': algo_config})

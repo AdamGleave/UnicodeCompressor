@@ -42,7 +42,7 @@ def find_sbt_classpath():
   return sbt_classpath
 sbt_classpath = find_sbt_classpath()
 
-def my_compressor(base, algorithms=None):
+def build_my_compressor(base, algorithms=None):
   def run_compressor(in_file, out_file, mode):
     classpath = sbt_classpath + ':' + config.BIN_DIR
     class_qualified = 'uk.ac.cam.cl.arg58.mphil.compression.Compressor'
@@ -69,15 +69,16 @@ def compressed_filesize(compressor, input_fname, paranoia):
         else:
           return os.path.getsize(compressed.name)
 
+#SOMEDAY: if result is in cache, quicker to hit DB locally rather than farming it out via Celery.
 @app.task
 @memo
-def my_compressor(base, algorithms, fname, paranoia):
-  compressor = my_compressor(base, algorithms)
+def my_compressor(fname, paranoia, base, algorithms):
+  compressor = build_my_compressor(base, algorithms)
   return compressed_filesize(compressor, fname, paranoia)
 
 @app.task
 @memo
-def ext_compressor(name, fname, paranoia):
+def ext_compressor(fname, paranoia, name):
   standard_args, compressor_args, decompressor_args = config.EXT_COMPRESSORS[name]
   compressor = build_compressor(standard_args, compressor_args, decompressor_args)
   return compressed_filesize(compressor, fname, paranoia)

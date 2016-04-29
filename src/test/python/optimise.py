@@ -4,12 +4,17 @@ import argparse, filecmp, functools, multiprocessing, os, sys, tempfile
 
 import numpy as np
 
+import matplotlib
+matplotlib.use('PDF')
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
 
 import benchmark.general
 import benchmark.tasks
 import benchmark.config_optimise as config
+
+def error_callback(location, exception):
+  print("Error in {0}: {1}".format(location, exception), file=sys.stderr)
 
 def sanitize_fname(fname):
   fname = os.path.relpath(fname, config.CORPUS_DIR)
@@ -30,7 +35,11 @@ def save_figure(fig, output_dir, fname):
 def per_file_test(test):
   def f(pool, files, test_name, **kwargs):
     runner = functools.partial(test, test_name, **kwargs)
-    return pool.map_async(runner, files)
+    for fname in files:
+      def callback(res):
+        print("FINISHED: {0} on {1}: {2}".format(test_name, fname, res))
+      ec = functools.partial(error_callback, "per_file_test - {0} on {1}".format(test_name, fname))
+      pool.apply_async(runner, (fname, ), callback=callback, error_callback=ec)
   return f
 
 BUFSIZE = 1024 * 1024 # 1 MB
@@ -51,7 +60,7 @@ def efficiency(params, compressor, original_fname):
       c(compressed, decompressed_file, CompressionMode.decompress)
     if not filecmp.cmp(original_fname, decompressed_fname):
       print("WARNING: decompressed file differs from original, with compressor " +
-            str(compressor) + " under parameters " + str(params))
+            str(compressor) + " under parameters " + str(params), file=sys.stderr)
       return float('inf')
     os.unlink(decompressed_fname)
     os.close(decompressed_file)
@@ -85,6 +94,7 @@ def ppm_grid_search(fname, paranoia, prior, depth, iterations, shrink_factor,
 
 def contour(optimum, evals, delta, num_levels, xlim, ylim):
   fig = plt.figure()
+
   # plot optimum
   (optimum_a, optimum_b), optimum_z = optimum
   plt.scatter(optimum_b, optimum_a, marker='x')
@@ -96,7 +106,7 @@ def contour(optimum, evals, delta, num_levels, xlim, ylim):
   (a, b), z = evals[0]
   plt.contour(b, a, z, levels=levels, linewidths=1)
   # TODO: multi-resolution
-
+  
   # shade illegal parameter region, a + b <= 0
   min_x, max_x = xlim
   min_y, max_y = ylim
@@ -122,6 +132,7 @@ def ppm_contour_plot_helper(test_name, fname, prior, depth,
                             shrink_factor=config.PPM_CONTOUR_SHRINK_FACTOR,
                             num_levels=config.PPM_CONTOUR_NUM_LEVELS,
                             delta=config.PPM_CONTOUR_DELTA):
+  #TODO: convert to bits at some point
   depth = int(depth)
   granularity = int(granularity)
 
@@ -265,7 +276,6 @@ def main():
   if verbose:
     print("Splitting work across {0} processes".format(NUM_WORKERS))
 
-  res = {}
   if not args['tests']:
     print("WARNING: no tests specified", file=sys.stderr)
   for test in args['tests']:
@@ -279,15 +289,13 @@ def main():
       test_runner = TESTS[test_name]
       if verbose:
         print("Running " + test_name + " with parameters " + str(test_kwargs))
-      res[test] = test_runner(pool, files, test, **test_kwargs)
+      test_runner(pool, files, test, **test_kwargs)
     else:
       print("ERROR: unrecognised test '" + test_name + "'")
 
   pool.close()
   pool.join()
-  for test_name, test_async_res in res.items():
-    test_res = test_async_res.get()
-    print("{0}: {1}".format(test_name, test_res))
+  print("All tests finished.")
 
 if __name__ == "__main__":
   main()

@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 
-import argparse, csv, filecmp, functools, os, sys, tempfile, time
+import argparse, filecmp, functools, multiprocessing, os, sys, tempfile
 
 import numpy as np
-from scipy import optimize
 
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
@@ -29,9 +28,9 @@ def save_figure(fig, output_dir, fname):
   return fig_path
 
 def per_file_test(test):
-  def f(files, test_name, **kwargs):
+  def f(pool, files, test_name, **kwargs):
     runner = functools.partial(test, test_name, **kwargs)
-    return list(map(runner, files))
+    return pool.map_async(runner, files)
   return f
 
 BUFSIZE = 1024 * 1024 # 1 MB
@@ -232,6 +231,9 @@ TESTS = {
   # 'ppm_optimal_alpha_beta': ppm_optimal_alpha_beta,
 }
 
+# None of the workers are resource intensive in their own right, so OK to exceed the # of cores
+NUM_WORKERS = 16
+
 def main():
   description = "Produce visualisations and find optimal parameters of compression algorithms"
   parser = argparse.ArgumentParser(description=description)
@@ -259,8 +261,9 @@ def main():
   files = benchmark.general.include_exclude_files(args['include'], args['exclude'])
   files = list(map(lambda fname: os.path.join(config.CORPUS_DIR, fname), files))
 
+  pool = multiprocessing.Pool(NUM_WORKERS)
   if verbose:
-    print("Splitting work across {0} processes".format(args['threads']))
+    print("Splitting work across {0} processes".format(NUM_WORKERS))
 
   res = {}
   if not args['tests']:
@@ -276,11 +279,14 @@ def main():
       test_runner = TESTS[test_name]
       if verbose:
         print("Running " + test_name + " with parameters " + str(test_kwargs))
-      res[test] = test_runner(files, test, **test_kwargs)
+      res[test] = test_runner(pool, files, test, **test_kwargs)
     else:
       print("ERROR: unrecognised test '" + test_name + "'")
 
-  for test_name, test_res in res.items():
+  pool.close()
+  pool.join()
+  for test_name, test_async_res in res.items():
+    test_res = test_async_res.get()
     print("{0}: {1}".format(test_name, test_res))
 
 if __name__ == "__main__":

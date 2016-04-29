@@ -97,7 +97,7 @@ if __name__ == "__main__":
   for compressor_name in compressors:
     compressor, kwargs = config_benchmark.COMPRESSORS[compressor_name]
     for fname in files:
-      work += [compressor.s(fname=fname, paranoia=True, **kwargs)]
+      work += [compressor.s(fname=fname, paranoia=False, **kwargs)]
   async_res = celery.group(work)()
   result_list = async_res.get()
 

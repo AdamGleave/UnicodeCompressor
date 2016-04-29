@@ -23,13 +23,3 @@ PPM_CONTOUR_NUM_LEVELS = 10
 # resolution than for contours
 PPM_PARAMETER_GRANULARITY = 20
 PPM_PARAMETER_DEPTHS = range(0, 10, 1) # 0..9
-
-def ppm(prior, d, a, b):
-  assert(int(d) == d)
-
-  if a + b <= 0.01:
-    # a + b > 0 to be legal; make it 0.01 to ensure numerical stability
-    return None
-  else:
-    algo_config = ['ppm:d={0}:a={1}:b={2}'.format(int(d),a,b)]
-    return my_compressor(prior, algo_config)

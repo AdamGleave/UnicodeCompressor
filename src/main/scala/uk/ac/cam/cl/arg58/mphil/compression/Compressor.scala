@@ -7,7 +7,11 @@ import uk.ac.cam.eng.ml.tcs27.compression._
 
 import scala.collection.JavaConversions
 
-case class Config(compress: Boolean = true,
+object Modes extends Enumeration {
+  val Compress, Measure, Decompress = Value
+}
+
+case class Config(mode: Modes.Value = Modes.Compress,
                   debug: Boolean = false,
                   base: (String => Unit, String) = null,
                   models: Seq[(String => Unit, String)] = Seq(),
@@ -21,7 +25,7 @@ case class ByteModel(models: Seq[Distribution[Integer]]) extends Model
 case class TokenModel(models: Seq[Distribution[Token]]) extends Model
 case class NoModel() extends Model
 
-object Compressor {
+class Compressor {
   final val ByteEOF = 256
 
   val arith: Coder = new Arith()
@@ -79,11 +83,13 @@ object Compressor {
     opt[Unit]("tokens") action { (_, c) => c.copy(outputTokens = true)
       } text("write serialised representation of Unicode tokens (decompress mode only)")
     arg[String]("<mode>") action { (x, c) => x match {
-      case "compress" => c.copy(compress = true)
-      case "decompress" => c.copy(compress = false)
+      case "compress" => c.copy(mode = Modes.Compress)
+      case "decompress" => c.copy(mode = Modes.Decompress)
+      case "measure" => c.copy(mode = Modes.Measure)
     } } validate { x => x match {
       case "compress" => success
       case "decompress" => success
+      case "measure" => success
       case x => failure("Unrecognised argument " + x + ", should be compress or decompress.")
     } } text("mode, either compress or decompress")
     arg[File]("input") optional() action { (x,c) =>
@@ -106,9 +112,9 @@ object Compressor {
       throw new AssertionError("Base distribution cannot be layered on top of existing models")
   }
 
-  def uniformToken(params: String): Unit = tokenBase(FlatToken.UniformToken)
-  def categoricalToken(params: String): Unit = tokenBase(CategoricalToken)
-  def polyaToken(params: String): Unit = tokenBase(FlatToken.PolyaToken(params))
+  private def uniformToken(params: String): Unit = tokenBase(FlatToken.UniformToken)
+  private def categoricalToken(params: String): Unit = tokenBase(CategoricalToken)
+  private def polyaToken(params: String): Unit = tokenBase(FlatToken.PolyaToken(params))
 
   private def byteBase(model: Distribution[Integer]): Unit = models match {
     case NoModel() =>
@@ -117,9 +123,9 @@ object Compressor {
       throw new AssertionError("Base distribution cannot be layered on top of existing models")
   }
 
-  def uniformByte(params: String): Unit = byteBase(new UniformInteger(0, ByteEOF))
-  def polyaByte(params: String): Unit = byteBase(new SBST(0, ByteEOF))
-  def lzwByte(params: String): Unit = {
+  private def uniformByte(params: String): Unit = byteBase(new UniformInteger(0, ByteEOF))
+  private def polyaByte(params: String): Unit = byteBase(new SBST(0, ByteEOF))
+  private def lzwByte(params: String): Unit = {
     val alphabet = JavaConversions
       .asJavaIterable(0 to ByteEOF)
       .asInstanceOf[java.lang.Iterable[Integer]]
@@ -127,7 +133,7 @@ object Compressor {
     byteBase(lzw)
   }
 
-  def crp(params: String): Unit = {
+  private def crp(params: String): Unit = {
     models = models match {
       case NoModel() =>
         throw new AssertionError("CRP needs a base distribution.")
@@ -140,7 +146,7 @@ object Compressor {
     }
   }
 
-  def lzwEscape(params: String): Unit = {
+  private def lzwEscape(params: String): Unit = {
     models = models match {
       case NoModel() =>
         throw new AssertionError("LZWEscape needs a base distribution.")
@@ -153,7 +159,7 @@ object Compressor {
     }
   }
 
-  def ppm(params: String): Unit = {
+  private def ppm(params: String): Unit = {
     models = models match {
       case NoModel() =>
         throw new AssertionError("CRP needs a base distribution.")
@@ -166,8 +172,7 @@ object Compressor {
     }
   }
 
-  def compress(debug: Boolean): Unit = {
-    val out = new OutputStreamBitWriter(outStream)
+  private def compress(out: BitWriter, debug: Boolean): Unit = {
     arith.start_encode(out)
 
     val ec =
@@ -201,7 +206,7 @@ object Compressor {
     out.close()
   }
 
-  def decompress(debug: Boolean, outputTokens: Boolean): Unit = {
+  private def decompress(debug: Boolean, outputTokens: Boolean): Unit = {
     val in = new InputStreamBitReader(inStream)
 
     arith.start_decode(in)
@@ -246,7 +251,7 @@ object Compressor {
     outStream.close()
   }
 
-  def main(args: Array[String]): Unit = {
+  def parse(args: Array[String]) = {
     parser.parse(args, Config()) match {
       case Some(config) =>
         // input and output files
@@ -269,16 +274,28 @@ object Compressor {
         }
 
         // compress/decompress
-        if (config.compress) {
-          // compress
-          compress(config.debug)
-        } else {
-          // decompress
-          decompress(config.debug, config.outputTokens)
+        config.mode match {
+          case Modes.Compress =>
+            val out = new OutputStreamBitWriter(outStream)
+            compress(out, config.debug)
+          case Modes.Measure =>
+            val out = new BitCounter()
+            compress(out, config.debug)
+            val results = new PrintWriter(outStream)
+            results.write("BITS WRITTEN: " + out.bitsWritten() + "\n")
+            results.flush()
+          case Modes.Decompress => decompress(config.debug, config.outputTokens)
         }
       case None =>
         // invalid arguments, terminate
         System.exit(1)
     }
+  }
+}
+
+object Compressor {
+  def main(args: Array[String]): Unit = {
+    val c = new Compressor
+    c.parse(args)
   }
 }

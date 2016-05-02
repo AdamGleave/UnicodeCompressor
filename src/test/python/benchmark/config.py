@@ -19,7 +19,9 @@ OUTPUT_DIR = os.path.join(PROJECT_DIR, 'experiments')
 
 ### Local overrides (optional)
 if os.path.exists(os.path.join(THIS_DIR, 'config_local.py')):
+  CELERY_OVERRIDES = {}
   from benchmark.config_local import *
+  CELERY.update(CELERY_OVERRIDES)
 
 ### Compression algorithms
 

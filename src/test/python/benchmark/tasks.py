@@ -56,7 +56,7 @@ def find_sbt_classpath():
     else:
       cwd = os.getcwd()
       os.chdir(config.PROJECT_DIR)
-      res = subprocess.check_output(['sbt', 'export compile:dependencyClasspath'])
+      res = subprocess.check_output(['sbt', 'export compile:fullClasspath'])
       os.chdir(cwd)
 
       sbt_classpath_cache = res.splitlines()[-1].decode("utf-8")

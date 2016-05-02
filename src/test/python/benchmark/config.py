@@ -19,7 +19,7 @@ OUTPUT_DIR = os.path.join(PROJECT_DIR, 'experiments')
 
 ### Local overrides (optional)
 if os.path.exists(os.path.join(THIS_DIR, 'config_local.py')):
-  from config_local import *
+  from benchmark.config_local import *
 
 ### Compression algorithms
 

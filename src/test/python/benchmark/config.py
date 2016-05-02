@@ -5,7 +5,6 @@ REDIS_HOST = 'localhost'
 REDIS_PORT = 6379
 CELERY = {
   'BROKER_URL': 'amqp://guest@localhost:5672//',
-  'CELERY_RESULT_BACKEND': 'redis://{0}:{1}'.format(REDIS_HOST, REDIS_PORT),
   'CELERY_TRACK_STARTED': True,
 }
 
@@ -22,6 +21,8 @@ if os.path.exists(os.path.join(THIS_DIR, 'config_local.py')):
   CELERY_OVERRIDES = {}
   from benchmark.config_local import *
   CELERY.update(CELERY_OVERRIDES)
+
+CELERY['CELERY_RESULT_BACKEND'] = 'redis://{0}:{1}'.format(REDIS_HOST, REDIS_PORT),
 
 ### Compression algorithms
 

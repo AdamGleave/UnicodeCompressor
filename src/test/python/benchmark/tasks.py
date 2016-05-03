@@ -68,7 +68,7 @@ def find_sbt_classpath():
 def my_compressor_start_args(classname):
   classpath = find_sbt_classpath() + ':' + config.BIN_DIR
   class_qualified = 'uk.ac.cam.cl.arg58.mphil.compression.' + classname
-  return ['scala', '-J-Xms1024M', '-J-Xmx2048M',
+  return ['java', '-J-Xms1024M', '-J-Xmx2048M',
           '-classpath', classpath, class_qualified]
 
 def my_compressor_end_args(base, algorithms):

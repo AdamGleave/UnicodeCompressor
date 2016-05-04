@@ -206,7 +206,7 @@ def ppm_optimal_parameters(pool, files, test_name, prior,
 
   runner = functools.partial(ppm_optimal_parameters_helper, paranoia, prior, granularity, method)
   ec = functools.partial(error_callback, "ppm_optimal_parameters - {0} on {1}".format(test_name, files))
-  pool.map_async(runner, work, callback=callback, error_callback=ec)
+  pool.map_async(runner, work, chunksize=1, callback=callback, error_callback=ec)
 
 def ppm_optimal_alpha_beta_helper(test_name, fname, prior,
                                   granularity=config.PPM_PARAMETER_GRANULARITY,

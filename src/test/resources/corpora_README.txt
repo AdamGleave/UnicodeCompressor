@@ -15,8 +15,8 @@ ziemia_obiecana.txt: Polish. Extended Latin alphabet. Mixture of 1 and 2-byte lo
 
 crime_and_punishment.txt: Russian (Crylic alphabet). 2-byte encoding.
 
-genji: Japanese. Very high code points, 3-byte long encoding.
-kokoro: Japanese. Similar to Genji.
+genji: Japanese. Very high code points, 3-byte long encoding. Contains both single chapter (chapter2.txt) and concatenation of the complete works (all.txt)
+kokoro.txt: Japanese. Similar to Genji.
 
 # mixedlanguage
 

@@ -121,7 +121,7 @@ def my_compressor(fname, paranoia, base, algorithms):
 
     ready_read = []
     waiting_for = 0
-    timeout = 0.1
+    timeout = 5.0
     while not ready_read:
       ready_read, _, _ = select.select([multi_compressor.stdout], [], [], timeout)
       if not ready_read:

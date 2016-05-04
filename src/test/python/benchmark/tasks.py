@@ -124,7 +124,7 @@ def my_compressor(fname, paranoia, base, algorithms):
       if not ready_read:
         waiting_for += timeout
         timeout *= 2
-        print("Waiting on multi_compressor ({1} with {2} on {3}) for {4}s"
+        print("Waiting on multi_compressor ({0} with {1} on {2}) for {3}s"
               .format(base, algorithms, fname, waiting_for), file=sys.stderr)
 
     out = multi_compressor.stdout.readline().strip()

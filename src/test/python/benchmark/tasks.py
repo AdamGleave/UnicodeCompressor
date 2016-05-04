@@ -93,9 +93,20 @@ def run_multicompressor():
   return subprocess.Popen(args, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                           universal_newlines=True, bufsize=1)
 
+# make absolutely sure don't miss any errors
+class TaskWrapper(celery.Task):
+    abstract = True
+
+    def __call__(self, *args, **kwargs):
+        try:
+            return super(TaskWrapper, self).__call__(*args, **kwargs)
+        except Exception as e:
+            print('Error executing task! name/args/kwargs: {0}/{1}/{2}'.format(self.name, args, kwargs))
+            print(e)
+
 multi_compressor = None
 #SOMEDAY: if result is in cache, quicker to hit DB locally rather than farming it out via Celery.
-@app.task
+@app.task(base=TaskWrapper)
 @memo
 def my_compressor(fname, paranoia, base, algorithms):
   def error_str(suffix):
@@ -140,7 +151,7 @@ def my_compressor(fname, paranoia, base, algorithms):
     return bits / 8 # compressed filesize in bytes
 
 # The below functions aren't memoized, as the individual values are memoized
-@app.task
+@app.task(base=TaskWrapper)
 def optimise_brute_callback(res, alphas, betas, granularity):
   results = np.empty((granularity, granularity))
   k = 0

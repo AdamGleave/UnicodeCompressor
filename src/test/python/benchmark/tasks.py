@@ -68,7 +68,7 @@ def find_sbt_classpath():
 def my_compressor_start_args(classname):
   classpath = find_sbt_classpath() + ':' + config.BIN_DIR
   class_qualified = 'uk.ac.cam.cl.arg58.mphil.compression.' + classname
-  return ['java', '-Xms512M', '-Xmx1024M',
+  return ['java', '-Xms512M', '-Xmx1536M',
           '-classpath', classpath, class_qualified]
 
 def my_compressor_end_args(base, algorithms):
@@ -90,7 +90,7 @@ def build_my_compressor(base, algorithms=None):
 def run_multicompressor():
   args = my_compressor_start_args('MultiCompressor')
   # use line buffer
-  return subprocess.Popen(args, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+  return subprocess.Popen(args, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                           universal_newlines=True, bufsize=1)
 
 multi_compressor = None
@@ -122,15 +122,17 @@ def my_compressor(fname, paranoia, base, algorithms):
     ready_read = []
     waiting_for = 0
     timeout = 5.0
-    while not ready_read:
-      ready_read, _, _ = select.select([multi_compressor.stdout], [], [], timeout)
+    while multi_compressor.stdout not in ready_read:
+      ready_read, _, _ = select.select([multi_compressor.stdout, multi_compressor.stderr], [], [], timeout)
       if not ready_read:
         waiting_for += timeout
         timeout *= 2
         print(error_str("waiting for {0}s".format(waiting_for)), file=sys.stderr)
+      if multi_compressor.stderr in ready_read:
+        for line in multi_compressor.stderr:
+          print(error_str("received error from MultiCompressor: " + line.strip()))
 
     out = multi_compressor.stdout.readline().strip()
-
     prefix = 'BITS WRITTEN: '
     if out.find(prefix) != 0:
       raise RuntimeError(error_str("unexpected output: '" + out + "'"))

@@ -22,7 +22,8 @@ if os.path.exists(os.path.join(THIS_DIR, 'config_local.py')):
   from benchmark.config_local import *
   CELERY.update(CELERY_OVERRIDES)
 
-CELERY['CELERY_RESULT_BACKEND'] = 'redis://{0}:{1}'.format(REDIS_HOST, REDIS_PORT)
+#CELERY['CELERY_RESULT_BACKEND'] = 'redis://{0}:{1}'.format(REDIS_HOST, REDIS_PORT)
+CELERY['CELERY_RESULT_BACKEND'] = CELERY['BROKER_URL']
 
 ### Compression algorithms
 

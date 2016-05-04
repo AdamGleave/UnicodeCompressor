@@ -98,6 +98,9 @@ multi_compressor = None
 @app.task
 @memo
 def my_compressor(fname, paranoia, base, algorithms):
+  def error_str(suffix):
+    return 'multi_compressor: {0} with {1} (paranoia={2}) on {3}: {4}'\
+           .format(base, algorithms, paranoia, fname, suffix)
   if paranoia:
     # Slow but makes sure the results are valid.
     # Uses the standard Compressor interface to compress the file then decompress it,
@@ -118,20 +121,19 @@ def my_compressor(fname, paranoia, base, algorithms):
 
     ready_read = []
     waiting_for = 0
-    timeout = 5.0
+    timeout = 0.1
     while not ready_read:
       ready_read, _, _ = select.select([multi_compressor.stdout], [], [], timeout)
       if not ready_read:
         waiting_for += timeout
         timeout *= 2
-        print("Waiting on multi_compressor ({0} with {1} on {2}) for {3}s"
-              .format(base, algorithms, fname, waiting_for), file=sys.stderr)
+        print(error_str("waiting for {0}s".format(waiting_for)), file=sys.stderr)
 
     out = multi_compressor.stdout.readline().strip()
 
     prefix = 'BITS WRITTEN: '
     if out.find(prefix) != 0:
-      raise RuntimeError("Unexpected output from MultiCompressor: '" + out + "'")
+      raise RuntimeError(error_str("unexpected output: '" + out + "'"))
     bits = int(out[len(prefix):])
     return bits / 8 # compressed filesize in bytes
 

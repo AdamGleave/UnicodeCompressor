@@ -59,7 +59,7 @@ def ppm_grid_search(fname, paranoia, prior, depth, iterations, shrink_factor,
   for i in range(iterations):
     res = benchmark.tasks.optimise_brute(fname, paranoia, prior, depth,
                                           alpha_range, beta_range, granularity)
-    optimum, eval = res().get()
+    optimum, eval = res.get()
     evals.append(eval)
 
     argmin = optimum[0]
@@ -251,7 +251,7 @@ def canonical_name(name, kwargs):
   return res
 
 verbose=False
-paranoia=True # TODO: disable by default for speed
+paranoia=False
 
 TESTS = {
   'ppm_contour_plot': ppm_contour_plot,

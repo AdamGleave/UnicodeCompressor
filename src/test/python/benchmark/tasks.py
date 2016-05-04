@@ -1,4 +1,4 @@
-import filecmp, itertools, tempfile, os, subprocess
+import filecmp, itertools, tempfile, os, select, subprocess, sys
 import celery
 from redis import Redis
 import memoize.redis
@@ -115,6 +115,18 @@ def my_compressor(fname, paranoia, base, algorithms):
     cmd =  'measure {0} '.format(os.path.join(config.CORPUS_DIR, fname))
     cmd += ' '.join(my_compressor_end_args(base, algorithms)) + '\n'
     multi_compressor.stdin.write(cmd)
+
+    ready_read = []
+    waiting_for = 0
+    timeout = 5.0
+    while not ready_read:
+      ready_read, _, _ = select.select([multi_compressor.stdout], [], [], timeout)
+      if not ready_read:
+        waiting_for += timeout
+        timeout *= 2
+        print("Waiting on multi_compressor ({1} with {2} on {3}) for {4}s"
+              .format(base, algorithms, fname, waiting_for), file=sys.stderr)
+
     out = multi_compressor.stdout.readline().strip()
 
     prefix = 'BITS WRITTEN: '

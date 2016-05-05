@@ -142,6 +142,8 @@ def ppm_contour_plot_helper(test_name, fname, prior, depth,
 ppm_contour_plot = per_file_test(ppm_contour_plot_helper)
 
 def ppm_find_optimal_alpha_beta(fname, paranoia, prior, depth, granularity, method):
+  if verbose:
+     print('ppm_find_optimal_alpha_beta: {0} at depth {1} on {2}'.format(prior, depth, fname))
   initial_guess = (0, 0.5) # PPMD
 
   if granularity >= 1:

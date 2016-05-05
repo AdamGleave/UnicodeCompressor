@@ -268,8 +268,9 @@ TESTS = {
   'ppm_optimal_alpha_beta': ppm_optimal_alpha_beta,
 }
 
-# None of the workers are resource intensive in their own right, so OK to exceed the # of cores
-NUM_WORKERS = 16
+# This limits the number of high-level operations which can be performed in parallel.
+# As a rule of thumb, it should be close to the *total number* of cores in the cluster.
+NUM_WORKERS = 64
 
 def main():
   description = "Produce visualisations and find optimal parameters of compression algorithms"

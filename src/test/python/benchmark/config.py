@@ -6,6 +6,8 @@ REDIS_PORT = 6379
 CELERY = {
   'BROKER_URL': 'amqp://guest@localhost:5672//',
   'CELERY_TRACK_STARTED': True,
+  'CELERYD_PREFETCH_MULTIPLIER': 1,
+  'CELERY_ACKS_LATE': True,
 }
 
 ### Directories

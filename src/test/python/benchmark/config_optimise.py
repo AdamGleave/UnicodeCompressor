@@ -23,3 +23,7 @@ PPM_CONTOUR_NUM_LEVELS = 10
 # resolution than for contours
 PPM_PARAMETER_GRANULARITY = 20
 PPM_PARAMETER_DEPTHS = range(0, 10, 1) # 0..9
+
+# This limits the number of high-level operations which can be performed in parallel.
+# As a rule of thumb, it should be close to the *total number* of cores in the cluster.
+NUM_WORKERS = 64

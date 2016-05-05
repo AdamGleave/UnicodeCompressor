@@ -285,10 +285,6 @@ TESTS = {
   'ppm_optimal_alpha_beta': ppm_optimal_alpha_beta,
 }
 
-# This limits the number of high-level operations which can be performed in parallel.
-# As a rule of thumb, it should be close to the *total number* of cores in the cluster.
-NUM_WORKERS = 64
-
 def main():
   description = "Produce visualisations and find optimal parameters of compression algorithms"
   parser = argparse.ArgumentParser(description=description)
@@ -304,6 +300,8 @@ def main():
                            'if unspecified, defaults to *.')
   parser.add_argument('--exclude', dest='exclude', nargs='+',
                       help='paths which match the specified regex are excluded.')
+  parser.add_argument('--num-workers', dest='num_workers', default=config.NUM_WORKERS,
+                      help='number of local processes (default: {0})'.format(config.NUM_WORKERS))
   parser.add_argument('tests', nargs='*',
                       help='list of tests to conduct; format is test_name[:parameter1=value1[:...]]')
 
@@ -312,13 +310,14 @@ def main():
   verbose = args['verbose']
   paranoia = args['paranoia']
   use_cache = not args['rerun']
+  num_workers = int(args['num_workers'])
 
   files = benchmark.general.include_exclude_files(args['include'], args['exclude'])
   files = list(map(lambda fname: os.path.join(config.CORPUS_DIR, fname), files))
 
-  pool = multiprocessing.Pool(NUM_WORKERS)
+  pool = multiprocessing.Pool(num_workers)
   if verbose:
-    print("Splitting work across {0} processes".format(NUM_WORKERS))
+    print("Splitting work across {0} processes".format(num_workers))
 
   if not args['tests']:
     print("WARNING: no tests specified", file=sys.stderr)

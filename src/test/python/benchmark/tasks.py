@@ -23,7 +23,7 @@ def build_compressor(standard_args, compress_args, decompress_args):
       args += decompress_args
     with open(in_fname, 'rb') as in_file:
       with open(out_fname, 'wb') as out_file:
-        subprocess.check_call(args, stdin=in_file, stdout=out_file)
+        return subprocess.Popen(args, stdin=in_file, stdout=out_file)
   return run_compressor
 
 def compressed_filesize(compressor, input_fname, paranoia):
@@ -32,10 +32,20 @@ def compressed_filesize(compressor, input_fname, paranoia):
     compressor(input_fname, compressed.name, CompressionMode.compress)
     if paranoia:
       with tempfile.NamedTemporaryFile(prefix='compression_de') as decompressed:
-        compressor(compressed.name, decompressed.name, CompressionMode.decompress)
-        if not filecmp.cmp(input_fname, decompressed.name):
-          return "ERROR: decompressed file differs from original"
-    return os.path.getsize(compressed.name)
+        p = compressor(compressed.name, decompressed.name, CompressionMode.decompress)
+        for (timeout, complaint) in config.timeouts():
+          try:
+            return_code = p.wait(timeout)
+            if return_code != 0:
+              return "ERROR: compressor returned status {0}".format(return_code)
+            if not filecmp.cmp(input_fname, decompressed.name):
+              return "ERROR: decompressed file differs from original"
+            return os.path.getsize(compressed.name)
+          except subprocess.TimeoutExpired:
+            print(complaint)
+        # timed out
+        p.kill()
+        return float('inf')
 
 @app.task
 @memo
@@ -127,25 +137,24 @@ def my_compressor(fname, paranoia, base, algorithms):
         # if this still fails, propagate the exception (only retry once)
         multi_compressor.stdin.write(cmd)
 
-      ready_read = []
-      waiting_for = 0
-      timeout = 5.0
-      while multi_compressor.stdout not in ready_read:
-        ready_read, _, _ = select.select([multi_compressor.stdout, multi_compressor.stderr], [], [], timeout)
+      for (timeout, complaint) in config.timeouts():
+        ready_read, _, _ = select.select([multi_compressor.stdout, multi_compressor.stderr], [], [],
+                                         timeout)
         if not ready_read:
-          waiting_for += timeout
-          timeout *= 2
-          print(error_str("waiting for {0}s".format(waiting_for)), file=sys.stderr)
+          print(error_str(complaint))
         if multi_compressor.stderr in ready_read:
           for line in multi_compressor.stderr:
             print(error_str("received error from MultiCompressor: " + line.strip()))
-
-      out = multi_compressor.stdout.readline().strip()
-      prefix = 'BITS WRITTEN: '
-      if out.find(prefix) != 0:
-        raise RuntimeError(error_str("unexpected output: '" + out + "'"))
-      bits = int(out[len(prefix):])
-      return bits / 8 # compressed filesize in bytes
+        if multi_compressor.stdout in ready_read:
+          out = multi_compressor.stdout.readline().strip()
+          prefix = 'BITS WRITTEN: '
+          if out.find(prefix) != 0:
+            raise RuntimeError(error_str("unexpected output: '" + out + "'"))
+          bits = int(out[len(prefix):])
+          return bits / 8 # compressed filesize in bytes
+      multi_compressor.kill()
+      multi_compressor = None
+      return float('inf')
   except Exception:
     print(error_str("error executing task: " + traceback.format_exc()))
     return float('inf')

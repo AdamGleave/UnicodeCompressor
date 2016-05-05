@@ -34,3 +34,16 @@ EXT_COMPRESSORS = {
   'bzip2': (['bzip2', '-c', '--best'], ['-z'], ['-d']),
   'PPMd': ([PPMd_EXECUTABLE], ['e'], ['d']),
 }
+
+TIMEOUTS = { 'warn': 5, 'backoff': 2, 'hard': 60 }
+def timeouts():
+  waited_for = 0
+  current_timeout = TIMEOUTS['warn']
+  while waited_for < TIMEOUTS['hard']:
+    waited_for += current_timeout
+    next_timeout = min(current_timeout * TIMEOUTS['backoff'], TIMEOUTS['hard'] - waited_for)
+    if waited_for == TIMEOUTS['hard']:
+      yield (current_timeout, "waited for {0}s: timed out".format(waited_for))
+    else:
+      yield (current_timeout, "waited for {0}s, sleeping for {1}s more".format(waited_for, next_timeout))
+      current_timeout = next_timeout

@@ -130,8 +130,13 @@ def ppm_contour_plot_helper(test_name, fname, prior, depth,
   beta_range = (float(beta_start), float(beta_end))
   optimum, evals = ppm_grid_search(fname, paranoia, prior, depth, int(iterations),
                                    int(shrink_factor), alpha_range, beta_range, granularity)
-  optres = benchmark.tasks.ppm_minimize.delay(fname, paranoia, prior, depth, optimum[0]).get()
-  optimum = optres.x, optres.fun
+  opt_success, opt_res = benchmark.tasks.ppm_minimize.delay(fname, paranoia, prior,
+                                                            depth, optimum[0]).get()
+  if opt_success:
+    optimum = opt_res.x, opt_res.fun
+  else:
+    print('ppm_contour_plot_helper: warning, error in ppm_minimize ' +
+          '-- falling back to grid search: ' + str(opt_res))
 
   original_size = corpus_size(fname)
   optimum, evals = grid_to_efficiency(optimum, evals, original_size)
@@ -154,9 +159,12 @@ def ppm_find_optimal_alpha_beta(fname, paranoia, prior, depth, granularity, meth
     optimum, evals = res
     initial_guess, _ = optimum
 
-  optres = benchmark.tasks.ppm_minimize.delay(fname, paranoia, prior,
-                                              depth, initial_guess, method).get()
-  return (optres.x, optres.fun)
+  opt_success, opt_res = benchmark.tasks.ppm_minimize.delay(fname, paranoia, prior,
+                                                            depth, initial_guess, method).get()
+  if opt_success:
+    return (opt_res.x, opt_res.fun)
+  else:
+    print('ppm_find_optimal_alpha_beta: error in ppm_minimize: ' + str(opt_res))
 
 def parse_depths(depths):
   if type(depths) == str: # parameter passed at CLI
@@ -172,7 +180,7 @@ def best_parameters_by_depth(res):
 
   for depth, x in res.items():
     (alpha, beta), val = x
-    if val < best_val:
+    if (val != None) and val < best_val: # val can be None if optimisation fails
       best_val = val
       best_alpha, best_beta = alpha, beta
       best_depth = depth
@@ -210,7 +218,7 @@ def ppm_optimal_parameters(pool, files, test_name, prior,
         depth, alpha, beta, size = best_parameters_by_depth(values)
         efficiency = size * 8 / original_size
         rel_fname = os.path.relpath(fname, config.CORPUS_DIR)
-        writer.writerow([rel_fname, depth, alpha, beta, int(size), efficiency])
+        writer.writerow([rel_fname, depth, alpha, beta, size, efficiency])
 
   runner = functools.partial(worker_wrapper, ppm_optimal_parameters_helper,
                              paranoia, prior, granularity, method)
@@ -235,9 +243,10 @@ def ppm_optimal_alpha_beta_helper(test_name, fname, prior,
     writer.writerow(fieldnames)
 
     for d in depths:
-      (alpha, beta), compressed_size = ppm_find_optimal_alpha_beta(fname, paranoia, prior,
-                                                              d, granularity, method)
-      writer.writerow([d, alpha, beta, int(compressed_size), compressed_size / original_size * 8])
+      res = ppm_find_optimal_alpha_beta(fname, paranoia, prior, d, granularity, method)
+      if res: # optimisation succeeded
+        (alpha, beta), compressed_size = res
+        writer.writerow([d, alpha, beta, int(compressed_size), compressed_size / original_size * 8])
     return csv_path
 ppm_optimal_alpha_beta = per_file_test(ppm_optimal_alpha_beta_helper)
 

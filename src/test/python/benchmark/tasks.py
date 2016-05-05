@@ -93,70 +93,62 @@ def run_multicompressor():
   return subprocess.Popen(args, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                           universal_newlines=True, bufsize=1)
 
-# make absolutely sure don't miss any errors
-class TaskWrapper(celery.Task):
-    abstract = True
-
-    def __call__(self, *args, **kwargs):
-        try:
-            return super(TaskWrapper, self).__call__(*args, **kwargs)
-        except Exception:
-          print('Error executing task! name/args/kwargs: {0}/{1}/{2}'.format(self.name, args, kwargs))
-          traceback.print_exc()
-          return float('inf')
-
 multi_compressor = None
 #SOMEDAY: if result is in cache, quicker to hit DB locally rather than farming it out via Celery.
-@app.task(base=TaskWrapper)
+@app.task
 @memo
 def my_compressor(fname, paranoia, base, algorithms):
-  def error_str(suffix):
-    return 'multi_compressor: {0} with {1} (paranoia={2}) on {3}: {4}'\
-           .format(base, algorithms, paranoia, fname, suffix)
-  if paranoia:
-    # Slow but makes sure the results are valid.
-    # Uses the standard Compressor interface to compress the file then decompress it,
-    # and verifies the decompressed file is the same as the original
-    compressor = build_my_compressor(base, algorithms)
-    return compressed_filesize(compressor, fname, paranoia)
-  else:
-    # Uses the MultiCompressor interface with the measure command.
-    # Runs commands in the same JVM, one after the other, and doesn't write any files.
-    # Faster, but doesn't perform any verification checks.
-    global multi_compressor
-    if not multi_compressor:
-      multi_compressor = run_multicompressor()
+  try:
+    def error_str(suffix):
+      return 'multi_compressor: {0} with {1} (paranoia={2}) on {3}: {4}'\
+             .format(base, algorithms, paranoia, fname, suffix)
+    if paranoia:
+      # Slow but makes sure the results are valid.
+      # Uses the standard Compressor interface to compress the file then decompress it,
+      # and verifies the decompressed file is the same as the original
+      compressor = build_my_compressor(base, algorithms)
+      return compressed_filesize(compressor, fname, paranoia)
+    else:
+      # Uses the MultiCompressor interface with the measure command.
+      # Runs commands in the same JVM, one after the other, and doesn't write any files.
+      # Faster, but doesn't perform any verification checks.
+      global multi_compressor
+      if not multi_compressor:
+        multi_compressor = run_multicompressor()
 
-    cmd =  'measure {0} '.format(os.path.join(config.CORPUS_DIR, fname))
-    cmd += ' '.join(my_compressor_end_args(base, algorithms)) + '\n'
-    try:
-      multi_compressor.stdin.write(cmd)
-    except BrokenPipeError:
-      print("WARNING: MultiCompressor has quit, restarting.")
-      multi_compressor.kill() # make sure it's dead
-      multi_compressor = run_multicompressor()
-      # if this still fails, propagate the exception (only retry once)
-      multi_compressor.stdin.write(cmd)
+      cmd =  'measure {0} '.format(os.path.join(config.CORPUS_DIR, fname))
+      cmd += ' '.join(my_compressor_end_args(base, algorithms)) + '\n'
+      try:
+        multi_compressor.stdin.write(cmd)
+      except BrokenPipeError:
+        print("WARNING: MultiCompressor has quit, restarting.")
+        multi_compressor.kill() # make sure it's dead
+        multi_compressor = run_multicompressor()
+        # if this still fails, propagate the exception (only retry once)
+        multi_compressor.stdin.write(cmd)
 
-    ready_read = []
-    waiting_for = 0
-    timeout = 5.0
-    while multi_compressor.stdout not in ready_read:
-      ready_read, _, _ = select.select([multi_compressor.stdout, multi_compressor.stderr], [], [], timeout)
-      if not ready_read:
-        waiting_for += timeout
-        timeout *= 2
-        print(error_str("waiting for {0}s".format(waiting_for)), file=sys.stderr)
-      if multi_compressor.stderr in ready_read:
-        for line in multi_compressor.stderr:
-          print(error_str("received error from MultiCompressor: " + line.strip()))
+      ready_read = []
+      waiting_for = 0
+      timeout = 5.0
+      while multi_compressor.stdout not in ready_read:
+        ready_read, _, _ = select.select([multi_compressor.stdout, multi_compressor.stderr], [], [], timeout)
+        if not ready_read:
+          waiting_for += timeout
+          timeout *= 2
+          print(error_str("waiting for {0}s".format(waiting_for)), file=sys.stderr)
+        if multi_compressor.stderr in ready_read:
+          for line in multi_compressor.stderr:
+            print(error_str("received error from MultiCompressor: " + line.strip()))
 
-    out = multi_compressor.stdout.readline().strip()
-    prefix = 'BITS WRITTEN: '
-    if out.find(prefix) != 0:
-      raise RuntimeError(error_str("unexpected output: '" + out + "'"))
-    bits = int(out[len(prefix):])
-    return bits / 8 # compressed filesize in bytes
+      out = multi_compressor.stdout.readline().strip()
+      prefix = 'BITS WRITTEN: '
+      if out.find(prefix) != 0:
+        raise RuntimeError(error_str("unexpected output: '" + out + "'"))
+      bits = int(out[len(prefix):])
+      return bits / 8 # compressed filesize in bytes
+  except Exception:
+    print(error_str("error executing task: " + traceback.format_exc()))
+    return float('inf')
 
 # The below functions aren't memoized, as the individual values are memoized
 def create_range(start, stop, N):
@@ -201,10 +193,13 @@ def optimise_brute(fname, paranoia, prior, depth, alpha_range, beta_range, granu
 def ppm_minimize(fname, paranoia, prior, depth, initial_guess, method='Nelder-Mead'):
   # optimisation has to proceed sequentially (compression with one set of parameters at a time),
   # so don't distribute the tasks for this
-  def ppm(x):
-    (a, b) = x
-    return my_compressor(fname, paranoia, prior, ['ppm:d={0}:a={1}:b={2}'.format(int(depth),a,b)])
-  return optimize.minimize(fun=ppm,
-                           args=(),
-                           x0=initial_guess,
-                           method=method)
+  try:
+    def ppm(x):
+      (a, b) = x
+      return my_compressor(fname, paranoia, prior, ['ppm:d={0}:a={1}:b={2}'.format(int(depth),a,b)])
+    opt = optimize.minimize(fun=ppm, args=(), x0=initial_guess, method=method,
+                            options={'maxfev': 100})
+    return (True, opt)
+  except Exception as e:
+    print("ppm_minimize: exception occurred: " + traceback.format_exc())
+    return (False, e)

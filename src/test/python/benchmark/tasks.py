@@ -189,7 +189,28 @@ def optimise_brute(fname, paranoia, prior, depth, alpha_range, beta_range, granu
   # SOMEDAY: this would be more efficient using chunks, but can't get it to work with chaining
   work = [my_compressor.s(fname, paranoia, prior, ['ppm:d={0}:a={1}:b={2}'.format(int(depth),a,b)])
           for (a,b) in grid]
-  return celery.chord(work)(optimise_brute_callback.s(alphas, betas, granularity))
+  raw_res = celery.group(work)().get()
+
+  res = np.empty((granularity, granularity))
+  k = 0
+  for i, a in enumerate(alphas):
+    for j, b in enumerate(betas):
+      if legal_parameters((a, b)):
+        res[i][j] = raw_res[k]
+        k += 1
+      else:
+        res[i][j] = np.inf
+
+  beta_grid, alpha_grid = np.meshgrid(betas, alphas)
+  optimum_i = np.argmin(res)
+  optimum_alpha = alpha_grid.flatten()[optimum_i]
+  optimum_beta = beta_grid.flatten()[optimum_i]
+  min_val = res.flatten()[optimum_i]
+
+  optimum = (optimum_alpha, optimum_beta), min_val
+  evals = (alpha_grid, beta_grid), res
+
+  return optimum, evals
 
 @app.task
 def ppm_minimize(fname, paranoia, prior, depth, initial_guess, method='Nelder-Mead'):

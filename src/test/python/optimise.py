@@ -57,9 +57,8 @@ def ppm_grid_search(fname, paranoia, prior, depth, iterations, shrink_factor,
   optimum = None
   evals = []
   for i in range(iterations):
-    res = benchmark.tasks.optimise_brute(fname, paranoia, prior, depth,
-                                          alpha_range, beta_range, granularity)
-    optimum, eval = res.get()
+    optimum, eval = benchmark.tasks.optimise_brute(fname, paranoia, prior, depth,
+                                                   alpha_range, beta_range, granularity)
     evals.append(eval)
 
     argmin = optimum[0]

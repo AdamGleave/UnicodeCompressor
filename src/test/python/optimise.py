@@ -142,23 +142,19 @@ def ppm_contour_plot_helper(test_name, fname, prior, depth,
 ppm_contour_plot = per_file_test(ppm_contour_plot_helper)
 
 def ppm_find_optimal_alpha_beta(fname, paranoia, prior, depth, granularity, method):
-  try:
-    initial_guess = (0, 0.5) # PPMD
+  initial_guess = (0, 0.5) # PPMD
 
-    if granularity >= 1:
-      res = ppm_grid_search(fname, paranoia, prior, depth,
-                            iterations=1, shrink_factor=1, granularity=granularity,
-                            alpha_range=(config.PPM_ALPHA_START, config.PPM_ALPHA_END),
-                            beta_range=(config.PPM_BETA_START, config.PPM_BETA_END))
-      optimum, evals = res
-      initial_guess, _ = optimum
+  if granularity >= 1:
+    res = ppm_grid_search(fname, paranoia, prior, depth,
+                          iterations=1, shrink_factor=1, granularity=granularity,
+                          alpha_range=(config.PPM_ALPHA_START, config.PPM_ALPHA_END),
+                          beta_range=(config.PPM_BETA_START, config.PPM_BETA_END))
+    optimum, evals = res
+    initial_guess, _ = optimum
 
-    optres = benchmark.tasks.ppm_minimize.delay(fname, paranoia, prior,
-                                                depth, initial_guess, method).get()
-    return (optres.x, optres.fun)
-  except Exception:
-    traceback.print_exc()
-    raise
+  optres = benchmark.tasks.ppm_minimize.delay(fname, paranoia, prior,
+                                              depth, initial_guess, method).get()
+  return (optres.x, optres.fun)
 
 def parse_depths(depths):
   if type(depths) == str: # parameter passed at CLI

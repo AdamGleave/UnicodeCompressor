@@ -150,7 +150,25 @@ def my_compressor(fname, paranoia, base, algorithms):
     print(error_str("error executing task: " + traceback.format_exc()))
     return float('inf')
 
-# The below functions aren't memoized, as the individual values are memoized
+# This function doesn't need to be memoized, as it's a function of memoized values.
+# However, optimisation is itself expensive, and the cached result is fairly small.
+# So may as well save it.
+@app.task
+@memo
+def ppm_minimize(fname, paranoia, prior, depth, initial_guess, method='Nelder-Mead'):
+  # optimisation has to proceed sequentially (compression with one set of parameters at a time),
+  # so don't distribute the tasks for this
+  try:
+    def ppm(x):
+      (a, b) = x
+      return my_compressor(fname, paranoia, prior, ['ppm:d={0}:a={1}:b={2}'.format(int(depth),a,b)])
+    opt = optimize.minimize(fun=ppm, args=(), x0=initial_guess, method=method,
+                            options={'maxfev': 100})
+    return (True, opt)
+  except Exception as e:
+    print("ppm_minimize: exception occurred: " + traceback.format_exc())
+    return (False, e)
+
 def create_range(start, stop, N):
   return start + np.arange(0, N) * (stop - start) / (N - 1)
 
@@ -158,6 +176,7 @@ def legal_parameters(x):
   a, b = x
   return a + b >= 0.01 # mathematically legal if >0, but set 0.01 threshold for numerical stability
 
+# This function isn't memoised, as it's a function of memoized values, and the result size is large.
 def optimise_brute(fname, paranoia, prior, depth, alpha_range, beta_range, granularity):
   alphas = create_range(alpha_range[0], alpha_range[1], granularity)
   betas = create_range(beta_range[0], beta_range[1], granularity)
@@ -188,18 +207,3 @@ def optimise_brute(fname, paranoia, prior, depth, alpha_range, beta_range, granu
   evals = (alpha_grid, beta_grid), res
 
   return optimum, evals
-
-@app.task
-def ppm_minimize(fname, paranoia, prior, depth, initial_guess, method='Nelder-Mead'):
-  # optimisation has to proceed sequentially (compression with one set of parameters at a time),
-  # so don't distribute the tasks for this
-  try:
-    def ppm(x):
-      (a, b) = x
-      return my_compressor(fname, paranoia, prior, ['ppm:d={0}:a={1}:b={2}'.format(int(depth),a,b)])
-    opt = optimize.minimize(fun=ppm, args=(), x0=initial_guess, method=method,
-                            options={'maxfev': 100})
-    return (True, opt)
-  except Exception as e:
-    print("ppm_minimize: exception occurred: " + traceback.format_exc())
-    return (False, e)

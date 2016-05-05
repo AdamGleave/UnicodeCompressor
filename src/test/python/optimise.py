@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-import argparse, csv, filecmp, functools, itertools
-import math, multiprocessing, os, sys, tempfile, traceback
+import argparse, csv, functools, itertools
+import math, multiprocessing, os, sys, traceback
 
 import numpy as np
 
@@ -13,6 +13,13 @@ from matplotlib.backends.backend_pdf import PdfPages
 import benchmark.general
 import benchmark.tasks
 import benchmark.config_optimise as config
+
+def worker_wrapper(func, *args, **kwargs):
+  try:
+    return func(*args, **kwargs)
+  except Exception:
+    traceback.print_exc()
+    raise
 
 def error_callback(location, exception):
   print("Error in {0}: {1}".format(location, exception),
@@ -44,7 +51,7 @@ def per_file_test(test):
       def callback(res):
         print("FINISHED: {0} on {1}: {2}".format(test_name, fname, res))
       ec = functools.partial(error_callback, "per_file_test - {0} on {1}".format(test_name, fname))
-      pool.apply_async(runner, (fname, ), callback=callback, error_callback=ec)
+      pool.apply_async(worker_wrapper, (runner, fname, ), callback=callback, error_callback=ec)
   return f
 
 def range_around(point, old_range, factor):
@@ -135,19 +142,23 @@ def ppm_contour_plot_helper(test_name, fname, prior, depth,
 ppm_contour_plot = per_file_test(ppm_contour_plot_helper)
 
 def ppm_find_optimal_alpha_beta(fname, paranoia, prior, depth, granularity, method):
-  initial_guess = (0, 0.5) # PPMD
+  try:
+    initial_guess = (0, 0.5) # PPMD
 
-  if granularity >= 1:
-    res = ppm_grid_search(fname, paranoia, prior, depth,
-                          iterations=1, shrink_factor=1, granularity=granularity,
-                          alpha_range=(config.PPM_ALPHA_START, config.PPM_ALPHA_END),
-                          beta_range=(config.PPM_BETA_START, config.PPM_BETA_END))
-    optimum, evals = res
-    initial_guess, _ = optimum
+    if granularity >= 1:
+      res = ppm_grid_search(fname, paranoia, prior, depth,
+                            iterations=1, shrink_factor=1, granularity=granularity,
+                            alpha_range=(config.PPM_ALPHA_START, config.PPM_ALPHA_END),
+                            beta_range=(config.PPM_BETA_START, config.PPM_BETA_END))
+      optimum, evals = res
+      initial_guess, _ = optimum
 
-  optres = benchmark.tasks.ppm_minimize.delay(fname, paranoia, prior,
-                                              depth, initial_guess, method).get()
-  return (optres.x, optres.fun)
+    optres = benchmark.tasks.ppm_minimize.delay(fname, paranoia, prior,
+                                                depth, initial_guess, method).get()
+    return (optres.x, optres.fun)
+  except Exception:
+    traceback.print_exc()
+    raise
 
 def parse_depths(depths):
   if type(depths) == str: # parameter passed at CLI
@@ -203,7 +214,8 @@ def ppm_optimal_parameters(pool, files, test_name, prior,
         rel_fname = os.path.relpath(fname, config.CORPUS_DIR)
         writer.writerow([rel_fname, depth, alpha, beta, int(size), efficiency])
 
-  runner = functools.partial(ppm_optimal_parameters_helper, paranoia, prior, granularity, method)
+  runner = functools.partial(worker_wrapper, ppm_optimal_parameters_helper,
+                             paranoia, prior, granularity, method)
   ec = functools.partial(error_callback, "ppm_optimal_parameters - {0} on {1}".format(test_name, files))
   pool.map_async(runner, work, chunksize=1, callback=callback, error_callback=ec)
 

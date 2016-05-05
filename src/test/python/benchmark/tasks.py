@@ -1,4 +1,4 @@
-import filecmp, itertools, tempfile, os, select, subprocess, sys
+import filecmp, itertools, tempfile, os, select, subprocess, sys, traceback
 import celery
 from redis import Redis
 import memoize.redis
@@ -100,9 +100,10 @@ class TaskWrapper(celery.Task):
     def __call__(self, *args, **kwargs):
         try:
             return super(TaskWrapper, self).__call__(*args, **kwargs)
-        except Exception as e:
-            print('Error executing task! name/args/kwargs: {0}/{1}/{2}'.format(self.name, args, kwargs))
-            print(e)
+        except Exception:
+          print('Error executing task! name/args/kwargs: {0}/{1}/{2}'.format(self.name, args, kwargs))
+          traceback.print_exc()
+          return float('inf')
 
 multi_compressor = None
 #SOMEDAY: if result is in cache, quicker to hit DB locally rather than farming it out via Celery.
@@ -128,7 +129,14 @@ def my_compressor(fname, paranoia, base, algorithms):
 
     cmd =  'measure {0} '.format(os.path.join(config.CORPUS_DIR, fname))
     cmd += ' '.join(my_compressor_end_args(base, algorithms)) + '\n'
-    multi_compressor.stdin.write(cmd)
+    try:
+      multi_compressor.stdin.write(cmd)
+    except BrokenPipeError:
+      print("WARNING: MultiCompressor has quit, restarting.")
+      multi_compressor.kill() # make sure it's dead
+      multi_compressor = run_multicompressor()
+      # if this still fails, propagate the exception (only retry once)
+      multi_compressor.stdin.write(cmd)
 
     ready_read = []
     waiting_for = 0
@@ -151,29 +159,6 @@ def my_compressor(fname, paranoia, base, algorithms):
     return bits / 8 # compressed filesize in bytes
 
 # The below functions aren't memoized, as the individual values are memoized
-@app.task(base=TaskWrapper)
-def optimise_brute_callback(res, alphas, betas, granularity):
-  results = np.empty((granularity, granularity))
-  k = 0
-  for i, a in enumerate(alphas):
-    for j, b in enumerate(betas):
-      if legal_parameters((a, b)):
-        results[i][j] = res[k]
-        k += 1
-      else:
-        results[i][j] = np.inf
-
-  beta_grid, alpha_grid = np.meshgrid(betas, alphas)
-  optimum_i = np.argmin(results)
-  optimum_alpha = alpha_grid.flatten()[optimum_i]
-  optimum_beta = beta_grid.flatten()[optimum_i]
-  min_val = results.flatten()[optimum_i]
-
-  optimum = (optimum_alpha, optimum_beta), min_val
-  evals = (alpha_grid, beta_grid), results
-
-  return optimum, evals
-
 def create_range(start, stop, N):
   return start + np.arange(0, N) * (stop - start) / (N - 1)
 

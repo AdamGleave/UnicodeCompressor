@@ -14,11 +14,26 @@ PPM_ALPHA_END = 3
 PPM_BETA_START = 0
 PPM_BETA_END = 0.99
 
-PPM_CONTOUR_NUM_ITERATIONS = 2
-PPM_CONTOUR_SHRINK_FACTOR = 2
-PPM_CONTOUR_GRANULARITY = 100
-PPM_CONTOUR_DELTA = 0.1 # bits/byte
-PPM_CONTOUR_NUM_LEVELS = 10
+PPM_CONTOUR_GRANULARITY = 200
+PPM_CONTOUR_DEFAULT_ARGS = {
+  'big_levels': 10,
+  'big_delta': 0.1,
+  'small_per_big': 10,
+  'big_formatter': '%.1f',
+  'big_manual': False,
+  'inner_formatter': '%.2f',
+  'inner_manual': False,
+}
+
+PPM_CONTOUR_OVERRIDES = {
+  'canterbury/canterbury/alice29.txt': {
+    'ppm_contour_plot:depth=4:prior=uniform_byte': {
+      'big_levels': 9,
+      'small_per_big': 20,
+      'inner_formatter': '%.3f',
+    }
+  }
+}
 
 # for parameter estimation grid search just needs to give a good initial guess, so can be lower
 # resolution than for contours

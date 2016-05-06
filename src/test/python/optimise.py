@@ -47,10 +47,13 @@ def save_figure(fig, output_dir, fname):
 def load_pickle(output_dir, fname):
   pickled_fname = sanitize_fname(fname) + ".o"
   pickled_dir = os.path.join(config.DATA_DIR, output_dir)
-
   pickled_path = os.path.join(pickled_dir, pickled_fname)
-  with open(pickled_path, 'rb') as input:
-    return pickle.load(input)
+
+  if os.path.exists(pickled_path):
+    with open(pickled_path, 'rb') as input:
+      return pickle.load(input)
+  else:
+    return None
 
 def save_pickle(o, output_dir, fname):
   pickled_fname = sanitize_fname(fname) + ".o"
@@ -78,24 +81,11 @@ def range_around(point, old_range, factor):
   new_width = old_width / factor
   return (point - new_width / 2, point + new_width / 2)
 
-def ppm_grid_search(fname, paranoia, prior, depth, iterations, shrink_factor,
-                    alpha_range, beta_range, granularity):
-  optimum = None
-  evals = []
-  for i in range(iterations):
-    optimum, eval = benchmark.tasks.optimise_brute(fname, paranoia, prior, depth,
-                                                   alpha_range, beta_range, granularity)
-    evals.append(eval)
-
-    argmin = optimum[0]
-    alpha_range = range_around(argmin[0], alpha_range, shrink_factor)
-    beta_range = range_around(argmin[1], beta_range, shrink_factor)
-  return optimum, evals
-
 def round_up_to(multiple, x):
   return math.ceil(x / multiple) * multiple
 
-def contour(optimum, evals, big_delta, small_per_big, big_levels, xlim, ylim):
+def contour(optimum, evals, xlim, ylim, big_levels, big_delta, small_per_big,
+            big_formatter, big_manual, inner_formatter, inner_manual):
   fig = plt.figure()
 
   # plot optimum
@@ -109,30 +99,20 @@ def contour(optimum, evals, big_delta, small_per_big, big_levels, xlim, ylim):
   rounded_z_small = round_up_to(small_delta, optimum_z)
   rounded_z_big = round_up_to(big_delta, optimum_z)
 
-  inner_levels = int((rounded_z_big - rounded_z_small) / small_delta)
-  num_levels = inner_levels + big_levels * small_per_big
-  levels = rounded_z_small + np.arange(1, num_levels + 1)*small_delta
+  num_inner_levels = int((rounded_z_big - rounded_z_small) / small_delta)
+  inner_levels = rounded_z_small + np.arange(1, num_inner_levels)*small_delta
+  small_levels = rounded_z_big + np.arange((big_levels - 1) * small_per_big + 1)*small_delta
+  big_levels = rounded_z_big + np.arange(big_levels)*big_delta
 
-  small_linewidth, big_linewidth = 0.1, 1
-  inner_linewidths = np.concatenate((np.tile([small_linewidth], inner_levels), [big_linewidth]))
-  usual_linewidths = np.concatenate((np.tile([small_linewidth], small_per_big - 1), [big_linewidth]))
-  linewidths = np.concatenate((inner_linewidths, np.tile(usual_linewidths, big_levels)))
+  small_linewidth, big_linewidth = 0.05, 0.5
   (a, b), z = evals[0]
-  cs = plt.contour(b, a, z, levels=levels, linewidths=linewidths)
+  inner_cs = plt.contour(b, a, z, levels=inner_levels, linewidths=small_linewidth, colors='k')
+  small_cs = plt.contour(b, a, z, levels=small_levels, linewidths=small_linewidth, colors='k')
+  big_cs = plt.contour(b, a, z, levels=big_levels, linewidths=big_linewidth)
 
   # labels
-  def big_formatter(level):
-    if int(level / big_delta) * big_delta == level:
-      return str(level)
-    else:
-      return ""
-  def inner_formatter(level):
-    if level < rounded_z_big:
-      return str(level)
-    else:
-      return ""
-  #plt.clabel(cs, fmt=inner_formatter, fontsize=6, inline=0)
-  plt.clabel(cs, fmt=big_formatter, fontsize=10, inline=0)
+  plt.clabel(inner_cs, fmt=inner_formatter, manual=inner_manual, fontsize=6, inline=0)
+  plt.clabel(big_cs, fmt=big_formatter, manual=big_manual, fontsize=10, inline=0)
 
   # shade illegal parameter region, a + b <= 0
   min_x, max_x = xlim
@@ -161,36 +141,45 @@ def grid_to_efficiency(optimum, evals, original_size):
 def ppm_contour_plot_helper(test_name, fname, prior, depth,
                             granularity=config.PPM_CONTOUR_GRANULARITY,
                             alpha_start=config.PPM_ALPHA_START, alpha_end=config.PPM_ALPHA_END,
-                            beta_start=config.PPM_BETA_START, beta_end=config.PPM_BETA_END,
-                            iterations=config.PPM_CONTOUR_NUM_ITERATIONS,
-                            shrink_factor=config.PPM_CONTOUR_SHRINK_FACTOR,
-                            num_levels=config.PPM_CONTOUR_NUM_LEVELS,
-                            delta=config.PPM_CONTOUR_DELTA):
-  depth = int(depth)
-  granularity = int(granularity)
-
+                            beta_start=config.PPM_BETA_START, beta_end=config.PPM_BETA_END):
   alpha_range = (float(alpha_start), float(alpha_end))
   beta_range = (float(beta_start), float(beta_end))
-  optimum, evals = ppm_grid_search(fname, paranoia, prior, depth, int(iterations),
-                                   int(shrink_factor), alpha_range, beta_range, granularity)
-  opt_success, opt_res = benchmark.tasks.ppm_minimize.delay(fname, paranoia, prior,
-                                                            depth, optimum[0]).get()
-  if opt_success:
-    if opt_res.status != 0:
-      print('ppm_contour_plot_helper: warning, abnormal termination of minimize, ' +
-            'result may be inaccurate: ' + opt_res.message)
-    optimum = opt_res.x, opt_res.fun
+
+  cached = load_pickle(test_name, fname)
+  if cached:
+    print("ppm_contour_plot_helper: {0} on {1}: cached".format(test_name, fname))
+    optimum, evals = cached
   else:
-    print('ppm_contour_plot_helper: warning, error in ppm_minimize ' +
-          '-- falling back to grid search: ' + str(opt_res))
+    print("ppm_contour_plot_helper: {0} on {1}: computing".format(test_name, fname))
+    depth = int(depth)
+    granularity = int(granularity)
+    optimum, evals = benchmark.tasks.optimise_brute(fname, paranoia, prior, depth,
+                                                    alpha_range, beta_range, granularity)
+    opt_success, opt_res = benchmark.tasks.ppm_minimize.delay(fname, paranoia, prior,
+                                                              depth, optimum[0]).get()
+    if opt_success:
+      if opt_res.status != 0:
+        print('ppm_contour_plot_helper: warning, abnormal termination of minimize, ' +
+              'result may be inaccurate: ' + opt_res.message)
+      optimum = opt_res.x, opt_res.fun
+    else:
+      print('ppm_contour_plot_helper: warning, error in ppm_minimize ' +
+            '-- falling back to grid search: ' + str(opt_res))
 
-  original_size = corpus_size(fname)
-  optimum, evals = grid_to_efficiency(optimum, evals, original_size)
+    original_size = corpus_size(fname)
+    optimum, evals = grid_to_efficiency(optimum, evals, original_size)
 
-  save_pickle((optimum, evals), test_name, fname)
+    save_pickle((optimum, evals), test_name, fname)
 
-  fig = contour(optimum, evals, num_levels=int(num_levels), delta=float(delta),
-                xlim=beta_range, ylim=alpha_range)
+  kwargs = dict(config.PPM_CONTOUR_DEFAULT_ARGS)
+  rel_fname = os.path.relpath(fname, config.CORPUS_DIR)
+  print(test_name)
+  print(rel_fname)
+  if rel_fname in config.PPM_CONTOUR_OVERRIDES:
+    if test_name in config.PPM_CONTOUR_OVERRIDES[rel_fname]:
+      kwargs.update(config.PPM_CONTOUR_OVERRIDES[rel_fname][test_name])
+  print("Settings: " + str(kwargs))
+  fig = contour(optimum, evals, xlim=beta_range, ylim=alpha_range, **kwargs)
   return save_figure(fig, test_name, fname)
 ppm_contour_plot = per_file_test(ppm_contour_plot_helper)
 
@@ -199,11 +188,11 @@ def ppm_find_optimal_alpha_beta(fname, paranoia, prior, depth, granularity, meth
      print('ppm_find_optimal_alpha_beta: {0} at depth {1} on {2}'.format(prior, depth, fname))
   initial_guess = (0, 0.5) # PPMD
 
-  if granularity >= 1:
-    res = ppm_grid_search(fname, paranoia, prior, depth,
-                          iterations=1, shrink_factor=1, granularity=granularity,
-                          alpha_range=(config.PPM_ALPHA_START, config.PPM_ALPHA_END),
-                          beta_range=(config.PPM_BETA_START, config.PPM_BETA_END))
+  if granularity > 1:
+    res = benchmark.tasks.optimise_brute(fname, paranoia, prior, depth,
+                                         (config.PPM_ALPHA_START, config.PPM_ALPHA_END),
+                                         (config.PPM_BETA_START, config.PPM_BETA_END),
+                                         granularity)
     optimum, evals = res
     initial_guess, _ = optimum
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse, csv, functools, itertools
-import math, multiprocessing, os, sys, traceback
+import math, multiprocessing, os, pickle, sys, traceback
 
 import numpy as np
 
@@ -43,6 +43,17 @@ def save_figure(fig, output_dir, fname):
       print("Writing figure to " + fig_path)
     out.savefig(fig)
   return fig_path
+
+def save_pickle(o, output_dir, fname):
+  pickled_fname = sanitize_fname(fname) + ".o"
+  pickled_dir = os.path.join(config.DATA_DIR, output_dir)
+  os.makedirs(pickled_dir, exist_ok=True)
+
+  pickled_path = os.path.join(pickled_dir, pickled_fname)
+  with open(pickled_path, 'wb') as out:
+    if verbose:
+      print("Pickling data to " + pickled_path)
+    pickle.dump(o, out)
 
 def per_file_test(test):
   def f(pool, files, test_name, **kwargs):
@@ -143,9 +154,11 @@ def ppm_contour_plot_helper(test_name, fname, prior, depth,
 
   original_size = corpus_size(fname)
   optimum, evals = grid_to_efficiency(optimum, evals, original_size)
+
+  save_pickle((optimum, evals), test_name, fname)
+
   fig = contour(optimum, evals, num_levels=int(num_levels), delta=float(delta),
                 xlim=beta_range, ylim=alpha_range)
-
   return save_figure(fig, test_name, fname)
 ppm_contour_plot = per_file_test(ppm_contour_plot_helper)
 

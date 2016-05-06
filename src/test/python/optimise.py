@@ -44,6 +44,14 @@ def save_figure(fig, output_dir, fname):
     out.savefig(fig)
   return fig_path
 
+def load_pickle(output_dir, fname):
+  pickled_fname = sanitize_fname(fname) + ".o"
+  pickled_dir = os.path.join(config.DATA_DIR, output_dir)
+
+  pickled_path = os.path.join(pickled_dir, pickled_fname)
+  with open(pickled_path, 'rb') as input:
+    return pickle.load(input)
+
 def save_pickle(o, output_dir, fname):
   pickled_fname = sanitize_fname(fname) + ".o"
   pickled_dir = os.path.join(config.DATA_DIR, output_dir)
@@ -84,7 +92,10 @@ def ppm_grid_search(fname, paranoia, prior, depth, iterations, shrink_factor,
     beta_range = range_around(argmin[1], beta_range, shrink_factor)
   return optimum, evals
 
-def contour(optimum, evals, delta, num_levels, xlim, ylim):
+def round_up_to(multiple, x):
+  return math.ceil(x / multiple) * multiple
+
+def contour(optimum, evals, big_delta, small_per_big, big_levels, xlim, ylim):
   fig = plt.figure()
 
   # plot optimum
@@ -94,13 +105,34 @@ def contour(optimum, evals, delta, num_levels, xlim, ylim):
                xytext=(2,2), textcoords='offset points')
 
   # plot contours
-  rounded_z = math.ceil(optimum_z / delta) * delta
-  levels = rounded_z + np.arange(1, num_levels + 1)*delta
-  # TODO: multi-resolution
+  small_delta = big_delta / small_per_big
+  rounded_z_small = round_up_to(small_delta, optimum_z)
+  rounded_z_big = round_up_to(big_delta, optimum_z)
+
+  inner_levels = int((rounded_z_big - rounded_z_small) / small_delta)
+  num_levels = inner_levels + big_levels * small_per_big
+  levels = rounded_z_small + np.arange(1, num_levels + 1)*small_delta
+
+  small_linewidth, big_linewidth = 0.1, 1
+  inner_linewidths = np.concatenate((np.tile([small_linewidth], inner_levels), [big_linewidth]))
+  usual_linewidths = np.concatenate((np.tile([small_linewidth], small_per_big - 1), [big_linewidth]))
+  linewidths = np.concatenate((inner_linewidths, np.tile(usual_linewidths, big_levels)))
   (a, b), z = evals[0]
-  cs = plt.contour(b, a, z, levels=levels, linewidths=1)
-  # SOMEDAY: can manually specify locations, will probably want to do this in final version
-  plt.clabel(cs, fontsize=10, inline=1)
+  cs = plt.contour(b, a, z, levels=levels, linewidths=linewidths)
+
+  # labels
+  def big_formatter(level):
+    if int(level / big_delta) * big_delta == level:
+      return str(level)
+    else:
+      return ""
+  def inner_formatter(level):
+    if level < rounded_z_big:
+      return str(level)
+    else:
+      return ""
+  #plt.clabel(cs, fmt=inner_formatter, fontsize=6, inline=0)
+  plt.clabel(cs, fmt=big_formatter, fontsize=10, inline=0)
 
   # shade illegal parameter region, a + b <= 0
   min_x, max_x = xlim

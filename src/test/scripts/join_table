@@ -1,0 +1,19 @@
+#!/bin/bash
+
+if [[ $# -ne 1 ]]; then
+  echo "usage: <input pattern>"
+  echo "input pattern should contain the string PRIOR, which will be replaced with uniform_byte, uniform_token, polya_token and (in the output) consolidated.".
+  exit 1
+fi
+
+INPUT_PATTERN=$1
+
+function filter_file {
+  prior=$1
+  input=`echo ${INPUT_PATTERN} | sed "s/PRIOR/${prior}/"`
+  sed "1 s/,\([a-z]*\)/,${prior}_\1/g" ${input} 
+}
+
+TMPFILE=/tmp/$(basename $0).$$.tmp
+OUTPUT=`echo ${INPUT_PATTERN} | sed "s/PRIOR/consolidated/"`
+csvjoin -c file <(filter_file uniform_byte) <(filter_file uniform_token) <(filter_file polya_token) | csvcut -c 1,2,3,4,5,6,8,9,10,11,12,14,15,16,17,18 | csvsort -c file > $OUTPUT

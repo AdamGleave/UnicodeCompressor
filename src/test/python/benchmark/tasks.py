@@ -238,3 +238,21 @@ def optimise_brute(fnames, paranoia, prior, depth, alpha_range, beta_range, gran
   evals = (alpha_grid, beta_grid), res
 
   return optimum, evals
+
+# This function needn't be memoized, as it's a function of memoized values, but it does save time
+# (at the cost of slightly inflating the cache).
+@memo
+def contour_data(prior, paranoia, depth, alpha_range, beta_range, granularity, fnames):
+  optimum, evals = optimise_brute(fnames, paranoia, prior, depth,
+                                  alpha_range, beta_range, granularity)
+  opt_success, opt_res = ppm_minimize(fnames, paranoia, prior, depth, optimum[0])
+  if opt_success:
+    if opt_res.status != 0:
+      print('ppm_contour_plot_helper: warning, abnormal termination of minimize, ' +
+            'result may be inaccurate: ' + opt_res.message)
+    optimum = opt_res.x, opt_res.fun
+  else:
+    print('ppm_contour_plot_helper: warning, error in ppm_minimize ' +
+          '-- falling back to grid search: ' + str(opt_res))
+
+  return (optimum, evals)

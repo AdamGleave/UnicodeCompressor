@@ -115,23 +115,6 @@ def plot_contour_lines(optimum, evals, big_levels, big_delta, small_per_big,
   plt.clabel(inner_cs, fmt=inner_formatter, manual=inner_manual, fontsize=6, inline=0)
   plt.clabel(big_cs, fmt=big_formatter, manual=big_manual, fontsize=10, inline=0)
 
-@benchmark.tasks.memo
-def contour_data(prior, depth, alpha_range, beta_range, granularity, fnames):
-  print(prior, depth, alpha_range, beta_range, granularity, fnames)
-  optimum, evals = benchmark.tasks.optimise_brute(fnames, paranoia, prior, depth,
-                                                  alpha_range, beta_range, granularity)
-  opt_success, opt_res = benchmark.tasks.ppm_minimize(fnames, paranoia, prior, depth, optimum[0])
-  if opt_success:
-    if opt_res.status != 0:
-      print('ppm_contour_plot_helper: warning, abnormal termination of minimize, ' +
-            'result may be inaccurate: ' + opt_res.message)
-    optimum = opt_res.x, opt_res.fun
-  else:
-    print('ppm_contour_plot_helper: warning, error in ppm_minimize ' +
-          '-- falling back to grid search: ' + str(opt_res))
-
-  return (optimum, evals)
-
 def contour_settings(default, overrides, test_name, fnames):
   kwargs = dict(default)
   fnames = frozenset(fnames)
@@ -152,7 +135,8 @@ def ppm_contour_plot_helper(test_name, fnames, prior, depth,
   depth = int(depth)
   granularity = int(granularity)
 
-  optimum, evals = contour_data(prior, depth, alpha_range, beta_range, granularity, fnames)
+  optimum, evals = benchmark.tasks.contour_data(prior, paranoia, depth,
+                                                alpha_range, beta_range, granularity, fnames)
   kwargs = contour_settings(config.PPM_CONTOUR_DEFAULT_ARGS,
                             config.PPM_CONTOUR_OVERRIDES, test_name, fnames)
 
@@ -197,7 +181,8 @@ def ppm_group_file_contour_plot(pool, fnames, test_name, prior, depth,
 
     return save_figure(fig, test_name, fnames)
 
-  runner = functools.partial(contour_data, prior, depth, alpha_range, beta_range, granularity)
+  runner = functools.partial(benchmark.tasks.contour_data, prior, paranoia, depth,
+                             alpha_range, beta_range, granularity)
   work = [[fname] for fname in fnames]
   ec = functools.partial(error_callback,
                          "ppm_group_file_contour_plot - {0} on {1}".format(test_name, fnames))
@@ -218,7 +203,8 @@ def ppm_group_prior_contour_plot_helper(test_name, fnames, priors, depth,
   fig = plot_contour_base(xlim=beta_range, ylim=alpha_range)
   colors = kwargs['colormap'](np.linspace(0, 1, len(priors)))
   for prior, color in zip(priors, colors):
-    optimum, evals = contour_data(prior, depth, alpha_range, beta_range, granularity, fnames)
+    optimum, evals = benchmark.tasks.contour_data(prior, paranoia, depth,
+                                                  alpha_range, beta_range, granularity, fnames)
     label = short_name(config.SHORT_PRIOR_NAME, prior)
     plot_optimum(optimum, label=label, color=color)
     plot_contour_lines(optimum, evals, color=color, **kwargs)

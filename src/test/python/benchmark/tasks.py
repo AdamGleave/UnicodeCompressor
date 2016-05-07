@@ -221,10 +221,12 @@ def optimise_brute(fnames, paranoia, prior, depth, alpha_range, beta_range, gran
 
   res = np.empty((granularity, granularity))
   k = 0
+  num_files = len(fnames)
   for i, a in enumerate(alphas):
     for j, b in enumerate(betas):
       if legal_parameters((a, b)):
-        res[i][j] = mean_effectiveness(raw_res[k:k+len(original_sizes)], original_sizes)
+        res[i][j] = mean_effectiveness(raw_res[k:k+num_files], original_sizes)
+        k += num_files
       else:
         res[i][j] = np.inf
 

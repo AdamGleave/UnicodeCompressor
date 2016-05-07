@@ -169,20 +169,20 @@ def ppm_contour_plot_helper(test_name, fname, prior, depth,
   return save_figure(fig, test_name, fname)
 ppm_contour_plot = per_file_test(ppm_contour_plot_helper)
 
-def ppm_find_optimal_alpha_beta(fname, paranoia, prior, depth, granularity):
+def ppm_find_optimal_alpha_beta(fnames, paranoia, prior, granularity, depth):
   if verbose:
-     print('ppm_find_optimal_alpha_beta: {0} at depth {1} on {2}'.format(prior, depth, fname))
+     print('ppm_find_optimal_alpha_beta: {0} at depth {1} on {2}'.format(prior, depth, fnames))
   initial_guess = (0, 0.5) # PPMD
 
   if granularity > 1:
-    res = benchmark.tasks.optimise_brute([fname], paranoia, prior, depth,
+    res = benchmark.tasks.optimise_brute(fnames, paranoia, prior, depth,
                                          (config.PPM_ALPHA_START, config.PPM_ALPHA_END),
                                          (config.PPM_BETA_START, config.PPM_BETA_END),
                                          granularity)
     optimum, evals = res
     initial_guess, _ = optimum
 
-  opt_success, opt_res = benchmark.tasks.ppm_minimize([fname], paranoia, prior, depth, initial_guess)
+  opt_success, opt_res = benchmark.tasks.ppm_minimize(fnames, paranoia, prior, depth, initial_guess)
   if opt_success:
     status = "Normal" if opt_res.status == 0 else opt_res.message
     return (opt_res.x, opt_res.fun, status)
@@ -215,7 +215,7 @@ def best_parameters_by_depth(res):
 
 def ppm_optimal_parameters_helper(paranoia, prior, granularity, x):
   fname, depth = x
-  return ppm_find_optimal_alpha_beta(fname, paranoia, prior, depth, granularity)
+  return ppm_find_optimal_alpha_beta([fname], paranoia, prior, granularity, depth)
 
 def ppm_optimal_parameters(pool, files, test_name, prior,
                            granularity=config.PPM_PARAMETER_GRANULARITY,
@@ -246,7 +246,8 @@ def ppm_optimal_parameters(pool, files, test_name, prior,
 
   runner = functools.partial(worker_wrapper, ppm_optimal_parameters_helper,
                              paranoia, prior, granularity)
-  ec = functools.partial(error_callback, "ppm_optimal_parameters - {0} on {1}".format(test_name, files))
+  ec = functools.partial(error_callback, 'ppm_optimal_parameters - {0} on {1}'
+                                         .format(test_name, files))
   pool.map_async(runner, work, chunksize=1, callback=callback, error_callback=ec)
 
 def ppm_optimal_alpha_beta_helper(test_name, fname, prior,
@@ -264,7 +265,7 @@ def ppm_optimal_alpha_beta_helper(test_name, fname, prior,
     writer.writerow(fieldnames)
 
     for d in depths:
-      res = ppm_find_optimal_alpha_beta(fname, paranoia, prior, d, granularity)
+      res = ppm_find_optimal_alpha_beta([fname], paranoia, prior, granularity, d)
       if res: # optimisation succeeded
         (alpha, beta), efficiency, status = res
         writer.writerow([d, alpha, beta, efficiency, status])
@@ -277,7 +278,21 @@ def ppm_multi_optimal_alpha_beta(pool, files, test_name, prior,
   depths = parse_depths(depths)
   granularity = int(granularity)
 
-  pass
+  def callback(res):
+    csv_path = os.path.join(config.TABLE_DIR, test_name + '.csv')
+    with open(csv_path, 'w') as f:
+      fieldnames = ['depth', 'alpha', 'beta', 'mean_efficiency', 'status']
+      writer = csv.writer(f)
+      writer.writerow(fieldnames)
+
+      for depth, row in zip(depths, res):
+        (alpha, beta), efficiency, status = row
+        writer.writerow([depth, alpha, beta, efficiency, status])
+
+  runner = functools.partial(ppm_find_optimal_alpha_beta, files, paranoia, prior, granularity)
+  ec = functools.partial(error_callback, 'ppm_multi_optimal_alpha_beta - {0} on {1}'
+                                          .format(test_name, files))
+  pool.map_async(runner, depths, chunksize=1, callback=callback, error_callback=ec)
   # parallel-map each depth:
   # - parallel-map optimise brute over each file
   # - collect results, find minimum
@@ -318,7 +333,7 @@ TESTS = {
   'ppm_contour_plot': ppm_contour_plot,
   'ppm_optimal_parameters': ppm_optimal_parameters,
   'ppm_optimal_alpha_beta': ppm_optimal_alpha_beta,
-  'ppm_optimal_alpha_beta_multi': ppm_multi_optimal_alpha_beta,
+  'ppm_multi_optimal_alpha_beta': ppm_multi_optimal_alpha_beta,
 }
 
 def main():

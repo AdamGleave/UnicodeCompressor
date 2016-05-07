@@ -117,8 +117,7 @@ def plot_contour_lines(optimum, evals, big_levels, big_delta, small_per_big,
 
 @benchmark.tasks.memo
 def contour_data(prior, depth, alpha_range, beta_range, granularity, fnames):
-  depth = int(depth)
-  granularity = int(granularity)
+  print(prior, depth, alpha_range, beta_range, granularity, fnames)
   optimum, evals = benchmark.tasks.optimise_brute(fnames, paranoia, prior, depth,
                                                   alpha_range, beta_range, granularity)
   opt_success, opt_res = benchmark.tasks.ppm_minimize(fnames, paranoia, prior, depth, optimum[0])
@@ -138,7 +137,7 @@ def contour_settings(default, overrides, test_name, fnames):
   fnames = frozenset(fnames)
   if fnames in overrides:
     if test_name in overrides[fnames]:
-      kwargs.update(config.overrides[fnames][test_name])
+      kwargs.update(overrides[fnames][test_name])
   return kwargs
 
 def ppm_contour_plot_helper(test_name, fnames, prior, depth,
@@ -150,6 +149,8 @@ def ppm_contour_plot_helper(test_name, fnames, prior, depth,
 
   alpha_range = (float(alpha_start), float(alpha_end))
   beta_range = (float(beta_start), float(beta_end))
+  depth = int(depth)
+  granularity = int(granularity)
 
   optimum, evals = contour_data(prior, depth, alpha_range, beta_range, granularity, fnames)
   kwargs = contour_settings(config.PPM_CONTOUR_DEFAULT_ARGS,
@@ -208,6 +209,8 @@ def ppm_group_prior_contour_plot_helper(test_name, fnames, priors, depth,
                                         beta_start=config.PPM_BETA_START, beta_end=config.PPM_BETA_END):
   alpha_range = (float(alpha_start), float(alpha_end))
   beta_range = (float(beta_start), float(beta_end))
+  depth = int(depth)
+  granularity = int(granularity)
   priors = priors.split(",")
   kwargs = contour_settings(config.PPM_GROUP_CONTOUR_DEFAULT_ARGS,
                             config.PPM_GROUP_CONTOUR_OVERRIDES, test_name, fnames)

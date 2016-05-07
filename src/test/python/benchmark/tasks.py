@@ -1,4 +1,4 @@
-import filecmp, itertools, tempfile, os, select, subprocess, sys, traceback
+import filecmp, itertools, tempfile, os, select, subprocess, traceback
 import celery
 from redis import Redis
 import memoize.redis
@@ -159,18 +159,33 @@ def my_compressor(fname, paranoia, base, algorithms):
     print(error_str("error executing task: " + traceback.format_exc()))
     return float('inf')
 
+def corpus_size(fname):
+  return os.path.getsize(os.path.join(config.CORPUS_DIR, fname))
+
+def mean_effectiveness(compressed_sizes, original_sizes):
+  n = len(compressed_sizes)
+  assert(n == len(original_sizes))
+
+  sum = 0
+  for c, o in zip(compressed_sizes, original_sizes):
+    sum += c / o * 8
+  return sum / n
+
 # This function doesn't need to be memoized, as it's a function of memoized values.
 # However, optimisation is itself expensive, and the cached result is fairly small.
 # So may as well save it.
-@app.task
 @memo
-def ppm_minimize(fname, paranoia, prior, depth, initial_guess, method='Nelder-Mead'):
+def ppm_minimize(fnames, paranoia, prior, depth, initial_guess, method='Nelder-Mead'):
   # optimisation has to proceed sequentially (compression with one set of parameters at a time),
   # so don't distribute the tasks for this
+  original_sizes = list(map(corpus_size, fnames))
   try:
     def ppm(x):
       (a, b) = x
-      return my_compressor(fname, paranoia, prior, ['ppm:d={0}:a={1}:b={2}'.format(int(depth),a,b)])
+      work = [my_compressor.s(fname, paranoia, prior, ['ppm:d={0}:a={1}:b={2}'.format(int(depth),a,b)])
+              for fname in fnames]
+      sizes = celery.group(work)().get()
+      return mean_effectiveness(sizes, original_sizes)
     opt = optimize.minimize(fun=ppm, args=(), x0=initial_guess, method=method,
                             options={'maxfev': 100})
     return (True, opt)
@@ -186,14 +201,16 @@ def legal_parameters(x):
   return a + b >= 0.01 # mathematically legal if >0, but set 0.01 threshold for numerical stability
 
 # This function isn't memoised, as it's a function of memoized values, and the result size is large.
-def optimise_brute(fname, paranoia, prior, depth, alpha_range, beta_range, granularity):
+def optimise_brute(fnames, paranoia, prior, depth, alpha_range, beta_range, granularity):
   alphas = create_range(alpha_range[0], alpha_range[1], granularity)
   betas = create_range(beta_range[0], beta_range[1], granularity)
   grid = filter(legal_parameters, itertools.product(alphas, betas))
 
+  original_sizes = list(map(corpus_size, fnames))
+
   # SOMEDAY: this would be more efficient using chunks, but can't get it to work with chaining
   work = [my_compressor.s(fname, paranoia, prior, ['ppm:d={0}:a={1}:b={2}'.format(int(depth),a,b)])
-          for (a,b) in grid]
+          for (a,b) in grid for fname in fnames]
   raw_res = celery.group(work)().get()
 
   res = np.empty((granularity, granularity))
@@ -201,8 +218,7 @@ def optimise_brute(fname, paranoia, prior, depth, alpha_range, beta_range, granu
   for i, a in enumerate(alphas):
     for j, b in enumerate(betas):
       if legal_parameters((a, b)):
-        res[i][j] = raw_res[k]
-        k += 1
+        res[i][j] = mean_effectiveness(raw_res[k:k+len(original_sizes)], original_sizes)
       else:
         res[i][j] = np.inf
 

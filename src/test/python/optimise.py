@@ -29,9 +29,6 @@ def sanitize_fname(fname):
   fname = os.path.relpath(fname, config.CORPUS_DIR)
   return fname.replace('/', '_')
 
-def corpus_size(fname):
-  return os.path.getsize(os.path.join(config.CORPUS_DIR, fname))
-
 def save_figure(fig, output_dir, fname):
   fig_fname = sanitize_fname(fname) + ".pdf"
   fig_dir = os.path.join(config.FIGURE_DIR, output_dir)
@@ -131,13 +128,6 @@ def contour(optimum, evals, xlim, ylim, big_levels, big_delta, small_per_big,
 
   return fig
 
-def grid_to_efficiency(optimum, evals, original_size):
-  optimum = (optimum[0], optimum[1] * 8 / original_size)
-  def eval_helper(eval):
-    return (eval[0], eval[1] * 8 / original_size)
-  evals = list(map(eval_helper, evals))
-  return (optimum, evals)
-
 def ppm_contour_plot_helper(test_name, fname, prior, depth,
                             granularity=config.PPM_CONTOUR_GRANULARITY,
                             alpha_start=config.PPM_ALPHA_START, alpha_end=config.PPM_ALPHA_END,
@@ -153,10 +143,9 @@ def ppm_contour_plot_helper(test_name, fname, prior, depth,
     print("ppm_contour_plot_helper: {0} on {1}: computing".format(test_name, fname))
     depth = int(depth)
     granularity = int(granularity)
-    optimum, evals = benchmark.tasks.optimise_brute(fname, paranoia, prior, depth,
+    optimum, evals = benchmark.tasks.optimise_brute([fname], paranoia, prior, depth,
                                                     alpha_range, beta_range, granularity)
-    opt_success, opt_res = benchmark.tasks.ppm_minimize.delay(fname, paranoia, prior,
-                                                              depth, optimum[0]).get()
+    opt_success, opt_res = benchmark.tasks.ppm_minimize([fname], paranoia, prior, depth, optimum[0])
     if opt_success:
       if opt_res.status != 0:
         print('ppm_contour_plot_helper: warning, abnormal termination of minimize, ' +
@@ -165,9 +154,6 @@ def ppm_contour_plot_helper(test_name, fname, prior, depth,
     else:
       print('ppm_contour_plot_helper: warning, error in ppm_minimize ' +
             '-- falling back to grid search: ' + str(opt_res))
-
-    original_size = corpus_size(fname)
-    optimum, evals = grid_to_efficiency(optimum, evals, original_size)
 
     save_pickle((optimum, evals), test_name, fname)
 
@@ -183,21 +169,20 @@ def ppm_contour_plot_helper(test_name, fname, prior, depth,
   return save_figure(fig, test_name, fname)
 ppm_contour_plot = per_file_test(ppm_contour_plot_helper)
 
-def ppm_find_optimal_alpha_beta(fname, paranoia, prior, depth, granularity, method):
+def ppm_find_optimal_alpha_beta(fname, paranoia, prior, depth, granularity):
   if verbose:
      print('ppm_find_optimal_alpha_beta: {0} at depth {1} on {2}'.format(prior, depth, fname))
   initial_guess = (0, 0.5) # PPMD
 
   if granularity > 1:
-    res = benchmark.tasks.optimise_brute(fname, paranoia, prior, depth,
+    res = benchmark.tasks.optimise_brute([fname], paranoia, prior, depth,
                                          (config.PPM_ALPHA_START, config.PPM_ALPHA_END),
                                          (config.PPM_BETA_START, config.PPM_BETA_END),
                                          granularity)
     optimum, evals = res
     initial_guess, _ = optimum
 
-  opt_success, opt_res = benchmark.tasks.ppm_minimize.delay(fname, paranoia, prior,
-                                                            depth, initial_guess, method).get()
+  opt_success, opt_res = benchmark.tasks.ppm_minimize([fname], paranoia, prior, depth, initial_guess)
   if opt_success:
     status = "Normal" if opt_res.status == 0 else opt_res.message
     return (opt_res.x, opt_res.fun, status)
@@ -228,13 +213,13 @@ def best_parameters_by_depth(res):
 
   return (best_depth, best_alpha, best_beta, best_val, best_status)
 
-def ppm_optimal_parameters_helper(paranoia, prior, granularity, method, x):
+def ppm_optimal_parameters_helper(paranoia, prior, granularity, x):
   fname, depth = x
-  return ppm_find_optimal_alpha_beta(fname, paranoia, prior, depth, granularity, method)
+  return ppm_find_optimal_alpha_beta(fname, paranoia, prior, depth, granularity)
 
 def ppm_optimal_parameters(pool, files, test_name, prior,
                            granularity=config.PPM_PARAMETER_GRANULARITY,
-                           depths=config.PPM_PARAMETER_DEPTHS, method='Nelder-Mead'):
+                           depths=config.PPM_PARAMETER_DEPTHS):
   depths = parse_depths(depths)
   granularity = int(granularity)
   work = list(itertools.product(files, depths))
@@ -252,45 +237,61 @@ def ppm_optimal_parameters(pool, files, test_name, prior,
     csv_path = os.path.join(config.TABLE_DIR, test_name + '.csv')
     with open(csv_path, 'w') as f:
       writer = csv.writer(f)
-      fieldnames = ['file', 'depth', 'alpha', 'beta', 'compressed_size', 'efficiency', 'status']
+      fieldnames = ['file', 'depth', 'alpha', 'beta', 'efficiency', 'status']
       writer.writerow(fieldnames)
       for fname, values in res_by_file.items():
-        original_size = corpus_size(fname)
-        depth, alpha, beta, size, status = best_parameters_by_depth(values)
-        efficiency = size * 8 / original_size
+        depth, alpha, beta, efficiency, status = best_parameters_by_depth(values)
         rel_fname = os.path.relpath(fname, config.CORPUS_DIR)
-        writer.writerow([rel_fname, depth, alpha, beta, size, efficiency, status])
+        writer.writerow([rel_fname, depth, alpha, beta, efficiency, status])
 
   runner = functools.partial(worker_wrapper, ppm_optimal_parameters_helper,
-                             paranoia, prior, granularity, method)
+                             paranoia, prior, granularity)
   ec = functools.partial(error_callback, "ppm_optimal_parameters - {0} on {1}".format(test_name, files))
   pool.map_async(runner, work, chunksize=1, callback=callback, error_callback=ec)
 
 def ppm_optimal_alpha_beta_helper(test_name, fname, prior,
-                                  granularity=config.PPM_PARAMETER_GRANULARITY,
                                   depths=config.PPM_PARAMETER_DEPTHS,
-                                  method='Nelder-Mead'):
-  granularity = int(granularity)
+                                  granularity=config.PPM_PARAMETER_GRANULARITY):
   depths = parse_depths(depths)
-
-  original_size = corpus_size(fname)
+  granularity = int(granularity)
 
   csv_dir = os.path.join(config.TABLE_DIR, test_name)
   os.makedirs(csv_dir, exist_ok=True)
   csv_path = os.path.join(csv_dir, sanitize_fname(fname) + '.csv')
   with open(csv_path, 'w') as f:
-    fieldnames = ['depth', 'alpha', 'beta', 'compressed_size', 'efficiency', 'status']
+    fieldnames = ['depth', 'alpha', 'beta', 'efficiency', 'status']
     writer = csv.writer(f)
     writer.writerow(fieldnames)
 
     for d in depths:
-      res = ppm_find_optimal_alpha_beta(fname, paranoia, prior, d, granularity, method)
+      res = ppm_find_optimal_alpha_beta(fname, paranoia, prior, d, granularity)
       if res: # optimisation succeeded
-        (alpha, beta), compressed_size, status = res
-        writer.writerow([d, alpha, beta, compressed_size,
-                         compressed_size / original_size * 8, status])
+        (alpha, beta), efficiency, status = res
+        writer.writerow([d, alpha, beta, efficiency, status])
     return csv_path
 ppm_optimal_alpha_beta = per_file_test(ppm_optimal_alpha_beta_helper)
+
+def ppm_multi_optimal_alpha_beta(pool, files, test_name, prior,
+                                 granularity=config.PPM_PARAMETER_GRANULARITY,
+                                 depths=config.PPM_PARAMETER_DEPTHS):
+  depths = parse_depths(depths)
+  granularity = int(granularity)
+
+  pass
+  # parallel-map each depth:
+  # - parallel-map optimise brute over each file
+  # - collect results, find minimum
+  # - minimise, evaluating each file in parallel
+
+  # Conceptually simple, but a little awkward to fit into this framework. Also would like to
+  # avoid code duplication where possible.
+
+  # optimise_brute: has to run as a task. Easy way out: do optimise brute for all files and all depths.
+  # Then do minimise. But this will potentially slow it down a bit (but, hmm, not much).
+
+  # Minimise, evaluating each file in parallel, should be fairly easy. Not much reason it's a task;
+  # the minimisation itself is fairly cheap.
+  pass
 
 # TODO: canonical sorting
 def to_kwargs(xs):
@@ -317,6 +318,7 @@ TESTS = {
   'ppm_contour_plot': ppm_contour_plot,
   'ppm_optimal_parameters': ppm_optimal_parameters,
   'ppm_optimal_alpha_beta': ppm_optimal_alpha_beta,
+  'ppm_optimal_alpha_beta_multi': ppm_multi_optimal_alpha_beta,
 }
 
 def main():

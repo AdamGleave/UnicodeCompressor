@@ -27,7 +27,7 @@ PPM_CONTOUR_DEFAULT_ARGS = {
 }
 
 PPM_CONTOUR_OVERRIDES = {
-  frozenset('canterbury/canterbury/alice29.txt'): {
+  frozenset(['canterbury/canterbury/alice29.txt']): {
     'ppm_contour_plot:depth=4:prior=uniform_byte': {
       'big_levels': 9,
       'small_per_big': 20,

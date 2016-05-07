@@ -109,7 +109,7 @@ def plot_contour_lines(optimum, evals, big_levels, big_delta, small_per_big,
   (a, b), z = evals
   inner_cs = plt.contour(b, a, z, levels=inner_levels, linewidths=small_linewidth, colors='k')
   small_cs = plt.contour(b, a, z, levels=small_levels, linewidths=small_linewidth, colors='k')
-  big_cs = plt.contour(b, a, z, levels=big_levels, linewidths=big_linewidth)
+  big_cs = plt.contour(b, a, z, levels=big_levels, linewidths=big_linewidth, colors=colors)
 
   # labels
   plt.clabel(inner_cs, fmt=inner_formatter, manual=inner_manual, fontsize=6, inline=0)
@@ -135,6 +135,7 @@ def contour_data(prior, depth, alpha_range, beta_range, granularity, fnames):
 
 def contour_settings(default, overrides, test_name, fnames):
   kwargs = dict(default)
+  fnames = frozenset(fnames)
   if fnames in overrides:
     if test_name in overrides[fnames]:
       kwargs.update(config.overrides[fnames][test_name])

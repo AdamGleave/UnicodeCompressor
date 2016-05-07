@@ -1,4 +1,5 @@
 import functools, os
+import matplotlib.pyplot as plt
 
 from benchmark.config import *
 
@@ -26,13 +27,39 @@ PPM_CONTOUR_DEFAULT_ARGS = {
 }
 
 PPM_CONTOUR_OVERRIDES = {
-  'canterbury/canterbury/alice29.txt': {
+  frozenset('canterbury/canterbury/alice29.txt'): {
     'ppm_contour_plot:depth=4:prior=uniform_byte': {
       'big_levels': 9,
       'small_per_big': 20,
       'inner_formatter': '%.3f',
     }
   }
+}
+
+SHORT_FILE_NAME = {
+  'canterbury/canterbury/alice29.txt': 'alice29.txt',
+  'canterbury/canterbury/lcet10.txt': 'lcet10.txt',
+}
+
+SHORT_PRIOR_NAME = {
+  'uniform_byte': 'UB',
+  'uniform_token': 'UT',
+  'polya_token': 'PT',
+}
+
+PPM_GROUP_CONTOUR_DEFAULT_ARGS = {
+  'big_levels': 5,
+  'big_delta': 0.05,
+  'small_per_big': '1',
+  'big_formatter': None,
+  'big_manual': False,
+  'inner_formatter': None,
+  'inner_manual': False,
+  'colormap': plt.cm.Set1,
+}
+
+PPM_GROUP_CONTOUR_OVERRIDES = {
+
 }
 
 # for parameter estimation grid search just needs to give a good initial guess, so can be lower

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-import argparse, csv, functools, itertools
-import math, multiprocessing, os, pickle, sys, traceback
+import argparse, csv, functools, hashlib, itertools
+import math, multiprocessing, os, sys, traceback
 
 import numpy as np
 
@@ -29,8 +29,14 @@ def sanitize_fname(fname):
   fname = os.path.relpath(fname, config.CORPUS_DIR)
   return fname.replace('/', '_')
 
-def save_figure(fig, output_dir, fname):
-  fig_fname = sanitize_fname(fname) + ".pdf"
+def save_figure(fig, output_dir, fnames):
+  if len(fnames) == 1:
+    fig_fname = sanitize_fname(fnames[0]) + ".pdf"
+  else:
+    m = hashlib.md5()
+    for fname in fnames:
+      m.update(os.path.relpath(fname, config.CORPUS_DIR))
+    fig_fname = "group-" + m.hexdigest() + ".pdf"
   fig_dir = os.path.join(config.FIGURE_DIR, output_dir)
   os.makedirs(fig_dir, exist_ok=True)
 
@@ -40,28 +46,6 @@ def save_figure(fig, output_dir, fname):
       print("Writing figure to " + fig_path)
     out.savefig(fig)
   return fig_path
-
-def load_pickle(output_dir, fname):
-  pickled_fname = sanitize_fname(fname) + ".o"
-  pickled_dir = os.path.join(config.DATA_DIR, output_dir)
-  pickled_path = os.path.join(pickled_dir, pickled_fname)
-
-  if os.path.exists(pickled_path):
-    with open(pickled_path, 'rb') as input:
-      return pickle.load(input)
-  else:
-    return None
-
-def save_pickle(o, output_dir, fname):
-  pickled_fname = sanitize_fname(fname) + ".o"
-  pickled_dir = os.path.join(config.DATA_DIR, output_dir)
-  os.makedirs(pickled_dir, exist_ok=True)
-
-  pickled_path = os.path.join(pickled_dir, pickled_fname)
-  with open(pickled_path, 'wb') as out:
-    if verbose:
-      print("Pickling data to " + pickled_path)
-    pickle.dump(o, out)
 
 def per_file_test(test):
   def f(pool, files, test_name, **kwargs):
@@ -81,15 +65,36 @@ def range_around(point, old_range, factor):
 def round_up_to(multiple, x):
   return math.ceil(x / multiple) * multiple
 
-def contour(optimum, evals, xlim, ylim, big_levels, big_delta, small_per_big,
-            big_formatter, big_manual, inner_formatter, inner_manual):
+def plot_contour_base(xlim, ylim):
   fig = plt.figure()
 
+  # shade illegal parameter region, a + b <= 0
+  min_x, max_x = xlim
+  min_y, max_y = ylim
+  x_vertices = [min_x, min_x, max_x]
+  lowest = min(min_y, -max_x)
+  y_vertices = [-min_x, lowest, lowest]
+  plt.fill(x_vertices, y_vertices, 'gray', alpha=0.5)
+
+  # axes
+  plt.xlim(xlim)
+  plt.ylim(ylim)
+
+  plt.xlabel(r'discount $\beta$')
+  plt.ylabel(r'strength $\alpha$')
+
+  return fig
+
+def plot_optimum(optimum, label='OPT', marker='x', offset=(2,2), color='k'):
   # plot optimum
   (optimum_a, optimum_b), optimum_z = optimum
-  plt.scatter(optimum_b, optimum_a, marker='x')
-  plt.annotate('OPT', xy=(optimum_b, optimum_a), xycoords='data',
-               xytext=(2,2), textcoords='offset points')
+  plt.scatter(optimum_b, optimum_a, marker=marker, color=color)
+  plt.annotate(label, xy=(optimum_b, optimum_a), xycoords='data',
+               xytext=offset, textcoords='offset points', color=color)
+
+def plot_contour_lines(optimum, evals, big_levels, big_delta, small_per_big,
+                       big_formatter, big_manual, inner_formatter, inner_manual, colors=None):
+  optimum_z = optimum[1]
 
   # plot contours
   small_delta = big_delta / small_per_big
@@ -111,60 +116,118 @@ def contour(optimum, evals, xlim, ylim, big_levels, big_delta, small_per_big,
   plt.clabel(inner_cs, fmt=inner_formatter, manual=inner_manual, fontsize=6, inline=0)
   plt.clabel(big_cs, fmt=big_formatter, manual=big_manual, fontsize=10, inline=0)
 
-  # shade illegal parameter region, a + b <= 0
-  min_x, max_x = xlim
-  min_y, max_y = ylim
-  x_vertices = [min_x, min_x, max_x]
-  lowest = min(min_y, -max_x)
-  y_vertices = [-min_x, lowest, lowest]
-  plt.fill(x_vertices, y_vertices, 'gray', alpha=0.5)
+@benchmark.tasks.memo
+def contour_data(prior, depth, alpha_range, beta_range, granularity, fnames):
+  depth = int(depth)
+  granularity = int(granularity)
+  optimum, evals = benchmark.tasks.optimise_brute(fnames, paranoia, prior, depth,
+                                                  alpha_range, beta_range, granularity)
+  opt_success, opt_res = benchmark.tasks.ppm_minimize(fnames, paranoia, prior, depth, optimum[0])
+  if opt_success:
+    if opt_res.status != 0:
+      print('ppm_contour_plot_helper: warning, abnormal termination of minimize, ' +
+            'result may be inaccurate: ' + opt_res.message)
+    optimum = opt_res.x, opt_res.fun
+  else:
+    print('ppm_contour_plot_helper: warning, error in ppm_minimize ' +
+          '-- falling back to grid search: ' + str(opt_res))
 
-  # axes
-  plt.xlim(xlim)
-  plt.ylim(ylim)
+  return (optimum, evals)
 
-  plt.xlabel(r'discount $\beta$')
-  plt.ylabel(r'strength $\alpha$')
+def contour_settings(default, overrides, test_name, fnames):
+  kwargs = dict(default)
+  rel_fnames = frozenset(map(lambda fname: os.path.relpath(fname, config.CORPUS_DIR), fnames))
+  if rel_fnames in overrides:
+    if test_name in overrides[rel_fnames]:
+      kwargs.update(config.overrides[rel_fnames][test_name])
+  return (rel_fnames, kwargs)
 
-  return fig
-
-def ppm_contour_plot_helper(test_name, fname, prior, depth,
+def ppm_contour_plot_helper(test_name, fnames, prior, depth,
                             granularity=config.PPM_CONTOUR_GRANULARITY,
                             alpha_start=config.PPM_ALPHA_START, alpha_end=config.PPM_ALPHA_END,
                             beta_start=config.PPM_BETA_START, beta_end=config.PPM_BETA_END):
+  if type(fnames) == str:
+    fnames = [fnames]
+
   alpha_range = (float(alpha_start), float(alpha_end))
   beta_range = (float(beta_start), float(beta_end))
 
-  cached = load_pickle(test_name, fname)
-  if cached:
-    print("ppm_contour_plot_helper: {0} on {1}: cached".format(test_name, fname))
-    optimum, evals = cached
-  else:
-    print("ppm_contour_plot_helper: {0} on {1}: computing".format(test_name, fname))
-    depth = int(depth)
-    granularity = int(granularity)
-    optimum, evals = benchmark.tasks.optimise_brute([fname], paranoia, prior, depth,
-                                                    alpha_range, beta_range, granularity)
-    opt_success, opt_res = benchmark.tasks.ppm_minimize([fname], paranoia, prior, depth, optimum[0])
-    if opt_success:
-      if opt_res.status != 0:
-        print('ppm_contour_plot_helper: warning, abnormal termination of minimize, ' +
-              'result may be inaccurate: ' + opt_res.message)
-      optimum = opt_res.x, opt_res.fun
-    else:
-      print('ppm_contour_plot_helper: warning, error in ppm_minimize ' +
-            '-- falling back to grid search: ' + str(opt_res))
+  optimum, evals = contour_data(prior, depth, alpha_range, beta_range, granularity, fnames)
+  rel_fnames, kwargs = contour_settings(config.PPM_CONTOUR_DEFAULT_ARGS,
+                                        config.PPM_CONTOUR_OVERRIDES, test_name, fnames)
 
-    save_pickle((optimum, evals), test_name, fname)
-
-  kwargs = dict(config.PPM_CONTOUR_DEFAULT_ARGS)
-  rel_fname = os.path.relpath(fname, config.CORPUS_DIR)
-  if rel_fname in config.PPM_CONTOUR_OVERRIDES:
-    if test_name in config.PPM_CONTOUR_OVERRIDES[rel_fname]:
-      kwargs.update(config.PPM_CONTOUR_OVERRIDES[rel_fname][test_name])
-  fig = contour(optimum, evals, xlim=beta_range, ylim=alpha_range, **kwargs)
-  return save_figure(fig, test_name, fname)
+  fig = plot_contour_base(xlim=beta_range, ylim=alpha_range)
+  plot_optimum(optimum)
+  plot_contour_lines(optimum, evals, **kwargs)
+  return save_figure(fig, test_name, fnames)
 ppm_contour_plot = per_file_test(ppm_contour_plot_helper)
+
+def ppm_multi_contour_plot(pool, fnames, test_name, prior, depth,
+                           granularity=config.PPM_CONTOUR_GRANULARITY,
+                           alpha_start=config.PPM_ALPHA_START, alpha_end=config.PPM_ALPHA_END,
+                           beta_start=config.PPM_BETA_START, beta_end=config.PPM_BETA_END):
+  ppm_contour_plot_helper(test_name, fnames, prior, depth, granularity,
+                          alpha_start, alpha_end, beta_start, beta_end)
+
+def short_name(d, k):
+  if k in d:
+    return d[k]
+  else:
+    print("WARNING: no abbreviation for '{0}': ".format(k))
+    return k
+
+def ppm_group_file_contour_plot(pool, fnames, test_name, prior, depth,
+                                granularity=config.PPM_CONTOUR_GRANULARITY,
+                                alpha_start=config.PPM_ALPHA_START, alpha_end=config.PPM_ALPHA_END,
+                                beta_start=config.PPM_BETA_START, beta_end=config.PPM_BETA_END):
+  alpha_range = (float(alpha_start), float(alpha_end))
+  beta_range = (float(beta_start), float(beta_end))
+
+  def callback(res):
+    fig = plot_contour_base(xlim=beta_range, ylim=alpha_range)
+    rel_fnames, kwargs = contour_settings(config.PPM_GROUP_CONTOUR_DEFAULT_ARGS,
+                                          config.PPM_GROUP_CONTOUR_OVERRIDES, test_name, fnames)
+    colors = kwargs['colormap'](np.linspace(0, 1, len(fnames)))
+
+    for file_res, rel_fname, color in zip(res, rel_fnames, colors):
+      optimum, evals = file_res
+      label = short_name(config.SHORT_FILE_NAME, rel_fname)
+      plot_optimum(optimum, label=label, color=color)
+      plot_contour_lines(optimum, evals, colors=color, **kwargs)
+
+    return save_figure(fig, test_name, fnames)
+
+  runner = functools.partial(contour_data, prior, depth, alpha_range, beta_range, granularity)
+  work = [[fname] for fname in fnames]
+  ec = functools.partial(error_callback,
+                         "ppm_group_file_contour_plot - {0} on {1}".format(test_name, fnames))
+  pool.map_async(runner, work, chunksize=1, callback=callback, error_callback=ec)
+
+def ppm_group_prior_contour_plot_helper(test_name, fnames, priors, depth,
+                                        granularity=config.PPM_CONTOUR_GRANULARITY,
+                                        alpha_start=config.PPM_ALPHA_START, alpha_end=config.PPM_ALPHA_END,
+                                        beta_start=config.PPM_BETA_START, beta_end=config.PPM_BETA_END):
+  alpha_range = (float(alpha_start), float(alpha_end))
+  beta_range = (float(beta_start), float(beta_end))
+  priors = priors.split(",")
+
+  fig = plot_contour_base(xlim=beta_range, ylim=alpha_range)
+  colors = kwargs['colormap'](np.linspace(0, 1, len(priors)))
+  for prior, color in zip(priors, colors):
+    optimum, evals = contour_data(prior, depth, alpha_range, beta_range, granularity, fnames)
+    label = short_name(config.SHORT_PRIOR_NAME, prior)
+    plot_optimum(optimum, label=label, color=color)
+    plot_contour_lines(optimum, evals, color=color, **kwargs)
+
+  return save_figure(fig, test_name, fnames)
+ppm_group_prior_contour_plot = per_file_test(ppm_group_prior_contour_plot_helper)
+
+def ppm_multi_group_prior_contour_plot(pool, fnames, test_name, priors, depth,
+                                 granularity=config.PPM_CONTOUR_GRANULARITY,
+                                 alpha_start=config.PPM_ALPHA_START, alpha_end=config.PPM_ALPHA_END,
+                                 beta_start=config.PPM_BETA_START, beta_end=config.PPM_BETA_END):
+  ppm_group_prior_contour_plot(test_name, fnames, priors, depth, granularity,
+                               alpha_start, alpha_end, beta_start, beta_end)
 
 def ppm_find_optimal_alpha_beta(fnames, paranoia, prior, granularity, depth):
   if verbose:
@@ -314,6 +377,10 @@ paranoia=False
 
 TESTS = {
   'ppm_contour_plot': ppm_contour_plot,
+  'ppm_multi_contour_plot': ppm_multi_contour_plot,
+  'ppm_group_file_contour_plot': ppm_group_file_contour_plot,
+  'ppm_group_prior_contour_plot': ppm_group_prior_contour_plot,
+  'ppm_multi_group_prior_contour_plot': ppm_multi_group_prior_contour_plot,
   'ppm_optimal_parameters': ppm_optimal_parameters,
   'ppm_optimal_alpha_beta': ppm_optimal_alpha_beta,
   'ppm_multi_optimal_alpha_beta': ppm_multi_optimal_alpha_beta,

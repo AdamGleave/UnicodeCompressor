@@ -184,7 +184,6 @@ def ppm_group_file_contour_plot(pool, fnames, test_name, prior, depth,
     del kwargs['colormap']
 
     for file_res, fname, color in zip(res, fnames, colors):
-      print(fname)
       optimum, evals = file_res
       label = short_name(config.SHORT_FILE_NAME, fname)
       plot_optimum(optimum, label=label, color=color)

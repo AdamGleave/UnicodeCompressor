@@ -107,13 +107,13 @@ def plot_contour_lines(optimum, evals, big_levels, big_delta, small_per_big,
 
   small_linewidth, big_linewidth = 0.05, 0.5
   (a, b), z = evals
-  if inner_levels:
+  if len(inner_levels):
     inner_cs = plt.contour(b, a, z, levels=inner_levels, linewidths=small_linewidth, colors='k')
   small_cs = plt.contour(b, a, z, levels=small_levels, linewidths=small_linewidth, colors='k')
   big_cs = plt.contour(b, a, z, levels=big_levels, linewidths=big_linewidth, colors=colors)
 
   # labels
-  if inner_levels and inner_formatter:
+  if len(inner_levels) and inner_formatter:
     plt.clabel(inner_cs, fmt=inner_formatter, manual=inner_manual, fontsize=6, inline=0)
   if big_formatter:
     plt.clabel(big_cs, fmt=big_formatter, manual=big_manual, fontsize=10, inline=0)
@@ -245,8 +245,8 @@ def ppm_find_optimal_alpha_beta(fnames, paranoia, prior, granularity, depth):
 
   opt_success, opt_res = benchmark.tasks.ppm_minimize(fnames, paranoia, prior, depth, initial_guess)
   if opt_success:
-    status = "Normal" if opt_res.status == 0 else opt_res.message
-    return (opt_res.x, opt_res.fun, status)
+    status = "Normal" if opt_res['status'] == 0 else opt_res['message']
+    return (opt_res['x'], opt_res['fun'], status)
   else:
     print('ppm_find_optimal_alpha_beta: error in ppm_minimize: ' + str(opt_res))
 

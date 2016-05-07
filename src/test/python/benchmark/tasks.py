@@ -197,7 +197,17 @@ def ppm_minimize(fnames, paranoia, prior, depth, initial_guess, method='Nelder-M
         return float('inf')
     opt = optimize.minimize(fun=ppm, args=(), x0=initial_guess, method=method,
                             options={'maxfev': 100})
-    return (True, opt)
+    # can't pickle opt, extract the useful results
+    optd = {
+      'x': opt.x,
+      'fun': opt.fun,
+      'success': opt.success,
+      'status': opt.status,
+      'message': opt.message,
+      'nfev': opt.nfev,
+      'nit': opt.nit,
+    }
+    return (True, optd)
   except Exception as e:
     print("ppm_minimize: exception occurred: " + traceback.format_exc())
     return (False, e)
@@ -252,10 +262,10 @@ def contour_data(prior, paranoia, depth, alpha_range, beta_range, granularity, f
                                   alpha_range, beta_range, granularity)
   opt_success, opt_res = ppm_minimize(fnames, paranoia, prior, depth, optimum[0])
   if opt_success:
-    if opt_res.status != 0:
+    if opt_res['status'] != 0:
       print('ppm_contour_plot_helper: warning, abnormal termination of minimize, ' +
             'result may be inaccurate: ' + opt_res.message)
-    optimum = opt_res.x, opt_res.fun
+    optimum = opt_res['x'], opt_res['fun']
   else:
     print('ppm_contour_plot_helper: warning, error in ppm_minimize ' +
           '-- falling back to grid search: ' + str(opt_res))

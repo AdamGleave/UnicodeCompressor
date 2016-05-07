@@ -15,7 +15,7 @@ store = memoize.redis.wrap(db)
 memo = memoize.Memoizer(store)
 
 def corpus_path(input_fname):
-  if os.path.abspath(input_fname):
+  if os.path.isabs(input_fname):
     raise RuntimeError("Input paths must be relative, but '{0}' absolute".format(input_fname))
   else:
     return os.path.join(config.CORPUS_DIR, input_fname)

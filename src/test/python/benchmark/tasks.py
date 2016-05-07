@@ -187,11 +187,14 @@ def ppm_minimize(fnames, paranoia, prior, depth, initial_guess, method='Nelder-M
   original_sizes = list(map(corpus_size, fnames))
   try:
     def ppm(x):
-      (a, b) = x
-      work = [my_compressor.s(fname, paranoia, prior, ['ppm:d={0}:a={1}:b={2}'.format(int(depth),a,b)])
-              for fname in fnames]
-      sizes = celery.group(work)().get()
-      return mean_effectiveness(sizes, original_sizes)
+      if legal_parameters(x):
+        (a, b) = x
+        work = [my_compressor.s(fname, paranoia, prior, ['ppm:d={0}:a={1}:b={2}'.format(int(depth),a,b)])
+                for fname in fnames]
+        sizes = celery.group(work)().get()
+        return mean_effectiveness(sizes, original_sizes)
+      else:
+        return float('inf')
     opt = optimize.minimize(fun=ppm, args=(), x0=initial_guess, method=method,
                             options={'maxfev': 100})
     return (True, opt)

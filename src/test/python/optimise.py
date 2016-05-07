@@ -102,7 +102,7 @@ def contour(optimum, evals, xlim, ylim, big_levels, big_delta, small_per_big,
   big_levels = rounded_z_big + np.arange(big_levels)*big_delta
 
   small_linewidth, big_linewidth = 0.05, 0.5
-  (a, b), z = evals[0]
+  (a, b), z = evals
   inner_cs = plt.contour(b, a, z, levels=inner_levels, linewidths=small_linewidth, colors='k')
   small_cs = plt.contour(b, a, z, levels=small_levels, linewidths=small_linewidth, colors='k')
   big_cs = plt.contour(b, a, z, levels=big_levels, linewidths=big_linewidth)
@@ -159,12 +159,9 @@ def ppm_contour_plot_helper(test_name, fname, prior, depth,
 
   kwargs = dict(config.PPM_CONTOUR_DEFAULT_ARGS)
   rel_fname = os.path.relpath(fname, config.CORPUS_DIR)
-  print(test_name)
-  print(rel_fname)
   if rel_fname in config.PPM_CONTOUR_OVERRIDES:
     if test_name in config.PPM_CONTOUR_OVERRIDES[rel_fname]:
       kwargs.update(config.PPM_CONTOUR_OVERRIDES[rel_fname][test_name])
-  print("Settings: " + str(kwargs))
   fig = contour(optimum, evals, xlim=beta_range, ylim=alpha_range, **kwargs)
   return save_figure(fig, test_name, fname)
 ppm_contour_plot = per_file_test(ppm_contour_plot_helper)
@@ -293,20 +290,6 @@ def ppm_multi_optimal_alpha_beta(pool, files, test_name, prior,
   ec = functools.partial(error_callback, 'ppm_multi_optimal_alpha_beta - {0} on {1}'
                                           .format(test_name, files))
   pool.map_async(runner, depths, chunksize=1, callback=callback, error_callback=ec)
-  # parallel-map each depth:
-  # - parallel-map optimise brute over each file
-  # - collect results, find minimum
-  # - minimise, evaluating each file in parallel
-
-  # Conceptually simple, but a little awkward to fit into this framework. Also would like to
-  # avoid code duplication where possible.
-
-  # optimise_brute: has to run as a task. Easy way out: do optimise brute for all files and all depths.
-  # Then do minimise. But this will potentially slow it down a bit (but, hmm, not much).
-
-  # Minimise, evaluating each file in parallel, should be fairly easy. Not much reason it's a task;
-  # the minimisation itself is fairly cheap.
-  pass
 
 # TODO: canonical sorting
 def to_kwargs(xs):

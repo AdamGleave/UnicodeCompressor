@@ -50,7 +50,7 @@ SHORT_PRIOR_NAME = {
 PPM_GROUP_CONTOUR_DEFAULT_ARGS = {
   'big_levels': 5,
   'big_delta': 0.05,
-  'small_per_big': '1',
+  'small_per_big': 1,
   'big_formatter': None,
   'big_manual': False,
   'inner_formatter': None,

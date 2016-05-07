@@ -34,7 +34,7 @@ def save_figure(fig, output_dir, fnames):
   else:
     m = hashlib.md5()
     for fname in fnames:
-      m.update(fname)
+      m.update(fname.encode('utf8'))
     fig_fname = "group-" + m.hexdigest() + ".pdf"
   fig_dir = os.path.join(config.FIGURE_DIR, output_dir)
   os.makedirs(fig_dir, exist_ok=True)
@@ -107,13 +107,16 @@ def plot_contour_lines(optimum, evals, big_levels, big_delta, small_per_big,
 
   small_linewidth, big_linewidth = 0.05, 0.5
   (a, b), z = evals
-  inner_cs = plt.contour(b, a, z, levels=inner_levels, linewidths=small_linewidth, colors='k')
+  if inner_levels:
+    inner_cs = plt.contour(b, a, z, levels=inner_levels, linewidths=small_linewidth, colors='k')
   small_cs = plt.contour(b, a, z, levels=small_levels, linewidths=small_linewidth, colors='k')
   big_cs = plt.contour(b, a, z, levels=big_levels, linewidths=big_linewidth, colors=colors)
 
   # labels
-  plt.clabel(inner_cs, fmt=inner_formatter, manual=inner_manual, fontsize=6, inline=0)
-  plt.clabel(big_cs, fmt=big_formatter, manual=big_manual, fontsize=10, inline=0)
+  if inner_levels and inner_formatter:
+    plt.clabel(inner_cs, fmt=inner_formatter, manual=inner_manual, fontsize=6, inline=0)
+  if big_formatter:
+    plt.clabel(big_cs, fmt=big_formatter, manual=big_manual, fontsize=10, inline=0)
 
 def contour_settings(default, overrides, test_name, fnames):
   kwargs = dict(default)
@@ -160,20 +163,28 @@ def short_name(d, k):
     print("WARNING: no abbreviation for '{0}': ".format(k))
     return k
 
+def contour_data_helper(*args, **kwargs):
+  # needed as can't pickle benchmark.tasks.contour_data as it's a MemoizedFunction
+  return benchmark.tasks.contour_data(*args, **kwargs)
+
 def ppm_group_file_contour_plot(pool, fnames, test_name, prior, depth,
                                 granularity=config.PPM_CONTOUR_GRANULARITY,
                                 alpha_start=config.PPM_ALPHA_START, alpha_end=config.PPM_ALPHA_END,
                                 beta_start=config.PPM_BETA_START, beta_end=config.PPM_BETA_END):
   alpha_range = (float(alpha_start), float(alpha_end))
   beta_range = (float(beta_start), float(beta_end))
+  depth = int(depth)
+  granularity = int(granularity)
   kwargs = contour_settings(config.PPM_GROUP_CONTOUR_DEFAULT_ARGS,
                             config.PPM_GROUP_CONTOUR_OVERRIDES, test_name, fnames)
 
   def callback(res):
     fig = plot_contour_base(xlim=beta_range, ylim=alpha_range)
     colors = kwargs['colormap'](np.linspace(0, 1, len(fnames)))
+    del kwargs['colormap']
 
     for file_res, fname, color in zip(res, fnames, colors):
+      print(fname)
       optimum, evals = file_res
       label = short_name(config.SHORT_FILE_NAME, fname)
       plot_optimum(optimum, label=label, color=color)
@@ -181,7 +192,7 @@ def ppm_group_file_contour_plot(pool, fnames, test_name, prior, depth,
 
     return save_figure(fig, test_name, fnames)
 
-  runner = functools.partial(benchmark.tasks.contour_data, prior, paranoia, depth,
+  runner = functools.partial(contour_data_helper, prior, paranoia, depth,
                              alpha_range, beta_range, granularity)
   work = [[fname] for fname in fnames]
   ec = functools.partial(error_callback,

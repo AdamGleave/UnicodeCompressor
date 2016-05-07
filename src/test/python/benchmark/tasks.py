@@ -14,6 +14,12 @@ db = Redis(host=config.REDIS_HOST, port=config.REDIS_PORT)
 store = memoize.redis.wrap(db)
 memo = memoize.Memoizer(store)
 
+def corpus_path(input_fname):
+  if os.path.abspath(input_fname):
+    raise RuntimeError("Input paths must be relative, but '{0}' absolute".format(input_fname))
+  else:
+    return os.path.join(config.CORPUS_DIR, input_fname)
+
 def build_compressor(standard_args, compress_args, decompress_args):
   def run_compressor(in_fname, out_fname, mode):
     args = standard_args.copy()
@@ -28,7 +34,7 @@ def build_compressor(standard_args, compress_args, decompress_args):
 
 def compressed_filesize(compressor, input_fname, paranoia):
   with tempfile.NamedTemporaryFile(prefix='compression_en') as compressed:
-    input_fname = os.path.join(config.CORPUS_DIR, input_fname)
+    input_fname = corpus_path(input_fname)
     compressor(input_fname, compressed.name, CompressionMode.compress)
     if paranoia:
       with tempfile.NamedTemporaryFile(prefix='compression_de') as decompressed:
@@ -126,7 +132,7 @@ def my_compressor(fname, paranoia, base, algorithms):
       if not multi_compressor:
         multi_compressor = run_multicompressor()
 
-      cmd =  'measure {0} '.format(os.path.join(config.CORPUS_DIR, fname))
+      cmd =  'measure {0} '.format(corpus_path(fname))
       cmd += ' '.join(my_compressor_end_args(base, algorithms)) + '\n'
       try:
         multi_compressor.stdin.write(cmd)
@@ -160,7 +166,7 @@ def my_compressor(fname, paranoia, base, algorithms):
     return float('inf')
 
 def corpus_size(fname):
-  return os.path.getsize(os.path.join(config.CORPUS_DIR, fname))
+  return os.path.getsize(corpus_path(fname))
 
 def mean_effectiveness(compressed_sizes, original_sizes):
   n = len(compressed_sizes)

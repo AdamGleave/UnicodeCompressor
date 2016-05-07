@@ -26,7 +26,6 @@ def error_callback(location, exception):
         file=sys.stderr)
 
 def sanitize_fname(fname):
-  fname = os.path.relpath(fname, config.CORPUS_DIR)
   return fname.replace('/', '_')
 
 def save_figure(fig, output_dir, fnames):
@@ -35,7 +34,7 @@ def save_figure(fig, output_dir, fnames):
   else:
     m = hashlib.md5()
     for fname in fnames:
-      m.update(os.path.relpath(fname, config.CORPUS_DIR))
+      m.update(fname)
     fig_fname = "group-" + m.hexdigest() + ".pdf"
   fig_dir = os.path.join(config.FIGURE_DIR, output_dir)
   os.makedirs(fig_dir, exist_ok=True)
@@ -136,11 +135,10 @@ def contour_data(prior, depth, alpha_range, beta_range, granularity, fnames):
 
 def contour_settings(default, overrides, test_name, fnames):
   kwargs = dict(default)
-  rel_fnames = frozenset(map(lambda fname: os.path.relpath(fname, config.CORPUS_DIR), fnames))
-  if rel_fnames in overrides:
-    if test_name in overrides[rel_fnames]:
-      kwargs.update(config.overrides[rel_fnames][test_name])
-  return (rel_fnames, kwargs)
+  if fnames in overrides:
+    if test_name in overrides[fnames]:
+      kwargs.update(config.overrides[fnames][test_name])
+  return kwargs
 
 def ppm_contour_plot_helper(test_name, fnames, prior, depth,
                             granularity=config.PPM_CONTOUR_GRANULARITY,
@@ -153,8 +151,8 @@ def ppm_contour_plot_helper(test_name, fnames, prior, depth,
   beta_range = (float(beta_start), float(beta_end))
 
   optimum, evals = contour_data(prior, depth, alpha_range, beta_range, granularity, fnames)
-  rel_fnames, kwargs = contour_settings(config.PPM_CONTOUR_DEFAULT_ARGS,
-                                        config.PPM_CONTOUR_OVERRIDES, test_name, fnames)
+  kwargs = contour_settings(config.PPM_CONTOUR_DEFAULT_ARGS,
+                            config.PPM_CONTOUR_OVERRIDES, test_name, fnames)
 
   fig = plot_contour_base(xlim=beta_range, ylim=alpha_range)
   plot_optimum(optimum)
@@ -182,16 +180,16 @@ def ppm_group_file_contour_plot(pool, fnames, test_name, prior, depth,
                                 beta_start=config.PPM_BETA_START, beta_end=config.PPM_BETA_END):
   alpha_range = (float(alpha_start), float(alpha_end))
   beta_range = (float(beta_start), float(beta_end))
+  kwargs = contour_settings(config.PPM_GROUP_CONTOUR_DEFAULT_ARGS,
+                            config.PPM_GROUP_CONTOUR_OVERRIDES, test_name, fnames)
 
   def callback(res):
     fig = plot_contour_base(xlim=beta_range, ylim=alpha_range)
-    rel_fnames, kwargs = contour_settings(config.PPM_GROUP_CONTOUR_DEFAULT_ARGS,
-                                          config.PPM_GROUP_CONTOUR_OVERRIDES, test_name, fnames)
     colors = kwargs['colormap'](np.linspace(0, 1, len(fnames)))
 
-    for file_res, rel_fname, color in zip(res, rel_fnames, colors):
+    for file_res, fname, color in zip(res, fnames, colors):
       optimum, evals = file_res
-      label = short_name(config.SHORT_FILE_NAME, rel_fname)
+      label = short_name(config.SHORT_FILE_NAME, fname)
       plot_optimum(optimum, label=label, color=color)
       plot_contour_lines(optimum, evals, colors=color, **kwargs)
 
@@ -210,6 +208,8 @@ def ppm_group_prior_contour_plot_helper(test_name, fnames, priors, depth,
   alpha_range = (float(alpha_start), float(alpha_end))
   beta_range = (float(beta_start), float(beta_end))
   priors = priors.split(",")
+  kwargs = contour_settings(config.PPM_GROUP_CONTOUR_DEFAULT_ARGS,
+                            config.PPM_GROUP_CONTOUR_OVERRIDES, test_name, fnames)
 
   fig = plot_contour_base(xlim=beta_range, ylim=alpha_range)
   colors = kwargs['colormap'](np.linspace(0, 1, len(priors)))
@@ -301,8 +301,7 @@ def ppm_optimal_parameters(pool, files, test_name, prior,
       writer.writerow(fieldnames)
       for fname, values in res_by_file.items():
         depth, alpha, beta, efficiency, status = best_parameters_by_depth(values)
-        rel_fname = os.path.relpath(fname, config.CORPUS_DIR)
-        writer.writerow([rel_fname, depth, alpha, beta, efficiency, status])
+        writer.writerow([fname, depth, alpha, beta, efficiency, status])
 
   runner = functools.partial(worker_wrapper, ppm_optimal_parameters_helper,
                              paranoia, prior, granularity)
@@ -414,7 +413,6 @@ def main():
   num_workers = int(args['num_workers'])
 
   files = benchmark.general.include_exclude_files(args['include'], args['exclude'])
-  files = list(map(lambda fname: os.path.join(config.CORPUS_DIR, fname), files))
 
   pool = multiprocessing.Pool(num_workers)
   if verbose:

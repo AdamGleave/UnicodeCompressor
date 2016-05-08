@@ -198,39 +198,40 @@ def ppm_group_file_contour_plot(pool, fnames, test_name, prior, depth,
                          "ppm_group_file_contour_plot - {0} on {1}".format(test_name, fnames))
   pool.map_async(runner, work, chunksize=1, callback=callback, error_callback=ec)
 
-def ppm_group_prior_contour_plot_helper(test_name, fnames, priors, depth,
-                                        granularity=config.PPM_CONTOUR_GRANULARITY,
-                                        alpha_start=config.PPM_ALPHA_START, alpha_end=config.PPM_ALPHA_END,
-                                        beta_start=config.PPM_BETA_START, beta_end=config.PPM_BETA_END):
+def ppm_group_algo_contour_plot_helper(test_name, fnames, algos,
+                                       granularity=config.PPM_CONTOUR_GRANULARITY,
+                                       alpha_start=config.PPM_ALPHA_START, alpha_end=config.PPM_ALPHA_END,
+                                       beta_start=config.PPM_BETA_START, beta_end=config.PPM_BETA_END):
   if type(fnames) == str:
     fnames = [fnames]
   alpha_range = (float(alpha_start), float(alpha_end))
   beta_range = (float(beta_start), float(beta_end))
-  depth = int(depth)
   granularity = int(granularity)
-  priors = priors.split(",")
+  algos = algos.split(",")
   kwargs = contour_settings(config.PPM_GROUP_CONTOUR_DEFAULT_ARGS,
                             config.PPM_GROUP_CONTOUR_OVERRIDES, test_name, fnames)
 
   fig = plot_contour_base(xlim=beta_range, ylim=alpha_range)
-  colors = kwargs['colormap'](np.linspace(0, 1, len(priors)))
+  colors = kwargs['colormap'](np.linspace(0, 1, len(algos)))
   del kwargs['colormap']
-  for prior, color in zip(priors, colors):
+  for algo, color in zip(algos, colors):
+    prior, depth = algo.split("/")
+    depth = int(depth)
     optimum, evals = benchmark.tasks.contour_data(prior, paranoia, depth,
                                                   alpha_range, beta_range, granularity, fnames)
     label = short_name(config.SHORT_PRIOR_NAME, prior)
     plot_optimum(optimum, label=label, color=color)
     plot_contour_lines(optimum, evals, colors=color, **kwargs)
 
-  return save_figure(fig, test_name, fnames)
-ppm_group_prior_contour_plot = per_file_test(ppm_group_prior_contour_plot_helper)
+  return save_figure(fig, sanitize_fname(test_name), fnames)
+ppm_group_algo_contour_plot = per_file_test(ppm_group_algo_contour_plot_helper)
 
-def ppm_multi_group_prior_contour_plot(pool, fnames, test_name, priors, depth,
-                                 granularity=config.PPM_CONTOUR_GRANULARITY,
-                                 alpha_start=config.PPM_ALPHA_START, alpha_end=config.PPM_ALPHA_END,
-                                 beta_start=config.PPM_BETA_START, beta_end=config.PPM_BETA_END):
-  ppm_group_prior_contour_plot_helper(test_name, fnames, priors, depth, granularity,
-                               alpha_start, alpha_end, beta_start, beta_end)
+def ppm_multi_group_algo_contour_plot(pool, fnames, test_name, algos,
+                                      granularity=config.PPM_CONTOUR_GRANULARITY,
+                                      alpha_start=config.PPM_ALPHA_START, alpha_end=config.PPM_ALPHA_END,
+                                      beta_start=config.PPM_BETA_START, beta_end=config.PPM_BETA_END):
+  ppm_group_algo_contour_plot_helper(test_name, fnames, algos, granularity,
+                                     alpha_start, alpha_end, beta_start, beta_end)
 
 def ppm_find_optimal_alpha_beta(fnames, paranoia, prior, granularity, depth):
   if verbose:
@@ -381,8 +382,8 @@ TESTS = {
   'ppm_contour_plot': ppm_contour_plot,
   'ppm_multi_contour_plot': ppm_multi_contour_plot,
   'ppm_group_file_contour_plot': ppm_group_file_contour_plot,
-  'ppm_group_prior_contour_plot': ppm_group_prior_contour_plot,
-  'ppm_multi_group_prior_contour_plot': ppm_multi_group_prior_contour_plot,
+  'ppm_group_algo_contour_plot': ppm_group_algo_contour_plot,
+  'ppm_multi_group_algo_contour_plot': ppm_multi_group_algo_contour_plot,
   'ppm_optimal_parameters': ppm_optimal_parameters,
   'ppm_optimal_alpha_beta': ppm_optimal_alpha_beta,
   'ppm_multi_optimal_alpha_beta': ppm_multi_optimal_alpha_beta,

@@ -1,0 +1,8 @@
+#!/bin/bash
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source ${DIR}/join_table_general
+
+csvjoin -c depth <(filter_file uniform_byte) <(filter_file uniform_token) <(filter_file polya_token) | \
+  csvcut -c 1,2,3,4,5,7,8,9,10,12,13,14,15 | \
+  csvsort -c depth > $OUTPUT

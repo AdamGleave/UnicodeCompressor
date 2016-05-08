@@ -1,4 +1,4 @@
-import filecmp, itertools, tempfile, os, select, subprocess, traceback
+import filecmp, functools, itertools, tempfile, os, select, subprocess, traceback
 import celery
 from redis import Redis
 import memoize.redis
@@ -33,25 +33,37 @@ def build_compressor(standard_args, compress_args, decompress_args):
   return run_compressor
 
 def compressed_filesize(compressor, input_fname, paranoia):
+  def timeout(process, callback):
+    for (timeout, complaint) in config.timeouts():
+      try:
+        return_code = process.wait(timeout)
+        if return_code != 0:
+          return "ERROR: compressor returned status {0}".format(return_code)
+        else:
+          return callback()
+      except subprocess.TimeoutExpired:
+        print(complaint)
+        # timed out
+    p.kill()
+    return float('inf')
+
   with tempfile.NamedTemporaryFile(prefix='compression_en') as compressed:
     input_fname = corpus_path(input_fname)
-    compressor(input_fname, compressed.name, CompressionMode.compress)
-    if paranoia:
-      with tempfile.NamedTemporaryFile(prefix='compression_de') as decompressed:
-        p = compressor(compressed.name, decompressed.name, CompressionMode.decompress)
-        for (timeout, complaint) in config.timeouts():
-          try:
-            return_code = p.wait(timeout)
-            if return_code != 0:
-              return "ERROR: compressor returned status {0}".format(return_code)
+    p = compressor(input_fname, compressed.name, CompressionMode.compress)
+    def compressed_callback():
+      if paranoia:
+        with tempfile.NamedTemporaryFile(prefix='compression_de') as decompressed:
+          p = compressor(compressed.name, decompressed.name, CompressionMode.decompress)
+          def decompressed_callback():
             if not filecmp.cmp(input_fname, decompressed.name):
               return "ERROR: decompressed file differs from original"
-            return os.path.getsize(compressed.name)
-          except subprocess.TimeoutExpired:
-            print(complaint)
-        # timed out
-        p.kill()
-        return float('inf')
+            else:
+              return os.path.getsize(compressed.name)
+          return timeout(p, decompressed_callback)
+      else:
+        return os.path.getsize(compressed.name)
+    return timeout(p, compressed_callback)
+
 
 @app.task
 @memo

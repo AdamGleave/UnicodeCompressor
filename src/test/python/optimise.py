@@ -51,7 +51,7 @@ def per_file_test(test):
     runner = functools.partial(test, test_name, **kwargs)
     for fname in files:
       def callback(res):
-        print("FINISHED: {0} on {1}: {2}".format(test_name, fname, res))
+        print("FINISHED: {0}: {1}".format(test_name, res))
       ec = functools.partial(error_callback, "per_file_test - {0} on {1}".format(test_name, fname))
       pool.apply_async(worker_wrapper, (runner, fname, ), callback=callback, error_callback=ec)
   return f
@@ -202,6 +202,8 @@ def ppm_group_prior_contour_plot_helper(test_name, fnames, priors, depth,
                                         granularity=config.PPM_CONTOUR_GRANULARITY,
                                         alpha_start=config.PPM_ALPHA_START, alpha_end=config.PPM_ALPHA_END,
                                         beta_start=config.PPM_BETA_START, beta_end=config.PPM_BETA_END):
+  if type(fnames) == str:
+    fnames = [fnames]
   alpha_range = (float(alpha_start), float(alpha_end))
   beta_range = (float(beta_start), float(beta_end))
   depth = int(depth)
@@ -212,12 +214,13 @@ def ppm_group_prior_contour_plot_helper(test_name, fnames, priors, depth,
 
   fig = plot_contour_base(xlim=beta_range, ylim=alpha_range)
   colors = kwargs['colormap'](np.linspace(0, 1, len(priors)))
+  del kwargs['colormap']
   for prior, color in zip(priors, colors):
     optimum, evals = benchmark.tasks.contour_data(prior, paranoia, depth,
                                                   alpha_range, beta_range, granularity, fnames)
     label = short_name(config.SHORT_PRIOR_NAME, prior)
     plot_optimum(optimum, label=label, color=color)
-    plot_contour_lines(optimum, evals, color=color, **kwargs)
+    plot_contour_lines(optimum, evals, colors=color, **kwargs)
 
   return save_figure(fig, test_name, fnames)
 ppm_group_prior_contour_plot = per_file_test(ppm_group_prior_contour_plot_helper)
@@ -226,7 +229,7 @@ def ppm_multi_group_prior_contour_plot(pool, fnames, test_name, priors, depth,
                                  granularity=config.PPM_CONTOUR_GRANULARITY,
                                  alpha_start=config.PPM_ALPHA_START, alpha_end=config.PPM_ALPHA_END,
                                  beta_start=config.PPM_BETA_START, beta_end=config.PPM_BETA_END):
-  ppm_group_prior_contour_plot(test_name, fnames, priors, depth, granularity,
+  ppm_group_prior_contour_plot_helper(test_name, fnames, priors, depth, granularity,
                                alpha_start, alpha_end, beta_start, beta_end)
 
 def ppm_find_optimal_alpha_beta(fnames, paranoia, prior, granularity, depth):

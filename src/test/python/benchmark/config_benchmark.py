@@ -39,3 +39,7 @@ for (algo_name, algo_config) in algos.items():
     name = algo_name + '_' + prior_name
     if not is_excluded(name):
       COMPRESSORS[name] = (my_compressor, {'base': prior_name, 'algorithms': algo_config})
+
+COMPRESSORS['ppm_group_opt_uniform_byte'] = (my_compressor, {'base': 'uniform_byte', 'algorithms': ['ppm:d=6:a=-0.105494661063:b=0.47794125429']})
+COMPRESSORS['ppm_group_opt_uniform_token'] = (my_compressor, {'base': 'uniform_token', 'algorithms': ['ppm:d=6:a=-0.0588102870517:b=0.497974993229']})
+COMPRESSORS['ppm_group_opt_polya_token'] = (my_compressor, {'base': 'polya_token', 'algorithms': ['ppm:d=6:a=-0.0653849770234:b=0.49912463989']})

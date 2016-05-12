@@ -20,16 +20,21 @@ def terminate_row(x):
   return x[0:len(x) - 2] + r"\\" + "\n"
 
 def autoscale(settings, data):
-  subset = [data[f][a] for file in settings['files'] for algo in settings['algos']]
+  subset = [data[f][a] for f in settings['files'] for a in settings['algos']]
   return min(subset), max(subset)
 
-def efficiency_format(x, scale, cm):
+def efficiency_format(x, is_best, scale, fg_cm, bg_cm):
   smallest, largest = scale
   p = (x - smallest) / (largest - smallest)
   if p < 0 or p > 1:
     print("WARNING: value {0} outside {1}".format(x, scale))
-  r, g, b, a = cm(p)
-  return r'{\cellcolor[rgb]{' + '{0},{1},{2}'.format(r, g, b) + '}{' + '{0:.3f}'.format(x) + '}}'
+  bg = bg_cm(p)
+  fg = fg_cm(p)
+  val = '{0:.3f}'.format(x)
+  if is_best:
+    val = r'\textbf{' + val + r'}'
+  return r'{\cellcolor[rgb]{' + '{0},{1},{2}'.format(*bg) + r'}{\textcolor[rgb]{' + \
+         '{0},{1},{2}'.format(*fg) + r'}{' + val + '}}}'
 
 def generate_table(settings, data):
   if settings['scale']:
@@ -49,7 +54,7 @@ def generate_table(settings, data):
   algo_row = r'\textbf{File} & \hspace{2pt} & '
   for algo in algos:
     abbrev = config.ALGO_ABBREVIATIONS[algo]
-    algo_row += r'\textbf{' + abbrev + '} & '
+    algo_row += abbrev + ' & '
   res += terminate_row(algo_row)
   res += r'\hhline{>{\arrayrulecolor{black}}-|--------}' + '\n'
 
@@ -57,8 +62,11 @@ def generate_table(settings, data):
     filedata = data[file]
     file_abbrev = config.FILE_ABBREVIATIONS[file]
     row = '{0} & & '.format(file_abbrev)
+    best = min([filedata[a] for a in algos])
     for algo in algos:
-      val = efficiency_format(filedata[algo], scale, config.COLORMAP)
+      efficiency = filedata[algo]
+      is_best = efficiency == best
+      val = efficiency_format(efficiency, is_best, scale, config.FG_COLORMAP, config.BG_COLORMAP)
       row += '{0} & '.format(val)
     res += terminate_row(row)
     res += r'\hhline{~>{\arrayrulecolor{black}}|>{\arrayrulecolor{white}}=======}' + '\n'

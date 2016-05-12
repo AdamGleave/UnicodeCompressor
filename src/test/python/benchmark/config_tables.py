@@ -53,24 +53,38 @@ FILE_ABBREVIATIONS = {
 FILE_ABBREVIATIONS.update(abbreviate_by_fname('canterbury/canterbury'))
 
 ALGO_ABBREVIATIONS = {
-  'none_uniform_byte': 'UB',
-  'none_uniform_token': 'UT',
-  'none_polya_token': 'PT',
-  'crp_uniform_byte': 'CB',
-  'crp_uniform_token': 'CT',
-  'ref_gzip': 'gzip',
-  'ref_bzip2': 'bzip2',
-  'ref_PPMd': 'PPMII',
+  'none_uniform_byte': r'\noneuniformbyte',
+  'none_uniform_token': r'\noneuniformtoken',
+  'none_polya_token': r'\nonepolyatoken',
+  'crp_uniform_byte': r'\dirichletuniformbyte',
+  'crp_uniform_token': r'\dirichletuniformtoken',
+  'ref_gzip': r'\gzip',
+  'ref_bzip2': r'\bziptwo',
+  'ref_PPMd': r'\PPMII',
 }
 
 TABLES = {
   'singlesymbol': {
-    'algos': ['none_uniform_byte', 'none_uniform_token', 'crp_uniform_byte', 'none_polya_token',
-              'crp_uniform_token', 'ref_gzip', 'ref_bzip2'],
+    'algos': ['none_uniform_byte', 'none_uniform_token', 'crp_uniform_byte', 'crp_uniform_token',
+              'none_polya_token', 'ref_gzip', 'ref_bzip2'],
     'files': STANDARD_CORPUS,
     'scale': (1.0, 6.0),
   }
 }
 
 # TODO: choose colormap
-COLORMAP = plt.cm.YlGnBu
+#COLORMAP = plt.cm.YlGnBu
+def constant_colormap(r, g, b, a):
+  def f(_x):
+    return [r, g, b, a]
+  return f
+def invert_colormap(cm):
+  def f(x):
+    return map(lambda x : 1 - x, cm(x))
+  return f
+
+FG_COLORMAP = constant_colormap(0, 0, 0, 1)
+BG_COLORMAP = plt.cm.BuGn
+
+# FG_COLORMAP = plt.cm.cubehelix
+# BG_COLORMAP = invert_colormap(FG_COLORMAP)

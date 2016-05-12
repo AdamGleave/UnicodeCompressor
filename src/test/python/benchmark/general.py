@@ -1,4 +1,4 @@
-import glob, os
+import glob, os, sys
 import benchmark.config as config
 
 def find_files(patterns):

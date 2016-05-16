@@ -52,7 +52,7 @@ def efficiency_format(x, is_best, scale, leading, fg_cm, bg_cm):
   pad = leading + 4 - len(val)
   val = '\hspace{0.5em}' * pad + val
   if is_best:
-    val = r'\kern-.40ex\textbf{' + val + r'}\kern-.40ex'
+    val = r'\textbf{' + val + r'}'
   return r'{\kern-0.35em\colorbox[rgb]{' + '{0},{1},{2}'.format(*bg) + r'}{\textcolor[rgb]{' + \
          '{0},{1},{2}'.format(*fg) + r'}{' + val + '}}\kern-0.35em}'
 

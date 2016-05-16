@@ -6,6 +6,7 @@ from benchmark.config import *
 DISSERTATION_DIR = os.path.join(PROJECT_DIR, '..', 'dissertation')
 BENCHMARK_INPUT = os.path.join(OUTPUT_DIR, 'tables', 'benchmark.csv')
 LATEX_OUTPUT_DIR = os.path.join(DISSERTATION_DIR, 'tables')
+JSON_OUTPUT = os.path.join(OUTPUT_DIR, 'tables', 'benchmark.js')
 
 def abbreviate_by_fname(root_path):
   dir = os.path.join(CORPUS_DIR, root_path)
@@ -15,27 +16,33 @@ def abbreviate_by_fname(root_path):
   return d
 
 STANDARD_CORPUS = [
-  ['canterbury/canterbury/alice29.txt',
-  'canterbury/canterbury/asyoulik.txt',
-  'canterbury/canterbury/cp.html',
-  'canterbury/canterbury/fields.c',
-  'canterbury/canterbury/grammar.lsp',
-  'canterbury/canterbury/kennedy.xls',
-  'canterbury/canterbury/lcet10.txt',
-  'canterbury/canterbury/plrabn12.txt',
-  'canterbury/canterbury/ptt5',
-  'canterbury/canterbury/sum',
-  'canterbury/canterbury/xargs.1'],
-  ['single_language/beowulf.txt',
-  'single_language/crime_and_punishment.txt',
-  'single_language/genji/all.txt',
-  'single_language/genji/chapter2.txt',
-  'single_language/kokoro.txt',
-  'single_language/ziemia_obiecana.txt',
-  'mixed_language/cedict_small.txt',
-  'mixed_language/creativecommonsukranian.html'],
-  ['text_binary/genji.tar',
-  'text_binary/kokoroziemia.tar'],
+  ('cantb',
+   ['canterbury/canterbury/alice29.txt',
+    'canterbury/canterbury/asyoulik.txt',
+    'canterbury/canterbury/cp.html',
+    'canterbury/canterbury/fields.c',
+    'canterbury/canterbury/grammar.lsp',
+    'canterbury/canterbury/kennedy.xls',
+    'canterbury/canterbury/lcet10.txt',
+    'canterbury/canterbury/plrabn12.txt',
+    'canterbury/canterbury/ptt5',
+    'canterbury/canterbury/sum',
+    'canterbury/canterbury/xargs.1']
+  ),
+  ('unicode',
+   ['single_language/beowulf.txt',
+    'single_language/crime_and_punishment.txt',
+    'single_language/genji/all.txt',
+    'single_language/genji/chapter2.txt',
+    'single_language/kokoro.txt',
+    'single_language/ziemia_obiecana.txt',
+    'mixed_language/cedict_small.txt',
+    'mixed_language/creativecommonsukranian.html']
+  ),
+  ('binary',
+   ['text_binary/genji.tar',
+    'text_binary/kokoroziemia.tar']
+  )
 ]
 
 FILE_ABBREVIATIONS = {

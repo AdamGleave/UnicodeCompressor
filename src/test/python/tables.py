@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import argparse, csv, itertools, os
+import argparse, csv, os
 
 import benchmark.config_tables as config
 
@@ -34,7 +34,11 @@ def generate_row(row):
   return ' & '.join(row) + r"\\"
 
 def autoscale(settings, data):
-  subset = [data[f][a] for f in itertools.chain(settings['files']) for a in settings['algos']]
+  subset = []
+  for _group, files in settings['files']:
+    for f in files:
+      for a in settings['algos']:
+        subset.append(data[f][a])
   return min(subset), max(subset)
 
 def efficiency_format(x, is_best, scale, leading, fg_cm, bg_cm):
@@ -79,8 +83,8 @@ def generate_table(settings, data):
   res.append(generate_row(algo_row))
   res.append(r'\midrule')
 
-  for file_group in settings['files']:
-    for file in file_group:
+  for file_group, files in settings['files']:
+    for file in files:
       filedata = data[file]
       file_abbrev = config.FILE_ABBREVIATIONS[file]
       row = [file_abbrev]

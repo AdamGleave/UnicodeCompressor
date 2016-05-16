@@ -75,6 +75,13 @@ TABLES = {
   }
 }
 
+def get_leading(algo):
+  '''typical number of digits before decimal place'''
+  if algo == 'none_uniform_token':
+    return 2
+  else:
+    return 1
+
 # TODO: choose colormap
 #COLORMAP = plt.cm.YlGnBu
 def constant_colormap(r, g, b, a):

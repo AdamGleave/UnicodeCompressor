@@ -65,8 +65,11 @@ ALGO_ABBREVIATIONS = {
 
 TABLES = {
   'singlesymbol': {
-    'algos': ['none_uniform_byte', 'none_uniform_token', 'crp_uniform_byte', 'crp_uniform_token',
-              'none_polya_token', 'ref_gzip', 'ref_bzip2'],
+    'algos': [
+      ('Static', ['none_uniform_byte', 'none_uniform_token']),
+      ('Adaptive', ['crp_uniform_byte', 'crp_uniform_token', 'none_polya_token']),
+      ('Reference', ['ref_gzip', 'ref_bzip2']),
+    ],
     'files': STANDARD_CORPUS,
     'scale': (1.0, 6.0),
   }

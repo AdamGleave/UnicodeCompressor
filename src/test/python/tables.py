@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import argparse, csv, os
+import argparse, csv, itertools, os
 
 import benchmark.config_tables as config
 
@@ -15,6 +15,20 @@ def load_benchmark(fname):
       del row['Size']
       res[file] = {k: float(size) / filesize * 8 for k, size in row.items()}
     return res
+
+def process_settings(raw):
+  res = dict(raw)
+  res['groups'] = None
+  if type(res['algos'][0]) == tuple:
+    algo_groups = res['algos']
+    flat_algos = []
+    groups = []
+    for group, algos in algo_groups:
+      flat_algos += algos
+      groups.append((group, len(algos)))
+    res['algos'] = flat_algos
+    res['groups'] = groups
+  return res
 
 def terminate_row(x):
   return x[0:len(x) - 2] + r"\\" + "\n"
@@ -50,6 +64,12 @@ def generate_table(settings, data):
   algo_cols = 'l||' * len(algos)
   algo_cols = algo_cols[0:len(algo_cols) - 2]
   res += r'\begin{tabular}{l@{\hskip 1em}!{\color{black}\vrule width 0.5pt}l' + algo_cols + '}' + '\n'
+
+  if settings['groups']:
+    group_row = r'& & '
+    for group, num_algos in settings['groups']:
+      group_row += r'\multicolumn{' + str(num_algos) + r'}{c}{' + group + r'} & '
+    res += terminate_row(group_row)
 
   algo_row = r'\textbf{File} & \hspace{2pt} & '
   for algo in algos:
@@ -97,7 +117,8 @@ def main():
   for table in tables:
     if verbose:
       print("Generating " + table)
-    settings = config.TABLES[table]
+    raw_settings = config.TABLES[table]
+    settings = process_settings(raw_settings)
     result = generate_table(settings, data)
     os.makedirs(config.LATEX_OUTPUT_DIR, exist_ok=True)
     with open(os.path.join(config.LATEX_OUTPUT_DIR, table + '.tex'), 'w') as out:

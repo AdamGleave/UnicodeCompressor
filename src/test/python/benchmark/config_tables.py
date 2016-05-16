@@ -15,7 +15,7 @@ def abbreviate_by_fname(root_path):
   return d
 
 STANDARD_CORPUS = [
-  'canterbury/canterbury/alice29.txt',
+  ['canterbury/canterbury/alice29.txt',
   'canterbury/canterbury/asyoulik.txt',
   'canterbury/canterbury/cp.html',
   'canterbury/canterbury/fields.c',
@@ -25,17 +25,17 @@ STANDARD_CORPUS = [
   'canterbury/canterbury/plrabn12.txt',
   'canterbury/canterbury/ptt5',
   'canterbury/canterbury/sum',
-  'canterbury/canterbury/xargs.1',
-  'single_language/beowulf.txt',
+  'canterbury/canterbury/xargs.1'],
+  ['single_language/beowulf.txt',
   'single_language/crime_and_punishment.txt',
   'single_language/genji/all.txt',
   'single_language/genji/chapter2.txt',
   'single_language/kokoro.txt',
   'single_language/ziemia_obiecana.txt',
   'mixed_language/cedict_small.txt',
-  'mixed_language/creativecommonsukranian.html',
-  'text_binary/genji.tar',
-  'text_binary/kokoroziemia.tar',
+  'mixed_language/creativecommonsukranian.html'],
+  ['text_binary/genji.tar',
+  'text_binary/kokoroziemia.tar'],
 ]
 
 FILE_ABBREVIATIONS = {

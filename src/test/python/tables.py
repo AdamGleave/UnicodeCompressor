@@ -30,11 +30,11 @@ def process_settings(raw):
     res['groups'] = groups
   return res
 
-def terminate_row(x):
-  return x[0:len(x) - 2] + r"\\" + "\n"
+def generate_row(row):
+  return ' & '.join(row) + r"\\"
 
 def autoscale(settings, data):
-  subset = [data[f][a] for f in settings['files'] for a in settings['algos']]
+  subset = [data[f][a] for f in itertools.chain(settings['files']) for a in settings['algos']]
   return min(subset), max(subset)
 
 def efficiency_format(x, is_best, scale, leading, fg_cm, bg_cm):
@@ -58,40 +58,45 @@ def generate_table(settings, data):
   else:
     scale = autoscale(settings, data)
 
-  res = r''
-  res += r'\setlength{\tabcolsep}{1ex}' + '\n'
+  res = []
+  res.append(r'\setlength{\tabcolsep}{1ex}')
 
   algos = settings['algos']
   algo_cols = 'c' * len(algos)
-  res += r'\begin{tabular}{l|' + algo_cols + '}' + '\n'
+  res.append(r'\begin{tabular}{l' + algo_cols + '}')
+  res.append(r'\toprule')
 
   if settings['groups']:
-    group_row = r'& '
+    group_row = ['']
     for group, num_algos in settings['groups']:
-      group_row += r'\multicolumn{' + str(num_algos) + r'}{c}{' + group + r'} & '
-    res += terminate_row(group_row)
+      group_row.append(r'\multicolumn{' + str(num_algos) + r'}{c}{' + group + r'}')
+    res.append(generate_row(group_row))
 
-  algo_row = r'\textbf{File} & '
+  algo_row = [r'\textbf{File}']
   for algo in algos:
     abbrev = config.ALGO_ABBREVIATIONS[algo]
-    algo_row += abbrev + ' & '
-  res += terminate_row(algo_row)
+    algo_row.append(abbrev)
+  res.append(generate_row(algo_row))
+  res.append(r'\midrule')
 
-  for file in settings['files']:
-    filedata = data[file]
-    file_abbrev = config.FILE_ABBREVIATIONS[file]
-    row = '{0} & '.format(file_abbrev)
-    best = min([filedata[a] for a in algos])
-    for algo in algos:
-      efficiency = filedata[algo]
-      is_best = efficiency == best
-      leading = config.get_leading(algo)
-      val = efficiency_format(efficiency, is_best, scale, leading, config.FG_COLORMAP, config.BG_COLORMAP)
-      row += '{0} & '.format(val)
-    res += terminate_row(row)
+  for file_group in settings['files']:
+    for file in file_group:
+      filedata = data[file]
+      file_abbrev = config.FILE_ABBREVIATIONS[file]
+      row = [file_abbrev]
+      best = min([filedata[a] for a in algos])
+      for algo in algos:
+        efficiency = filedata[algo]
+        is_best = efficiency == best
+        leading = config.get_leading(algo)
+        val = efficiency_format(efficiency, is_best, scale, leading, config.FG_COLORMAP, config.BG_COLORMAP)
+        row.append(val)
+      res.append(generate_row(row))
+    res.append(r'\addlinespace[0em]\midrule\addlinespace[0.1em]')
 
-  res += r'\end{tabular}' + '\n'
-  return res
+  res[-1] = r'\bottomrule'
+  res.append(r'\end{tabular}')
+  return '\n'.join(res)
 
 verbose = False
 

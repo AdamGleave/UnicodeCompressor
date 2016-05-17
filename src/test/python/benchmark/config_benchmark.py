@@ -8,7 +8,6 @@ COMPRESSORS['ref_bzip2'] = (ext_compressor, {'name': 'bzip2'})
 COMPRESSORS['ref_PPMd'] = (ext_compressor, {'name': 'PPMd'})
 
 algos = {'none': [], 'crp': ['crp:a=1:b=0'], 'lzw': ['lzwEscape']}
-
 for d in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]:
   algos['ppm{0}'.format(d)] = ['ppm:d={0}'.format(d)]
 

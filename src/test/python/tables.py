@@ -57,7 +57,7 @@ def efficiency_format(x, is_best, scale, leading, fg_cm, bg_cm):
          '{0},{1},{2}'.format(*fg) + r'}{' + val + '}}\kern-0.35em}'
 
 def generate_table(settings, data):
-  if settings['scale']:
+  if 'scale' in settings:
     scale = settings['scale']
   else:
     scale = autoscale(settings, data)

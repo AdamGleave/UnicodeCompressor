@@ -29,14 +29,16 @@ STANDARD_CORPUS = [
     'canterbury/canterbury/sum',
     'canterbury/canterbury/xargs.1']
   ),
-  ('unicode',
+  ('single_language',
    ['single_language/beowulf.txt',
     'single_language/crime_and_punishment.txt',
     'single_language/genji/all.txt',
     'single_language/genji/chapter2.txt',
     'single_language/kokoro.txt',
-    'single_language/ziemia_obiecana.txt',
-    'mixed_language/cedict_small.txt',
+    'single_language/ziemia_obiecana.txt']
+   ),
+  ('mixed_language',
+   ['mixed_language/cedict_small.txt',
     'mixed_language/creativecommonsukranian.html']
   ),
   ('binary',
@@ -101,8 +103,6 @@ def get_leading(algo):
   else:
     return 1
 
-# TODO: choose colormap
-#COLORMAP = plt.cm.YlGnBu
 def constant_colormap(r, g, b, a):
   def f(_x):
     return [r, g, b, a]
@@ -111,9 +111,15 @@ def invert_colormap(cm):
   def f(x):
     return map(lambda x : 1 - x, cm(x))
   return f
+def clip_colormap(cm):
+  def f(x):
+    r, g, b, a = cm(x)
+    intensity = (r + g + b) / 3
+    if intensity >= 0.5:
+      return (1, 1, 1, a)
+    else:
+      return (0, 0, 0, a)
+  return f
 
-FG_COLORMAP = constant_colormap(0, 0, 0, 1)
 BG_COLORMAP = plt.cm.BuGn
-
-# FG_COLORMAP = plt.cm.cubehelix
-# BG_COLORMAP = invert_colormap(FG_COLORMAP)
+FG_COLORMAP = clip_colormap(invert_colormap(BG_COLORMAP))

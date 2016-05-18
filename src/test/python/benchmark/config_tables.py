@@ -71,6 +71,7 @@ ALGO_ABBREVIATIONS = {
   'lzw_uniform_byte': r'\lzwuniformbyte',
   'lzw_uniform_token': r'\lzwuniformtoken',
   'lzw_polya_token': r'\lzwpolyatoken',
+  'ref_compress': r'\compress',
   'ref_gzip': r'\gzip',
   'ref_bzip2': r'\bziptwo',
   'ref_PPMd': r'\PPMII',
@@ -88,8 +89,8 @@ TABLES = {
   },
   'lzw': {
     'algos': [
-      ('', ['none_lzw_byte']),
-      ('Escaped LZW', ['lzw_uniform_byte', 'lzw_uniform_token', 'lzw_polya_token']),
+      ('Original', ['ref_compress', 'none_lzw_byte']),
+      ('Escaped', ['lzw_uniform_byte', 'lzw_uniform_token', 'lzw_polya_token']),
       ('Reference', ['ref_gzip', 'ref_bzip2']),
     ],
     'files': STANDARD_CORPUS,

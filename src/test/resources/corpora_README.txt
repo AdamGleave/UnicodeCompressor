@@ -46,9 +46,10 @@ shimazaki.txt: The Broken Commandment, Tōson Shimazaki. Japanese. Public domain
 
 The following files are all from Project Gutenberg, and are under the Gutenberg license: www.gutenberg.org/license I have stripped the preamble and postamble from each file.
 * aristotle.txt: The Constitution of the Athenians, Aristotle. Greek. From http://www.gutenberg.org/ebooks/39963
-* jushi.txt: Tou Peng Hsien Hua, Aina Jushi. Chinese. From http://www.gutenberg.org/ebooks/25328
-* forsberg.txt: Svensk litteraturhistoria, Hjalmar Forsberg and H. H. Henrikz. Swedish. From http://www.gutenberg.org/ebooks/49801
-* rizal.txt: Ang "Filibusterismo", José Rizal. Tagalog. From http://www.gutenberg.org/ebooks/47629 
 * austen.txt: Pride and Prejudice, Jane Austen. English. From http://www.gutenberg.org/ebooks/1342
+* confucius.txt: Lin Yu, Fu Zi Kong. From http://www.gutenberg.org/ebooks/23839
 * doyle.txt: The Adventures of Sherlock Holmes, Arthur Conan Doyle. English. From http://www.gutenberg.org/ebooks/1661
+* forsberg.txt: Svensk litteraturhistoria, Hjalmar Forsberg and H. H. Henrikz. Swedish. From http://www.gutenberg.org/ebooks/49801
+* jushi.txt: Tou Peng Hsien Hua, Aina Jushi. Chinese. From http://www.gutenberg.org/ebooks/25328
+* rizal.txt: Ang "Filibusterismo", José Rizal. Tagalog. From http://www.gutenberg.org/ebooks/47629 
 * russel.html: An essay on the foundations of geometry, Bertrand Russel. English in HTML with mathematical symbols. From http://www.gutenberg.org/ebooks/52091

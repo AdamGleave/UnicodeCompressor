@@ -229,7 +229,8 @@ def create_range(start, stop, N):
 
 def legal_parameters(x):
   a, b = x
-  return a + b >= 0.01 # mathematically legal if >0, but set 0.01 threshold for numerical stability
+  # mathematically legal if >0, but set 0.01 threshold for numerical stability
+  return 0 <= b <= 1 and a + b >= 0.01
 
 # This function isn't memoised, as it's a function of memoized values, and the result size is large.
 def optimise_brute(fnames, paranoia, prior, depth, alpha_range, beta_range, granularity):

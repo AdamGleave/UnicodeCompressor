@@ -30,6 +30,7 @@ CELERY['CELERY_RESULT_BACKEND'] = 'redis://{0}:{1}'.format(REDIS_HOST, REDIS_POR
 
 PPMd_EXECUTABLE = os.path.join(PROJECT_DIR, 'ext', 'ppmdj1', 'PPMd')
 EXT_COMPRESSORS = {
+  'compress': (['compress', '-c'], [], ['-d']),
   'gzip': (['gzip', '-c'], [], ['-d']),
   'bzip2': (['bzip2', '-c', '--best'], ['-z'], ['-d']),
   'PPMd': ([PPMd_EXECUTABLE], ['e'], ['d']),

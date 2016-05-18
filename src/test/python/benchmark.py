@@ -3,14 +3,13 @@
 import asciitable, argparse, csv, errno, filecmp, functools, os, pickle, re, sys, time
 import celery
 
-import benchmark.config_benchmark as config_benchmark
-import benchmark.config as config
+import benchmark.config_benchmark as config
 import benchmark.general
 
 def find_compressors(patterns):
   patterns = list(map(re.compile, patterns))
   res = set()
-  for k in config_benchmark.COMPRESSORS.keys():
+  for k in config.COMPRESSORS.keys():
     for p in patterns:
       if p.match(k):
         res.add(k)
@@ -78,7 +77,7 @@ if __name__ == "__main__":
   run = (not args['invalidate']) or args['rerun']
   invalidate = args['invalidate'] or args['rerun']
 
-  compressors = config_benchmark.COMPRESSORS.keys()
+  compressors = config.COMPRESSORS.keys()
   if args['compressor']:
     compressors = find_compressors(args['compressor'])
   compressors = list(compressors)
@@ -95,7 +94,7 @@ if __name__ == "__main__":
 
   work = []
   for compressor_name in compressors:
-    compressor, kwargs = config_benchmark.COMPRESSORS[compressor_name]
+    compressor, kwargs = config.COMPRESSORS[compressor_name]
     for fname in files:
       work += [compressor.s(fname=fname, paranoia=False, **kwargs)]
   async_res = celery.group(work)()

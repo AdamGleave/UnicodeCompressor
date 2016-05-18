@@ -1,6 +1,8 @@
-import re
+import csv, itertools, os, re
 
 from benchmark.tasks import my_compressor, ext_compressor
+
+from benchmark.config import *
 
 COMPRESSORS = {}
 COMPRESSORS['ref_compress'] = (ext_compressor, {'name': 'compress'})
@@ -40,10 +42,29 @@ for (algo_name, algo_config) in algos.items():
     if not is_excluded(name):
       COMPRESSORS[name] = (my_compressor, {'base': prior_name, 'algorithms': algo_config})
 
-COMPRESSORS['ppm_test_group_opt_uniform_byte'] = (my_compressor, {'base': 'uniform_byte', 'algorithms': ['ppm:d=6:a=-0.105494661063:b=0.47794125429']})
-COMPRESSORS['ppm_test_group_opt_uniform_token'] = (my_compressor, {'base': 'uniform_token', 'algorithms': ['ppm:d=4:a=-0.0588102870517:b=0.497974993229']})
-COMPRESSORS['ppm_test_group_opt_polya_token'] = (my_compressor, {'base': 'polya_token', 'algorithms': ['ppm:d=4:a=-0.0653849770234:b=0.49912463989']})
+def group_parameters(group, prior):
+  fname = '{0}_ppm_multi_optimal_alpha_beta:depths=0,1,2,3,4,5,6,7,8,9:granularity=10:prior={1}.csv'.format(group, prior)
+  path = os.path.join(TABLE_DIR, fname)
+  try:
+    with open(path, 'r') as f:
+      reader = csv.DictReader(f)
+      best_e, best_name = float('inf'), None
+      for row in reader:
+        d = int(row['depth'])
+        a = float(row['alpha'])
+        b = float(row['beta'])
 
-COMPRESSORS['ppm_training_group_opt_uniform_byte'] = (my_compressor, {'base': 'uniform_byte', 'algorithms': ['ppm:d=6:a=0.0953509648641:b=0.408977501392']})
-COMPRESSORS['ppm_training_group_opt_uniform_token'] = (my_compressor, {'base': 'uniform_token', 'algorithms': ['ppm:d=5:a=0.000907185094224:b=0.513284450993']})
-COMPRESSORS['ppm_training_group_opt_polya_token'] = (my_compressor, {'base': 'polya_token', 'algorithms': ['ppm:d=5:a=0.000633029756621:b=0.513015874624']})
+        name = 'ppm_{0}_group_{1}_{2}'.format(group, d, prior)
+        COMPRESSORS[name] = (my_compressor, {'base': prior,
+                                             'algorithms': ['ppm:d={0}:a={1}:b={2}'.format(d, a, b)]})
+
+        e = float(row['mean_efficiency'])
+        if e < best_e:
+          best_e, best_name = e, name
+      COMPRESSORS['ppm_{0}_group_opt_{1}'.format(group, prior)] = COMPRESSORS[best_name]
+  except FileNotFoundError:
+    print("WARNING: could not open " + path)
+
+for group, prior in itertools.product(['training', 'test'],
+                                      ['uniform_byte', 'uniform_token', 'polya_token']):
+  group_parameters(group, prior)

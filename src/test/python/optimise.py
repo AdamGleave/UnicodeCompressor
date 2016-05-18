@@ -3,6 +3,8 @@
 import argparse, csv, functools, hashlib, itertools
 import math, multiprocessing, os, sys, traceback
 
+import celery
+
 import numpy as np
 
 import matplotlib
@@ -233,26 +235,6 @@ def ppm_multi_group_algo_contour_plot(pool, fnames, test_name, algos,
   ppm_group_algo_contour_plot_helper(test_name, fnames, algos, granularity,
                                      alpha_start, alpha_end, beta_start, beta_end)
 
-def ppm_find_optimal_alpha_beta(fnames, paranoia, prior, granularity, depth):
-  if verbose:
-     print('ppm_find_optimal_alpha_beta: {0} at depth {1} on {2}'.format(prior, depth, fnames))
-  initial_guess = (0, 0.5) # PPMD
-
-  if granularity > 1:
-    res = benchmark.tasks.optimise_brute(fnames, paranoia, prior, depth,
-                                         (config.PPM_ALPHA_START, config.PPM_ALPHA_END),
-                                         (config.PPM_BETA_START, config.PPM_BETA_END),
-                                         granularity)
-    optimum, evals = res
-    initial_guess, _ = optimum
-
-  opt_success, opt_res = benchmark.tasks.ppm_minimize(fnames, paranoia, prior, depth, initial_guess)
-  if opt_success:
-    status = "Normal" if opt_res['status'] == 0 else opt_res['message']
-    return (opt_res['x'], opt_res['fun'], status)
-  else:
-    print('ppm_find_optimal_alpha_beta: error in ppm_minimize: ' + str(opt_res))
-
 def parse_depths(depths):
   if type(depths) == str: # parameter passed at CLI
     return list(map(int, depths.split(",")))
@@ -279,7 +261,8 @@ def best_parameters_by_depth(res):
 
 def ppm_optimal_parameters_helper(paranoia, prior, granularity, x):
   fname, depth = x
-  return ppm_find_optimal_alpha_beta([fname], paranoia, prior, granularity, depth)
+  return benchmark.tasks.ppm_find_optimal_alpha_beta([fname], paranoia, prior, depth, granularity,
+                                                     config.PPM_ALPHA_RANGE, config.PPM_BETA_RANGE)
 
 def ppm_optimal_parameters(pool, files, test_name, prior,
                            granularity=config.PPM_PARAMETER_GRANULARITY,
@@ -328,13 +311,17 @@ def ppm_optimal_alpha_beta_helper(test_name, fname, prior,
     writer.writerow(fieldnames)
 
     for d in depths:
-      res = ppm_find_optimal_alpha_beta([fname], paranoia, prior, granularity, d)
+      res = benchmark.tasks.ppm_find_optimal_alpha_beta([fname], paranoia, prior, d, granularity,
+                                                        config.PPM_ALPHA_RANGE, config.PPM_BETA_RANGE)
       if res: # optimisation succeeded
         (alpha, beta), efficiency, status = res
         writer.writerow([d, alpha, beta, efficiency, status])
     return csv_path
 ppm_optimal_alpha_beta = per_file_test(ppm_optimal_alpha_beta_helper)
 
+def ppm_multi_optimal_alpha_beta_helper(files, prior, granularity, depth):
+  return benchmark.tasks.ppm_find_optimal_alpha_beta(files, paranoia, prior, depth, granularity,
+                                                     config.PPM_ALPHA_RANGE, config.PPM_BETA_RANGE)
 def ppm_multi_optimal_alpha_beta(pool, files, test_name, prior,
                                  granularity=config.PPM_PARAMETER_GRANULARITY,
                                  depths=config.PPM_PARAMETER_DEPTHS):
@@ -352,10 +339,83 @@ def ppm_multi_optimal_alpha_beta(pool, files, test_name, prior,
         (alpha, beta), efficiency, status = row
         writer.writerow([depth, alpha, beta, efficiency, status])
 
-  runner = functools.partial(ppm_find_optimal_alpha_beta, files, paranoia, prior, granularity)
   ec = functools.partial(error_callback, 'ppm_multi_optimal_alpha_beta - {0} on {1}'
                                           .format(test_name, files))
-  pool.map_async(runner, depths, chunksize=1, callback=callback, error_callback=ec)
+  pool.map_async(ppm_multi_optimal_alpha_beta_helper, depths, chunksize=1,
+                 callback=callback, error_callback=ec)
+
+def ppm_efficiency_by_depth_helper(fnames, granularity, x):
+  prior, depth = x
+
+  return benchmark.tasks.ppm_find_optimal_alpha_beta(fnames, paranoia, prior, depth, granularity,
+                                                     config.PPM_ALPHA_RANGE, config.PPM_BETA_RANGE)
+def ppm_efficiency_by_depth_helper2(fnames, priors, depths, test_name, opts):
+  test_files = list(itertools.chain(*config.PPM_EFFICIENCY_BY_DEPTH_FILESETS.values()))
+  original_sizes = {f : benchmark.tasks.corpus_size(f) for f in fnames}
+  work = []
+  for opt, (prior, depth) in zip(opts, itertools.product(priors, depths)):
+    x, fun, status = opt
+    a, b = x
+    work += [benchmark.tasks.my_compressor.s(test_file, paranoia, prior,
+                                             ['ppm:d={0}:a={1}:b={2}'.format(depth, a, b)])
+            for test_file in test_files]
+  raw_res = celery.group(work)().get()
+
+  res = {}
+  for effectiveness, (prior, depth, test_file) in zip(raw_res,
+                                                      itertools.product(priors, depths, test_files)):
+    by_prior = res.get(prior, {})
+    by_depth = by_prior.get(depth, {})
+    by_depth[test_file] = effectiveness
+    by_prior[depth] = by_depth
+    res[prior] = by_prior
+
+  fig = plt.figure()
+  colors = config.PPM_EFFICIENCY_BY_DEPTH_COLORMAP(np.linspace(0, 1,
+                                                      len(config.PPM_EFFICIENCY_BY_DEPTH_FILESETS)))
+  for (name, fileset), color in zip(config.PPM_EFFICIENCY_BY_DEPTH_FILESETS.items(), colors):
+    for prior in priors:
+      y = []
+      for d in depths:
+        by_file = res[prior][d]
+        mean = np.mean([by_file[f] / original_sizes[f] * 8 for f in fileset])
+        y.append(mean)
+
+
+      linestyle = config.PPM_EFFICIENCY_BY_DEPTH_PRIOR_LINESTYLES[prior]
+
+      plt.plot(depths, y, label='{0} ({1})'.format(name, prior), color=color, linestyle=linestyle)
+
+      min_i = np.argmin(y)
+      min_depth, min_y = depths[min_i], y[min_i]
+      del depths[min_i], y[min_i]
+      marker = config.PPM_EFFICIENCY_BY_DEPTH_PRIOR_MARKERS[prior]
+      plt.plot(depths, y, color=color, linestyle='None', marker=marker)
+      plt.plot([min_depth], [min_y], color=color, linestyle='None', marker='D')
+
+  plt.xlabel(r'Depth $d$ (symbols)')
+  plt.ylabel(r'Compression effectiveness (bits/byte)')
+
+  plt.legend()
+
+  return save_figure(fig, test_name, ["dummy"])
+
+def ppm_efficiency_by_depth(pool, files, test_name, priors,
+                            granularity=config.PPM_PARAMETER_GRANULARITY,
+                            depths=config.PPM_PARAMETER_DEPTHS):
+  granularity = int(granularity)
+  depths = parse_depths(depths)
+  priors = priors.split(",")
+
+  def callback(opts):
+    # TODO: this will block the thread
+    worker_wrapper(ppm_efficiency_by_depth_helper2, files, priors, depths, test_name, opts)
+
+  runner = functools.partial(worker_wrapper, ppm_efficiency_by_depth_helper, files, granularity)
+  ec = functools.partial(error_callback, 'ppm_efficiency_by_depth - {0} on {1}'
+                                         .format(test_name, files))
+  work = itertools.product(priors, depths)
+  pool.map_async(runner, work, chunksize=1, callback=callback, error_callback=ec)
 
 # TODO: canonical sorting
 def to_kwargs(xs):
@@ -387,6 +447,7 @@ TESTS = {
   'ppm_optimal_parameters': ppm_optimal_parameters,
   'ppm_optimal_alpha_beta': ppm_optimal_alpha_beta,
   'ppm_multi_optimal_alpha_beta': ppm_multi_optimal_alpha_beta,
+  'ppm_efficiency_by_depth': ppm_efficiency_by_depth,
 }
 
 def main():

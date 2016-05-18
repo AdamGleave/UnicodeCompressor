@@ -284,3 +284,21 @@ def contour_data(prior, paranoia, depth, alpha_range, beta_range, granularity, f
           '-- falling back to grid search: ' + str(opt_res))
 
   return (optimum, evals)
+
+# This function needn't be memoized, as it's a function of memoized values, but it does save time.
+# The result size is small, so the cache size doesn't increase much.
+@memo
+def ppm_find_optimal_alpha_beta(fnames, paranoia, prior, depth, granularity, alpha_range, beta_range):
+  initial_guess = (0, 0.5) # PPMD
+
+  if granularity > 1:
+    res = optimise_brute(fnames, paranoia, prior, depth, alpha_range, beta_range, granularity)
+    optimum, evals = res
+    initial_guess, _ = optimum
+
+  opt_success, opt_res = ppm_minimize(fnames, paranoia, prior, depth, initial_guess)
+  if opt_success:
+    status = "Normal" if opt_res['status'] == 0 else opt_res['message']
+    return (opt_res['x'], opt_res['fun'], status)
+  else:
+    print('ppm_find_optimal_alpha_beta: error in ppm_minimize: ' + str(opt_res))

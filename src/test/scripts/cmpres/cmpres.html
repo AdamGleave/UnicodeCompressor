@@ -240,9 +240,12 @@ var names = {
   "none_polya_token": "PT",
   "crp_uniform_byte": "DB",
   "crp_uniform_token": "DT",
-  "ppm_group_opt_uniform_byte": "PPMGUB",
-  "ppm_group_opt_uniform_token": "PPMGUT",
-  "ppm_group_opt_polya_token": "PPMGPT",
+  "ppm_training_group_opt_uniform_byte": "PPMTRUB",
+  "ppm_training_group_opt_uniform_token": "PPMTRUT",
+  "ppm_training_group_opt_polya_token": "PPMTRPT",
+  "ppm_test_group_opt_uniform_byte": "PPMTEUB",
+  "ppm_test_group_opt_uniform_token": "PPMTEUT",
+  "ppm_test_group_opt_polya_token": "PPMTEPT",
   "ppm6_uniform_byte": "PPM6UB",
   "ppm4_uniform_token": "PPM4UT",
   "ppm4_polya_token": "PPM4PT",
@@ -443,14 +446,14 @@ function tblcmd(cmd) {
     addFileRow(table,"xargs.1","cantb",10);
   } else
   if (cmd.indexOf("UNICODE") == 0) {
-    addFileRow(table, "beowulf.txt", "unicode", 0);
-    addFileRow(table, "dostoevsky.txt", "unicode", 1);
-    addFileRow(table, "genji.txt", "unicode", 2);
-    addFileRow(table, "genji02.txt", "unicode", 3);
-    addFileRow(table, "kokoro.txt", "unicode", 4);
-    addFileRow(table, "obiecana.txt", "unicode", 5);
-    addFileRow(table, "dictionary.txt", "unicode", 6);
-    addFileRow(table, "license.html", "unicode", 7);
+    addFileRow(table, "beowulf.txt", "single_language", 0);
+    addFileRow(table, "dostoevsky.txt", "single_language", 1);
+    addFileRow(table, "genji.txt", "single_language", 2);
+    addFileRow(table, "genji02.txt", "single_language", 3);
+    addFileRow(table, "kokoro.txt", "single_language", 4);
+    addFileRow(table, "obiecana.txt", "single_language", 5);
+    addFileRow(table, "dictionary.txt", "mixed_language", 0);
+    addFileRow(table, "license.html", "mixed_language", 1);
   } else
   if (cmd.indexOf("BINARY") == 0) {
     addFileRow(table, "genji.tar", "binary", 0);
@@ -513,9 +516,12 @@ function relaycmd(id) {
     tblcmd("+none_polya_token")
   }
   function addPPMD() {
-    tblcmd("+ppm_group_opt_uniform_byte")
-    tblcmd("+ppm_group_opt_uniform_token")
-    tblcmd("+ppm_group_opt_polya_token")
+    tblcmd("+ppm_training_group_opt_uniform_byte")
+    tblcmd("+ppm_training_group_opt_uniform_token")
+    tblcmd("+ppm_training_group_opt_polya_token")
+    tblcmd("+ppm_test_group_opt_uniform_byte")
+    tblcmd("+ppm_test_group_opt_uniform_token")
+    tblcmd("+ppm_test_group_opt_polya_token")
     tblcmd("+ppm6_uniform_byte")
     tblcmd("+ppm4_uniform_token")
     tblcmd("+ppm4_polya_token")

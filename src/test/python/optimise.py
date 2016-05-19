@@ -378,8 +378,6 @@ def ppm_efficiency_by_depth_helper2(fnames, priors, depths, test_name, opts):
     res[prior] = by_prior
 
   fig = new_figure()
-  # colors = config.PPM_EFFICIENCY_BY_DEPTH_COLORMAP(np.linspace(0, 1,
-  #                                                     len(config.PPM_EFFICIENCY_BY_DEPTH_FILESETS)))
   colors = ppl.brewer2mpl.get_map('Set2', 'qualitative', len(config.PPM_EFFICIENCY_BY_DEPTH_FILESETS)).mpl_colors
   for (name, fileset), color in zip(config.PPM_EFFICIENCY_BY_DEPTH_FILESETS.items(), colors):
     for prior in priors:
@@ -389,18 +387,19 @@ def ppm_efficiency_by_depth_helper2(fnames, priors, depths, test_name, opts):
         mean = np.mean([by_file[f] / original_sizes[f] * 8 for f in fileset])
         y.append(mean)
 
-
+      print("figure")
       linestyle = config.PPM_EFFICIENCY_BY_DEPTH_PRIOR_LINESTYLES[prior]
-
-      x = list(depths)
-      ppl.plot(x, y, label='{1} on {0}'.format(name, short_name(config.SHORT_PRIOR_NAME, prior)),
-               color=color, linestyle=linestyle)
-
-      min_i = np.argmin(y)
-      min_depth, min_y = depths[min_i], y[min_i]
-      del x[min_i], y[min_i]
+      print("linestyle")
       marker = config.PPM_EFFICIENCY_BY_DEPTH_PRIOR_MARKERS[prior]
-      ppl.plot(x, y, color=color, linestyle='None', marker=marker)
+      print("marker")
+      min_i = np.argmin(y)
+      markevery = list(range(0, min_i)) + list(range(min_i + 1, len(depths)))
+      print(markevery)
+      ppl.plot(depths, y, label='{1} on {0}'.format(name, short_name(config.SHORT_PRIOR_NAME, prior)),
+               color=color, linestyle=linestyle, marker=marker, markevery=markevery)
+
+      min_depth = depths[min_i]
+      min_y = y[min_i]
       ppl.plot([min_depth], [min_y], color=color, linestyle='None', marker='D')
 
   plt.xlabel(r'Maximal context depth $d$')
@@ -409,7 +408,9 @@ def ppm_efficiency_by_depth_helper2(fnames, priors, depths, test_name, opts):
   # stretch x-axis slightly so markers are visible
   plt.xlim(min(depths) - 0.1, max(depths) + 0.1)
 
-  ppl.legend(handlelength=3) # increase length of line segments so that linestyles can be seen
+  ppl.legend(handlelength=4, # increase length of line segments so that linestyles can be seen
+             numpoints=1 # but only show marker once
+             )
 
   return save_figure(fig, test_name, ["dummy"])
 

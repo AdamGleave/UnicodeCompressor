@@ -105,10 +105,8 @@ def set_width(width, aspect_ratio=4/3.0):
 
 def set_rcs_onecol():
   set_rcs_common()
-  # LaTeX text width with default margins is 452 pt, or 158.85 cm for TeX
-  # Rounding down slightly, this gives us 6.25 in
-  # Make it slightly less than 4:3 so can fit two figures top-bottom
-  rc('figure', figsize=(6.25, 4))
+  # My textwidth is 137.06772mm, or just over 5.39 in
+  set_width(5.39)
 
 def set_rcs_twocol():
   set_rcs_common()

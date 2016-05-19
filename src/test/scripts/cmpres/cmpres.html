@@ -458,6 +458,18 @@ function tblcmd(cmd) {
   if (cmd.indexOf("BINARY") == 0) {
     addFileRow(table, "genji.tar", "binary", 0);
     addFileRow(table, "kokoziem.tar", "binary", 1);
+  } else 
+  if (cmd.indexOf("TRAINING") == 0) {
+    addFileRow(table, "aristotle.txt", "training", 0);
+    addFileRow(table, "austen.txt", "training", 1);
+    addFileRow(table, "confucius.txt", "training", 2);
+    addFileRow(table, "doyle.txt", "training", 3);
+    addFileRow(table, "forsberg.txt", "training", 4);
+    addFileRow(table, "gogol.txt", "training", 5);
+    addFileRow(table, "jushi.txt", "training", 6);
+    addFileRow(table, "rizal.txt", "training", 7);
+    addFileRow(table, "russel.html", "training", 8);
+    addFileRow(table, "shimazaki.txt", "training", 9);
   } else {
     addRateColumn(table,cmd);
   }
@@ -489,6 +501,7 @@ function relaycmd(id) {
     <button style="opacity:0.5;" onclick="addCntb();">Canterbury</button>
     <button style="opacity:0.5;" onclick="addUnicode();">Unicode</button>
     <button style="opacity:0.5;" onclick="addBinary();">Binary</button>
+    <button style="opacity:0.5;" onclick="addTraining();">Training</button>
     <button style="opacity:0.5;" onclick="addSingleSymbol();">Single Symbol</button>
     <button style="opacity:0.5;" onclick="addPPMD();">PPM</button>
     <button style="opacity:0.5;" onclick="addReference();">Reference</button>
@@ -507,6 +520,9 @@ function relaycmd(id) {
   }
   function addBinary() {
     tblcmd("BINARY");
+  }
+  function addTraining() {
+    tblcmd("TRAINING");
   }
   function addSingleSymbol() {
     tblcmd("+none_uniform_byte")

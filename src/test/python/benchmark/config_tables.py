@@ -44,7 +44,22 @@ STANDARD_CORPUS = [
   ('binary',
    ['text_binary/genji.tar',
     'text_binary/kokoroziemia.tar']
-  )
+  ),
+]
+
+FULL_CORPUS = STANDARD_CORPUS + [
+  ('training',
+   ['training/aristotle.txt',
+    'training/austen.txt',
+    'training/confucius.txt',
+    'training/doyle.txt',
+    'training/forsberg.txt',
+    'training/gogol.txt',
+    'training/jushi.txt',
+    'training/rizal.txt',
+    'training/russel.html',
+    'training/shimazaki.txt']
+  ),
 ]
 
 FILE_ABBREVIATIONS = {
@@ -60,6 +75,7 @@ FILE_ABBREVIATIONS = {
   'text_binary/kokoroziemia.tar': 'kokoziem.tar'
 }
 FILE_ABBREVIATIONS.update(abbreviate_by_fname('canterbury/canterbury'))
+FILE_ABBREVIATIONS.update(abbreviate_by_fname('training/'))
 
 ALGO_ABBREVIATIONS = {
   'none_uniform_byte': r'\noneuniformbyte',

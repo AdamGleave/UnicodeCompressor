@@ -56,10 +56,22 @@ PPM_GROUP_CONTOUR_OVERRIDES = {
 
 # Efficiency by depth
 PPM_EFFICIENCY_BY_DEPTH_FILESETS = collections.OrderedDict()
-PPM_EFFICIENCY_BY_DEPTH_FILESETS['1-byte codewords'] = ['training/austen.txt', 'training/doyle.txt',
-                                                        'training/forsberg.txt', 'training/rizal.txt']
-PPM_EFFICIENCY_BY_DEPTH_FILESETS['2-byte codewords'] = ['training/aristotle.txt', 'training/gogol.txt']
-PPM_EFFICIENCY_BY_DEPTH_FILESETS['3-byte codewords'] = ['training/confucius.txt', 'training/jushi.txt', 'training/shimazaki.txt']
+PPM_EFFICIENCY_BY_DEPTH_FILESETS['1-byte codewords'] = [
+  'training/austen.txt',
+  'training/doyle.txt',
+  'training/forsberg.txt',
+  'training/rizal.txt',
+  'training/russel.html'
+]
+PPM_EFFICIENCY_BY_DEPTH_FILESETS['2-byte codewords'] = [
+  'training/aristotle.txt',
+  'training/gogol.txt'
+]
+PPM_EFFICIENCY_BY_DEPTH_FILESETS['3-byte codewords'] = [
+  'training/confucius.txt',
+  'training/jushi.txt',
+  'training/shimazaki.txt'
+]
 
 PPM_EFFICIENCY_BY_DEPTH_PRIOR_LINESTYLES = {
   'uniform_byte': 'solid',

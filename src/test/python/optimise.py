@@ -9,6 +9,7 @@ import numpy as np
 
 import matplotlib
 matplotlib.use('PDF')
+import prettyplotlib as ppl
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
 
@@ -30,14 +31,20 @@ def error_callback(location, exception):
 def sanitize_fname(fname):
   return fname.replace('/', '_')
 
+def new_figure():
+  matplotlib.rcdefaults() # reset style
+  style_rc() # apply new style
+  return plt.figure()
+
 def save_figure(fig, output_dir, fnames):
   if len(fnames) == 1:
-    fig_fname = sanitize_fname(fnames[0]) + ".pdf"
+    fig_fname = sanitize_fname(fnames[0])
   else:
     m = hashlib.md5()
     for fname in fnames:
       m.update(fname.encode('utf8'))
-    fig_fname = "group-" + m.hexdigest() + ".pdf"
+    fig_fname = "group-" + m.hexdigest()
+  fig_fname += "_" + style_name + ".pdf"
   fig_dir = os.path.join(config.FIGURE_DIR, output_dir)
   os.makedirs(fig_dir, exist_ok=True)
 
@@ -67,7 +74,7 @@ def round_up_to(multiple, x):
   return math.ceil(x / multiple) * multiple
 
 def plot_contour_base(xlim, ylim):
-  fig = plt.figure()
+  fig = new_figure()
 
   # shade illegal parameter region, a + b <= 0
   min_x, max_x = xlim
@@ -370,9 +377,10 @@ def ppm_efficiency_by_depth_helper2(fnames, priors, depths, test_name, opts):
     by_prior[depth] = by_depth
     res[prior] = by_prior
 
-  fig = plt.figure()
-  colors = config.PPM_EFFICIENCY_BY_DEPTH_COLORMAP(np.linspace(0, 1,
-                                                      len(config.PPM_EFFICIENCY_BY_DEPTH_FILESETS)))
+  fig = new_figure()
+  # colors = config.PPM_EFFICIENCY_BY_DEPTH_COLORMAP(np.linspace(0, 1,
+  #                                                     len(config.PPM_EFFICIENCY_BY_DEPTH_FILESETS)))
+  colors = ppl.brewer2mpl.get_map('Set2', 'qualitative', len(config.PPM_EFFICIENCY_BY_DEPTH_FILESETS)).mpl_colors
   for (name, fileset), color in zip(config.PPM_EFFICIENCY_BY_DEPTH_FILESETS.items(), colors):
     for prior in priors:
       y = []
@@ -384,19 +392,24 @@ def ppm_efficiency_by_depth_helper2(fnames, priors, depths, test_name, opts):
 
       linestyle = config.PPM_EFFICIENCY_BY_DEPTH_PRIOR_LINESTYLES[prior]
 
-      plt.plot(depths, y, label='{0} ({1})'.format(name, prior), color=color, linestyle=linestyle)
+      x = list(depths)
+      ppl.plot(x, y, label='{1} on {0}'.format(name, short_name(config.SHORT_PRIOR_NAME, prior)),
+               color=color, linestyle=linestyle)
 
       min_i = np.argmin(y)
       min_depth, min_y = depths[min_i], y[min_i]
-      del depths[min_i], y[min_i]
+      del x[min_i], y[min_i]
       marker = config.PPM_EFFICIENCY_BY_DEPTH_PRIOR_MARKERS[prior]
-      plt.plot(depths, y, color=color, linestyle='None', marker=marker)
-      plt.plot([min_depth], [min_y], color=color, linestyle='None', marker='D')
+      ppl.plot(x, y, color=color, linestyle='None', marker=marker)
+      ppl.plot([min_depth], [min_y], color=color, linestyle='None', marker='D')
 
-  plt.xlabel(r'Depth $d$ (symbols)')
+  plt.xlabel(r'Maximal context depth $d$')
   plt.ylabel(r'Compression effectiveness (bits/byte)')
 
-  plt.legend()
+  # stretch x-axis slightly so markers are visible
+  plt.xlim(min(depths) - 0.1, max(depths) + 0.1)
+
+  ppl.legend(handlelength=3) # increase length of line segments so that linestyles can be seen
 
   return save_figure(fig, test_name, ["dummy"])
 
@@ -437,6 +450,8 @@ def canonical_name(name, kwargs):
 
 verbose=False
 paranoia=False
+style_name=config.DEFAULT_STYLE
+style_rc=config.STYLES[style_name]
 
 TESTS = {
   'ppm_contour_plot': ppm_contour_plot,
@@ -467,15 +482,19 @@ def main():
                       help='paths which match the specified regex are excluded.')
   parser.add_argument('--num-workers', dest='num_workers', default=config.NUM_WORKERS,
                       help='number of local processes (default: {0})'.format(config.NUM_WORKERS))
+  parser.add_argument('--style', dest='style')
   parser.add_argument('tests', nargs='*',
                       help='list of tests to conduct; format is test_name[:parameter1=value1[:...]]')
 
   args = vars(parser.parse_args())
-  global verbose, paranoia, use_cache
+  global verbose, paranoia, use_cache, style_name, style_rc
   verbose = args['verbose']
   paranoia = args['paranoia']
   use_cache = not args['rerun']
   num_workers = int(args['num_workers'])
+  if args['style']:
+    style_name = args['style']
+    style_rc = config.STYLES[style_name]
 
   files = benchmark.general.include_exclude_files(args['include'], args['exclude'])
 

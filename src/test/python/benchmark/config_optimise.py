@@ -1,11 +1,14 @@
 import collections, os
 import matplotlib.pyplot as plt
+from matplotlib import rc
 
 from benchmark.config import *
 
+## Directories
 CACHE_DIR = os.path.join(OUTPUT_DIR, 'cache')
 FIGURE_DIR = os.path.join(OUTPUT_DIR, 'figures')
 
+## Default parameters
 PPM_ALPHA_START = -1
 PPM_ALPHA_END = 3
 PPM_ALPHA_RANGE = (PPM_ALPHA_START, PPM_ALPHA_END)
@@ -13,6 +16,7 @@ PPM_BETA_START = 0
 PPM_BETA_END = 0.99
 PPM_BETA_RANGE = (PPM_BETA_START, PPM_BETA_END)
 
+# Contour
 PPM_CONTOUR_GRANULARITY = 200
 PPM_CONTOUR_DEFAULT_ARGS = {
   'big_levels': 10,
@@ -34,17 +38,7 @@ PPM_CONTOUR_OVERRIDES = {
   }
 }
 
-SHORT_FILE_NAME = {
-  'canterbury/canterbury/alice29.txt': 'alice29.txt',
-  'canterbury/canterbury/lcet10.txt': 'lcet10.txt',
-}
-
-SHORT_PRIOR_NAME = {
-  'uniform_byte': 'UB',
-  'uniform_token': 'UT',
-  'polya_token': 'PT',
-}
-
+# Group contour
 PPM_GROUP_CONTOUR_DEFAULT_ARGS = {
   'big_levels': 5,
   'big_delta': 0.05,
@@ -60,11 +54,12 @@ PPM_GROUP_CONTOUR_OVERRIDES = {
 
 }
 
+# Efficiency by depth
 PPM_EFFICIENCY_BY_DEPTH_FILESETS = collections.OrderedDict()
-PPM_EFFICIENCY_BY_DEPTH_FILESETS['1 bytes'] = ['training/austen.txt', 'training/doyle.txt']
-#PPM_EFFICIENCY_BY_DEPTH_FILESETS['1 to 2 bytes'] = ['training/forsberg.txt', 'training/rizal.txt']
-PPM_EFFICIENCY_BY_DEPTH_FILESETS['2 bytes'] = ['training/aristotle.txt', 'training/gogol.txt']
-PPM_EFFICIENCY_BY_DEPTH_FILESETS['3-byte'] = ['training/confucius.txt', 'training/jushi.txt', 'training/shimazaki.txt']
+PPM_EFFICIENCY_BY_DEPTH_FILESETS['1-byte codewords'] = ['training/austen.txt', 'training/doyle.txt',
+                                                        'training/forsberg.txt', 'training/rizal.txt']
+PPM_EFFICIENCY_BY_DEPTH_FILESETS['2-byte codewords'] = ['training/aristotle.txt', 'training/gogol.txt']
+PPM_EFFICIENCY_BY_DEPTH_FILESETS['3-byte codewords'] = ['training/confucius.txt', 'training/jushi.txt', 'training/shimazaki.txt']
 
 PPM_EFFICIENCY_BY_DEPTH_PRIOR_LINESTYLES = {
   'uniform_byte': 'solid',
@@ -80,10 +75,52 @@ PPM_EFFICIENCY_BY_DEPTH_PRIOR_MARKERS = {
 
 PPM_EFFICIENCY_BY_DEPTH_COLORMAP = plt.cm.Set1
 
-# for parameter estimation grid search just needs to give a good initial guess, so can be lower
-# resolution than for contours
+# Parameter estimation
 PPM_PARAMETER_GRANULARITY = 10
 PPM_PARAMETER_DEPTHS = range(0, 10, 1) # 0..9
+
+## Abbreviations
+SHORT_FILE_NAME = {
+  'canterbury/canterbury/alice29.txt': 'alice29.txt',
+  'canterbury/canterbury/lcet10.txt': 'lcet10.txt',
+}
+
+SHORT_PRIOR_NAME = {
+  'uniform_byte': 'UB',
+  'uniform_token': 'UT',
+  'polya_token': 'PT',
+}
+
+## Appearance
+def set_rcs_common():
+  rc('font',**{'family':'serif', 'serif':['Palatino']})
+  rc('text', usetex=True)
+  rc('figure', autolayout=True)
+
+  rc('font', size=10)
+  rc('legend', fontsize=8)
+
+def set_width(width, aspect_ratio=4/3.0):
+  rc('figure', figsize=(width, width/aspect_ratio))
+
+def set_rcs_onecol():
+  set_rcs_common()
+  # LaTeX text width with default margins is 452 pt, or 158.85 cm for TeX
+  # Rounding down slightly, this gives us 6.25 in
+  # Make it slightly less than 4:3 so can fit two figures top-bottom
+  rc('figure', figsize=(6.25, 4))
+
+def set_rcs_twocol():
+  set_rcs_common()
+  # Slightly less than half of onecol so there's some whitespace between
+  set_width(3.1)
+
+STYLES = {
+  '1col': set_rcs_onecol,
+  '2col': set_rcs_twocol,
+}
+
+DEFAULT_STYLE = '1col'
 
 # This limits the number of high-level operations which can be performed in parallel.
 # As a rule of thumb, it should be close to the *total number* of cores in the cluster.

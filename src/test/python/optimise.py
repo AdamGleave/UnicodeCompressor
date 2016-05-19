@@ -387,14 +387,10 @@ def ppm_efficiency_by_depth_helper2(fnames, priors, depths, test_name, opts):
         mean = np.mean([by_file[f] / original_sizes[f] * 8 for f in fileset])
         y.append(mean)
 
-      print("figure")
       linestyle = config.PPM_EFFICIENCY_BY_DEPTH_PRIOR_LINESTYLES[prior]
-      print("linestyle")
       marker = config.PPM_EFFICIENCY_BY_DEPTH_PRIOR_MARKERS[prior]
-      print("marker")
       min_i = np.argmin(y)
       markevery = list(range(0, min_i)) + list(range(min_i + 1, len(depths)))
-      print(markevery)
       ppl.plot(depths, y, label='{1} on {0}'.format(name, short_name(config.SHORT_PRIOR_NAME, prior)),
                color=color, linestyle=linestyle, marker=marker, markevery=markevery)
 

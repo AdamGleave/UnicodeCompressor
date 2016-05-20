@@ -104,7 +104,9 @@ CMIX_EXECUTABLE = os.path.join(PROJECT_DIR, 'ext', 'cmixv9', 'cmix')
 PPMd_EXECUTABLE = os.path.join(PROJECT_DIR, 'ext', 'ppmdj1', 'PPMd')
 EXT_COMPRESSORS = {
   'bzip2': build_compressor(['bzip2', '-c', '--best'], ['-z'], ['-d']),
-  'cmix': build_compressor([CMIX_EXECUTABLE], ['-c'], ['-d']),
+  'cmix': build_compressor([CMIX_EXECUTABLE],
+                           ['-c', '/dev/stdin', '/dev/stdout'],
+                           ['-d', '/dev/stdin', '/dev/stdout']),
   'compress': build_compressor(['compress', '-c'], [], ['-d']),
   'gzip': build_compressor(['gzip', '-c'], [], ['-d']),
   'LZMA': build_compressor(['lzma', '-c', '-9', '-e'], ['-z'], ['-d']),

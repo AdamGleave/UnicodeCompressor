@@ -240,6 +240,10 @@ var names = {
   "none_polya_token": "PT",
   "crp_uniform_byte": "DB",
   "crp_uniform_token": "DT",
+  "none_lzw_byte": "LZWA",
+  "lzw_uniform_byte": "LUB",
+  "lzw_uniform_token": "LUT",
+  "lzw_polya_token": "LPT",
   "ppm_training_group_opt_uniform_byte": "PPMTRUB",
   "ppm_training_group_opt_uniform_token": "PPMTRUT",
   "ppm_training_group_opt_polya_token": "PPMTRPT",
@@ -252,9 +256,14 @@ var names = {
   "ppm5_uniform_byte": "PPM5UB",
   "ppm5_uniform_token": "PPM5UT",
   "ppm5_polya_token": "PPM5PT",
-  "ref_gzip": "gzip",
   "ref_bzip2": "bzip2",
+  "ref_compress": "LZWH",
+  "ref_cmix": "CMIX",
+  "ref_gzip": "gzip",
+  "ref_lzma": "LZMA",
+  "ref_paq8hp12": "paq8hp12",
   "ref_PPMd": "PPMII",
+  "ref_zpaq": "zpaq",
 };
 
 var rowids=0;
@@ -503,6 +512,7 @@ function relaycmd(id) {
     <button style="opacity:0.5;" onclick="addBinary();">Binary</button>
     <button style="opacity:0.5;" onclick="addTraining();">Training</button>
     <button style="opacity:0.5;" onclick="addSingleSymbol();">Single Symbol</button>
+    <button style="opacity:0.5;" onclick="addLZW();">LZW</button>
     <button style="opacity:0.5;" onclick="addPPMD();">PPM</button>
     <button style="opacity:0.5;" onclick="addReference();">Reference</button>
   </div>
@@ -531,6 +541,12 @@ function relaycmd(id) {
     tblcmd("+crp_uniform_token")
     tblcmd("+none_polya_token")
   }
+  function addLZW() {
+    tblcmd("+none_lzw_byte")
+    tblcmd("+lzw_uniform_byte")
+    tblcmd("+lzw_uniform_token")
+    tblcmd("+lzw_polya_token")
+  }
   function addPPMD() {
     tblcmd("+ppm_training_group_opt_uniform_byte")
     tblcmd("+ppm_training_group_opt_uniform_token")
@@ -546,9 +562,14 @@ function relaycmd(id) {
     tblcmd("+ppm5_polya_token")
   }
   function addReference() {
+    tblcmd("+ref_compress")
     tblcmd("+ref_gzip");
     tblcmd("+ref_bzip2");
+    tblcmd("+ref_lzma");
     tblcmd("+ref_PPMd");
+    tblcmd("+ref_zpaq");
+    tblcmd("+ref_paq8hp12");
+    tblcmd("+ref_cmix");
   }
   --></script>
   </center>

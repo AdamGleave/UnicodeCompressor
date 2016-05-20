@@ -56,20 +56,17 @@ def build_compressor_from_archive(compress_args, decompress_args):
 
       args = compress_args(in_fname, temp_input, out_fname)
       archive_temp_names[out_fname] = temp_input
-      print(args)
     else: # decompress
-      # decompressed_fname = archive_temp_names.pop(in_fname)
-      # print(decompressed_fname)
-      #
-      # # HACK: make a symbolic link to where the output will be extracted!
-      # os.unlink(out_fname)
-      # os.unlink(decompressed_fname)
-      # os.symlink(decompressed_fname, out_fname)
-      #
-      # # now decompress
-      # args = decompress_args(in_fname)
-      # print(args)
-      args=[]
+      decompressed_fname = archive_temp_names.pop(in_fname)
+      print(decompressed_fname)
+
+      # HACK: make a symbolic link to where the output will be extracted!
+      os.unlink(out_fname)
+      os.unlink(decompressed_fname)
+      os.symlink(decompressed_fname, out_fname)
+
+      # now decompress
+      args = decompress_args(in_fname)
     return subprocess.Popen(args)
   return run_compressor
 

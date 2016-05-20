@@ -70,6 +70,18 @@ def build_compressor_from_archive(compress_args, decompress_args):
     return subprocess.Popen(args)
   return run_compressor
 
+# cmix
+# Helper functions
+CMIX_EXECUTABLE = os.path.join(PROJECT_DIR, 'ext', 'cmixv9', 'cmix')
+def cmix(in_fname, out_fname, mode):
+  args = [CMIX_EXECUTABLE]
+  if mode == CompressionMode.compress:
+    args.append('-c')
+  else:
+    args.append('-d')
+  args += [in_fname, out_fname]
+  return subprocess.Popen(args)
+
 # paq8hp12
 PAQ8HP12_DIR = os.path.join(PROJECT_DIR, 'ext', 'paq8hp12')
 PAQ8HP12_EXECUTABLE = os.path.join(PAQ8HP12_DIR, 'paq8hp12')
@@ -100,13 +112,10 @@ def zpaq(in_fname, out_fname, mode):
   return subprocess.Popen(args)
 
 # All compressors
-CMIX_EXECUTABLE = os.path.join(PROJECT_DIR, 'ext', 'cmixv9', 'cmix')
 PPMd_EXECUTABLE = os.path.join(PROJECT_DIR, 'ext', 'ppmdj1', 'PPMd')
 EXT_COMPRESSORS = {
   'bzip2': build_compressor(['bzip2', '-c', '--best'], ['-z'], ['-d']),
-  'cmix': build_compressor([CMIX_EXECUTABLE],
-                           ['-c', '/dev/stdin', '/dev/stdout'],
-                           ['-d', '/dev/stdin', '/dev/stdout']),
+  'cmix': cmix,
   'compress': build_compressor(['compress', '-c'], [], ['-d']),
   'gzip': build_compressor(['gzip', '-c'], [], ['-d']),
   'LZMA': build_compressor(['lzma', '-c', '-9', '-e'], ['-z'], ['-d']),

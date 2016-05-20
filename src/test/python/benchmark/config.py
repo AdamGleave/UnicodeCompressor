@@ -88,7 +88,7 @@ EXT_COMPRESSORS = {
   'PPMd': build_compressor([PPMd_EXECUTABLE], ['e'], ['d']),
 }
 
-TIMEOUTS = { 'warn': 5, 'backoff': 2, 'hard': 60 }
+TIMEOUTS = { 'warn': 5, 'backoff': 2, 'hard': 600 }
 def timeouts():
   waited_for = 0
   current_timeout = TIMEOUTS['warn']

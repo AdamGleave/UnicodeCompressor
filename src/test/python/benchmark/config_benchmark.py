@@ -7,6 +7,7 @@ from benchmark.config import *
 COMPRESSORS = {}
 COMPRESSORS['ref_bzip2'] = (ext_compressor, {'name': 'bzip2'})
 COMPRESSORS['ref_compress'] = (ext_compressor, {'name': 'compress'})
+COMPRESSORS['ref_cmix'] = (ext_compressor, {'name': 'cmix'})
 COMPRESSORS['ref_gzip'] = (ext_compressor, {'name': 'gzip'})
 COMPRESSORS['ref_lzma'] = (ext_compressor, {'name': 'LZMA'})
 COMPRESSORS['ref_paq8hp12'] = (ext_compressor, {'name': 'paq8hp12'})

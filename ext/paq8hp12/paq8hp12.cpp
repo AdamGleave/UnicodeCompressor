@@ -3421,7 +3421,7 @@ int main(int argc, char** argv) {
         {
         buf.setsize(MEM*8);
         FILE *dictfile=fopen("./to_train_models.dic","rb"),
-		*tmpfi=fopen("./tmp_tmp_tmp_tmp.dic","wb");
+		*tmpfi=tmpfile();
 	filetype=0;
         Encoder en(COMPRESS, tmpfi);
 	en.compress(0);

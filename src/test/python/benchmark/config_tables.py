@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 
 from benchmark.config import *
 
+## Input/output paths
 DISSERTATION_DIR = os.path.join(PROJECT_DIR, '..', 'dissertation')
 BENCHMARK_INPUT = os.path.join(OUTPUT_DIR, 'tables', 'benchmark.csv')
 LATEX_OUTPUT_DIR = os.path.join(DISSERTATION_DIR, 'tables')
@@ -77,6 +78,8 @@ FILE_ABBREVIATIONS = {
 FILE_ABBREVIATIONS.update(abbreviate_by_fname('canterbury/canterbury'))
 FILE_ABBREVIATIONS.update(abbreviate_by_fname('training/'))
 
+## Algorithms
+
 ALGO_ABBREVIATIONS = {
   'none_uniform_byte': r'\noneuniformbyte',
   'none_uniform_token': r'\noneuniformtoken',
@@ -87,30 +90,13 @@ ALGO_ABBREVIATIONS = {
   'lzw_uniform_byte': r'\lzwuniformbyte',
   'lzw_uniform_token': r'\lzwuniformtoken',
   'lzw_polya_token': r'\lzwpolyatoken',
+  'ppm_training_group_opt_uniform_byte': r'\ppmtraininguniformbyte',
+  'ppm_training_group_opt_uniform_token': r'\ppmtraininguniformtoken',
+  'ppm_training_group_opt_polya_token': r'\ppmtrainingpolyatoken',
   'ref_compress': r'\compress',
   'ref_gzip': r'\gzip',
-  'ref_bzip2': r'\bziptwo',
-  'ref_PPMd': r'\PPMII',
-}
-
-TABLES = {
-  'singlesymbol': {
-    'algos': [
-      ('Static', ['none_uniform_byte', 'none_uniform_token']),
-      ('Adaptive', ['crp_uniform_byte', 'crp_uniform_token', 'none_polya_token']),
-      ('Reference', ['ref_gzip', 'ref_bzip2']),
-    ],
-    'files': STANDARD_CORPUS,
-    'scale': (1.0, 6.0),
-  },
-  'lzw': {
-    'algos': [
-      ('Original', ['ref_compress', 'none_lzw_byte']),
-      ('Escaped', ['lzw_uniform_byte', 'lzw_uniform_token', 'lzw_polya_token']),
-      ('Reference', ['ref_gzip', 'ref_bzip2']),
-    ],
-    'files': STANDARD_CORPUS,
-  }
+  'ref_bzip2': r'\hspace{-3pt}\bziptwo',
+  'ref_PPMd': r'\ppmii\hspace{-8.5pt}',
 }
 
 def get_leading(algo):
@@ -119,6 +105,16 @@ def get_leading(algo):
     return 2
   else:
     return 1
+
+def get_column_type(algo):
+  if algo == 'ref_bzip2':
+    return 'l'
+  elif algo == 'ref_PPMd':
+    return 'r'
+  else:
+    return 'c'
+
+## Colors
 
 def constant_colormap(r, g, b, a):
   def f(_x):
@@ -140,3 +136,35 @@ def clip_colormap(cm):
 
 BG_COLORMAP = plt.cm.BuGn
 FG_COLORMAP = clip_colormap(invert_colormap(BG_COLORMAP))
+
+## Output tables
+
+TABLES = {
+  'singlesymbol': {
+    'algos': [
+      ('Static', ['none_uniform_byte', 'none_uniform_token']),
+      ('Adaptive', ['crp_uniform_byte', 'crp_uniform_token', 'none_polya_token']),
+      ('Reference', ['ref_gzip', 'ref_bzip2']),
+    ],
+    'files': STANDARD_CORPUS,
+    'scale': (1.0, 6.0),
+  },
+  'lzw': {
+    'algos': [
+      ('Original', ['ref_compress', 'none_lzw_byte']),
+      ('Escaped', ['lzw_uniform_byte', 'lzw_uniform_token', 'lzw_polya_token']),
+      ('Reference', ['ref_gzip', 'ref_bzip2']),
+    ],
+    'files': STANDARD_CORPUS,
+  },
+  'ppm': {
+    'algos': [
+      ('My compressors',
+       ['ppm_training_group_opt_uniform_byte', 'ppm_training_group_opt_uniform_token', 'ppm_training_group_opt_polya_token']
+      ),
+      ('Reference', ['ref_PPMd', 'ref_gzip', 'ref_bzip2']),
+    ],
+    'files': STANDARD_CORPUS,
+    'scale': (0.75, 3.5),
+  },
+}

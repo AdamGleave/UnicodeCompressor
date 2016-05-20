@@ -66,7 +66,9 @@ def generate_table(settings, data):
   res.append(r'\setlength{\tabcolsep}{1ex}')
 
   algos = settings['algos']
-  algo_cols = 'c' * len(algos)
+  algo_cols = ''
+  for algo in algos:
+    algo_cols += config.get_column_type(algo)
   res.append(r'\begin{tabular}{l' + algo_cols + '}')
   res.append(r'\toprule')
 

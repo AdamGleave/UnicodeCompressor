@@ -43,40 +43,62 @@ def build_compressor(standard_args, compress_args, decompress_args):
         return subprocess.Popen(args, stdin=in_file, stdout=out_file)
   return run_compressor
 
+archive_temp_names = {}
+def build_compressor_from_archive(compress_args, decompress_args):
+  def run_compressor(in_fname, out_fname, mode):
+    # Since an archive is being created, can't just compress to/from stdout (annoying).
+    # To workaround this, will symlink a temporary filename to the input.
+    # The output will then be decompressed to the same temporary filename.
+    if mode == CompressionMode.compress: # compress
+      temp_input = tempfile.mktemp(prefix='archive_in')
+      os.symlink(in_fname, temp_input)
+      os.unlink(out_fname)
+
+      args = compress_args(in_fname, temp_input, out_fname)
+      archive_temp_names[out_fname] = temp_input
+      print(args)
+    else: # decompress
+      # decompressed_fname = archive_temp_names.pop(in_fname)
+      # print(decompressed_fname)
+      #
+      # # HACK: make a symbolic link to where the output will be extracted!
+      # os.unlink(out_fname)
+      # os.unlink(decompressed_fname)
+      # os.symlink(decompressed_fname, out_fname)
+      #
+      # # now decompress
+      # args = decompress_args(in_fname)
+      # print(args)
+      args=[]
+    return subprocess.Popen(args)
+  return run_compressor
+
 PAQ8HP12_DIR = os.path.join(PROJECT_DIR, 'ext', 'paq8hp12')
 PAQ8HP12_EXECUTABLE = os.path.join(PAQ8HP12_DIR, 'paq8hp12')
+def paq8hp12_compress_args(in_fname, temp_input, out_fname):
+  return [PAQ8HP12_EXECUTABLE, '-8', out_fname, temp_input]
+def paq8hp12_decompress_args(in_fname):
+  return [PAQ8HP12_EXECUTABLE, in_fname]
+paq8hp12_helper = build_compressor_from_archive(paq8hp12_compress_args, paq8hp12_decompress_args)
 def paq8hp12(in_fname, out_fname, mode):
   # have to run paq8hp12 from its source directory, as it contains data files there (this is crazy!)
   os.chdir(PAQ8HP12_DIR)
+  return paq8hp12_helper(in_fname, out_fname, mode)
 
-  # paq8 creates an archive, so we can't just compress to/from stdout (annoying).
-  # To workaround this, will symlink a temporary filename to the input.
-  # The output will then be decompressed to the same temporary filename.
-  if mode == CompressionMode.compress: # compress
-    temp_input = tempfile.mktemp(prefix='paq8hp12')
-    os.symlink(in_fname, temp_input)
-    os.unlink(out_fname)
+ZPAQ_DIR = os.path.join(PROJECT_DIR, 'ext', 'zpaq6.42')
+ZPAQ_EXECUTABLE = os.path.join(ZPAQ_DIR, 'zpaq')
+def zpaq(in_fname, out_fname, mode):
+  if mode == CompressionMode.compress:
+    os.symlink(out_fname, out_fname + ".zpaq")
+    archive_temp_names[out_fname] = in_fname
 
-    args = [PAQ8HP12_EXECUTABLE, '-8', out_fname, temp_input]
-    return subprocess.Popen(args)
-  else: # decompress
-    # paq8hp12 produces an archive, not a compressed file.
-    # Can't control where it decompresses to.
-    # Fortunately, header is easy to parse. So find out where it decompresses, then copy it over.
-    with open(in_fname, 'rb') as archive:
-      header = archive.readline()
-      assert(header == b'paq8h -8\r\n')
-      entry = archive.readline()
-      _size, decompressed_fname = entry.strip().split(b'\t')
-      decompressed_fname = decompressed_fname.decode('ascii')
-
-    # HACK: make a symbolic link to where the output will be extracted!
-    os.unlink(out_fname)
-    os.unlink(decompressed_fname)
-    os.symlink(decompressed_fname, out_fname)
-
-    # now decompress
-    return subprocess.Popen([PAQ8HP12_EXECUTABLE, in_fname])
+    config_file = os.path.join(ZPAQ_DIR, 'max6')
+    args = [ZPAQ_EXECUTABLE, '-m', 's10.0.5f'+config_file, 'a', out_fname, in_fname]
+  else:
+    original_fname = archive_temp_names.pop(in_fname)
+    os.unlink(out_fname) # ZPAQ won't clobber existing files
+    args = [ZPAQ_EXECUTABLE, 'x', in_fname, original_fname, '-to', out_fname]
+  return subprocess.Popen(args)
 
 PPMd_EXECUTABLE = os.path.join(PROJECT_DIR, 'ext', 'ppmdj1', 'PPMd')
 EXT_COMPRESSORS = {
@@ -86,6 +108,7 @@ EXT_COMPRESSORS = {
   'LZMA': build_compressor(['lzma', '-c', '-9', '-e'], ['-z'], ['-d']),
   'paq8hp12': paq8hp12,
   'PPMd': build_compressor([PPMd_EXECUTABLE], ['e'], ['d']),
+  'zpaq': zpaq,
 }
 
 TIMEOUTS = { 'warn': 5, 'backoff': 2, 'hard': 600 }

@@ -20,18 +20,6 @@ def corpus_path(input_fname):
   else:
     return os.path.join(config.CORPUS_DIR, input_fname)
 
-def build_compressor(standard_args, compress_args, decompress_args):
-  def run_compressor(in_fname, out_fname, mode):
-    args = standard_args.copy()
-    if mode == CompressionMode.compress:
-      args += compress_args
-    else:
-      args += decompress_args
-    with open(in_fname, 'rb') as in_file:
-      with open(out_fname, 'wb') as out_file:
-        return subprocess.Popen(args, stdin=in_file, stdout=out_file)
-  return run_compressor
-
 def compressed_filesize(compressor, input_fname, paranoia):
   def timeout(process, callback):
     for (timeout, complaint) in config.timeouts():
@@ -68,8 +56,7 @@ def compressed_filesize(compressor, input_fname, paranoia):
 @app.task
 @memo
 def ext_compressor(fname, paranoia, name):
-  standard_args, compressor_args, decompressor_args = config.EXT_COMPRESSORS[name]
-  compressor = build_compressor(standard_args, compressor_args, decompressor_args)
+  compressor = config.EXT_COMPRESSORS[name]
   return compressed_filesize(compressor, fname, paranoia)
 
 sbt_classpath_cache = None
@@ -109,9 +96,9 @@ def build_my_compressor(base, algorithms=None):
   def run_compressor(in_file, out_file, mode):
     starting_args = my_compressor_start_args('Compressor')
     ending_args = my_compressor_end_args(base, algorithms)
-    compressor = build_compressor(starting_args,
-                                  ['compress'] + ending_args,
-                                  ['decompress'] + ending_args)
+    compressor = config.build_compressor(starting_args,
+                                         ['compress'] + ending_args,
+                                         ['decompress'] + ending_args)
     return compressor(in_file, out_file, mode)
   return run_compressor
 

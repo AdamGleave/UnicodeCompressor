@@ -1,4 +1,6 @@
-import os
+import os, shutil, subprocess, tempfile
+
+from benchmark.mode import CompressionMode
 
 ### Celery
 REDIS_HOST = 'localhost'
@@ -29,13 +31,61 @@ CELERY['CELERY_RESULT_BACKEND'] = 'redis://{0}:{1}'.format(REDIS_HOST, REDIS_POR
 
 ### Compression algorithms
 
+def build_compressor(standard_args, compress_args, decompress_args):
+  def run_compressor(in_fname, out_fname, mode):
+    args = standard_args.copy()
+    if mode == CompressionMode.compress:
+      args += compress_args
+    else:
+      args += decompress_args
+    with open(in_fname, 'rb') as in_file:
+      with open(out_fname, 'wb') as out_file:
+        return subprocess.Popen(args, stdin=in_file, stdout=out_file)
+  return run_compressor
+
+PAQ8HP12_DIR = os.path.join(PROJECT_DIR, 'ext', 'paq8hp12')
+PAQ8HP12_EXECUTABLE = os.path.join(PAQ8HP12_DIR, 'paq8hp12')
+def paq8hp12(in_fname, out_fname, mode):
+  # have to run paq8hp12 from its source directory, as it contains data files there (this is crazy!)
+  os.chdir(PAQ8HP12_DIR)
+
+  # paq8 creates an archive, so we can't just compress to/from stdout (annoying).
+  # To workaround this, will symlink a temporary filename to the input.
+  # The output will then be decompressed to the same temporary filename.
+  if mode == CompressionMode.compress: # compress
+    temp_input = tempfile.mktemp(prefix='paq8hp12')
+    os.symlink(in_fname, temp_input)
+    os.unlink(out_fname)
+
+    args = [PAQ8HP12_EXECUTABLE, '-8', out_fname, temp_input]
+    return subprocess.Popen(args)
+  else: # decompress
+    # paq8hp12 produces an archive, not a compressed file.
+    # Can't control where it decompresses to.
+    # Fortunately, header is easy to parse. So find out where it decompresses, then copy it over.
+    with open(in_fname, 'rb') as archive:
+      header = archive.readline()
+      assert(header == b'paq8h -8\r\n')
+      entry = archive.readline()
+      _size, decompressed_fname = entry.strip().split(b'\t')
+      decompressed_fname = decompressed_fname.decode('ascii')
+
+    # HACK: make a symbolic link to where the output will be extracted!
+    os.unlink(out_fname)
+    os.unlink(decompressed_fname)
+    os.symlink(decompressed_fname, out_fname)
+
+    # now decompress
+    return subprocess.Popen([PAQ8HP12_EXECUTABLE, in_fname])
+
 PPMd_EXECUTABLE = os.path.join(PROJECT_DIR, 'ext', 'ppmdj1', 'PPMd')
 EXT_COMPRESSORS = {
-  'compress': (['compress', '-c'], [], ['-d']),
-  'bzip2': (['bzip2', '-c', '--best'], ['-z'], ['-d']),
-  'gzip': (['gzip', '-c'], [], ['-d']),
-  'LZMA': (['lzma', '-c', '-9', '-e'], ['-z'], ['-d']),
-  'PPMd': ([PPMd_EXECUTABLE], ['e'], ['d']),
+  'compress': build_compressor(['compress', '-c'], [], ['-d']),
+  'bzip2': build_compressor(['bzip2', '-c', '--best'], ['-z'], ['-d']),
+  'gzip': build_compressor(['gzip', '-c'], [], ['-d']),
+  'LZMA': build_compressor(['lzma', '-c', '-9', '-e'], ['-z'], ['-d']),
+  'paq8hp12': paq8hp12,
+  'PPMd': build_compressor([PPMd_EXECUTABLE], ['e'], ['d']),
 }
 
 TIMEOUTS = { 'warn': 5, 'backoff': 2, 'hard': 60 }

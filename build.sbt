@@ -14,10 +14,7 @@ lazy val root = (project in file(".")).
     unmanagedSourceDirectories in Compile += baseDirectory.value / "steinruecken/java",
     ppmii := { Process("make" :: Nil, baseDirectory.value / "ext/ppmdj1") ! },
     paq8hp12 := { Process("make" :: Nil, baseDirectory.value / "ext/paq8hp12") ! },
-    zpaq := { 
-      Process("make" :: Nil, baseDirectory.value / "ext/zpaqd6.33") !;
-      Process("make" :: Nil, baseDirectory.value / "ext/zpaq6.42") !;
-    }
+    zpaq := { Process("make" :: Nil, baseDirectory.value / "ext/zpaq6.42") ! }
   )
   /* These were generating some errors in ScalaDoc, but not Javadoc! */
   sources in (Compile, doc) <<= sources in (Compile, doc) map { _.filterNot(_.getName startsWith "Urn") }

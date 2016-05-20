@@ -31,6 +31,7 @@ CELERY['CELERY_RESULT_BACKEND'] = 'redis://{0}:{1}'.format(REDIS_HOST, REDIS_POR
 
 ### Compression algorithms
 
+# Helper functions
 def build_compressor(standard_args, compress_args, decompress_args):
   def run_compressor(in_fname, out_fname, mode):
     args = standard_args.copy()
@@ -58,7 +59,6 @@ def build_compressor_from_archive(compress_args, decompress_args):
       archive_temp_names[out_fname] = temp_input
     else: # decompress
       decompressed_fname = archive_temp_names.pop(in_fname)
-      print(decompressed_fname)
 
       # HACK: make a symbolic link to where the output will be extracted!
       os.unlink(out_fname)
@@ -70,6 +70,7 @@ def build_compressor_from_archive(compress_args, decompress_args):
     return subprocess.Popen(args)
   return run_compressor
 
+# paq8hp12
 PAQ8HP12_DIR = os.path.join(PROJECT_DIR, 'ext', 'paq8hp12')
 PAQ8HP12_EXECUTABLE = os.path.join(PAQ8HP12_DIR, 'paq8hp12')
 def paq8hp12_compress_args(in_fname, temp_input, out_fname):
@@ -82,6 +83,7 @@ def paq8hp12(in_fname, out_fname, mode):
   os.chdir(PAQ8HP12_DIR)
   return paq8hp12_helper(in_fname, out_fname, mode)
 
+# zpaq
 ZPAQ_DIR = os.path.join(PROJECT_DIR, 'ext', 'zpaq6.42')
 ZPAQ_EXECUTABLE = os.path.join(ZPAQ_DIR, 'zpaq')
 def zpaq(in_fname, out_fname, mode):
@@ -97,10 +99,12 @@ def zpaq(in_fname, out_fname, mode):
     args = [ZPAQ_EXECUTABLE, 'x', in_fname, original_fname, '-to', out_fname]
   return subprocess.Popen(args)
 
+# All compressors
 PPMd_EXECUTABLE = os.path.join(PROJECT_DIR, 'ext', 'ppmdj1', 'PPMd')
 EXT_COMPRESSORS = {
-  'compress': build_compressor(['compress', '-c'], [], ['-d']),
   'bzip2': build_compressor(['bzip2', '-c', '--best'], ['-z'], ['-d']),
+  'cmix': build_compressor(['cmix'], ['-c'], ['-d']),
+  'compress': build_compressor(['compress', '-c'], [], ['-d']),
   'gzip': build_compressor(['gzip', '-c'], [], ['-d']),
   'LZMA': build_compressor(['lzma', '-c', '-9', '-e'], ['-z'], ['-d']),
   'paq8hp12': paq8hp12,
@@ -108,6 +112,7 @@ EXT_COMPRESSORS = {
   'zpaq': zpaq,
 }
 
+# Timeouts
 TIMEOUTS = { 'warn': 5, 'backoff': 2, 'hard': 600 }
 def timeouts():
   waited_for = 0

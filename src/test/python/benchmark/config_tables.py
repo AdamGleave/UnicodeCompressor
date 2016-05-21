@@ -90,13 +90,17 @@ ALGO_ABBREVIATIONS = {
   'lzw_uniform_byte': r'\lzwuniformbyte',
   'lzw_uniform_token': r'\lzwuniformtoken',
   'lzw_polya_token': r'\lzwpolyatoken',
+  'ppm5_uniform_byte': r'\hspace{-8pt}\ppmd\hspace{-8pt}',
   'ppm_training_group_opt_uniform_byte': r'\ppmtraininguniformbyte',
+  'ppm_training_group_5_uniform_byte': r'\ppmtraininguniformbytefive',
   'ppm_training_group_opt_uniform_token': r'\ppmtraininguniformtoken',
   'ppm_training_group_opt_polya_token': r'\ppmtrainingpolyatoken',
   'ref_compress': r'\compress',
-  'ref_gzip': r'\gzip',
   'ref_bzip2': r'\hspace{-3pt}\bziptwo',
-  'ref_PPMd': r'\ppmii\hspace{-8.5pt}',
+  'ref_gzip': r'\gzip',
+  'ref_paq8hp12': r'\paqhp',
+  'ref_PPMd': r'\hspace{-5pt}\ppmii',
+  'ref_cmix': r'\cmix\hspace{-8pt}'
 }
 
 def get_leading(algo):
@@ -109,8 +113,10 @@ def get_leading(algo):
 def get_column_type(algo):
   if algo == 'ref_bzip2':
     return 'l'
-  elif algo == 'ref_PPMd':
+  elif algo == 'ref_cmix':
     return 'r'
+  elif algo == 'ref_PPMd':
+    return 'l'
   else:
     return 'c'
 
@@ -159,10 +165,11 @@ TABLES = {
   },
   'ppm': {
     'algos': [
-      ('My compressors',
-       ['ppm_training_group_opt_uniform_byte', 'ppm_training_group_opt_uniform_token', 'ppm_training_group_opt_polya_token']
+      ('PPM',
+       ['ppm_training_group_opt_uniform_byte', 'ppm_training_group_opt_uniform_token',
+        'ppm_training_group_opt_polya_token', 'ppm_training_group_5_uniform_byte', 'ref_PPMd']
       ),
-      ('Reference', ['ref_PPMd', 'ref_gzip', 'ref_bzip2']),
+      ('Reference', ['ref_cmix', 'ref_paq8hp12', 'ref_gzip', 'ref_bzip2']),
     ],
     'files': STANDARD_CORPUS,
     'scale': (0.75, 3.5),

@@ -72,29 +72,21 @@ if __name__ == "__main__":
   if verbose:
     print("Compressing files: " + str(files))
 
-  results = {}
-  for fname in files:
-    results_for_file = []
-    for replication in range(replications):
-      results_for_replication = {}
+  csvfile = open(out_fname, 'w')
+  writer = csv.writer(csvfile)
+  fieldnames = ['file', 'replication', 'compressor', 'runtime', 'memory']
+  writer.writerow(fieldnames)
 
+  for fname in files:
+    for replication in range(replications):
       # warm up by reading the file to make sure it's in cache
       read_file(fname)
 
       for compressor_name in compressors:
         if verbose:
           print("{0} / {1} / {2}".format(fname, replication, compressor_name))
-        results_for_replication[compressor_name] = test_compressor(compressor_name, fname)
-      results_for_file.append(results_for_replication)
-    results[fname] = results_for_file
+        runtime, memory = test_compressor(compressor_name, fname)
+        writer.writerow([fname, str(replication), compressor_name, runtime, memory])
+        csvfile.flush()
 
-  with open(out_fname, 'w') as out:
-    writer = csv.writer(out)
-    fieldnames = ['file', 'replication', 'compressor', 'runtime', 'memory']
-    writer.writerow(fieldnames)
-
-    for fname in files:
-      for replication in range(replications):
-        for compressor_name in compressors:
-          runtime, memory = results[fname][replication][compressor_name]
-          writer.writerow([fname, str(replication), compressor_name, runtime, memory])
+  csvfile.close()

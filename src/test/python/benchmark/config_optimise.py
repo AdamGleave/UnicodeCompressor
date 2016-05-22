@@ -1,12 +1,10 @@
 import collections, os
 import matplotlib.pyplot as plt
-from matplotlib import rc
 
 from benchmark.config import *
 
 ## Directories
 CACHE_DIR = os.path.join(OUTPUT_DIR, 'cache')
-FIGURE_DIR = os.path.join(OUTPUT_DIR, 'figures')
 
 ## Default parameters
 PPM_ALPHA_START = -1
@@ -102,35 +100,6 @@ SHORT_PRIOR_NAME = {
   'uniform_token': 'UT',
   'polya_token': 'PT',
 }
-
-## Appearance
-def set_rcs_common():
-  rc('font',**{'family':'serif', 'serif':['Palatino']})
-  rc('text', usetex=True)
-  rc('figure', autolayout=True)
-
-  rc('font', size=10)
-  rc('legend', fontsize=8)
-
-def set_width(width, aspect_ratio=4/3.0):
-  rc('figure', figsize=(width, width/aspect_ratio))
-
-def set_rcs_onecol():
-  set_rcs_common()
-  # My textwidth is 137.06772mm, or just over 5.39 in
-  set_width(5.39)
-
-def set_rcs_twocol():
-  set_rcs_common()
-  # Slightly less than half of onecol so there's some whitespace between
-  set_width(3.1)
-
-STYLES = {
-  '1col': set_rcs_onecol,
-  '2col': set_rcs_twocol,
-}
-
-DEFAULT_STYLE = '1col'
 
 # This limits the number of high-level operations which can be performed in parallel.
 # As a rule of thumb, it should be close to the *total number* of cores in the cluster.

@@ -2,8 +2,19 @@
 
 import argparse, csv, os
 
-import benchmark.config_tables as config
+import numpy as np
+
 import benchmark.general as general
+import benchmark.plot as plot
+import benchmark.config_analysis as config
+
+import matplotlib.pyplot as plt
+import prettyplotlib as ppl
+
+def save_table(test, result):
+  os.makedirs(config.LATEX_OUTPUT_DIR, exist_ok=True)
+  with open(os.path.join(config.LATEX_OUTPUT_DIR, test + '.tex'), 'w') as out:
+    out.write(result)
 
 def load_benchmark(fname):
   with open(fname) as dataf:
@@ -78,7 +89,8 @@ def effectiveness_format(x, is_best, scale, leading, fg_cm, bg_cm):
   return r'{\kern-0.35em\colorbox[rgb]{' + '{0},{1},{2}'.format(*bg) + r'}{\textcolor[rgb]{' + \
          '{0},{1},{2}'.format(*fg) + r'}{' + val + '}}\kern-0.35em}'
 
-def generate_table(settings, data):
+def generate_score_table(test, settings, data):
+  settings = process_score_settings(settings)
   if 'scale' in settings:
     scale = settings['scale']
   else:
@@ -126,11 +138,9 @@ def generate_table(settings, data):
 
   res[-1] = r'\bottomrule'
   res.append(r'\end{tabular}')
-  return '\n'.join(res)
 
-def generate_score_table(raw_settings, data):
-  settings = process_score_settings(raw_settings)
-  return generate_table(settings, data)
+  out = '\n'.join(res)
+  save_table(test, out)
 
 def confidence_interval(vals, alpha):
   import numpy as np
@@ -143,7 +153,7 @@ def confidence_interval(vals, alpha):
 
   return (mean, t*sd)
 
-def generate_resource_table(settings, data):
+def process_resource_data(settings, data):
   runtimes, memories = data
   col = settings['col']
 
@@ -156,6 +166,10 @@ def generate_resource_table(settings, data):
   else:
     assert(False)
 
+  return resources, format
+
+def generate_resource_table(test, settings, data):
+  resources, format = process_resource_data(settings, data)
   files = settings['files']
   algos = settings['algos']
 
@@ -182,7 +196,49 @@ def generate_resource_table(settings, data):
   res.append(r'\bottomrule')
   res.append(r'\end{tabular}')
 
-  return '\n'.join(res)
+  out = '\n'.join(res)
+  save_table(test, out)
+
+def generate_resource_figure(test, settings, data):
+  file = settings['file']
+  algos = settings['algos']
+  resources, format = process_resource_data(settings, data)
+  resources = resources[file]
+
+  # flatten data
+  flattened = [confidence_interval(resources[algo], config.RESOURCE_ALPHA) for algo in algos]
+  x = np.arange(len(algos))
+  y = [z[0] for z in flattened]
+  yerr = [z[1] for z in flattened]
+
+  xticks = list(map(config.ALGO_ABBREVIATIONS.get, algos))
+  colors = ppl.brewer2mpl.get_map('Set2', 'qualitative', len(algos)).mpl_colors
+
+  plot.new_figure()
+  fig, ax = plt.subplots()
+  rects = ppl.bar(x, y, xticklabels=xticks, yerr=yerr, log=True, grid='y', color=colors)
+
+  # Annotate
+  for rect in rects:
+    bar_x = rect.get_x() + rect.get_width()/2.
+    bar_y = rect.get_height()
+
+    label = format(bar_y)
+    plt.annotate(label, xy=(bar_x, bar_y), xytext=(0, 10), textcoords='offset points',
+                 horizontalalignment='center', verticalalignment='bottom')
+
+  plt.xlabel('Compressor')
+  if settings['col'] == 'runtime':
+    plt.ylabel(r'Runtime (\si{\second})')
+  elif settings['col'] == 'memory':
+    plt.ylabel(r'Memory (\si{\byte})')
+    ax.set_yscale('log', basey=2) # units are in powers of two, so scale should be as well
+
+    # hack to make labels fit
+    ymin, ymax = plt.ylim()
+    plt.ylim((ymin, ymax*2))
+
+  plot.save_figure(fig, 'resources', [test])
 
 verbose = False
 
@@ -191,37 +247,39 @@ def main():
   parser = argparse.ArgumentParser(description=description)
   parser.add_argument('--verbose', dest='verbose', action='store_true',
                       help='produce detailed output showing work performed.')
-  parser.add_argument('tables', nargs='*',
-                      help='list of tables to generate')
+  parser.add_argument('tests', nargs='*',
+                      help='list of analyses to perform')
 
   args = vars(parser.parse_args())
   global verbose
   verbose = args['verbose']
 
-  tables = args['tables']
-  if not tables:
-    tables = config.TABLES.keys()
+  tests = args['tests']
+  if not tests:
+    tests = config.TESTS.keys()
 
   score_data = load_benchmark(config.BENCHMARK_INPUT)
   resource_data = load_resources(config.RESOURCES_INPUT)
 
-  for table in tables:
+  for test in tests:
     if verbose:
-      print("Generating " + table)
-    settings = config.TABLES[table]
+      print("Generating " + test)
+    settings = config.TESTS[test]
     type = settings['type']
 
     if type == 'score':
-      result = generate_score_table(settings, score_data)
-    elif type == 'resource':
-      result = generate_resource_table(settings, resource_data)
+      data = score_data
+      f = generate_score_table
+    elif type == 'resource_table':
+      data = resource_data
+      f = generate_resource_table
+    elif type == 'resource_figure':
+      data = resource_data
+      f = generate_resource_figure
     else:
       print("WARNING: unknown table type '{0}', skipping".format(type))
       continue
-
-    os.makedirs(config.LATEX_OUTPUT_DIR, exist_ok=True)
-    with open(os.path.join(config.LATEX_OUTPUT_DIR, table + '.tex'), 'w') as out:
-      out.write(result)
+    f(test, settings, data)
 
 if __name__ == "__main__":
   main()

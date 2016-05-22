@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 from benchmark.config import *
 
 ## Input/output paths
-DISSERTATION_DIR = os.path.join(PROJECT_DIR, '..', 'dissertation')
 BENCHMARK_INPUT = os.path.join(OUTPUT_DIR, 'tables', 'benchmark.csv')
 RESOURCES_INPUT = os.path.join(OUTPUT_DIR, 'tables', 'resources.csv')
 LATEX_OUTPUT_DIR = os.path.join(DISSERTATION_DIR, 'tables')
@@ -206,16 +205,29 @@ RESOURCE_ALGOS = ['ppm_training_group_opt_uniform_byte',
 RESOURCE_ALPHA = 0.95 # uncertainty in confidence intervals
 
 RESOURCE_TABLES = {
-  'runtime': {
+  'runtime_table': {
     'col': 'runtime',
     'files': RESOURCE_CORPUS,
     'algos': RESOURCE_ALGOS,
   },
-  'memory': {
+  'memory_table': {
     'col': 'memory',
     'files': RESOURCE_CORPUS,
     'algos': RESOURCE_ALGOS,
   },
+}
+
+RESOURCE_FIGURES = {
+  'runtime_fig': {
+    'col': 'runtime',
+    'file': 'resource_consumption/genji.txt',
+    'algos': RESOURCE_ALGOS,
+  },
+  'memory_fig': {
+    'col': 'memory',
+    'file': 'resource_consumption/genji.txt',
+    'algos': RESOURCE_ALGOS,
+  }
 }
 
 ## All tables
@@ -228,7 +240,8 @@ def merge(tables):
       res[k] = v
   return res
 
-TABLES = merge([
+TESTS = merge([
   (SCORE_TABLES, 'score'),
-  (RESOURCE_TABLES, 'resource')
+  (RESOURCE_TABLES, 'resource_table'),
+  (RESOURCE_FIGURES, 'resource_figure'),
 ])

@@ -16,6 +16,7 @@ CELERY = {
 
 THIS_DIR = os.path.dirname(os.path.abspath(__file__)) # src/test/python/benchmark
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(THIS_DIR))))
+DISSERTATION_DIR = os.path.join(PROJECT_DIR, '..', 'dissertation')
 BIN_DIR = os.path.join(PROJECT_DIR, 'target', 'scala-2.11', 'classes')
 CORPUS_DIR = os.path.join(PROJECT_DIR, 'src', 'test', 'resources', 'corpora')
 OUTPUT_DIR = os.path.join(PROJECT_DIR, 'experiments')

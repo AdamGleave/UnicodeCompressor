@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import argparse, csv, functools, hashlib, itertools
+import argparse, csv, functools, itertools
 import math, multiprocessing, os, sys, traceback
 
 import celery
@@ -11,9 +11,9 @@ import matplotlib
 matplotlib.use('PDF')
 import prettyplotlib as ppl
 import matplotlib.pyplot as plt
-from matplotlib.backends.backend_pdf import PdfPages
 
-import benchmark.general
+import benchmark.general as general
+import benchmark.plot as plot
 import benchmark.tasks
 import benchmark.config_optimise as config
 
@@ -27,33 +27,6 @@ def worker_wrapper(func, *args, **kwargs):
 def error_callback(location, exception):
   print("Error in {0}: {1}".format(location, exception),
         file=sys.stderr)
-
-def sanitize_fname(fname):
-  return fname.replace('/', '_')
-
-def new_figure():
-  matplotlib.rcdefaults() # reset style
-  style_rc() # apply new style
-  return plt.figure()
-
-def save_figure(fig, output_dir, fnames):
-  if len(fnames) == 1:
-    fig_fname = sanitize_fname(fnames[0])
-  else:
-    m = hashlib.md5()
-    for fname in fnames:
-      m.update(fname.encode('utf8'))
-    fig_fname = "group-" + m.hexdigest()
-  fig_fname += "_" + style_name + ".pdf"
-  fig_dir = os.path.join(config.FIGURE_DIR, output_dir)
-  os.makedirs(fig_dir, exist_ok=True)
-
-  fig_path = os.path.join(fig_dir, fig_fname)
-  with PdfPages(fig_path) as out:
-    if verbose:
-      print("Writing figure to " + fig_path)
-    out.savefig(fig)
-  return fig_path
 
 def per_file_test(test):
   def f(pool, files, test_name, **kwargs):
@@ -74,7 +47,7 @@ def round_up_to(multiple, x):
   return math.ceil(x / multiple) * multiple
 
 def plot_contour_base(xlim, ylim):
-  fig = new_figure()
+  fig = plot.new_figure()
 
   # shade illegal parameter region, a + b <= 0
   min_x, max_x = xlim
@@ -155,7 +128,7 @@ def ppm_contour_plot_helper(test_name, fnames, prior, depth,
   fig = plot_contour_base(xlim=beta_range, ylim=alpha_range)
   plot_optimum(optimum)
   plot_contour_lines(optimum, evals, **kwargs)
-  return save_figure(fig, test_name, fnames)
+  return plot.save_figure(fig, test_name, fnames)
 ppm_contour_plot = per_file_test(ppm_contour_plot_helper)
 
 def ppm_multi_contour_plot(pool, fnames, test_name, prior, depth,
@@ -198,7 +171,7 @@ def ppm_group_file_contour_plot(pool, fnames, test_name, prior, depth,
       plot_optimum(optimum, label=label, color=color)
       plot_contour_lines(optimum, evals, colors=color, **kwargs)
 
-    return save_figure(fig, test_name, fnames)
+    return plot.save_figure(fig, test_name, fnames)
 
   runner = functools.partial(contour_data_helper, prior, paranoia, depth,
                              alpha_range, beta_range, granularity)
@@ -232,7 +205,7 @@ def ppm_group_algo_contour_plot_helper(test_name, fnames, algos,
     plot_optimum(optimum, label=label, color=color)
     plot_contour_lines(optimum, evals, colors=color, **kwargs)
 
-  return save_figure(fig, sanitize_fname(test_name), fnames)
+  return plot.save_figure(fig, general.sanitize_fname(test_name), fnames)
 ppm_group_algo_contour_plot = per_file_test(ppm_group_algo_contour_plot_helper)
 
 def ppm_multi_group_algo_contour_plot(pool, fnames, test_name, algos,
@@ -311,7 +284,7 @@ def ppm_optimal_alpha_beta_helper(test_name, fname, prior,
 
   csv_dir = os.path.join(config.TABLE_DIR, test_name)
   os.makedirs(csv_dir, exist_ok=True)
-  csv_path = os.path.join(csv_dir, sanitize_fname(fname) + '.csv')
+  csv_path = os.path.join(csv_dir, general.sanitize_fname(fname) + '.csv')
   with open(csv_path, 'w') as f:
     fieldnames = ['depth', 'alpha', 'beta', 'efficiency', 'status']
     writer = csv.writer(f)
@@ -377,7 +350,7 @@ def ppm_efficiency_by_depth_helper2(fnames, priors, depths, test_name, opts):
     by_prior[depth] = by_depth
     res[prior] = by_prior
 
-  fig = new_figure()
+  fig = plot.new_figure()
   colors = ppl.brewer2mpl.get_map('Set2', 'qualitative', len(config.PPM_EFFICIENCY_BY_DEPTH_FILESETS)).mpl_colors
   for (name, fileset), color in zip(config.PPM_EFFICIENCY_BY_DEPTH_FILESETS.items(), colors):
     for prior in priors:
@@ -408,7 +381,7 @@ def ppm_efficiency_by_depth_helper2(fnames, priors, depths, test_name, opts):
              numpoints=1 # but only show marker once
              )
 
-  return save_figure(fig, test_name, ["dummy"])
+  return plot.save_figure(fig, test_name, ["dummy"])
 
 def ppm_efficiency_by_depth(pool, files, test_name, priors,
                             granularity=config.PPM_PARAMETER_GRANULARITY,
@@ -447,8 +420,6 @@ def canonical_name(name, kwargs):
 
 verbose=False
 paranoia=False
-style_name=config.DEFAULT_STYLE
-style_rc=config.STYLES[style_name]
 
 TESTS = {
   'ppm_contour_plot': ppm_contour_plot,
@@ -484,16 +455,15 @@ def main():
                       help='list of tests to conduct; format is test_name[:parameter1=value1[:...]]')
 
   args = vars(parser.parse_args())
-  global verbose, paranoia, use_cache, style_name, style_rc
+  global verbose, paranoia, use_cache
   verbose = args['verbose']
   paranoia = args['paranoia']
   use_cache = not args['rerun']
   num_workers = int(args['num_workers'])
   if args['style']:
-    style_name = args['style']
-    style_rc = config.STYLES[style_name]
+    plot.set_style(args['style'])
 
-  files = benchmark.general.include_exclude_files(args['include'], args['exclude'])
+  files = general.include_exclude_files(args['include'], args['exclude'])
 
   pool = multiprocessing.Pool(num_workers)
   if verbose:

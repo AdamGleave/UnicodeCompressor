@@ -6,13 +6,6 @@ import celery
 import benchmark.config_benchmark as config
 import benchmark.general
 
-def human_readable_size(s):
-  for unit in ['B', 'KB', 'MB', 'GB']:
-    if s < 1024.0:
-      return '{0:3.1f}{1}'.format(s, unit)
-    s /= 1024.0
-  return '{0:3.1f}TB'.format(s)
-
 def table_convert(original, result, table_type):
   if type(result) == str:
     # an error message, not a number
@@ -23,7 +16,7 @@ def table_convert(original, result, table_type):
   elif table_type == 'per':
     return '{0:.1f}%'.format(result / original * 100)
   elif table_type == 'size':
-    return human_readable_size(result)
+    return benchmark.general.human_readable_size(result)
   else:
     assert(False)
 

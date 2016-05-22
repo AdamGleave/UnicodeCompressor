@@ -3,6 +3,7 @@
 import argparse, csv, os
 
 import benchmark.config_tables as config
+import benchmark.general as general
 
 def load_benchmark(fname):
   with open(fname) as dataf:
@@ -16,7 +17,28 @@ def load_benchmark(fname):
       res[file] = {k: float(size) / filesize * 8 for k, size in row.items()}
     return res
 
-def process_settings(raw):
+def load_resources(fname):
+  def update(d, file, compressor, val):
+    by_file = d.get(file, {})
+    by_compressor = by_file.get(compressor, [])
+    by_compressor.append(val)
+    by_file[compressor] = by_compressor
+    d[file] = by_file
+  with open(fname) as dataf:
+    reader = csv.DictReader(dataf)
+    runtimes = {}
+    memories = {}
+    for row in reader:
+      file = row['file']
+      compressor = row['compressor']
+      runtime = float(row['runtime'])
+      memory = int(row['memory'])
+
+      update(runtimes, file, compressor, runtime)
+      update(memories, file, compressor, memory)
+  return (runtimes, memories)
+
+def process_score_settings(raw):
   res = dict(raw)
   res['groups'] = None
   if type(res['algos'][0]) == tuple:
@@ -41,7 +63,7 @@ def autoscale(settings, data):
         subset.append(data[f][a])
   return min(subset), max(subset)
 
-def efficiency_format(x, is_best, scale, leading, fg_cm, bg_cm):
+def effectiveness_format(x, is_best, scale, leading, fg_cm, bg_cm):
   smallest, largest = scale
   p = (x - smallest) / (largest - smallest)
   if p < 0 or p > 1:
@@ -81,6 +103,8 @@ def generate_table(settings, data):
   algo_row = [r'\textbf{File}']
   for algo in algos:
     abbrev = config.ALGO_ABBREVIATIONS[algo]
+    left_padding, right_padding = config.get_padding(algo)
+    abbrev = left_padding + abbrev + right_padding
     algo_row.append(abbrev)
   res.append(generate_row(algo_row))
   res.append(r'\midrule')
@@ -95,13 +119,69 @@ def generate_table(settings, data):
         efficiency = filedata[algo]
         is_best = efficiency == best
         leading = config.get_leading(algo)
-        val = efficiency_format(efficiency, is_best, scale, leading, config.FG_COLORMAP, config.BG_COLORMAP)
+        val = effectiveness_format(efficiency, is_best, scale, leading, config.FG_COLORMAP, config.BG_COLORMAP)
         row.append(val)
       res.append(generate_row(row))
     res.append(r'\addlinespace[0em]\midrule\addlinespace[0.1em]')
 
   res[-1] = r'\bottomrule'
   res.append(r'\end{tabular}')
+  return '\n'.join(res)
+
+def generate_score_table(raw_settings, data):
+  settings = process_score_settings(raw_settings)
+  return generate_table(settings, data)
+
+def confidence_interval(vals, alpha):
+  import numpy as np
+  import scipy.stats
+  mean = np.mean(vals)
+  sd = np.std(vals)
+
+  df = len(vals) - 1
+  t = scipy.stats.t.ppf(alpha, df)
+
+  return (mean, t*sd)
+
+def generate_resource_table(settings, data):
+  runtimes, memories = data
+  col = settings['col']
+
+  if col == 'runtime':
+    resources = runtimes
+    format = lambda s : general.human_readable_time_latex(s * 1000)
+  elif col == 'memory':
+    resources = memories
+    format = lambda s : general.human_readable_size_latex(s * 1024.0)
+  else:
+    assert(False)
+
+  files = settings['files']
+  algos = settings['algos']
+
+  res = []
+  res.append(r'\begin{tabular}{l' + 'l'*len(algos) + '}')
+  res.append(r'\toprule')
+
+  file_row = [r'\textbf{File}']
+  for file in files:
+    abbrev = config.FILE_ABBREVIATIONS[file]
+    file_row.append(abbrev)
+  res.append(generate_row(file_row))
+  res.append(r'\midrule')
+
+  for algo in algos:
+    algo_abbrev = config.ALGO_ABBREVIATIONS[algo]
+    row = [algo_abbrev]
+
+    for file in files:
+      vals = resources[file][algo]
+      mean, uncertainty = confidence_interval(vals, config.RESOURCE_ALPHA)
+      row.append("${0} \pm {1}$".format(format(mean), format(uncertainty)))
+    res.append(generate_row(row))
+  res.append(r'\bottomrule')
+  res.append(r'\end{tabular}')
+
   return '\n'.join(res)
 
 verbose = False
@@ -122,14 +202,23 @@ def main():
   if not tables:
     tables = config.TABLES.keys()
 
-  data = load_benchmark(config.BENCHMARK_INPUT)
+  score_data = load_benchmark(config.BENCHMARK_INPUT)
+  resource_data = load_resources(config.RESOURCES_INPUT)
 
   for table in tables:
     if verbose:
       print("Generating " + table)
-    raw_settings = config.TABLES[table]
-    settings = process_settings(raw_settings)
-    result = generate_table(settings, data)
+    settings = config.TABLES[table]
+    type = settings['type']
+
+    if type == 'score':
+      result = generate_score_table(settings, score_data)
+    elif type == 'resource':
+      result = generate_resource_table(settings, resource_data)
+    else:
+      print("WARNING: unknown table type '{0}', skipping".format(type))
+      continue
+
     os.makedirs(config.LATEX_OUTPUT_DIR, exist_ok=True)
     with open(os.path.join(config.LATEX_OUTPUT_DIR, table + '.tex'), 'w') as out:
       out.write(result)

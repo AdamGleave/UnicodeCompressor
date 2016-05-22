@@ -6,6 +6,7 @@ from benchmark.config import *
 ## Input/output paths
 DISSERTATION_DIR = os.path.join(PROJECT_DIR, '..', 'dissertation')
 BENCHMARK_INPUT = os.path.join(OUTPUT_DIR, 'tables', 'benchmark.csv')
+RESOURCES_INPUT = os.path.join(OUTPUT_DIR, 'tables', 'resources.csv')
 LATEX_OUTPUT_DIR = os.path.join(DISSERTATION_DIR, 'tables')
 JSON_OUTPUT = os.path.join(OUTPUT_DIR, 'tables', 'benchmark.js')
 
@@ -73,7 +74,10 @@ FILE_ABBREVIATIONS = {
   'mixed_language/cedict_small.txt': 'dictionary.txt',
   'mixed_language/creativecommonsukranian.html': 'license.html',
   'text_binary/genji.tar': 'genji.tar',
-  'text_binary/kokoroziemia.tar': 'kokoziem.tar'
+  'text_binary/kokoroziemia.tar': 'kokoziem.tar',
+  'resource_consumption/alice.txt': 'alice29.txt',
+  'resource_consumption/genji.txt': 'genji.txt',
+  'resource_consumption/obiecana.txt': 'obiecana.txt',
 }
 FILE_ABBREVIATIONS.update(abbreviate_by_fname('canterbury/canterbury'))
 FILE_ABBREVIATIONS.update(abbreviate_by_fname('training/'))
@@ -90,18 +94,20 @@ ALGO_ABBREVIATIONS = {
   'lzw_uniform_byte': r'\lzwuniformbyte',
   'lzw_uniform_token': r'\lzwuniformtoken',
   'lzw_polya_token': r'\lzwpolyatoken',
-  'ppm5_uniform_byte': r'\hspace{-8pt}\ppmd\hspace{-8pt}',
+  'ppm5_uniform_byte': r'\ppmd',
   'ppm_training_group_opt_uniform_byte': r'\ppmtraininguniformbyte',
   'ppm_training_group_5_uniform_byte': r'\ppmtraininguniformbytefive',
   'ppm_training_group_opt_uniform_token': r'\ppmtraininguniformtoken',
   'ppm_training_group_opt_polya_token': r'\ppmtrainingpolyatoken',
   'ref_compress': r'\compress',
-  'ref_bzip2': r'\hspace{-3pt}\bziptwo',
+  'ref_bzip2': r'\bziptwo',
   'ref_gzip': r'\gzip',
   'ref_paq8hp12': r'\paqhp',
-  'ref_PPMd': r'\hspace{-5pt}\ppmii',
-  'ref_cmix': r'\cmix\hspace{-8pt}'
+  'ref_PPMd': r'\ppmii',
+  'ref_cmix': r'\cmix'
 }
+
+## Score tables
 
 def get_leading(algo):
   '''typical number of digits before decimal place'''
@@ -120,7 +126,19 @@ def get_column_type(algo):
   else:
     return 'c'
 
-## Colors
+def get_padding(algo):
+  if algo == 'ref_bzip2':
+    return ('\hspace{-3pt}', '')
+  elif algo == 'ref_PPMd':
+    return ('\hspace{-5pt}', '')
+  elif algo == 'ref_cmix':
+    return ('', '\hspace{-8pt}')
+  elif algo == 'ppm5_uniform_byte':
+    return ('\hspace{-8pt}', '\hspace{-8pt}')
+  else:
+    return ('', '')
+
+# Colors
 
 def constant_colormap(r, g, b, a):
   def f(_x):
@@ -143,9 +161,9 @@ def clip_colormap(cm):
 BG_COLORMAP = plt.cm.BuGn
 FG_COLORMAP = clip_colormap(invert_colormap(BG_COLORMAP))
 
-## Output tables
+# Output tables
 
-TABLES = {
+SCORE_TABLES = {
   'singlesymbol': {
     'algos': [
       ('Static', ['none_uniform_byte', 'none_uniform_token']),
@@ -175,3 +193,42 @@ TABLES = {
     'scale': (0.75, 3.5),
   },
 }
+
+## Resources
+
+RESOURCE_CORPUS = ['resource_consumption/alice.txt',
+                   'resource_consumption/genji.txt']
+RESOURCE_ALGOS = ['ppm_training_group_opt_uniform_byte',
+                  'ppm_training_group_opt_polya_token',
+                  'ref_PPMd',
+                  'ref_cmix',
+                  'ref_paq8hp12']
+RESOURCE_ALPHA = 0.95 # uncertainty in confidence intervals
+
+RESOURCE_TABLES = {
+  'runtime': {
+    'col': 'runtime',
+    'files': RESOURCE_CORPUS,
+    'algos': RESOURCE_ALGOS,
+  },
+  'memory': {
+    'col': 'memory',
+    'files': RESOURCE_CORPUS,
+    'algos': RESOURCE_ALGOS,
+  },
+}
+
+## All tables
+def merge(tables):
+  res = {}
+  for table, type in tables:
+    for k, v in table.items():
+      v['type'] = type
+      assert(k not in res)
+      res[k] = v
+  return res
+
+TABLES = merge([
+  (SCORE_TABLES, 'score'),
+  (RESOURCE_TABLES, 'resource')
+])

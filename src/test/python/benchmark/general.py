@@ -1,5 +1,90 @@
-import glob, os, re, sys
+import glob, os, re, sys, math
 import benchmark.config_benchmark as config
+
+def human_readable_helper(units, last_unit, factor, format):
+  def f(s):
+    for unit in units:
+      if s < factor:
+        return format(s, unit)
+      s /= factor
+    return format(s, last_unit)
+  return f
+
+def plain_format(s, unit):
+  def format(s, unit):
+    return '{0:3.1f}{1}'.format(s, unit)
+
+def latex_format(s, unit):
+  return r'\SI{' + '{0:3.1f}'.format(s) + r'}{' + unit + r'}'
+
+human_readable_size = human_readable_helper(['B', 'KB', 'MB', 'GB'], 'TB', 1024.0, format)
+
+human_readable_size_latex = human_readable_helper(
+  [r'\byte', r'\kibi\byte', r'\mebi\byte', r'\gibi\byte'],
+  r'\tebi\byte', 1024.0, latex_format
+)
+
+human_readable_time_latex = human_readable_helper([r'\milli\second'], r'\second',
+                                                  1000.0, latex_format)
+
+# Credit to http://randlet.com/blog/python-significant-figures-format/
+def to_precision(x,p):
+  """
+  returns a string representation of x formatted with a precision of p
+  Based on the webkit javascript implementation taken from here:
+  https://code.google.com/p/webkit-mirror/source/browse/JavaScriptCore/kjs/number_object.cpp
+  """
+  x = float(x)
+
+  if x == 0.:
+    return "0." + "0"*(p-1)
+
+  out = []
+
+  if x < 0:
+    out.append("-")
+    x = -x
+
+  e = int(math.log10(x))
+  tens = math.pow(10, e - p + 1)
+  n = math.floor(x/tens)
+
+  if n < math.pow(10, p - 1):
+    e = e -1
+    tens = math.pow(10, e - p+1)
+    n = math.floor(x / tens)
+
+  if abs((n + 1.) * tens - x) <= abs(n * tens -x):
+    n = n + 1
+
+  if n >= math.pow(10,p):
+    n = n / 10.
+    e = e + 1
+
+  m = "%.*g" % (p, n)
+
+  if e < -2 or e >= p:
+    out.append(m[0])
+    if p > 1:
+      out.append(".")
+      out.extend(m[1:p])
+    out.append('e')
+    if e > 0:
+      out.append("+")
+    out.append(str(e))
+  elif e == (p -1):
+    out.append(m)
+  elif e >= 0:
+    out.append(m[:e+1])
+    if e+1 < len(m):
+      out.append(".")
+      out.extend(m[e+1:])
+  else:
+    out.append("0.")
+    out.extend(["0"]*-(e+1))
+    out.append(m)
+
+  return "".join(out)
 
 def find_files(patterns):
   acc = set()

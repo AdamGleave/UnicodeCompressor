@@ -27,13 +27,21 @@ def set_rcs_onecol():
   # My textwidth is 137.06772mm, or just over 5.39 in
   set_width(5.39)
 
+# A little smaller, so they can comfortably fit stacked
+def set_rcs_onecol_double():
+  set_rcs_common()
+  set_width(4.5)
+
 def set_rcs_twocol():
   set_rcs_common()
+  rc('font', size=8)
+  rc('legend', fontsize=6)
   # Slightly less than half of onecol so there's some whitespace between
-  set_width(3.1)
+  set_width(2.69)
 
 STYLES = {
   '1col': set_rcs_onecol,
+  '1col_double': set_rcs_onecol_double,
   '2col': set_rcs_twocol,
 }
 

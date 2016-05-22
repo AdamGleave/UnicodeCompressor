@@ -144,14 +144,11 @@ def generate_score_table(test, settings, data):
 
 def confidence_interval(vals, alpha):
   import numpy as np
-  import scipy.stats
+  import math
   mean = np.mean(vals)
   sd = np.std(vals)
 
-  df = len(vals) - 1
-  t = scipy.stats.t.ppf(alpha, df)
-
-  return (mean, t*sd)
+  return (mean, sd/math.sqrt(len(vals)))
 
 def process_resource_data(settings, data):
   runtimes, memories = data
@@ -214,6 +211,8 @@ def generate_resource_figure(test, settings, data):
   xticks = list(map(config.ALGO_ABBREVIATIONS.get, algos))
   colors = ppl.brewer2mpl.get_map('Set2', 'qualitative', len(algos)).mpl_colors
 
+  if settings['style']:
+    plot.set_style(settings['style'])
   plot.new_figure()
   fig, ax = plt.subplots()
   rects = ppl.bar(x, y, xticklabels=xticks, yerr=yerr, log=True, grid='y', color=colors)

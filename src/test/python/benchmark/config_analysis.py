@@ -222,11 +222,13 @@ RESOURCE_FIGURES = {
     'col': 'runtime',
     'file': 'resource_consumption/genji.txt',
     'algos': RESOURCE_ALGOS,
+    'style': '1col_double',
   },
   'memory_fig': {
     'col': 'memory',
     'file': 'resource_consumption/genji.txt',
     'algos': RESOURCE_ALGOS,
+    'style': '1col_double',
   }
 }
 

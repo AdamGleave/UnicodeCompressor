@@ -74,4 +74,4 @@ for group, prior in itertools.product(['training', 'test'],
   group_parameters(group, prior)
 
 # For resources.py
-NUM_REPLICATIONS = 3
+NUM_REPLICATIONS = 5

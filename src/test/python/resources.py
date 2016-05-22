@@ -82,6 +82,8 @@ if __name__ == "__main__":
       read_file(fname)
 
       for compressor_name in compressors:
+        if verbose:
+          print("{0} / {1} / {2}".format(fname, replication, compressor_name))
         results_for_replication[compressor_name] = test_compressor(compressor_name, fname)
       results_for_file.append(results_for_replication)
     results[fname] = results_for_file

@@ -72,3 +72,6 @@ def group_parameters(group, prior):
 for group, prior in itertools.product(['training', 'test'],
                                       ['uniform_byte', 'uniform_token', 'polya_token']):
   group_parameters(group, prior)
+
+# For resources.py
+NUM_REPLICATIONS = 3

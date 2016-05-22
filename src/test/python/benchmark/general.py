@@ -1,5 +1,5 @@
-import glob, os, sys
-import benchmark.config as config
+import glob, os, re, sys
+import benchmark.config_benchmark as config
 
 def find_files(patterns):
   acc = set()
@@ -38,3 +38,19 @@ def include_exclude_files(include, exclude):
     sys.exit(1)
 
   return files
+
+
+def find_compressors(patterns):
+  if patterns:
+    patterns = list(map(re.compile, patterns))
+    res = set()
+    for k in config.COMPRESSORS.keys():
+      for p in patterns:
+        if p.match(k):
+          res.add(k)
+          break
+  else:
+    res = config.COMPRESSORS.key()
+  res = list(res)
+  res.sort()
+  return res

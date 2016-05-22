@@ -1,20 +1,10 @@
 #!/usr/bin/env python3
 
-import asciitable, argparse, csv, errno, filecmp, functools, os, pickle, re, sys, time
+import asciitable, argparse, csv, errno, filecmp, functools, os, pickle, sys
 import celery
 
 import benchmark.config_benchmark as config
 import benchmark.general
-
-def find_compressors(patterns):
-  patterns = list(map(re.compile, patterns))
-  res = set()
-  for k in config.COMPRESSORS.keys():
-    for p in patterns:
-      if p.match(k):
-        res.add(k)
-        break
-  return res
 
 def human_readable_size(s):
   for unit in ['B', 'KB', 'MB', 'GB']:
@@ -48,11 +38,6 @@ if __name__ == "__main__":
                       help='write the resutlts to stdout in an ASCII table in specified units, ' +
                       'one of bits (bits output/byte input), per (percentage output/input), ' +
                       'size (output file size), time (runtime in seconds) (default: bits).')
-  parser.add_argument('--invalidate', dest='invalidate', action='store_true',
-                      help='remove any cached results matching the pattern.')
-  parser.add_argument('--rerun', dest='rerun', action='store_true',
-                      help='run the test, even if there is a cached result; ' +
-                           'equivalent to invalidating and then rerunning the program.')
   parser.add_argument('--include', dest='include', nargs='+',
                       help='paths which match the specified regex are included; ' +
                            'if unspecified, defaults to *.')
@@ -74,14 +59,10 @@ if __name__ == "__main__":
       parser.error("Unrecognised table type: " + table_type)
 
   verbose = args['verbose']
-  run = (not args['invalidate']) or args['rerun']
-  invalidate = args['invalidate'] or args['rerun']
 
-  compressors = config.COMPRESSORS.keys()
-  if args['compressor']:
-    compressors = find_compressors(args['compressor'])
-  compressors = list(compressors)
-  compressors.sort()
+  compressors = benchmark.general.find_compressors(args['compressor'])
+  if verbose:
+    print("Using compressors: " + str(compressors))
 
   files = benchmark.general.include_exclude_files(args['include'], args['exclude'])
   if verbose:

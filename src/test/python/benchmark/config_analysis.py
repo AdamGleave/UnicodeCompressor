@@ -1,4 +1,4 @@
-import os
+import collections, os
 import matplotlib.pyplot as plt
 
 from benchmark.config import *
@@ -46,6 +46,24 @@ STANDARD_CORPUS = [
    ['text_binary/genji.tar',
     'text_binary/kokoroziemia.tar']
   ),
+]
+
+STANDARD_TEXT_CORPUS_BY_BYTES = collections.OrderedDict()
+STANDARD_TEXT_CORPUS_BY_BYTES['ASCII'] = [
+   'canterbury/canterbury/alice29.txt',
+   'canterbury/canterbury/asyoulik.txt',
+   'canterbury/canterbury/cp.html',
+   'canterbury/canterbury/fields.c',
+   'canterbury/canterbury/grammar.lsp',
+   'canterbury/canterbury/lcet10.txt',
+   'canterbury/canterbury/plrabn12.txt',
+   'canterbury/canterbury/xargs.1'
+]
+STANDARD_TEXT_CORPUS_BY_BYTES['Unicode'] = [
+  'single_language/crime_and_punishment.txt',
+  'single_language/genji/all.txt',
+  'single_language/genji/chapter2.txt',
+  'single_language/kokoro.txt',
 ]
 
 FULL_CORPUS = STANDARD_CORPUS + [
@@ -193,15 +211,26 @@ SCORE_TABLES = {
   },
 }
 
+## Score summaries
+
+BEST_ALGOS = ['ppm_training_group_opt_uniform_byte',
+              'ppm_training_group_opt_polya_token',
+              #'ref_PPMd',
+              'ref_cmix',
+              'ref_paq8hp12']
+SCORE_SUMMARIES = {
+  'ppm_summary': {
+    'algos': BEST_ALGOS,
+    'files': STANDARD_TEXT_CORPUS_BY_BYTES,
+    'scale': (1.4, 2.5),
+  }
+}
+
 ## Resources
 
 RESOURCE_CORPUS = ['resource_consumption/alice.txt',
                    'resource_consumption/genji.txt']
-RESOURCE_ALGOS = ['ppm_training_group_opt_uniform_byte',
-                  'ppm_training_group_opt_polya_token',
-                  'ref_PPMd',
-                  'ref_cmix',
-                  'ref_paq8hp12']
+RESOURCE_ALGOS = BEST_ALGOS
 RESOURCE_ALPHA = 0.95 # uncertainty in confidence intervals
 
 RESOURCE_TABLES = {
@@ -243,7 +272,8 @@ def merge(tables):
   return res
 
 TESTS = merge([
-  (SCORE_TABLES, 'score'),
+  (SCORE_TABLES, 'score_full'),
+  (SCORE_SUMMARIES, 'score_summary'),
   (RESOURCE_TABLES, 'resource_table'),
   (RESOURCE_FIGURES, 'resource_figure'),
 ])

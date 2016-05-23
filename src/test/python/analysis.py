@@ -142,6 +142,44 @@ def generate_score_table(test, settings, data):
   out = '\n'.join(res)
   save_table(test, out)
 
+def generate_score_summary(test, settings, data):
+  algos = settings['algos']
+  scale = settings['scale']
+
+  res = []
+  res.append(r'\begin{tabular}{l' + len(algos)*'l' + r'}')
+  res.append(r'\toprule')
+
+  algo_row = [r'\textbf{Group}']
+  for algo in algos:
+    abbrev = config.ALGO_ABBREVIATIONS[algo]
+    algo_row.append(abbrev)
+  res.append(generate_row(algo_row))
+  res.append(r'\midrule')
+
+  for file_group, files in settings['files'].items():
+    efficiencies = []
+    for algo in algos:
+      efficiency = np.mean([data[file][algo] for file in files])
+      efficiencies.append(efficiency)
+
+    best = np.min(efficiencies)
+    row = [file_group]
+    for x in efficiencies:
+      val = '{0:.3f} ({1:.3f})'.format(x, x - best)
+      if x == best:
+        val = r'\textbf{' + val + r'}'
+
+      #val = effectiveness_format(x, is_best, scale, 1, config.FG_COLORMAP, config.BG_COLORMAP)
+      row.append(val)
+    res.append(generate_row(row))
+
+  res.append(r'\bottomrule')
+  res.append(r'\end{tabular}')
+
+  out = '\n'.join(res)
+  save_table(test, out)
+
 def confidence_interval(vals, alpha):
   import numpy as np
   import math
@@ -266,9 +304,12 @@ def main():
     settings = config.TESTS[test]
     type = settings['type']
 
-    if type == 'score':
+    if type == 'score_full':
       data = score_data
       f = generate_score_table
+    elif type == 'score_summary':
+      data = score_data
+      f = generate_score_summary
     elif type == 'resource_table':
       data = resource_data
       f = generate_resource_table

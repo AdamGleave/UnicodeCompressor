@@ -42,7 +42,7 @@ def load_resources(fname):
     for row in reader:
       file = row['file']
       compressor = row['compressor']
-      runtime = float(row['runtime'])
+      runtime = float(row['wall_runtime'])
       memory = int(row['memory'])
 
       update(runtimes, file, compressor, runtime)
@@ -147,7 +147,8 @@ def generate_score_summary(test, settings, data):
   scale = settings['scale']
 
   res = []
-  res.append(r'\begin{tabular}{l' + len(algos)*'l' + r'}')
+  # stretch table to fill width of page
+  res.append(r'\begin{tabular*}{\columnwidth}{l@{\extracolsep{\stretch{1}}}' + len(algos)*'c' + r'@{}}')
   res.append(r'\toprule')
 
   algo_row = [r'\textbf{Group}']
@@ -166,16 +167,14 @@ def generate_score_summary(test, settings, data):
     best = np.min(efficiencies)
     row = [file_group]
     for x in efficiencies:
-      val = '{0:.3f} ({1:.3f})'.format(x, x - best)
+      val = '{0:.3f}'.format(x)
       if x == best:
         val = r'\textbf{' + val + r'}'
-
-      #val = effectiveness_format(x, is_best, scale, 1, config.FG_COLORMAP, config.BG_COLORMAP)
       row.append(val)
     res.append(generate_row(row))
 
   res.append(r'\bottomrule')
-  res.append(r'\end{tabular}')
+  res.append(r'\end{tabular*}')
 
   out = '\n'.join(res)
   save_table(test, out)

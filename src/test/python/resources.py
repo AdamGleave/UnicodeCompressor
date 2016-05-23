@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import argparse, csv, multiprocessing, resource, os
+import argparse, csv, multiprocessing, resource, os, time
 
 import benchmark.config_benchmark as config
 import benchmark.general
@@ -9,13 +9,17 @@ def test_compressor_helper(compressor_name, fname, q):
   try:
     compressor, kwargs = config.COMPRESSORS[compressor_name]
 
+    start_time = time.time()
     compressor.__wrapped__.func(fname=fname, paranoia=True, **kwargs)
+    end_time = time.time()
+
+    wall_time = end_time - start_time
     stats = resource.getrusage(resource.RUSAGE_CHILDREN)
 
-    time = stats.ru_utime + stats.ru_stime
+    cpu_time = stats.ru_utime + stats.ru_stime
     mem = stats.ru_maxrss
 
-    res = (True, (time, mem))
+    res = (True, (wall_time, cpu_time, mem))
   except Exception as e:
     res = (False, e)
   q.put(res)
@@ -30,7 +34,7 @@ def test_compressor(compressor_name, fname):
   if success:
     return res
   else:
-    print("ERROR: test with %{0} on {1} failed: {2}".format(compressor_name, fname, res))
+    print("ERROR: test with {0} on {1} failed: {2}".format(compressor_name, fname, res))
     return None
 
 def read_file(fname):
@@ -74,7 +78,7 @@ if __name__ == "__main__":
 
   csvfile = open(out_fname, 'w')
   writer = csv.writer(csvfile)
-  fieldnames = ['file', 'replication', 'compressor', 'runtime', 'memory']
+  fieldnames = ['file', 'replication', 'compressor', 'wall_runtime', 'cpu_runtime', 'memory']
   writer.writerow(fieldnames)
 
   for fname in files:
@@ -85,8 +89,8 @@ if __name__ == "__main__":
       for compressor_name in compressors:
         if verbose:
           print("{0} / {1} / {2}".format(fname, replication, compressor_name))
-        runtime, memory = test_compressor(compressor_name, fname)
-        writer.writerow([fname, str(replication), compressor_name, runtime, memory])
+        wall_runtime, cpu_runtime, memory = test_compressor(compressor_name, fname)
+        writer.writerow([fname, str(replication), compressor_name, wall_runtime, cpu_runtime, memory])
         csvfile.flush()
 
   csvfile.close()

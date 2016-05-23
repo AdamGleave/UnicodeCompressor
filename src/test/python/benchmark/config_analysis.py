@@ -48,8 +48,8 @@ STANDARD_CORPUS = [
   ),
 ]
 
-STANDARD_TEXT_CORPUS_BY_BYTES = collections.OrderedDict()
-STANDARD_TEXT_CORPUS_BY_BYTES['ASCII'] = [
+STANDARD_CORPUS_GROUPED = collections.OrderedDict()
+STANDARD_CORPUS_GROUPED['ASCII'] = [
    'canterbury/canterbury/alice29.txt',
    'canterbury/canterbury/asyoulik.txt',
    'canterbury/canterbury/cp.html',
@@ -59,11 +59,24 @@ STANDARD_TEXT_CORPUS_BY_BYTES['ASCII'] = [
    'canterbury/canterbury/plrabn12.txt',
    'canterbury/canterbury/xargs.1'
 ]
-STANDARD_TEXT_CORPUS_BY_BYTES['Unicode'] = [
+STANDARD_CORPUS_GROUPED['Unicode'] = [
   'single_language/crime_and_punishment.txt',
   'single_language/genji/all.txt',
   'single_language/genji/chapter2.txt',
   'single_language/kokoro.txt',
+]
+STANDARD_CORPUS_GROUPED['Mixed'] = [
+  'single_language/beowulf.txt',
+  'single_language/ziemia_obiecana.txt',
+  'mixed_language/cedict_small.txt',
+  'mixed_language/creativecommonsukranian.html',
+]
+STANDARD_CORPUS_GROUPED['Binary'] = [
+  'canterbury/canterbury/kennedy.xls',
+  'canterbury/canterbury/ptt5',
+  'canterbury/canterbury/sum',
+  'text_binary/genji.tar',
+  'text_binary/kokoroziemia.tar'
 ]
 
 FULL_CORPUS = STANDARD_CORPUS + [
@@ -204,7 +217,7 @@ SCORE_TABLES = {
        ['ppm_training_group_opt_uniform_byte', 'ppm_training_group_opt_uniform_token',
         'ppm_training_group_opt_polya_token', 'ppm_training_group_5_uniform_byte', 'ref_PPMd']
       ),
-      ('Reference', ['ref_cmix', 'ref_paq8hp12', 'ref_gzip', 'ref_bzip2']),
+      ('Reference', ['ref_cmix', 'ref_paq8hp12', 'ref_bzip2']),
     ],
     'files': STANDARD_CORPUS,
     'scale': (0.75, 3.5),
@@ -215,13 +228,13 @@ SCORE_TABLES = {
 
 BEST_ALGOS = ['ppm_training_group_opt_uniform_byte',
               'ppm_training_group_opt_polya_token',
-              #'ref_PPMd',
+              'ref_PPMd',
               'ref_cmix',
               'ref_paq8hp12']
 SCORE_SUMMARIES = {
   'ppm_summary': {
     'algos': BEST_ALGOS,
-    'files': STANDARD_TEXT_CORPUS_BY_BYTES,
+    'files': {k: STANDARD_CORPUS_GROUPED[k] for k in ['ASCII', 'Unicode']},
     'scale': (1.4, 2.5),
   }
 }
@@ -234,28 +247,28 @@ RESOURCE_ALGOS = BEST_ALGOS
 RESOURCE_ALPHA = 0.95 # uncertainty in confidence intervals
 
 RESOURCE_TABLES = {
-  'runtime_table': {
-    'col': 'runtime',
-    'files': RESOURCE_CORPUS,
-    'algos': RESOURCE_ALGOS,
-  },
-  'memory_table': {
-    'col': 'memory',
-    'files': RESOURCE_CORPUS,
-    'algos': RESOURCE_ALGOS,
-  },
+  # 'runtime_table': {
+  #   'col': 'runtime',
+  #   'files': RESOURCE_CORPUS,
+  #   'algos': RESOURCE_ALGOS,
+  # },
+  # 'memory_table': {
+  #   'col': 'memory',
+  #   'files': RESOURCE_CORPUS,
+  #   'algos': RESOURCE_ALGOS,
+  # },
 }
 
 RESOURCE_FIGURES = {
   'runtime_fig': {
     'col': 'runtime',
-    'file': 'resource_consumption/genji.txt',
+    'file': 'single_language/genji/chapter2.txt',
     'algos': RESOURCE_ALGOS,
     'style': '1col_double',
   },
   'memory_fig': {
     'col': 'memory',
-    'file': 'resource_consumption/genji.txt',
+    'file': 'single_language/genji/chapter2.txt',
     'algos': RESOURCE_ALGOS,
     'style': '1col_double',
   }

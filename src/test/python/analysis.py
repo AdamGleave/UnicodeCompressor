@@ -225,6 +225,7 @@ def generate_resource_table(test, settings, data):
     for file in files:
       vals = resources[file][algo]
       mean, uncertainty = confidence_interval(vals, config.RESOURCE_ALPHA)
+      print("{0}: {1}".format(algo, mean))
       row.append("${0} \pm {1}$".format(format(mean), format(uncertainty)))
     res.append(generate_row(row))
   res.append(r'\bottomrule')

@@ -241,22 +241,20 @@ SCORE_SUMMARIES = {
 
 ## Resources
 
-RESOURCE_CORPUS = ['resource_consumption/alice.txt',
-                   'resource_consumption/genji.txt']
 RESOURCE_ALGOS = BEST_ALGOS
 RESOURCE_ALPHA = 0.95 # uncertainty in confidence intervals
 
 RESOURCE_TABLES = {
-  # 'runtime_table': {
-  #   'col': 'runtime',
-  #   'files': RESOURCE_CORPUS,
-  #   'algos': RESOURCE_ALGOS,
-  # },
-  # 'memory_table': {
-  #   'col': 'memory',
-  #   'files': RESOURCE_CORPUS,
-  #   'algos': RESOURCE_ALGOS,
-  # },
+  'runtime_table': {
+    'col': 'runtime',
+    'files': ['single_language/genji/chapter2.txt'],
+    'algos': RESOURCE_ALGOS,
+  },
+  'memory_table': {
+    'col': 'memory',
+    'files': ['single_language/genji/chapter2.txt'],
+    'algos': RESOURCE_ALGOS,
+  },
 }
 
 RESOURCE_FIGURES = {

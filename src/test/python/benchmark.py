@@ -4,7 +4,7 @@ import asciitable, argparse, csv, errno, filecmp, functools, os, pickle, sys
 import celery
 
 import benchmark.config_benchmark as config
-import benchmark.general
+import benchmark.general as general
 
 def table_convert(original, result, table_type):
   if type(result) == str:
@@ -16,7 +16,7 @@ def table_convert(original, result, table_type):
   elif table_type == 'per':
     return '{0:.1f}%'.format(result / original * 100)
   elif table_type == 'size':
-    return benchmark.general.human_readable_size(result)
+    return general.human_readable_size(result)
   else:
     assert(False)
 
@@ -53,11 +53,11 @@ if __name__ == "__main__":
 
   verbose = args['verbose']
 
-  compressors = benchmark.general.find_compressors(args['compressor'])
+  compressors = general.find_compressors(args['compressor'])
   if verbose:
     print("Using compressors: " + str(compressors))
 
-  files = benchmark.general.include_exclude_files(args['include'], args['exclude'])
+  files = general.include_exclude_files(args['include'], args['exclude'])
   if verbose:
     print("Compressing files: " + str(files))
 
@@ -81,27 +81,26 @@ if __name__ == "__main__":
       results[compressor_name][fname] = result_list[i]
       i += 1
 
-  if run:
-    fieldnames = ['File', 'Size'] + compressors
+  fieldnames = ['File', 'Size'] + compressors
 
-    if csv_fname:
-      with open(csv_fname, 'w') as out:
-        writer = csv.DictWriter(out, fieldnames=fieldnames)
+  if csv_fname:
+    with open(csv_fname, 'w') as out:
+      writer = csv.DictWriter(out, fieldnames=fieldnames)
 
-        writer.writeheader()
-        for fname in files:
-          row = {'File': fname, 'Size': results['Size'][fname]}
-          for compressor in compressors:
-            row[compressor] = results[compressor][fname]
-          writer.writerow(row)
-    if table_type:
-      tableResults = {}
-      tableResults['File'] = files
-      tableResults['Size'] = [human_readable_size(results['Size'][fname]) for fname in files]
+      writer.writeheader()
+      for fname in files:
+        row = {'File': fname, 'Size': results['Size'][fname]}
+        for compressor in compressors:
+          row[compressor] = results[compressor][fname]
+        writer.writerow(row)
+  if table_type:
+    tableResults = {}
+    tableResults['File'] = files
+    tableResults['Size'] = [general.human_readable_size(results['Size'][fname]) for fname in files]
 
-      for compressor in compressors:
-        tableResults[compressor] = []
-        for fname in files:
-          res = table_convert(results['Size'][fname], results[compressor][fname], table_type)
-          tableResults[compressor].append(res)
-      asciitable.write(tableResults, sys.stdout, names=fieldnames, Writer=asciitable.FixedWidth)
+    for compressor in compressors:
+      tableResults[compressor] = []
+      for fname in files:
+        res = table_convert(results['Size'][fname], results[compressor][fname], table_type)
+        tableResults[compressor].append(res)
+    asciitable.write(tableResults, sys.stdout, names=fieldnames, Writer=asciitable.FixedWidth)

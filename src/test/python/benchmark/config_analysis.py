@@ -79,6 +79,10 @@ STANDARD_CORPUS_GROUPED['Binary'] = [
   'text_binary/kokoroziemia.tar'
 ]
 
+STANDARD_TEXT_CORPUS = STANDARD_CORPUS_GROUPED['ASCII'] \
+                     + STANDARD_CORPUS_GROUPED['Unicode'] \
+                     + STANDARD_CORPUS_GROUPED['Mixed']
+
 FULL_CORPUS = STANDARD_CORPUS + [
   ('training',
    ['training/aristotle.txt',
@@ -239,6 +243,21 @@ SCORE_SUMMARIES = {
   }
 }
 
+## Parameters
+
+PARAMETER_ALGOS = collections.OrderedDict()
+PARAMETER_ALGOS['uniform_byte'] = ('Byte', 'Uniform')
+PARAMETER_ALGOS['uniform_token'] = ('Token', 'Uniform')
+PARAMETER_ALGOS['polya_token'] = ('Token', r"P\'{o}lya")
+
+PARAMETER_TABLES = {
+  'trainingvstest': {
+    'algos': PARAMETER_ALGOS,
+    'files': STANDARD_TEXT_CORPUS,
+    'test_parameters': os.path.join(OUTPUT_DIR, 'tables', 'test_ppm_multi_optimal_alpha_beta:depths=0,1,2,3,4,5,6,7,8,9:granularity=10:prior=consolidated.csv'),
+  }
+}
+
 ## Resources
 
 RESOURCE_ALGOS = BEST_ALGOS
@@ -285,6 +304,7 @@ def merge(tables):
 TESTS = merge([
   (SCORE_TABLES, 'score_full'),
   (SCORE_SUMMARIES, 'score_summary'),
+  (PARAMETER_TABLES, 'parameter_table'),
   (RESOURCE_TABLES, 'resource_table'),
   (RESOURCE_FIGURES, 'resource_figure'),
 ])

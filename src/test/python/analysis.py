@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import argparse, csv, os
+import argparse, csv, functools, os
 
 import numpy as np
 
@@ -48,6 +48,21 @@ def load_resources(fname):
       update(runtimes, file, compressor, runtime)
       update(memories, file, compressor, memory)
   return (runtimes, memories)
+
+def load_parameters(fname, algos):
+  with open(fname) as dataf:
+    reader = csv.DictReader(dataf)
+    res = {}
+    for row in reader:
+      depth = int(row['depth'])
+      for algo in algos:
+        by_algo = res.get(algo, {})
+        alpha = float(row[algo + '_alpha'])
+        beta = float(row[algo + '_beta'])
+        efficiency = float(row[algo + '_mean_efficiency'])
+        by_algo[depth] = (alpha, beta, efficiency)
+        res[algo] = by_algo
+  return res
 
 def process_score_settings(raw):
   res = dict(raw)
@@ -124,7 +139,7 @@ def generate_score_table(test, settings, data):
   for file_group, files in settings['files']:
     for file in files:
       filedata = data[file]
-      file_abbrev = config.FILE_ABBREVIATIONS[file]
+      file_abbrev = r'\code{' + config.FILE_ABBREVIATIONS[file] + r'}'
       row = [file_abbrev]
       best = min([filedata[a] for a in algos])
       for algo in algos:
@@ -141,6 +156,9 @@ def generate_score_table(test, settings, data):
 
   out = '\n'.join(res)
   save_table(test, out)
+
+def mean_effectiveness(data, files, algo):
+  return np.mean([data[file][algo] for file in files])
 
 def generate_score_summary(test, settings, data):
   algos = settings['algos']
@@ -161,7 +179,7 @@ def generate_score_summary(test, settings, data):
   for file_group, files in settings['files'].items():
     efficiencies = []
     for algo in algos:
-      efficiency = np.mean([data[file][algo] for file in files])
+      efficiency = mean_effectiveness(data, files, algo)
       efficiencies.append(efficiency)
 
     best = np.min(efficiencies)
@@ -172,6 +190,56 @@ def generate_score_summary(test, settings, data):
         val = r'\textbf{' + val + r'}'
       row.append(val)
     res.append(generate_row(row))
+
+  res.append(r'\bottomrule')
+  res.append(r'\end{tabular*}')
+
+  out = '\n'.join(res)
+  save_table(test, out)
+
+def generate_parameter_table(test, settings, data):
+  algos = settings['algos']
+  files = settings['files']
+  test_parameters = load_parameters(settings['test_parameters'], algos.keys())
+
+  res = []
+  # stretch table to fill width of page
+  res.append(r'\begin{tabular*}{\columnwidth}{ll@{\extracolsep{\stretch{1}}}*{5}{c}@{}}')
+  res.append(r'\toprule')
+  res.append(r'\textbf{Alphabet} & \textbf{Prior} & \textbf{$\boldsymbol{\bar{e}}_\text{TE}$} & \textbf{$\boldsymbol{\bar{e}}_\text{TR}$} & \textbf{$\boldsymbol{\Delta \bar{e}}$} & \textbf{due to $\mathbf{d}$} & \textbf{due to $\boldsymbol{\alpha,\beta}$} \\')
+  res.append(r'\midrule')
+
+  def mean_format(x):
+    return '{0:1.3f}'.format(x)
+  def delta_format(x):
+    # exponential_notation = '{0:.2E}'.format(x)
+    # leading, exponent = exponential_notation.split("E")
+    # return '${0}\\times 10^{{{1}}}$'.format(leading, exponent)
+    return '{0:1.5f}'.format(x)
+
+  for algo, (alphabet, prior) in algos.items():
+    by_algo = test_parameters[algo]
+    def comparator(x):
+      depth, (alpha, beta, mean_effectiveness) = x
+      return mean_effectiveness
+    best_parameters = min(by_algo.items(), key=comparator)
+    best_depth = best_parameters[0]
+
+    cols = ['ppm_test_group_opt_{0}'.format(algo),
+            'ppm_training_group_opt_{0}'.format(algo),
+            'ppm_training_group_{0}_{1}'.format(best_depth, algo)
+           ]
+    means = map(functools.partial(mean_effectiveness, data, files), cols)
+    test_mean, train_mean, train_on_test_depth_mean = means
+
+    delta = train_mean - test_mean
+    delta_due_to_ab = train_on_test_depth_mean - test_mean
+    delta_due_to_depth = delta - delta_due_to_ab
+
+    mean_formatted = map(mean_format, [test_mean, train_mean])
+    delta_formatted = map(delta_format, [delta, delta_due_to_depth, delta_due_to_ab])
+    row = generate_row([alphabet, prior] + list(mean_formatted) + list(delta_formatted))
+    res.append(row)
 
   res.append(r'\bottomrule')
   res.append(r'\end{tabular*}')
@@ -310,6 +378,9 @@ def main():
     elif type == 'score_summary':
       data = score_data
       f = generate_score_summary
+    elif type == 'parameter_table':
+      data = score_data
+      f = generate_parameter_table
     elif type == 'resource_table':
       data = resource_data
       f = generate_resource_table

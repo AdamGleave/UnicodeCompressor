@@ -8,7 +8,7 @@ import celery
 import numpy as np
 
 import matplotlib
-matplotlib.use('PDF')
+#matplotlib.use('PDF')
 import prettyplotlib as ppl
 import matplotlib.pyplot as plt
 
@@ -55,7 +55,16 @@ def plot_contour_base(xlim, ylim):
   x_vertices = [min_x, min_x, max_x]
   lowest = min(min_y, -max_x)
   y_vertices = [-min_x, lowest, lowest]
-  plt.fill(x_vertices, y_vertices, 'gray', alpha=0.5)
+  plt.fill(x_vertices, y_vertices, 'gray', alpha=0.3)
+  plt.plot([min_x, max_x], [-min_x, lowest], color='k')
+
+  #ppl.fill_between([min_x, max_x], [lowest, lowest], [-min_x, lowest], color='gray', alpha=0.2)
+
+  # turn grid on
+  plt.grid(b=True)
+
+  # xticks
+  plt.xticks(np.arange(0, 1.1, 0.1))
 
   # axes
   plt.xlim(xlim)
@@ -66,15 +75,28 @@ def plot_contour_base(xlim, ylim):
 
   return fig
 
-def plot_optimum(optimum, label='OPT', marker='x', offset=(2,2), color='k'):
+def plot_optimum(optimum, label, marker, size=8, color='k', offset=(2,2),
+                 horizontalalignment='left', verticalalignment='bottom'):
   # plot optimum
-  (optimum_a, optimum_b), optimum_z = optimum
+  optimum_a, optimum_b = optimum
   plt.scatter(optimum_b, optimum_a, marker=marker, color=color)
-  plt.annotate(label, xy=(optimum_b, optimum_a), xycoords='data',
-               xytext=offset, textcoords='offset points', color=color)
+  plt.annotate(label, xy=(optimum_b, optimum_a), xycoords='data', xytext=offset,
+               textcoords='offset points', ha=horizontalalignment, va=verticalalignment,
+               size=size, color=color)
+
+def plot_contour_labels(contour, fmt, manual, **kwargs):
+  labels = plt.clabel(contour, fmt=fmt, manual=manual, **kwargs)
+  if manual == True:
+    # print coordinates of manually placed label, so can put them in config for posterity
+    coords = [(label._x, label._y) for label in labels]
+    print(coords)
 
 def plot_contour_lines(optimum, evals, big_levels, big_delta, small_per_big,
-                       big_formatter, big_manual, inner_formatter, inner_manual, colors=None):
+                       big_formatter, big_manual, inner_formatter, inner_manual,
+                       big_linewidth, small_linewidth, colors=None):
+  if not colors:
+    colors = ppl.brewer2mpl.get_map('Spectral', 'diverging', big_levels).mpl_colors
+
   optimum_z = optimum[1]
 
   # plot contours
@@ -87,25 +109,31 @@ def plot_contour_lines(optimum, evals, big_levels, big_delta, small_per_big,
   small_levels = rounded_z_big + np.arange((big_levels - 1) * small_per_big + 1)*small_delta
   big_levels = rounded_z_big + np.arange(big_levels)*big_delta
 
-  small_linewidth, big_linewidth = 0.05, 0.5
   (a, b), z = evals
   if len(inner_levels):
-    inner_cs = plt.contour(b, a, z, levels=inner_levels, linewidths=small_linewidth, colors='k')
-  small_cs = plt.contour(b, a, z, levels=small_levels, linewidths=small_linewidth, colors='k')
+    inner_cs = plt.contour(b, a, z, levels=inner_levels, linewidths=small_linewidth,
+                           colors=colors[0])
+  small_colors = np.repeat(colors[1:], small_per_big, axis=0)
+  # set linewidth to 0 when overlapping with big contours
+  small_linewidths = [0] + [small_linewidth] * (small_per_big - 1)
+  plt.contour(b, a, z, levels=small_levels, linewidths=small_linewidths, colors=small_colors)
   big_cs = plt.contour(b, a, z, levels=big_levels, linewidths=big_linewidth, colors=colors)
 
   # labels
   if len(inner_levels) and inner_formatter:
-    plt.clabel(inner_cs, fmt=inner_formatter, manual=inner_manual, fontsize=6, inline=0)
+    plot_contour_labels(inner_cs, fmt=inner_formatter, manual=inner_manual, fontsize=6,
+                        inline=1, inline_spacing=2)
   if big_formatter:
-    plt.clabel(big_cs, fmt=big_formatter, manual=big_manual, fontsize=10, inline=0)
+    plot_contour_labels(big_cs, fmt=big_formatter, manual=big_manual, fontsize=8, inline=1)
 
 def contour_settings(default, overrides, test_name, fnames):
   kwargs = dict(default)
   fnames = frozenset(fnames)
   if fnames in overrides:
     if test_name in overrides[fnames]:
-      kwargs.update(overrides[fnames][test_name])
+      to_update = overrides[fnames][test_name]
+      for k, v in to_update.items():
+        kwargs[k].update(v)
   return kwargs
 
 def ppm_contour_plot_helper(test_name, fnames, prior, depth,
@@ -122,12 +150,14 @@ def ppm_contour_plot_helper(test_name, fnames, prior, depth,
 
   optimum, evals = benchmark.tasks.contour_data(prior, paranoia, depth,
                                                 alpha_range, beta_range, granularity, fnames)
-  kwargs = contour_settings(config.PPM_CONTOUR_DEFAULT_ARGS,
+  settings = contour_settings(config.PPM_CONTOUR_DEFAULT_ARGS,
                             config.PPM_CONTOUR_OVERRIDES, test_name, fnames)
 
   fig = plot_contour_base(xlim=beta_range, ylim=alpha_range)
-  plot_optimum(optimum)
-  plot_contour_lines(optimum, evals, **kwargs)
+  plot_optimum(optimum[0], **settings['optimum'])
+  for kwargs in settings['markers'].values():
+    plot_optimum(**kwargs)
+  plot_contour_lines(optimum, evals, **settings['lines'])
   return plot.save_figure(fig, test_name, fnames)
 ppm_contour_plot = per_file_test(ppm_contour_plot_helper)
 

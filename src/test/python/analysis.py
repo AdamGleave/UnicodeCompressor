@@ -206,7 +206,7 @@ def generate_parameter_table(test, settings, data):
   # stretch table to fill width of page
   res.append(r'\begin{tabular*}{\columnwidth}{ll@{\extracolsep{\stretch{1}}}*{5}{c}@{}}')
   res.append(r'\toprule')
-  res.append(r'\textbf{Alphabet} & \textbf{Prior} & \textbf{$\boldsymbol{\bar{e}}_\text{TE}$} & \textbf{$\boldsymbol{\bar{e}}_\text{TR}$} & \textbf{$\boldsymbol{\Delta \bar{e}}$} & \textbf{due to $\mathbf{d}$} & \textbf{due to $\boldsymbol{\alpha,\beta}$} \\')
+  res.append(r'\textbf{Alphabet} & \textbf{Prior} & \textbf{$\boldsymbol{\bar{e}}^\text{TE}$} & \textbf{$\boldsymbol{\bar{e}}^\text{TR}$} & \textbf{$\boldsymbol{\Delta \bar{e}}$} & \textbf{due to $\mathbf{d}$} & \textbf{due to $\boldsymbol{\alpha,\beta}$} \\')
   res.append(r'\midrule')
 
   def mean_format(x):

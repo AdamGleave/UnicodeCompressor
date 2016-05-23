@@ -32,6 +32,10 @@ def set_rcs_onecol_double():
   set_rcs_common()
   set_width(4.5)
 
+def set_rcs_onecol_square():
+  set_rcs_common()
+  rc('figure', figsize=(5.39, 5.39))
+
 def set_rcs_twocol():
   set_rcs_common()
   rc('font', size=8)
@@ -42,6 +46,7 @@ def set_rcs_twocol():
 STYLES = {
   '1col': set_rcs_onecol,
   '1col_double': set_rcs_onecol_double,
+  '1col_square': set_rcs_onecol_square,
   '2col': set_rcs_twocol,
 }
 

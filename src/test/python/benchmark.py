@@ -31,6 +31,8 @@ if __name__ == "__main__":
                       help='write the resutlts to stdout in an ASCII table in specified units, ' +
                       'one of bits (bits output/byte input), per (percentage output/input), ' +
                       'size (output file size), time (runtime in seconds) (default: bits).')
+  parser.add_argument('--rerun-errors', dest='rerun', action='store_true',
+                      help='rerun compressors if it ended in an error')
   parser.add_argument('--include', dest='include', nargs='+',
                       help='paths which match the specified regex are included; ' +
                            'if unspecified, defaults to *.')
@@ -70,7 +72,19 @@ if __name__ == "__main__":
   for compressor_name in compressors:
     compressor, kwargs = config.COMPRESSORS[compressor_name]
     for fname in files:
-      work += [compressor.s(fname=fname, paranoia=True, **kwargs)]
+      kwargs.update({'fname': fname, 'paranoia': True})
+      work += [compressor.s(**kwargs)]
+
+      if args['rerun']:
+        import benchmark.tasks
+        memoised = benchmark.tasks.memo(compressor.__wrapped__.func)
+        if memoised.exists(kwargs=kwargs):
+          cached = memoised.get(kwargs=kwargs)
+          if type(cached) != int:
+            print("Detected error '{0}' on {1} over {2}: rerunning"
+                  .format(cached, compressor_name, fname))
+            memoised.delete(kwargs=kwargs)
+
   async_res = celery.group(work)()
   result_list = async_res.get()
 

@@ -13,6 +13,7 @@ lazy val root = (project in file(".")).
     libraryDependencies += "com.github.scopt" %% "scopt" % "3.4.0",
     resolvers += Resolver.sonatypeRepo("public"),
     unmanagedSourceDirectories in Compile += baseDirectory.value / "steinruecken/java",
+    unmanagedSourceDirectories in Compile += baseDirectory.value / "ext/scsu",
     ppmii := { Process("make" :: Nil, baseDirectory.value / "ext/ppmdj1") ! },
     paq8hp12 := { Process("make" :: Nil, baseDirectory.value / "ext/paq8hp12") ! },
     zpaq := { Process("make" :: Nil, baseDirectory.value / "ext/zpaq6.42") ! },

@@ -239,7 +239,7 @@ public abstract class SCSU
 
     /** reset is only needed to bail out after an exception and
         restart with new input */
-    protected public void reset()
+    public void reset()
     {
 
         // reset the dynamic windows

@@ -1,77 +1,16 @@
 package uts6;
 
 import java.io.*;
-import java.util.Arrays;
+import java.util.*;
 
 /**
  * Created by adam on 24/05/16.
  */
 public class SimpleCompressMain {
-  private static int iMSB = 1;
-  
-  public static String readUnicodeFile() throws IOException
-  {
-    byte b[] = new byte[2];
-    StringBuffer sb = new StringBuffer();
-    char ch = 0;
-
-    iMSB = 1;
-    int i = 0;
-    int cur = System.in.read();
-    for(i = 0; cur != -1; cur = System.in.read(), i++)
-    {
-      b[i%2] = (byte)cur;
-
-      if ((i & 1) == 1)
-      {
-        ch = Expand.charFromTwoBytes(b[(i + iMSB)%2], b[(i + iMSB + 1) % 2]);
-      }
-      else
-      {
-        continue;
-      }
-      if (i == 1 && ch == '\uFEFF')
-        continue; // throw away byte order mark
-
-      if (i == 1 && ch == '\uFFFE')
-      {
-        iMSB ++;  // flip byte order
-        continue; // throw away byte order mark
-      }
-      sb.append(ch);
-    }
-
-    return sb.toString();
-  }
-
-  public static void writeUnicodeFile(char [] chars) throws IOException
-  {
-    DataOutputStream dos = new DataOutputStream(System.out);
-    if ((iMSB & 1) == 1)
-    {
-      dos.writeByte(0xFF);
-      dos.writeByte(0xFE);
-    }
-    else
-    {
-      dos.writeByte(0xFE);
-      dos.writeByte(0xFF);
-    }
-    byte b[] = new byte[2];
-    for (int ich = 0; ich < chars.length; ich++)
-    {
-      b[(iMSB + 0)%2] = (byte) (chars[ich] >>> 8);
-      b[(iMSB + 1)%2] = (byte) (chars[ich] & 0xFF);
-      System.out.write(b, 0, 2);
-    }
-  }
-
-
   public static void encodeTest(boolean fDebug)
       throws IOException
   {
-    String text = readUnicodeFile();
-    System.err.println(text.length());
+    String text = new Scanner(System.in).useDelimiter("\\Z").next();
 
     // Create an instance of the compressor
     Compress compressor = new Compress();
@@ -88,12 +27,10 @@ public class SimpleCompressMain {
       System.out.println(e);
     }
 
-    System.err.println(bytes.length);
     System.out.write(bytes, 0, bytes.length);
   }
 
-  public static void decodeTest(boolean fDebug)
-      throws IOException
+  public static void decodeTest(boolean fDebug) throws IOException
   {
     // HACK: just allocate a buffer that's large enough for any file in our test data
     // The original sample code CompressMain used available() which is even more wrong, CBA to fix it
@@ -118,8 +55,10 @@ public class SimpleCompressMain {
     }
     if (chars == null)
       return;
-
-    writeUnicodeFile(chars);
+    
+    BufferedWriter out = new BufferedWriter(new OutputStreamWriter(System.out));
+    out.write(chars);
+    out.flush();
   }
   
   public static void usage() {

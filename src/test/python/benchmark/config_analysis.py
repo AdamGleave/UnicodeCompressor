@@ -68,7 +68,7 @@ STANDARD_CORPUS_GROUPED['Unicode'] = [
 STANDARD_CORPUS_GROUPED['Mixed'] = [
   'single_language/beowulf.txt',
   'single_language/ziemia_obiecana.txt',
-  'mixed_language/cedict_small.txt',
+  #'mixed_language/cedict_small.txt',
   'mixed_language/creativecommonsukranian.html',
 ]
 STANDARD_CORPUS_GROUPED['Binary'] = [

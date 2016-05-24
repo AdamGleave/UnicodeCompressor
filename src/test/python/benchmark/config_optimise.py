@@ -54,19 +54,23 @@ PPM_CONTOUR_OVERRIDES = {
              'canterbury/canterbury/plrabn12.txt',
              'canterbury/canterbury/xargs.1',
              'mixed_language/creativecommonsukranian.html',
+             'single_language/beowulf.txt',
+             'single_language/crime_and_punishment.txt',
+             'single_language/kokoro.txt',
+             'single_language/ziemia_obiecana.txt',
              'single_language/genji/all.txt',
              'single_language/genji/chapter2.txt']): {
     'ppm_multi_contour_plot:depth=6:prior=uniform_byte': {
       'lines': {
-        'big_manual': [(0.24, 0.75), (0.26, 1.70), (0.35, 2.2), (0.47, 2.48), (0.5, 2.52),
-                       (0.6, 2.52), (0.73, 2.35), (0.8, 1.75), (0.88, 1.35), (0.97, 0.82)],
-        'inner_manual': [(0.43, 0.2), (0.37, 0.4), (0.33, 0.60)],
+        'big_manual': [(0.27, 0.58), (0.34, 1.37), (0.44, 1.88), (0.51, 2.05), (0.59, 2.42),
+                       (0.69, 2.42), (0.77, 2.25), (0.83, 1.85), (0.87, 1.65), (0.91, 1.25)],
+        'inner_manual': [(0.37, 0.38)],
       },
       'optimum': {
         'label': 'TE',
-        'horizontalalignment': 'left',
-        'verticalalignment': 'center',
-        'offset': (6, -1),
+        'horizontalalignment': 'center',
+        'verticalalignment': 'top',
+        'offset': (0, -4),
       },
       'markers': {
         'training': {

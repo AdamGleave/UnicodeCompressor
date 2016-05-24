@@ -8,7 +8,7 @@ import celery
 import numpy as np
 
 import matplotlib
-#matplotlib.use('PDF')
+matplotlib.use('PDF')
 import prettyplotlib as ppl
 import matplotlib.pyplot as plt
 
@@ -111,8 +111,9 @@ def plot_contour_lines(optimum, evals, big_levels, big_delta, small_per_big,
 
   (a, b), z = evals
   if len(inner_levels):
+    inner_colors = [colors[0]] * len(inner_levels)
     inner_cs = plt.contour(b, a, z, levels=inner_levels, linewidths=small_linewidth,
-                           colors=colors[0])
+                           colors=inner_colors)
   small_colors = np.repeat(colors[1:], small_per_big, axis=0)
   # set linewidth to 0 when overlapping with big contours
   small_linewidths = [0] + [small_linewidth] * (small_per_big - 1)
@@ -124,7 +125,8 @@ def plot_contour_lines(optimum, evals, big_levels, big_delta, small_per_big,
     plot_contour_labels(inner_cs, fmt=inner_formatter, manual=inner_manual, fontsize=6,
                         inline=1, inline_spacing=2)
   if big_formatter:
-    plot_contour_labels(big_cs, fmt=big_formatter, manual=big_manual, fontsize=8, inline=1)
+    plot_contour_labels(big_cs, fmt=big_formatter, manual=big_manual, fontsize=8,
+                        inline=1, inline_spacing=3)
 
 def contour_settings(default, overrides, test_name, fnames):
   kwargs = dict(default)
@@ -351,8 +353,8 @@ def ppm_multi_optimal_alpha_beta(pool, files, test_name, prior,
 
   ec = functools.partial(error_callback, 'ppm_multi_optimal_alpha_beta - {0} on {1}'
                                           .format(test_name, files))
-  pool.map_async(ppm_multi_optimal_alpha_beta_helper, depths, chunksize=1,
-                 callback=callback, error_callback=ec)
+  runner = functools.partial(ppm_multi_optimal_alpha_beta_helper, files, prior, granularity)
+  pool.map_async(runner, depths, chunksize=1, callback=callback, error_callback=ec)
 
 def ppm_efficiency_by_depth_helper(fnames, granularity, x):
   prior, depth = x
@@ -494,6 +496,8 @@ def main():
     plot.set_style(args['style'])
 
   files = general.include_exclude_files(args['include'], args['exclude'])
+  if verbose:
+    print("Operating on: {0}".format(files))
 
   pool = multiprocessing.Pool(num_workers)
   if verbose:

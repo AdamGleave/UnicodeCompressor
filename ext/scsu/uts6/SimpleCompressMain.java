@@ -10,7 +10,7 @@ public class SimpleCompressMain {
   public static void encodeTest(boolean fDebug)
       throws IOException
   {
-    String text = new Scanner(System.in).useDelimiter("\\").next();
+    String text = new Scanner(System.in).useDelimiter("\\A").next();
     System.err.println(text.length());
 
     // Create an instance of the compressor

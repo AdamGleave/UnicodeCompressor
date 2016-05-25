@@ -14,13 +14,12 @@ def human_readable_helper(units, last_unit, factor, format):
   return f
 
 def plain_format(s, unit):
-  def format(s, unit):
-    return '{0:3.1f}{1}'.format(s, unit)
+  return '{0:3.1f}{1}'.format(s, unit)
 
 def latex_format(s, unit):
   return r'\SI{' + '{0:3.1f}'.format(s) + r'}{' + unit + r'}'
 
-human_readable_size = human_readable_helper(['B', 'KB', 'MB', 'GB'], 'TB', 1024.0, format)
+human_readable_size = human_readable_helper(['B', 'KB', 'MB', 'GB'], 'TB', 1024.0, plain_format)
 
 human_readable_size_latex = human_readable_helper(
   [r'\byte', r'\kibi\byte', r'\mebi\byte', r'\gibi\byte'],

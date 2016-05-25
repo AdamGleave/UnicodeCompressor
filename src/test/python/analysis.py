@@ -25,7 +25,12 @@ def load_benchmark(fname):
       filesize = int(row['Size'])
       del row['File']
       del row['Size']
-      res[file] = {k: float(size) / filesize * 8 for k, size in row.items()}
+      res[file] = {}
+      for k, size in row.items():
+        try:
+          res[file][k] = float(size) / filesize * 8
+        except ValueError:
+          res[file][k] = float('inf')
     return res
 
 def load_resources(fname):
@@ -91,14 +96,20 @@ def autoscale(settings, data):
 
 def effectiveness_format(x, is_best, scale, leading, fg_cm, bg_cm):
   smallest, largest = scale
-  p = (x - smallest) / (largest - smallest)
-  if p < 0 or p > 1:
-    print("WARNING: value {0} outside {1}".format(x, scale))
-  bg = bg_cm(p)
-  fg = fg_cm(p)
-  val = '{0:.3f}'.format(x)
-  pad = leading + 4 - len(val)
-  val = '\hspace{0.5em}' * pad + val
+
+  if x == float('inf'): # failure
+    bg, fg = config.ERROR_COLOUR
+    val = '\hspace{0.46em}fail\hspace{0.46em}'
+  else:
+    p = (x - smallest) / (largest - smallest)
+    if p < 0 or p > 1:
+      print("WARNING: value {0} outside {1}".format(x, scale))
+    bg = bg_cm(p)
+    fg = fg_cm(p)
+    val = '{0:.3f}'.format(x)
+    pad = leading + 4 - len(val)
+    val = '\hspace{0.5em}' * pad + val
+
   if is_best:
     val = r'\textbf{' + val + r'}'
   return r'{\kern-0.35em\colorbox[rgb]{' + '{0},{1},{2}'.format(*bg) + r'}{\textcolor[rgb]{' + \

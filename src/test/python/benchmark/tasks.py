@@ -59,29 +59,8 @@ def ext_compressor(fname, paranoia, name):
   compressor = config.EXT_COMPRESSORS[name]
   return compressed_filesize(compressor, fname, paranoia)
 
-sbt_classpath_cache = None
-def find_sbt_classpath():
-  global sbt_classpath_cache
-  if not sbt_classpath_cache:
-    classpath_cache = os.path.join(config.OUTPUT_DIR, 'classpath.cached')
-
-    if os.path.exists(classpath_cache):
-      with open(classpath_cache, 'r') as f:
-        sbt_classpath_cache = f.read().strip()
-    else:
-      cwd = os.getcwd()
-      os.chdir(config.PROJECT_DIR)
-      res = subprocess.check_output(['sbt', 'export compile:fullClasspath'])
-      os.chdir(cwd)
-
-      sbt_classpath_cache = res.splitlines()[-1].decode("utf-8")
-
-      with open(classpath_cache, 'w') as f:
-        f.write(sbt_classpath_cache)
-  return sbt_classpath_cache
-
 def my_compressor_start_args(classname):
-  classpath = find_sbt_classpath() + ':' + config.BIN_DIR
+  classpath = config.find_sbt_classpath() + ':' + config.BIN_DIR
   class_qualified = 'uk.ac.cam.cl.arg58.mphil.compression.' + classname
   return ['java', '-Xms512M', '-Xmx1536M',
           '-classpath', classpath, class_qualified]

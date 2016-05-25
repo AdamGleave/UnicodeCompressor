@@ -3,9 +3,6 @@ package uts6;
 import java.io.*;
 import java.util.*;
 
-/**
- * Created by adam on 24/05/16.
- */
 public class SimpleCompressMain {
   public static void encodeTest(boolean fDebug)
       throws IOException

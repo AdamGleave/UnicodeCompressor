@@ -138,6 +138,7 @@ ALGO_ABBREVIATIONS = {
   'ref_gzip': r'\gzip',
   'ref_paq8hp12': r'\paqhp',
   'ref_PPMd': r'\ppmii',
+  'ref_SCSU': r'\scsu',
   'ref_cmix': r'\cmix'
 }
 
@@ -194,6 +195,7 @@ def clip_colormap(cm):
 
 BG_COLORMAP = plt.cm.BuGn
 FG_COLORMAP = clip_colormap(invert_colormap(BG_COLORMAP))
+ERROR_COLOUR = ((1, 0, 0), (1, 1, 1))
 
 # Output tables
 
@@ -202,7 +204,7 @@ SCORE_TABLES = {
     'algos': [
       ('Static', ['none_uniform_byte', 'none_uniform_token']),
       ('Adaptive', ['crp_uniform_byte', 'crp_uniform_token', 'none_polya_token']),
-      ('Reference', ['ref_gzip', 'ref_bzip2']),
+      ('Reference', ['ref_SCSU', 'ref_gzip', 'ref_bzip2']),
     ],
     'files': STANDARD_CORPUS,
     'scale': (1.0, 6.0),

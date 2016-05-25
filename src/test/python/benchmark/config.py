@@ -33,6 +33,27 @@ CELERY['CELERY_RESULT_BACKEND'] = 'redis://{0}:{1}'.format(REDIS_HOST, REDIS_POR
 ### Compression algorithms
 
 # Helper functions
+sbt_classpath_cache = None
+def find_sbt_classpath():
+  global sbt_classpath_cache
+  if not sbt_classpath_cache:
+    classpath_cache = os.path.join(OUTPUT_DIR, 'classpath.cached')
+
+    if os.path.exists(classpath_cache):
+      with open(classpath_cache, 'r') as f:
+        sbt_classpath_cache = f.read().strip()
+    else:
+      cwd = os.getcwd()
+      os.chdir(PROJECT_DIR)
+      res = subprocess.check_output(['sbt', 'export compile:fullClasspath'])
+      os.chdir(cwd)
+
+      sbt_classpath_cache = res.splitlines()[-1].decode("utf-8")
+
+      with open(classpath_cache, 'w') as f:
+        f.write(sbt_classpath_cache)
+  return sbt_classpath_cache
+
 def build_compressor(standard_args, compress_args, decompress_args):
   def run_compressor(in_fname, out_fname, mode):
     args = standard_args.copy()
@@ -114,6 +135,7 @@ def zpaq(in_fname, out_fname, mode):
 
 # All compressors
 PPMd_EXECUTABLE = os.path.join(PROJECT_DIR, 'ext', 'ppmdj1', 'PPMd')
+SCSU_ARGS = ['java', '-classpath', find_sbt_classpath(), 'uts6.SimpleCompressMain']
 EXT_COMPRESSORS = {
   'bzip2': build_compressor(['bzip2', '-c', '--best'], ['-z'], ['-d']),
   'cmix': cmix,
@@ -122,6 +144,7 @@ EXT_COMPRESSORS = {
   'LZMA': build_compressor(['lzma', '-c', '-9', '-e'], ['-z'], ['-d']),
   'paq8hp12': paq8hp12,
   'PPMd': build_compressor([PPMd_EXECUTABLE], ['e'], ['d']),
+  'SCSU': build_compressor(SCSU_ARGS, ['compress'], ['decompress']),
   'zpaq': zpaq,
 }
 

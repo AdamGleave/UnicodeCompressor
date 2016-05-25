@@ -10,7 +10,8 @@ public class SimpleCompressMain {
   public static void encodeTest(boolean fDebug)
       throws IOException
   {
-    String text = new Scanner(System.in).useDelimiter("\\Z").next();
+    String text = new Scanner(System.in).useDelimiter("\\").next();
+    System.err.println(text.length());
 
     // Create an instance of the compressor
     Compress compressor = new Compress();
@@ -55,8 +56,9 @@ public class SimpleCompressMain {
     }
     if (chars == null)
       return;
-    
+
     BufferedWriter out = new BufferedWriter(new OutputStreamWriter(System.out));
+    System.err.println(chars.length);
     out.write(chars);
     out.flush();
   }

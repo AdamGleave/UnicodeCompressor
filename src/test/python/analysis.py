@@ -99,7 +99,7 @@ def effectiveness_format(x, is_best, scale, leading, fg_cm, bg_cm):
 
   if x == float('inf'): # failure
     bg, fg = config.ERROR_COLOUR
-    val = '\hspace{0.46em}fail\hspace{0.46em}'
+    val = '\hspace{0.39em}fail\hspace{0.45em}'
   else:
     p = (x - smallest) / (largest - smallest)
     if p < 0 or p > 1:

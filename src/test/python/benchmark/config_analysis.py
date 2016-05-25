@@ -154,6 +154,8 @@ def get_leading(algo):
 def get_column_type(algo):
   if algo == 'ref_bzip2':
     return 'l'
+  elif algo == 'ref_SCSU':
+    return 'r'
   elif algo == 'ref_cmix':
     return 'r'
   elif algo == 'ref_PPMd':
@@ -168,6 +170,8 @@ def get_padding(algo):
     return ('\hspace{-5pt}', '')
   elif algo == 'ref_cmix':
     return ('', '\hspace{-8pt}')
+  elif algo == 'ref_SCSU':
+    return ('', '\hspace{-6pt}')
   elif algo == 'ppm5_uniform_byte':
     return ('\hspace{-8pt}', '\hspace{-8pt}')
   else:

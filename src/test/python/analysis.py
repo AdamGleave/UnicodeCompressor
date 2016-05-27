@@ -173,7 +173,6 @@ def mean_effectiveness(data, files, algo):
 
 def generate_score_summary(test, settings, data):
   algos = settings['algos']
-  scale = settings['scale']
 
   res = []
   # stretch table to fill width of page

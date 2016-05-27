@@ -242,10 +242,14 @@ BEST_ALGOS = ['ppm_training_group_opt_uniform_byte',
               'ref_cmix',
               'ref_paq8hp12']
 SCORE_SUMMARIES = {
+  'lzw_summary': {
+      'algos': ['none_lzw_byte', 'lzw_uniform_byte', 'lzw_polya_token', 'ref_gzip', 'ref_bzip2'],
+      'files': STANDARD_CORPUS_GROUPED, 
+  },
   'ppm_summary': {
     'algos': BEST_ALGOS,
-    'files': {k: STANDARD_CORPUS_GROUPED[k] for k in ['ASCII', 'Unicode']},
-    'scale': (1.4, 2.5),
+    'files': STANDARD_CORPUS_GROUPED, 
+    #'files': {k: STANDARD_CORPUS_GROUPED[k] for k in ['ASCII', 'Unicode']},
   }
 }
 

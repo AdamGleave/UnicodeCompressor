@@ -2,14 +2,17 @@
 
 import csv, json, math
 
-import benchmark.config_tables as config
+import benchmark.config_analysis as config
 
 def convert(size):
-  size = float(size)
-  if size == float('inf'):
+  try:
+    size = float(size)
+    if size == float('inf'):
+        return 'fail'
+    else:
+        return math.ceil(size)
+  except ValueError:
     return 'fail'
-  else:
-    return math.ceil(size)
 
 def load_benchmark(fname):
   with open(fname) as dataf:

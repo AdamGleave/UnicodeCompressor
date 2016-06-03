@@ -177,26 +177,6 @@ def default_padding(algo):
   else:
     return ('', '')
 
-def long_column_type(algo):
-  if algo == 'ref_SCSU':
-    return 'r'
-  elif algo == 'ref_PPMd':
-    return 'l'
-  else:
-    return 'c'
-
-def long_padding(algo):
-  if algo == 'ref_PPMd':
-    return ('\hspace{-5pt}', '')
-  elif algo == 'ref_bzip2':
-    return ('\hspace{-2pt}', '\hspace{-2pt}')
-  elif algo == 'ref_SCSU':
-    return ('', '\hspace{-6pt}')
-  elif algo == 'ref_cmix':
-    return ('\hspace{-4pt}', '\hspace{-4pt}')
-  else:
-    return ('', '')
-
 # Colors
 
 def constant_colormap(r, g, b, a):
@@ -289,8 +269,6 @@ SCORE_TABLES = {
     ],
     'files': STANDARD_CORPUS,
     'scale': (1.0, 6.0),
-    'padding': long_padding,
-    'column_type': long_column_type,
   },
   'appendix_long2': {
     'algos': [
@@ -302,8 +280,6 @@ SCORE_TABLES = {
     ],
     'files': STANDARD_CORPUS,
     'scale': (1.0, 6.0),
-    'padding': long_padding,
-    'column_type': long_column_type,
     'files_last': True,
   },
 }

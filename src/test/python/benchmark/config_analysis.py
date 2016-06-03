@@ -151,7 +151,7 @@ def get_leading(algo):
   else:
     return 1
 
-def get_column_type(algo):
+def default_column_type(algo):
   if algo == 'ref_bzip2':
     return 'l'
   elif algo == 'ref_SCSU':
@@ -163,7 +163,7 @@ def get_column_type(algo):
   else:
     return 'c'
 
-def get_padding(algo):
+def default_padding(algo):
   if algo == 'ref_bzip2':
     return ('\hspace{-3pt}', '')
   elif algo == 'ref_PPMd':
@@ -174,6 +174,26 @@ def get_padding(algo):
     return ('', '\hspace{-6pt}')
   elif algo == 'ppm5_uniform_byte':
     return ('\hspace{-8pt}', '\hspace{-8pt}')
+  else:
+    return ('', '')
+
+def long_column_type(algo):
+  if algo == 'ref_SCSU':
+    return 'r'
+  elif algo == 'ref_PPMd':
+    return 'l'
+  else:
+    return 'c'
+
+def long_padding(algo):
+  if algo == 'ref_PPMd':
+    return ('\hspace{-5pt}', '')
+  elif algo == 'ref_bzip2':
+    return ('\hspace{-2pt}', '\hspace{-2pt}')
+  elif algo == 'ref_SCSU':
+    return ('', '\hspace{-6pt}')
+  elif algo == 'ref_cmix':
+    return ('\hspace{-4pt}', '\hspace{-4pt}')
   else:
     return ('', '')
 
@@ -260,7 +280,32 @@ SCORE_TABLES = {
       ('Reference', ['ref_SCSU', 'ref_gzip', 'ref_bzip2', 'ref_cmix', 'ref_paq8hp12']),
     ],
     'files': STANDARD_CORPUS,
-  }
+  },
+  'appendix_long1': {
+    'algos': [
+      ('Static', ['none_uniform_byte', 'none_uniform_token']),
+      ('Adaptive', ['crp_uniform_byte', 'crp_uniform_token', 'none_polya_token']),
+      ('LZW', ['ref_compress', 'none_lzw_byte', 'lzw_uniform_byte', 'lzw_uniform_token', 'lzw_polya_token']),
+    ],
+    'files': STANDARD_CORPUS,
+    'scale': (1.0, 6.0),
+    'padding': long_padding,
+    'column_type': long_column_type,
+  },
+  'appendix_long2': {
+    'algos': [
+      ('PPM',
+       ['ppm_training_group_opt_uniform_byte', 'ppm_training_group_opt_uniform_token',
+        'ppm_training_group_opt_polya_token', 'ppm_training_group_5_uniform_byte', 'ref_PPMd']
+       ),
+      ('Reference', ['ref_SCSU', 'ref_gzip', 'ref_bzip2', 'ref_cmix', 'ref_paq8hp12']),
+    ],
+    'files': STANDARD_CORPUS,
+    'scale': (1.0, 6.0),
+    'padding': long_padding,
+    'column_type': long_column_type,
+    'files_last': True,
+  },
 }
 
 ## Score summaries

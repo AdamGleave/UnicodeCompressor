@@ -72,6 +72,10 @@ def load_parameters(fname, algos):
 def process_score_settings(raw):
   res = dict(raw)
   res['groups'] = None
+  res['omit_files_col'] = res.get('omit_files_col', False)
+  res['files_last'] = res.get('files_last', False)
+  res['column_type'] = res.get('column_type', config.default_column_type)
+  res['padding'] = res.get('padding', config.default_padding)
   if type(res['algos'][0]) == tuple:
     algo_groups = res['algos']
     flat_algos = []
@@ -126,24 +130,40 @@ def generate_score_table(test, settings, data):
   res.append(r'\setlength{\tabcolsep}{1ex}')
 
   algos = settings['algos']
-  algo_cols = ''
+  cols = ''
   for algo in algos:
-    algo_cols += config.get_column_type(algo)
-  res.append(r'\begin{tabular}{l' + algo_cols + '}')
+    cols += settings['column_type'](algo)
+  if not settings['omit_files_col']:
+    if settings['files_last']:
+      cols += 'l'
+    else:
+      cols = 'l' + cols
+  res.append(r'\begin{tabular}{' + cols + '}')
   res.append(r'\toprule')
 
   if settings['groups']:
-    group_row = ['']
+    group_row = []
     for group, num_algos in settings['groups']:
       group_row.append(r'\multicolumn{' + str(num_algos) + r'}{c}{' + group + r'}')
+    if not settings['omit_files_col']:
+      if settings['files_last']:
+        group_row.append('')
+      else:
+        group_row = [''] + group_row
     res.append(generate_row(group_row))
 
-  algo_row = [r'\textbf{File}']
+  algo_row = []
   for algo in algos:
     abbrev = config.ALGO_ABBREVIATIONS[algo]
-    left_padding, right_padding = config.get_padding(algo)
+    left_padding, right_padding = settings['padding'](algo)
     abbrev = left_padding + abbrev + right_padding
     algo_row.append(abbrev)
+
+  if not settings['omit_files_col']:
+    if settings['files_last']:
+      algo_row.append(r'\textbf{File}')
+    else:
+      algo_row = [r'\textbf{File}'] + algo_row
   res.append(generate_row(algo_row))
   res.append(r'\midrule')
 
@@ -151,7 +171,7 @@ def generate_score_table(test, settings, data):
     for file in files:
       filedata = data[file]
       file_abbrev = r'\code{' + config.FILE_ABBREVIATIONS[file] + r'}'
-      row = [file_abbrev]
+      row = []
       best = min([filedata[a] for a in algos])
       for algo in algos:
         efficiency = filedata[algo]
@@ -159,6 +179,12 @@ def generate_score_table(test, settings, data):
         leading = config.get_leading(algo)
         val = effectiveness_format(efficiency, is_best, scale, leading, config.FG_COLORMAP, config.BG_COLORMAP)
         row.append(val)
+
+      if not settings['omit_files_col']:
+        if settings['files_last']:
+          row.append(file_abbrev)
+        else:
+          row = [file_abbrev] + row
       res.append(generate_row(row))
     res.append(r'\addlinespace[0em]\midrule\addlinespace[0.1em]')
 

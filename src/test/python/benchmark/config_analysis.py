@@ -232,6 +232,35 @@ SCORE_TABLES = {
     'files': STANDARD_CORPUS,
     'scale': (0.75, 3.5),
   },
+  'appendix_singlesymbol': {
+    'algos': [
+      ('Static', ['none_uniform_byte', 'none_uniform_token']),
+      ('Adaptive', ['crp_uniform_byte', 'crp_uniform_token', 'none_polya_token']),
+
+    ],
+    'files': STANDARD_CORPUS,
+  },
+  'appendix_lzw': {
+    'algos': [
+      ('LZW', ['ref_compress', 'none_lzw_byte', 'lzw_uniform_byte', 'lzw_uniform_token', 'lzw_polya_token']),
+    ],
+    'files': STANDARD_CORPUS,
+  },
+  'appendix_ppm': {
+    'algos': [
+      ('PPM',
+       ['ppm_training_group_opt_uniform_byte', 'ppm_training_group_opt_uniform_token',
+        'ppm_training_group_opt_polya_token', 'ppm_training_group_5_uniform_byte', 'ref_PPMd']
+       ),
+    ],
+    'files': STANDARD_CORPUS,
+  },
+  'appendix_reference': {
+    'algos': [
+      ('Reference', ['ref_SCSU', 'ref_gzip', 'ref_bzip2', 'ref_cmix', 'ref_paq8hp12']),
+    ],
+    'files': STANDARD_CORPUS,
+  }
 }
 
 ## Score summaries

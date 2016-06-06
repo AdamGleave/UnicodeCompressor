@@ -218,8 +218,15 @@ def clip_colormap(cm):
     else:
       return (0, 0, 0, a)
   return f
+def narrowed_colormap(cm, lower, upper):
+  def f(x):
+    x = max(0, x)
+    x = min(1, x)
+    y = lower + (upper - lower)*x
+    return cm(y)
+  return f
 
-BG_COLORMAP = plt.cm.BuGn
+BG_COLORMAP = narrowed_colormap(plt.cm.BuGn, 0, 0.8)
 FG_COLORMAP = clip_colormap(invert_colormap(BG_COLORMAP))
 ERROR_COLOUR = ((1, 0, 0), (1, 1, 1))
 

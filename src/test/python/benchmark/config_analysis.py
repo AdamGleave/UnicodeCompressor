@@ -177,6 +177,28 @@ def default_padding(algo):
   else:
     return ('', '')
 
+def long_column_type(algo):
+  if algo == 'ref_PPMd':
+    return 'l'
+  elif algo == 'ref_SCSU':
+    return 'r'
+  elif algo == 'ref_paq8hp12any':
+    return 'l'
+  else:
+    return 'c'
+
+def long_padding(algo):
+  if algo == 'ref_PPMd':
+    return ('\hspace{-5pt}', '') 
+  elif algo == 'ref_SCSU':
+    return ('', '\hspace{-6pt}')
+  elif algo == 'ref_bzip2':
+    return ('\hspace{-3pt}', '\hspace{-5pt}')
+  elif algo == 'ref_cmix':
+    return ('\hspace{-9pt}', '\hspace{-12pt}')
+  else:
+    return ('', '')
+
 # Colors
 
 def constant_colormap(r, g, b, a):
@@ -268,6 +290,8 @@ SCORE_TABLES = {
       ('LZW', ['ref_compress', 'none_lzw_byte', 'lzw_uniform_byte', 'lzw_uniform_token', 'lzw_polya_token']),
     ],
     'files': STANDARD_CORPUS,
+    'column_type': long_column_type,
+    'padding': long_padding,
     'scale': (1.0, 6.0),
   },
   'appendix_long2': {
@@ -279,6 +303,8 @@ SCORE_TABLES = {
       ('Reference', ['ref_SCSU', 'ref_gzip', 'ref_bzip2', 'ref_cmix', 'ref_paq8hp12']),
     ],
     'files': STANDARD_CORPUS,
+    'column_type': long_column_type,
+    'padding': long_padding,
     'scale': (1.0, 6.0),
     'files_last': True,
   },

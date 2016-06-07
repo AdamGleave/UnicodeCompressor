@@ -401,3 +401,8 @@ TESTS = merge([
   (RESOURCE_TABLES, 'resource_table'),
   (RESOURCE_FIGURES, 'resource_figure'),
 ])
+TESTS['score_bar'] = {
+  'type': 'score_bar',
+  'width': 0.7, # relative to textwidth
+  'granularity': 100,
+}

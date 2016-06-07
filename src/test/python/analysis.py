@@ -194,6 +194,37 @@ def generate_score_table(test, settings, data):
   out = '\n'.join(res)
   save_table(test, out)
 
+def generate_score_bar(test, settings, data):
+  granularity = float(settings['granularity'])
+  space = 1 / granularity * settings['width']
+  space_str = r'\kern-0.25em\hspace*{' + \
+              str(space) + \
+              r'\textwidth}\kern-0.25em'
+
+  out = ''
+  for x in range(settings['granularity']):
+    p = 1 - x / granularity
+    fg = config.FG_COLORMAP(p)
+    bg = config.BG_COLORMAP(p)
+
+    out += r'{\colorbox[rgb]{' + '{0},{1},{2}'.format(*bg) + r'}{\textcolor[rgb]{' + \
+             '{0},{1},{2}'.format(*fg) + r'}{' + space_str + r'}}}'
+
+  def generate_arrow(left):
+    if left:
+      inner = r'\textsf{worse} $\leftarrow$'
+    else:
+      inner = r'$\rightarrow$ \textsf{better}'
+    out = r'\raisebox{-0.25em}{' + inner + r'}'
+    if left:
+      out = out + '\hspace{0.5em}'
+    else:
+      out = '\hspace{0.5em}' + out
+    return out
+  out = generate_arrow(True) + out + generate_arrow(False)
+
+  save_table(test, out)
+
 def mean_effectiveness(data, files, algo):
   return np.mean([data[file][algo] for file in files])
 
@@ -411,6 +442,9 @@ def main():
     if type == 'score_full':
       data = score_data
       f = generate_score_table
+    elif type == 'score_bar':
+      data = None
+      f = generate_score_bar
     elif type == 'score_summary':
       data = score_data
       f = generate_score_summary

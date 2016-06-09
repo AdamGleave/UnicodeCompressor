@@ -19,19 +19,21 @@ def save_table(test, result):
 def load_benchmark(fname):
   with open(fname) as dataf:
     reader = csv.DictReader(dataf)
-    res = {}
+    effectiveness = {}
+    filesizes = {}
     for row in reader:
       file = row['File']
       filesize = int(row['Size'])
       del row['File']
       del row['Size']
-      res[file] = {}
+      effectiveness[file] = {}
       for k, size in row.items():
         try:
-          res[file][k] = float(size) / filesize * 8
+          effectiveness[file][k] = float(size) / filesize * 8
         except ValueError:
-          res[file][k] = float('inf')
-    return res
+          effectiveness[file][k] = float('inf')
+      filesizes[file] = filesize
+    return (effectiveness, filesizes)
 
 def load_resources(fname):
   def update(d, file, compressor, val):
@@ -72,6 +74,7 @@ def load_parameters(fname, algos):
 def process_score_settings(raw):
   res = dict(raw)
   res['groups'] = None
+  res['sizes'] = res.get('sizes', True)
   res['omit_files_col'] = res.get('omit_files_col', False)
   res['files_last'] = res.get('files_last', False)
   res['column_type'] = res.get('column_type', config.default_column_type)
@@ -120,11 +123,12 @@ def effectiveness_format(x, is_best, scale, leading, fg_cm, bg_cm):
          '{0},{1},{2}'.format(*fg) + r'}{' + val + '}}\kern-0.35em}'
 
 def generate_score_table(test, settings, data):
+  effectiveness, filesizes = data
   settings = process_score_settings(settings)
   if 'scale' in settings:
     scale = settings['scale']
   else:
-    scale = autoscale(settings, data)
+    scale = autoscale(settings, effectiveness)
 
   res = []
   res.append(r'\setlength{\tabcolsep}{1ex}')
@@ -134,10 +138,14 @@ def generate_score_table(test, settings, data):
   for algo in algos:
     cols += settings['column_type'](algo)
   if not settings['omit_files_col']:
-    if settings['files_last']:
-      cols += 'l'
+    if settings['sizes']:
+      filecols = 'lr'
     else:
-      cols = 'l' + cols
+      filecols = 'l'
+    if settings['files_last']:
+      cols += filecols
+    else:
+      cols = filecols + cols
   res.append(r'\begin{tabular}{' + cols + '}')
   res.append(r'\toprule')
 
@@ -146,10 +154,13 @@ def generate_score_table(test, settings, data):
     for group, num_algos in settings['groups']:
       group_row.append(r'\multicolumn{' + str(num_algos) + r'}{c}{' + group + r'}')
     if not settings['omit_files_col']:
+      headings = [r'\textbf{File}']
+      if settings['sizes']:
+        headings.append(r'\multicolumn{1}{c}{\textbf{Size}}')
       if settings['files_last']:
-        group_row.append('')
+        group_row = group_row + headings
       else:
-        group_row = [''] + group_row
+        group_row = headings + group_row
     res.append(generate_row(group_row))
 
   algo_row = []
@@ -160,17 +171,23 @@ def generate_score_table(test, settings, data):
     algo_row.append(abbrev)
 
   if not settings['omit_files_col']:
+    headings2 = [r'']
+    if settings['sizes']:
+      headings2.append(r'\multicolumn{1}{c}{\textbf{(KiB)}}')
+
     if settings['files_last']:
-      algo_row.append(r'\textbf{File}')
+      headings2.reverse()
+      algo_row += headings2
     else:
-      algo_row = [r'\textbf{File}'] + algo_row
+      algo_row = headings2 + algo_row
   res.append(generate_row(algo_row))
   res.append(r'\midrule')
 
   for file_group, files in settings['files']:
     for file in files:
-      filedata = data[file]
+      filedata = effectiveness[file]
       file_abbrev = r'\code{' + config.FILE_ABBREVIATIONS[file] + r'}'
+      size = r'\num{' + '{0:.0f}'.format(filesizes[file] / 1024.0) + r'}'
       row = []
       best = min([filedata[a] for a in algos])
       for algo in algos:
@@ -180,11 +197,15 @@ def generate_score_table(test, settings, data):
         val = effectiveness_format(efficiency, is_best, scale, leading, config.FG_COLORMAP, config.BG_COLORMAP)
         row.append(val)
 
+      preface = [file_abbrev]
+      if settings['sizes']:
+        preface.append(size)
       if not settings['omit_files_col']:
         if settings['files_last']:
-          row.append(file_abbrev)
+          preface.reverse()
+          row += preface
         else:
-          row = [file_abbrev] + row
+          row = preface + row
       res.append(generate_row(row))
     res.append(r'\addlinespace[0em]\midrule\addlinespace[0.1em]')
 
@@ -446,10 +467,10 @@ def main():
       data = None
       f = generate_score_bar
     elif type == 'score_summary':
-      data = score_data
+      data = score_data[0]
       f = generate_score_summary
     elif type == 'parameter_table':
-      data = score_data
+      data = score_data[0]
       f = generate_parameter_table
     elif type == 'resource_table':
       data = resource_data

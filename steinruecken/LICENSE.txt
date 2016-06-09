@@ -1,0 +1,1 @@
+Code in this subdirectory is copyright Christian Steinruecken, with some minor modifications by Adam Gleave

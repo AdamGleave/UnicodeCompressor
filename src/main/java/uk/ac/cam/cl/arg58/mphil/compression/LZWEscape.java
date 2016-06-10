@@ -1,5 +1,4 @@
-/* Automated copy from build process */
-/* $Id: LZW.java,v 1.14 2015/08/11 11:28:16 chris Exp $ */
+/* Copyright (C) 2016 Christian Steinruecken and Adam Gleave */
 package uk.ac.cam.cl.arg58.mphil.compression;
 
 import uk.ac.cam.eng.ml.tcs27.compression.*;

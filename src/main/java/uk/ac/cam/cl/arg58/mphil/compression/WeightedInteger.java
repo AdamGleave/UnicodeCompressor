@@ -1,5 +1,4 @@
-/* Automated copy from build process */
-/* $Id: DiscreteInteger.java,v 1.8 2013/01/03 02:06:15 chris Exp $ */
+/* Copyright (C) 2016 Adam Gleave and Christian Steinruecken */
 package uk.ac.cam.cl.arg58.mphil.compression;
 
 import uk.ac.cam.eng.ml.tcs27.compression.*;

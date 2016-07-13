@@ -15,16 +15,24 @@ public class UniformIntegerCDF extends SimpleMass<Integer>
 
   @Override
   public double massBetween(Integer start, Integer end) {
-    end = Math.min(end, n - 1);
-    start = Math.max(start, 0);
-    return (end - start + 1 ) / n;
+    if (end < start) {
+      return 0;
+    } else {
+      end = Math.min(end, n - 1);
+      start = Math.max(start, 0);
+      return (end - start + 1) / n;
+    }
   }
 
   @Override
   public int discreteMassBetween(Integer start, Integer end) {
-    end = Math.min(end, n - 1);
-    start = Math.max(start, 0);
-    return end - start + 1;
+    if (end < start) {
+      return 0;
+    } else {
+      end = Math.min(end, n - 1);
+      start = Math.max(start, 0);
+      return end - start + 1;
+    }
   }
 
   @Override

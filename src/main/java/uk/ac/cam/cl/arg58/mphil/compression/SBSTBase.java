@@ -55,9 +55,14 @@ public class SBSTBase extends SimpleMass<Integer>
       int totalMass = base.discreteMassBetween(this.min, this.max);
       int leftMass = base.discreteMassBetween(this.min, this.mid - 1);
 
-      int leftNumerator = leftMass * g1;
-      int rightNumerator = (totalMass - leftMass) * g1;
-      int denominator = totalMass * g2;
+      // TODO: this is a hack
+      long reduceBy = Tools.nb2p(totalMass);
+      short roundedTotalMass = (short) (((long)totalMass << 8) / reduceBy);
+      short roundedLeftMass = (short) (((long)leftMass << 8) / reduceBy);
+
+      int leftNumerator = roundedLeftMass * g1;
+      int rightNumerator = (roundedTotalMass - roundedLeftMass) * g1;
+      int denominator = roundedTotalMass * g2;
 
       this.proc = new BernoulliProcess<Boolean>(false,true,
           leftNumerator, denominator, rightNumerator, denominator);

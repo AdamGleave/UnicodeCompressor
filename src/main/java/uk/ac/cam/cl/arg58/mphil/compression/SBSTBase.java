@@ -53,7 +53,7 @@ public class SBSTBase extends SimpleMass<Integer>
       this.ge = ge;
 
       int totalMass = base.discreteMassBetween(this.min, this.max);
-      int leftMass = base.discreteMassBetween(this.min, this.mid);
+      int leftMass = base.discreteMassBetween(this.min, this.mid - 1);
 
       int leftNumerator = leftMass * g1;
       int rightNumerator = (totalMass - leftMass) * g1;

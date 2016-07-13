@@ -123,16 +123,17 @@ class DetailedCoderSpec extends FlatSpec {
 
   // in test resources
   val utf8Files = Array(
-    "/corpora/unit/kuhn-baddata.txt",
-    "/corpora/unit/kuhn-demo.txt",
-    "/corpora/unit/kuhn-quickbrown.txt",
-    "/corpora/unit/icaneatglass.txt",
-    "/corpora/unit/beowulf.txt"
+    "/corpora/unit_tests/kuhn-baddata.txt",
+    "/corpora/unit_tests/kuhn-demo.txt",
+    "/corpora/unit_tests/kuhn-quickbrown.txt",
+    "/corpora/unit_tests/icaneatglass.txt",
+    "/corpora/unit_tests/beowulf.txt"
   )
 
   "A decoder and encoder" should "be the identity under composition" in {
     for (fname <- utf8Files) {
       val is1 = getClass.getResourceAsStream(fname)
+      assert(is1 != null, "file " + fname + " cannot be found")
       val d = new DetailedUTF8Decoder(is1)
       val decodedThenEncoded = d.flatMap(DetailedUTF8Encoder.tokenToBytes).toStream
 

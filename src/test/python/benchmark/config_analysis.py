@@ -31,36 +31,36 @@ def abbreviate_by_fname(root_path):
     d[os.path.join(root_path, fname)] = fname
   return d
 
-STANDARD_CORPUS = [
-  ('cantb',
-   ['canterbury/canterbury/alice29.txt',
-    'canterbury/canterbury/asyoulik.txt',
-    'canterbury/canterbury/cp.html',
-    'canterbury/canterbury/fields.c',
-    'canterbury/canterbury/grammar.lsp',
-    'canterbury/canterbury/kennedy.xls',
-    'canterbury/canterbury/lcet10.txt',
-    'canterbury/canterbury/plrabn12.txt',
-    'canterbury/canterbury/ptt5',
-    'canterbury/canterbury/sum',
-    'canterbury/canterbury/xargs.1']
-  ),
-  ('single_language',
-   ['single_language/beowulf.txt',
-    'single_language/crime_and_punishment.txt',
-    'single_language/genji/all.txt',
-    'single_language/genji/chapter2.txt',
-    'single_language/kokoro.txt',
-    'single_language/ziemia_obiecana.txt']
-   ),
-  ('mixed_language',
-   ['mixed_language/cedict_small.txt',
-    'mixed_language/creativecommonsukranian.html']
-  ),
-  ('binary',
-   ['text_binary/genji.tar',
-    'text_binary/kokoroziemia.tar']
-  ),
+STANDARD_CORPUS = collections.OrderedDict()
+STANDARD_CORPUS['cantb'] = [
+  'canterbury/canterbury/alice29.txt',
+  'canterbury/canterbury/asyoulik.txt',
+  'canterbury/canterbury/cp.html',
+  'canterbury/canterbury/fields.c',
+  'canterbury/canterbury/grammar.lsp',
+  'canterbury/canterbury/kennedy.xls',
+  'canterbury/canterbury/lcet10.txt',
+  'canterbury/canterbury/plrabn12.txt',
+  'canterbury/canterbury/ptt5',
+  'canterbury/canterbury/sum',
+  'canterbury/canterbury/xargs.1'
+]
+STANDARD_CORPUS['single_language'] = [
+  'single_language/beowulf.txt',
+  'single_language/crime_and_punishment.txt',
+  'single_language/genji/all.txt',
+  'single_language/genji/chapter2.txt',
+  'single_language/kokoro.txt',
+  'single_language/ziemia_obiecana.txt'
+]
+STANDARD_CORPUS['mixed_language'] = [
+  'mixed_language/cedict_small.txt',
+  'mixed_language/creativecommonsukranian.html'
+]
+
+STANDARD_CORPUS['binary'] = [
+  'text_binary/genji.tar',
+  'text_binary/kokoroziemia.tar'
 ]
 
 STANDARD_CORPUS_GROUPED = collections.OrderedDict()
@@ -98,19 +98,18 @@ STANDARD_TEXT_CORPUS = STANDARD_CORPUS_GROUPED['ASCII'] \
                      + STANDARD_CORPUS_GROUPED['Unicode'] \
                      + STANDARD_CORPUS_GROUPED['Mixed']
 
-FULL_CORPUS = STANDARD_CORPUS + [
-  ('training',
-   ['training/aristotle.txt',
-    'training/austen.txt',
-    'training/confucius.txt',
-    'training/doyle.txt',
-    'training/forsberg.txt',
-    'training/gogol.txt',
-    'training/jushi.txt',
-    'training/rizal.txt',
-    'training/russel.html',
-    'training/shimazaki.txt']
-  ),
+FULL_CORPUS = collections.OrderedDict(STANDARD_CORPUS)
+FULL_CORPUS['training'] = [
+  'training/aristotle.txt',
+  'training/austen.txt',
+  'training/confucius.txt',
+  'training/doyle.txt',
+  'training/forsberg.txt',
+  'training/gogol.txt',
+  'training/jushi.txt',
+  'training/rizal.txt',
+  'training/russel.html',
+  'training/shimazaki.txt'
 ]
 
 FILE_ABBREVIATIONS = {
@@ -332,6 +331,44 @@ SCORE_TABLES = {
   },
 }
 
+## Score tables for presentation (one column for each file)
+CANTERBURY_TEXT = [
+  'canterbury/canterbury/alice29.txt',
+  'canterbury/canterbury/asyoulik.txt',
+  'canterbury/canterbury/cp.html',
+  # 'canterbury/canterbury/fields.c',
+  # 'canterbury/canterbury/grammar.lsp',
+  'canterbury/canterbury/lcet10.txt',
+  'canterbury/canterbury/plrabn12.txt',
+  'canterbury/canterbury/xargs.1'
+]
+
+PRESENTATION_LZW_ALGOS = ['lzw_uniform_byte', 'lzw_uniform_token', 'lzw_polya_token']
+PRESENTATION_PPM_ALGOS = [
+  'ppm_training_group_opt_uniform_byte',
+  'ppm_training_group_opt_uniform_token',
+  'ppm_training_group_opt_polya_token',
+  'ref_PPMd', 'ref_cmix', 'ref_paq8hp12']
+
+SCORE_PRESENTATION = {
+  'lzw_presentation_canterbury': {
+    'algos': PRESENTATION_LZW_ALGOS,
+    'files': {'canterbury_text': CANTERBURY_TEXT}
+  },
+  'lzw_presentation_unicode': {
+    'algos': PRESENTATION_LZW_ALGOS,
+    'files': {'single_language': STANDARD_CORPUS['single_language']}
+  },
+  'ppm_presentation_canterbury': {
+    'algos': PRESENTATION_PPM_ALGOS,
+    'files': {'canterbury_text': CANTERBURY_TEXT}
+  },
+  'ppm_presentation_unicode': {
+    'algos': PRESENTATION_PPM_ALGOS,
+    'files': {'single_language': STANDARD_CORPUS['single_language']}
+  },
+}
+
 ## Score summaries
 
 BEST_ALGOS = ['ppm_training_group_opt_uniform_byte',
@@ -411,6 +448,7 @@ def merge(tables):
 
 TESTS = merge([
   (SCORE_TABLES, 'score_full'),
+  (SCORE_PRESENTATION, 'score_presentation'),
   (SCORE_SUMMARIES, 'score_summary'),
   (PARAMETER_TABLES, 'parameter_table'),
   (RESOURCE_TABLES, 'resource_table'),
@@ -419,5 +457,10 @@ TESTS = merge([
 TESTS['score_bar'] = {
   'type': 'score_bar',
   'width': 0.7, # relative to textwidth
+  'granularity': 100,
+}
+TESTS['score_bar_presentation'] = {
+  'type': 'score_bar',
+  'width': 0.4,
   'granularity': 100,
 }

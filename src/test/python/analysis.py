@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # Copyright (C) 2016, Adam Gleave
 #
 # This program is free software: you can redistribute it and/or modify
@@ -13,7 +15,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#!/usr/bin/env python3
 
 import argparse, csv, functools, os
 
@@ -110,7 +111,7 @@ def generate_row(row):
 
 def autoscale(settings, data):
   subset = []
-  for _group, files in settings['files']:
+  for _group, files in settings['files'].items():
     for f in files:
       for a in settings['algos']:
         subset.append(data[f][a])
@@ -198,7 +199,7 @@ def generate_score_table(test, settings, data):
   res.append(generate_row(algo_row))
   res.append(r'\midrule')
 
-  for file_group, files in settings['files']:
+  for file_group, files in settings['files'].items():
     for file in files:
       filedata = effectiveness[file]
       file_abbrev = r'\code{' + config.FILE_ABBREVIATIONS[file] + r'}'
@@ -225,6 +226,47 @@ def generate_score_table(test, settings, data):
     res.append(r'\addlinespace[0em]\midrule\addlinespace[0.1em]')
 
   res[-1] = r'\bottomrule'
+  res.append(r'\end{tabular}')
+
+  out = '\n'.join(res)
+  save_table(test, out)
+
+def generate_score_table_files_col(test, settings, data):
+  effectiveness, filesizes = data
+  if 'scale' in settings:
+    scale = settings['scale']
+  else:
+    scale = autoscale(settings, effectiveness)
+  algos = settings['algos']
+  files = []
+  for file_group, files_in_group in settings['files'].items():
+    files += files_in_group
+
+  res = []
+  res.append(r'\setlength{\tabcolsep}{1ex}')
+
+  cols = 'l' * (len(files) + 1)
+  res.append(r'\begin{tabular}{' + cols + '}')
+  res.append(r'\toprule')
+
+  heading = [r'\textbf{Method}']
+  for file in files:
+    file_abbrev = config.FILE_ABBREVIATIONS[file]
+    heading.append(r'\tilt{' + file_abbrev + r'}')
+  res.append(generate_row(heading))
+  res.append(r'\midrule')
+
+  for algo in algos:
+    algo_abbrev = config.ALGO_ABBREVIATIONS[algo]
+    row = [algo_abbrev]
+    for file in files:
+      filedata = effectiveness[file]
+      efficiency = filedata[algo]
+      val = effectiveness_format(efficiency, False, scale, 1, config.FG_COLORMAP, config.BG_COLORMAP)
+      row.append(val)
+    res.append(generate_row(row))
+
+  res.append(r'\bottomrule')
   res.append(r'\end{tabular}')
 
   out = '\n'.join(res)
@@ -478,6 +520,9 @@ def main():
     if type == 'score_full':
       data = score_data
       f = generate_score_table
+    elif type == 'score_presentation':
+      data = score_data
+      f = generate_score_table_files_col
     elif type == 'score_bar':
       data = None
       f = generate_score_bar

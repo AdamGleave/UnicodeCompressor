@@ -54,6 +54,7 @@ class Compressor {
     "uniform_token" -> uniformToken,
     "categorical_token" -> categoricalToken,
     "polya_token" -> polyaToken,
+    "polya_token_base" -> polyaTokenBase,
     "uniform_byte" -> uniformByte,
     "lzw_byte" -> lzwByte,
     "polya_byte" -> polyaByte
@@ -130,6 +131,7 @@ class Compressor {
   private def uniformToken(params: String): Unit = tokenBase(FlatToken.UniformToken)
   private def categoricalToken(params: String): Unit = tokenBase(CategoricalToken)
   private def polyaToken(params: String): Unit = tokenBase(FlatToken.PolyaToken(params))
+  private def polyaTokenBase(params: String): Unit = tokenBase(FlatToken.PolyaTokenBase(params))
 
   private def byteBase(model: Distribution[Integer]): Unit = models match {
     case NoModel() =>

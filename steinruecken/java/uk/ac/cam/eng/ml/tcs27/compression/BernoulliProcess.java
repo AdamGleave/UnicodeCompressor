@@ -306,5 +306,14 @@ public class BernoulliProcess<X> extends SimpleMass<X>
     return new Bernoulli<X>(xa, xb, theta);
   }
 
+  public int getCount(X x) {
+    if (x == xa) {
+      return na;
+    } else if (x == xb) {
+      return nb;
+    } else {
+      return 0;
+    }
+  }
 }
 

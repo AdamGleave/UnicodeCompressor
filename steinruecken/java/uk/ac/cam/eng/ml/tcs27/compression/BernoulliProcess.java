@@ -102,8 +102,8 @@ public class BernoulliProcess<X> extends SimpleMass<X>
     int a1b1 = a1*b1;
     int a1b0 = a1*b0;
     int a0b1 = a0*b1;
-    long num = (na+nb)*a1b1 + a0b1 + a1b0;
-    long det = a1b1*na + a0b1;
+    long num = ((long)na+nb)*a1b1 + a0b1 + a1b0;
+    long det = (long)a1b1*na + a0b1;
     if (xa.equals(x)) {
       ec.storeRegion(0, det, num);
     } else
@@ -118,8 +118,8 @@ public class BernoulliProcess<X> extends SimpleMass<X>
     int a1b1 = a1*b1;
     int a1b0 = a1*b0;
     int a0b1 = a0*b1;
-    long num = (na+nb)*a1b1 + a0b1 + a1b0;
-    long det = a1b1*na + a0b1;
+    long num = ((long)na+nb)*a1b1 + a0b1 + a1b0;
+    long det = (long)a1b1*na + a0b1;
     long t = dc.getTarget(num);
     if (t < det) {
       dc.loadRegion(0, det, num);

@@ -35,6 +35,16 @@ object FlatDetailedToken {
     val polya = new compression.SBST(0, DetailedToken.Range - 1, alpha)
     new FlatDetailedToken(polya)
   }
+
+  def PolyaTokenBase(base: IntegerMass, params: String) = {
+    val config = PolyaParser.parse(params)
+    val alpha = config.get("a") match {
+      case None => 0.5
+      case Some(a) => a.toDouble
+    }
+    val polya = new SBSTBase(0, DetailedToken.Range - 1, base, alpha)
+    new FlatDetailedToken(polya)
+  }
 }
 
 class FlatDetailedToken(base: compression.Distribution[Integer] with compression.AdaptiveCode[Integer])

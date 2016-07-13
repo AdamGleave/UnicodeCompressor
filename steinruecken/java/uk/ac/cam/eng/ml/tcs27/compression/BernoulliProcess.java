@@ -19,13 +19,13 @@ public class BernoulliProcess<X> extends SimpleMass<X>
                                  implements AdaptiveCode<X> {
  
   /** Numerator of <var>α</var>. */
-  int a0 = 1;
+  short a0 = 1;
   /** Denominator of <var>α</var>. */
-  int a1 = 2;
+  short a1 = 2;
   /** Numerator of <var>β</var>. */
-  int b0 = 1;
+  short b0 = 1;
   /** Denominator of <var>β</var>. */
-  int b1 = 2;
+  short b1 = 2;
   /** Number of positive outcomes. */
   int na = 0;
   /** Number of negative outcomes. */
@@ -42,7 +42,7 @@ public class BernoulliProcess<X> extends SimpleMass<X>
     * @param a1 denominator of alpha
     * @param b0 numerator of beta
     * @param b1 denominator of beta */
-  public BernoulliProcess(X xa, X xb, int a0, int a1, int b0, int b1) {
+  public BernoulliProcess(X xa, X xb, short a0, short a1, short b0, short b1) {
     this.xa = xa;
     this.xb = xb;
     this.a0 = a0;
@@ -57,7 +57,7 @@ public class BernoulliProcess<X> extends SimpleMass<X>
     * @param xa value for trial success
     * @param xb value for trial failure */
   public BernoulliProcess(X xa, X xb) {
-    this(xa,xb, 1,2, 1,2);
+    this(xa,xb, (short)1, (short)2, (short)1, (short)2);
   }
 
   /** Returns a copy of this BernoulliProcess distribution. */
@@ -68,13 +68,22 @@ public class BernoulliProcess<X> extends SimpleMass<X>
     return bp;
   }
 
+  long nextLong(Random rnd, long n) {
+    long bits, val;
+    do {
+      bits = (rnd.nextLong() << 1) >>> 1;
+      val = bits % n;
+    } while (bits-val+(n-1) < 0L);
+    return val;
+  }
+
   /** Samples from this process.
     * This advances the internal process state. */
   public X sample(Random rnd) {
-    int a1b1 = a1*b1;
-    int num = (na+nb)*a1b1 + a0*b1 + a1*b0;
-    int det = na*a1b1 + a0*b1;
-    int r = rnd.nextInt(num);
+    int a1b1 = (int)a1*b1;
+    long num = ((long)na+nb)*a1b1 + (int)a0*b1 + (int)a1*b0;
+    long det = (long)na*a1b1 + (int)a0*b1;
+    long r = nextLong(rnd, num);
     if (r < det) {
       na++;
       return xa;
@@ -83,25 +92,11 @@ public class BernoulliProcess<X> extends SimpleMass<X>
       return xb;
     }
   }
-  
-  public static void encode(int a0, int a1, int b0, int b1,
-                            int na, int nb, boolean a, Encoder ec) {
-    int a1b1 = a1*b1;
-    int a1b0 = a1*b0;
-    int a0b1 = a0*b1;
-    long num = (na+nb)*a1b1 + a0b1 + a1b0;
-    long det = a1b1*na + a0b1;
-    if (a) {
-      ec.storeRegion(0, det, num);
-    } else {
-      ec.storeRegion(det, num, num);
-    }
-  }
 
   public void encode(X x, Encoder ec) {
-    int a1b1 = a1*b1;
-    int a1b0 = a1*b0;
-    int a0b1 = a0*b1;
+    int a1b1 = (int)a1*b1;
+    int a1b0 = (int)a1*b0;
+    int a0b1 = (int)a0*b1;
     long num = ((long)na+nb)*a1b1 + a0b1 + a1b0;
     long det = (long)a1b1*na + a0b1;
     if (xa.equals(x)) {
@@ -115,9 +110,9 @@ public class BernoulliProcess<X> extends SimpleMass<X>
   }
   
   public X decode(Decoder dc) {
-    int a1b1 = a1*b1;
-    int a1b0 = a1*b0;
-    int a0b1 = a0*b1;
+    int a1b1 = (int)a1*b1;
+    int a1b0 = (int)a1*b0;
+    int a0b1 = (int)a0*b1;
     long num = ((long)na+nb)*a1b1 + a0b1 + a1b0;
     long det = (long)a1b1*na + a0b1;
     long t = dc.getTarget(num);
@@ -146,10 +141,10 @@ public class BernoulliProcess<X> extends SimpleMass<X>
     * @param ec the encoder */
   public void encode(X x, int ra, int rb,
                           int sa0, int sa1, int sb0, int sb1, Encoder ec) {
-    long a1b1 = (long) a1*sa1*b1*sb1;
-    long a1b0 = (long) a1*sa1*b0*sb0;
-    long a0b1 = (long) a0*sa0*b1*sb1;
-    long num = ((na+nb-ra-rb)*a1b1 + a0b1 + a1b0);
+    long a1b1 = (long)a1*sa1*b1*sb1;
+    long a1b0 = (long)a1*sa1*b0*sb0;
+    long a0b1 = (long)a0*sa0*b1*sb1;
+    long num = ((long)na+nb-ra-rb)*a1b1 + a0b1 + a1b0;
     long det = a1b1*(na-ra) + a0b1;
     if (det == num || det == 0) {
       // certain event
@@ -179,10 +174,10 @@ public class BernoulliProcess<X> extends SimpleMass<X>
     * @param dc the decoder */
   public X decode(int ra, int rb, int sa0, int sa1, int sb0, int sb1,
                                                              Decoder dc) {
-    long a1b1 = (long) a1*sa1*b1*sb1;
-    long a1b0 = (long) a1*sa1*b0*sb0;
-    long a0b1 = (long) a0*sa0*b1*sb1;
-    long num = ((na+nb-ra-rb)*a1b1 + a0b1 + a1b0);
+    long a1b1 = (long)a1*sa1*b1*sb1;
+    long a1b0 = (long)a1*sa1*b0*sb0;
+    long a0b1 = (long)a0*sa0*b1*sb1;
+    long num = ((long)na+nb-ra-rb)*a1b1 + a0b1 + a1b0;
     long det = a1b1*(na-ra) + a0b1;
     if (det == num) {
       // certain event
@@ -236,15 +231,15 @@ public class BernoulliProcess<X> extends SimpleMass<X>
 
   /** Returns the log probability mass of outcome <var>x</var>. */
   public double logMass(X x) {
-    int a1b1 = a1*b1;
-    int a1b0 = a1*b0;
-    int a0b1 = a0*b1;
-    double lz = Math.log((na+nb)*a1b1 + a0b1 + a1b0);
+    int a1b1 = (int)a1*b1;
+    int a1b0 = (int)a1*b0;
+    int a0b1 = (int)a0*b1;
+    double lz = Math.log(((long)na+nb)*a1b1 + a0b1 + a1b0);
     if (xa.equals(x)) {
-      return (double) Math.log(a1b1*na + a0b1) - lz;
+      return (double) Math.log((long)a1b1*na + a0b1) - lz;
     } else
     if (xb.equals(x)) {
-      return (double) Math.log(a1b1*nb + a1b0) - lz;
+      return (double) Math.log((long)a1b1*nb + a1b0) - lz;
     } else {
       return Double.NEGATIVE_INFINITY;
     }
@@ -252,15 +247,15 @@ public class BernoulliProcess<X> extends SimpleMass<X>
 
   /** Returns the probability mass of outcome <var>x</var>. */
   public double mass(X x) {
-    int a1b1 = a1*b1;
-    int a1b0 = a1*b0;
-    int a0b1 = a0*b1;
-    int num = (na+nb)*a1b1 + a0b1 + a1b0;
+    int a1b1 = (int)a1*b1;
+    int a1b0 = (int)a1*b0;
+    int a0b1 = (int)a0*b1;
+    double num = ((long)na+nb)*a1b1 + a0b1 + a1b0;
     if (xa.equals(x)) {
-      return (double) (a1b1*na + a0b1)/num;
+      return ((long)a1b1*na + a0b1)/num;
     } else
     if (xb.equals(x)) {
-      return (double) (a1b1*nb + a1b0)/num;
+      return ((long)a1b1*nb + a1b0)/num;
     } else {
       return 0;
     }
@@ -268,20 +263,20 @@ public class BernoulliProcess<X> extends SimpleMass<X>
 
   /** Returns the total probability mass of elements in <var>col</var>. */
   public double totalMass(Iterable<X> col) {
-    int a1b1 = a1*b1;
-    int a1b0 = a1*b0;
-    int a0b1 = a0*b1;
-    int num = (na+nb)*a1b1 + a0b1 + a1b0;
+    int a1b1 = (int)a1*b1;
+    int a1b0 = (int)a1*b0;
+    int a0b1 = (int)a0*b1;
+    double num = ((long)na+nb)*a1b1 + a0b1 + a1b0;
     long mass = 0;
     for (X x : col) {
       if (xa.equals(x)) {
-        mass += (a1b1*na + a0b1);
+        mass += (long)a1b1*na + a0b1;
       } else
       if (xb.equals(x)) {
-        mass += (a1b1*nb + a1b0);
+        mass += (long)a1b1*nb + a1b0;
       }
     }
-    return (double) mass / num;
+    return mass / num;
   }
 
   /** Advances the process by observing value <var>x</var>.
@@ -298,11 +293,11 @@ public class BernoulliProcess<X> extends SimpleMass<X>
   }
   
   public Bernoulli<X> getPredictiveDistribution() {
-    int a1b1 = a1*b1;
-    int a1b0 = a1*b0;
-    int a0b1 = a0*b1;
-    int num = (na+nb)*a1b1 + a0b1 + a1b0;
-    double theta = (double) (a1b1*na + a0b1)/num;
+    int a1b1 = (int)a1*b1;
+    int a1b0 = (int)a1*b0;
+    int a0b1 = (int)a0*b1;
+    double num = ((long)na+nb)*a1b1 + a0b1 + a1b0;
+    double theta = ((long)a1b1*na + a0b1)/num;
     return new Bernoulli<X>(xa, xb, theta);
   }
 
@@ -316,4 +311,3 @@ public class BernoulliProcess<X> extends SimpleMass<X>
     }
   }
 }
-

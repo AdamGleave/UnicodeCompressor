@@ -23,8 +23,8 @@ public class SBSTBase extends SimpleMass<Integer>
 
   IntegerMass base;
 
-  int g1 = 1;
-  int g2 = 2;
+  short g1 = 1;
+  short g2 = 2;
 
   class Node {
 
@@ -60,9 +60,9 @@ public class SBSTBase extends SimpleMass<Integer>
       short roundedTotalMass = (short) (((long)totalMass << 8) / reduceBy);
       short roundedLeftMass = (short) (((long)leftMass << 8) / reduceBy);
 
-      int leftNumerator = roundedLeftMass * g1;
-      int rightNumerator = (roundedTotalMass - roundedLeftMass) * g1;
-      int denominator = roundedTotalMass * g2;
+      short leftNumerator = (short)(roundedLeftMass * g1);
+      short rightNumerator = (short)((roundedTotalMass - roundedLeftMass) * g1);
+      short denominator = (short)(roundedTotalMass * g2);
 
       this.proc = new BernoulliProcess<Boolean>(false,true,
           leftNumerator, denominator, rightNumerator, denominator);
@@ -424,7 +424,7 @@ public class SBSTBase extends SimpleMass<Integer>
   /** Constructs a new SBST process over the
    * range <var>min</var> to <var>max</var> (inclusive). */
   public SBSTBase(int min, int max, IntegerMass base) {
-    this(min, max, base, 1, 2);
+    this(min, max, base, (short)1, (short)2);
   }
 
   /** Constructs a new SBST process over the
@@ -433,8 +433,8 @@ public class SBSTBase extends SimpleMass<Integer>
    * @param alpha concentration parameter */
   public SBSTBase(int min, int max, IntegerMass base, double alpha) {
     this(min, max, base,
-        Tools.fraction(alpha,4096).get0().intValue(),
-        Tools.fraction(alpha,4096).get1().intValue());
+        Tools.fraction(alpha,4096).get0().shortValue(),
+        Tools.fraction(alpha,4096).get1().shortValue());
   }
 
   /** Constructs a new SBST process over the
@@ -442,7 +442,7 @@ public class SBSTBase extends SimpleMass<Integer>
     * with a given concentration.
     * @param g1 concentration parameter numerator
     * @param g2 concentration parameter denominator */
-  public SBSTBase(int min, int max, IntegerMass base, int g1, int g2) {
+  public SBSTBase(int min, int max, IntegerMass base, short g1, short g2) {
     this.base = base;
     this.g1 = g1;
     this.g2 = g2;

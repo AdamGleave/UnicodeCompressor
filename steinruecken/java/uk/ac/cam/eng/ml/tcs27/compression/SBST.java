@@ -21,8 +21,8 @@ public class SBST extends SimpleMass<Integer>
   /** Number of observations / samples drawn from this process. */
   int n = 0;
 
-  int g1 = 1;
-  int g2 = 2;
+  short g1 = 1;
+  short g2 = 2;
 
   class Node {
 
@@ -410,7 +410,7 @@ public class SBST extends SimpleMass<Integer>
     * with a given concentration.
     * @param g1 concentration parameter numerator
     * @param g2 concentration parameter denominator */
-  public SBST(int min, int max, int g1, int g2) {
+  public SBST(int min, int max, short g1, short g2) {
     this.g1 = g1;
     this.g2 = g2;
     this.tree = new Node(min, max, null, null);
@@ -423,8 +423,8 @@ public class SBST extends SimpleMass<Integer>
     * @param alpha concentration parameter */
   public SBST(int min, int max, double alpha) {
     Tuple<Long,Long> t = Tools.fraction(alpha,4096);
-    this.g1 = t.get0().intValue();
-    this.g2 = t.get1().intValue();
+    this.g1 = t.get0().shortValue();
+    this.g2 = t.get1().shortValue();
     this.tree = new Node(min, max, null, null);
     this.n = 0;
   }

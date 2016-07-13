@@ -93,7 +93,7 @@ def find_compressors(patterns):
           res.add(k)
           break
   else:
-    res = config.COMPRESSORS.key()
+    res = config.COMPRESSORS.keys()
   res = list(res)
   res.sort()
   return res

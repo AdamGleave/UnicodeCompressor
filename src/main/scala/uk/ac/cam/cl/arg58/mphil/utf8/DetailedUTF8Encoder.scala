@@ -17,7 +17,7 @@ package uk.ac.cam.cl.arg58.mphil.utf8
 
 import java.io.OutputStream
 
-object UTF8Encoder {
+object DetailedUTF8Encoder {
   private def computeNumOctets(codePoint: Int) : Int = {
     val res = UTF8.CodePoints.indexWhere(range => range.contains(codePoint))
     assert(res >= 0); assert(res <= 4)
@@ -50,12 +50,12 @@ object UTF8Encoder {
     codepointToBytes(codePoint, numOctets)
   }
 
-  def tokenToBytes(token: Token) : Array[Byte] = token match {
-    case UnicodeCharacter(codePoint) => encode(codePoint)
-    case IllegalByte (byte)=> Array(byte)
+  def tokenToBytes(token: DetailedToken) : Array[Byte] = token match {
+    case DUnicodeCharacter(codePoint) => encode(codePoint)
+    case DIllegalByte (byte)=> Array(byte)
     case Overlong(codePoint, numOctets) => codepointToBytes(codePoint, numOctets)
     case SurrogateCodePoint(codePoint) => encode(codePoint)
     case TooHigh(codePoint) => codepointToBytes(codePoint, 4)
-    case EOF() => throw new AssertionError("EOF has no byte representation.")
+    case DEOF() => throw new AssertionError("EOF has no byte representation.")
   }
 }

@@ -15,55 +15,55 @@
 
 package uk.ac.cam.cl.arg58.mphil.utf8
 
-object TokenTypes extends Enumeration {
+object DTokenTypes extends Enumeration {
   val TUnicodeCharacter, TOverlong, TSurrogateCodePoint, TTooHigh, TIllegalByte, TEOF = Value
 
-  def fromToken(t: Token): TokenTypes.Value = t match {
-    case _: UnicodeCharacter => TUnicodeCharacter
+  def fromToken(t: DetailedToken): DTokenTypes.Value = t match {
+    case _: DUnicodeCharacter => TUnicodeCharacter
     case _: Overlong => TOverlong
     case _: SurrogateCodePoint => TSurrogateCodePoint
     case _: TooHigh => TTooHigh
-    case _: IllegalByte => TIllegalByte
-    case _: EOF => TEOF
+    case _: DIllegalByte => TIllegalByte
+    case _: DEOF => TEOF
   }
 
-  def numTokens(t: TokenTypes.Value): Integer = t match {
-    case TUnicodeCharacter => UnicodeCharacter.Range
+  def numTokens(t: DTokenTypes.Value): Integer = t match {
+    case TUnicodeCharacter => DUnicodeCharacter.Range
     case TOverlong => Overlong.Range
     case TSurrogateCodePoint => SurrogateCodePoint.Range
     case TTooHigh => TooHigh.Range
-    case TIllegalByte => IllegalByte.Range
-    case TEOF => EOF.Range
+    case TIllegalByte => DIllegalByte.Range
+    case TEOF => DEOF.Range
   }
 
-  def toInt(t: Token): Int = t match {
-    case c: UnicodeCharacter => UnicodeCharacter.toInt(c)
+  def toInt(t: DetailedToken): Int = t match {
+    case c: DUnicodeCharacter => DUnicodeCharacter.toInt(c)
     case o: Overlong => Overlong.toInt(o)
     case s : SurrogateCodePoint => SurrogateCodePoint.toInt(s)
     case t: TooHigh => TooHigh.toInt(t)
-    case b: IllegalByte => IllegalByte.toInt(b)
-    case e: EOF => EOF.toInt(e)
+    case b: DIllegalByte => DIllegalByte.toInt(b)
+    case e: DEOF => DEOF.toInt(e)
   }
 
-  def ofInt(t: TokenTypes.Value, n: Int): Token = t match {
-    case TUnicodeCharacter => UnicodeCharacter.ofInt(n)
+  def ofInt(t: DTokenTypes.Value, n: Int): DetailedToken = t match {
+    case TUnicodeCharacter => DUnicodeCharacter.ofInt(n)
     case TOverlong => Overlong.ofInt(n)
     case TSurrogateCodePoint => SurrogateCodePoint.ofInt(n)
     case TTooHigh => TooHigh.ofInt(n)
-    case TIllegalByte => IllegalByte.ofInt(n)
-    case TEOF => EOF.ofInt(n)
+    case TIllegalByte => DIllegalByte.ofInt(n)
+    case TEOF => DEOF.ofInt(n)
   }
 }
 
-abstract class Token
+abstract class DetailedToken
 
-object Token {
-  private final val ranges = Array(UnicodeCharacter.Range, Error.Range, EOF.Range)
-  private final val ofIntConversions = Array(UnicodeCharacter.ofInt _, Error.ofInt _, EOF.ofInt _)
+object DetailedToken {
+  private final val ranges = Array(DUnicodeCharacter.Range, Error.Range, DEOF.Range)
+  private final val ofIntConversions = Array(DUnicodeCharacter.ofInt _, Error.ofInt _, DEOF.ofInt _)
 
   final val Range = ranges.sum
 
-  def ofInt(n: Int): Token = {
+  def ofInt(n: Int): DetailedToken = {
     var x = n
     for ((range, ofIntInRange) <- ranges zip ofIntConversions) {
       if (x < range) {
@@ -74,38 +74,38 @@ object Token {
     throw new AssertionError("n = " + n.toString + " too large.")
   }
 
-  def toInt(t: Token): Int = t match {
-    case c: UnicodeCharacter => UnicodeCharacter.toInt(c)
-    case e: Error => UnicodeCharacter.Range + Error.toInt(e)
-    case eof: EOF => UnicodeCharacter.Range + Error.Range + EOF.toInt(eof)
+  def toInt(t: DetailedToken): Int = t match {
+    case c: DUnicodeCharacter => DUnicodeCharacter.toInt(c)
+    case e: Error => DUnicodeCharacter.Range + Error.toInt(e)
+    case eof: DEOF => DUnicodeCharacter.Range + Error.Range + DEOF.toInt(eof)
   }
 }
 
 
-case class UnicodeCharacter(codePoint: Int) extends Token {
+case class DUnicodeCharacter(codePoint: Int) extends DetailedToken {
   override def toString() = String.valueOf(Character.toChars(codePoint))
 }
 
-object UnicodeCharacter {
+object DUnicodeCharacter {
   // computed from 0x110000 - 0x800
   // 0x110000 = 0x10ffff (the UTF-8 max code point) + 1. 0x800 is the number of surrogate codepoints
   final val Range = 1112064
 
-  def apply(char: Char): UnicodeCharacter = {
+  def apply(char: Char): DUnicodeCharacter = {
     val codePoint: Int = char.toInt
     assert(UTF8.CodePoints.exists(r => r.contains(codePoint)))
-    UnicodeCharacter(codePoint)
+    DUnicodeCharacter(codePoint)
   }
 
-  def ofInt(codePoint: Int): UnicodeCharacter = {
+  def ofInt(codePoint: Int): DUnicodeCharacter = {
     if (codePoint < UTF8.SurrogateCodePoints.head) {
-      UnicodeCharacter(codePoint)
+      DUnicodeCharacter(codePoint)
     } else {
-      UnicodeCharacter(codePoint + UTF8.SurrogateCodePoints.size)
+      DUnicodeCharacter(codePoint + UTF8.SurrogateCodePoints.size)
     }
   }
 
-  def toInt(char: UnicodeCharacter): Int = {
+  def toInt(char: DUnicodeCharacter): Int = {
     val codePoint = char.codePoint
     if (codePoint < UTF8.SurrogateCodePoints.head) {
       codePoint
@@ -118,11 +118,11 @@ object UnicodeCharacter {
 }
 
 
-abstract class Error extends Token
+abstract class Error extends DetailedToken
 
 object Error {
-  private final val ranges = Array(IllegalCodePoint.Range, IllegalByte.Range)
-  private final val ofIntConversions = Array(IllegalCodePoint.ofInt _, IllegalByte.ofInt _)
+  private final val ranges = Array(IllegalCodePoint.Range, DIllegalByte.Range)
+  private final val ofIntConversions = Array(IllegalCodePoint.ofInt _, DIllegalByte.ofInt _)
 
   final val Range = ranges.sum
 
@@ -137,9 +137,9 @@ object Error {
     throw new AssertionError("n = " + n.toString + " is too large.")
   }
 
-  def toInt(t: Token): Int = t match {
+  def toInt(t: DetailedToken): Int = t match {
     case c: IllegalCodePoint => IllegalCodePoint.toInt(c)
-    case b: IllegalByte => IllegalCodePoint.Range + IllegalByte.toInt(b)
+    case b: DIllegalByte => IllegalCodePoint.Range + DIllegalByte.toInt(b)
   }
 }
 
@@ -167,7 +167,7 @@ object IllegalCodePoint {
     throw new AssertionError("n = " + n.toString + " is too large.")
   }
 
-  def toInt(t: Token): Int = t match {
+  def toInt(t: DetailedToken): Int = t match {
     case s: SurrogateCodePoint => SurrogateCodePoint.toInt(s)
     case o: Overlong => SurrogateCodePoint.Range + Overlong.toInt(o)
     case t: TooHigh => SurrogateCodePoint.Range + Overlong.Range + TooHigh.toInt(t)
@@ -248,39 +248,39 @@ object TooHigh {
 }
 
 
-case class IllegalByte(byte: Byte) extends Error {
+case class DIllegalByte(byte: Byte) extends Error {
   override def toString() = "IllegalByte(%02X)".format(byte)
 }
 
-object IllegalByte {
+object DIllegalByte {
   // ASCII characters never illegal. All other bytes can be illegal (depending on context).
   // So 0xff - 0x7f = 0x80
   final val Range = 0x80
 
-  def toInt(o: IllegalByte): Int = {
+  def toInt(o: DIllegalByte): Int = {
     // Were o.byte unsigned, we would want to return o.byte - 0x80
     // However, it is signed with 0x80 = -127 and 0xff = -1.
     // So 0x80 + o.byte gives the appropriate result (0 at 0x80, going up to 0x7f for 0xff)
     0x80 + o.byte
   }
 
-  def ofInt(n: Int): IllegalByte = {
-    IllegalByte((n + 0x80).toByte)
+  def ofInt(n: Int): DIllegalByte = {
+    DIllegalByte((n + 0x80).toByte)
   }
 }
 
 
-case class EOF() extends Token {
+case class DEOF() extends DetailedToken {
   override def toString() = "EOF"
 }
 
-object EOF {
+object DEOF {
   final val Range = 1
 
-  def toInt(e: EOF): Int = 0
+  def toInt(e: DEOF): Int = 0
 
-  def ofInt(n: Int): EOF = {
+  def ofInt(n: Int): DEOF = {
     assert(n == 0);
-    EOF()
+    DEOF()
   }
 }

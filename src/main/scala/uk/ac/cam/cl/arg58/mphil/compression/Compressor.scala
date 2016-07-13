@@ -37,7 +37,8 @@ case class Config(mode: Modes.Value = Modes.Compress,
 
 abstract class Model()
 case class ByteModel(models: Seq[Distribution[Integer]]) extends Model
-case class TokenModel(models: Seq[Distribution[Token]]) extends Model
+case class SimpleTokenModel(models: Seq[Distribution[SimpleToken]]) extends Model
+case class DetailedTokenModel(models: Seq[Distribution[DetailedToken]]) extends Model
 case class NoModel() extends Model
 
 class Compressor {
@@ -51,10 +52,11 @@ class Compressor {
   var outStream: OutputStream = null
 
   val base: Map[String, String => Unit] = Map(
-    "uniform_token" -> uniformToken,
-    "categorical_token" -> categoricalToken,
-    "polya_token" -> polyaToken,
-    "polya_token_base" -> polyaTokenBase,
+    "uniform_token" -> uniformDetailedToken,
+    "categorical_token" -> categoricalDetailedToken,
+    "polya_token" -> polyaDetailedToken,
+    "uniform_stoken" -> uniformSimpleToken,
+    "polya_stoken_uniform_token" -> polyaSimpleTokenUT,
     "uniform_byte" -> uniformByte,
     "lzw_byte" -> lzwByte,
     "polya_byte" -> polyaByte
@@ -121,17 +123,28 @@ class Compressor {
       lookup_validate(compressors, x) } text("models to apply, in order given")
   }
 
-  private def tokenBase(model: Distribution[Token]): Unit = models match {
+  private def detailedTokenBase(model: Distribution[DetailedToken]): Unit = models match {
     case NoModel() =>
-      models = TokenModel(Array(model))
+      models = DetailedTokenModel(Array(model))
     case _ =>
       throw new AssertionError("Base distribution cannot be layered on top of existing models")
   }
 
-  private def uniformToken(params: String): Unit = tokenBase(FlatToken.UniformToken)
-  private def categoricalToken(params: String): Unit = tokenBase(CategoricalToken)
-  private def polyaToken(params: String): Unit = tokenBase(FlatToken.PolyaToken(params))
-  private def polyaTokenBase(params: String): Unit = tokenBase(FlatToken.PolyaTokenBase(params))
+  private def simpleTokenBase(model: Distribution[SimpleToken]): Unit = models match {
+    case NoModel() =>
+      models = SimpleTokenModel(Array(model))
+    case _ =>
+      throw new AssertionError("Base distribution cannot be layered on top of existing models")
+  }
+
+  private def uniformDetailedToken(params: String): Unit = detailedTokenBase(FlatDetailedToken.UniformToken)
+  private def categoricalDetailedToken(params: String): Unit = detailedTokenBase(CategoricalToken)
+  private def polyaDetailedToken(params: String): Unit = detailedTokenBase(FlatDetailedToken.PolyaToken(params))
+
+  private def uniformSimpleToken(params: String): Unit = simpleTokenBase(FlatSimpleToken.UniformToken)
+  private def polyaSimpleTokenUT(params: String): Unit = simpleTokenBase(FlatSimpleToken.PolyaTokenBase(
+    new UniformIntegerCDF(SimpleToken.Range), params)
+  )
 
   private def byteBase(model: Distribution[Integer]): Unit = models match {
     case NoModel() =>
@@ -157,9 +170,12 @@ class Compressor {
       case ByteModel(models) =>
         val model = CRPU.createNew(params, models.last)
         ByteModel(models:+model)
-      case TokenModel(models) =>
+      case SimpleTokenModel(models) =>
         val model = CRPU.createNew(params, models.last)
-        TokenModel(models:+model)
+        SimpleTokenModel(models:+model)
+      case DetailedTokenModel(models) =>
+        val model = CRPU.createNew(params, models.last)
+        DetailedTokenModel(models:+model)
     }
   }
 
@@ -170,9 +186,12 @@ class Compressor {
       case ByteModel(models) =>
         val model = new LZWEscape[Integer](models.last, ByteEOF)
         ByteModel(models:+model)
-      case TokenModel(models) =>
-        val model = new LZWEscape[Token](models.last, EOF())
-        TokenModel(models:+model)
+      case SimpleTokenModel(models) =>
+        val model = new LZWEscape[SimpleToken](models.last, SEOF())
+        SimpleTokenModel(models:+model)
+      case DetailedTokenModel(models) =>
+        val model = new LZWEscape[DetailedToken](models.last, DEOF())
+        DetailedTokenModel(models:+model)
     }
   }
 
@@ -183,9 +202,12 @@ class Compressor {
       case ByteModel(models) =>
         val model = new PPM(params, models.last)
         ByteModel(models:+model)
-      case TokenModel(models) =>
+      case SimpleTokenModel(models) =>
         val model = new PPM(params, models.last)
-        TokenModel(models:+model)
+        SimpleTokenModel(models:+model)
+      case DetailedTokenModel(models) =>
+        val model = new PPM(params, models.last)
+        DetailedTokenModel(models:+model)
     }
   }
 
@@ -199,13 +221,20 @@ class Compressor {
         arith
 
     models match {
-      case TokenModel(models) =>
-        val utf8Decoder = new UTF8Decoder(inStream)
+      case SimpleTokenModel(models) =>
+        val utf8Decoder = new SimpleUTF8Decoder(inStream)
         for (token <- utf8Decoder) {
           models.last.encode(token, ec)
           models.foreach(d => d.learn(token))
         }
-        models.last.encode(EOF(), ec)
+        models.last.encode(SEOF(), ec)
+      case DetailedTokenModel(models) =>
+        val utf8Decoder = new DetailedUTF8Decoder(inStream)
+        for (token <- utf8Decoder) {
+          models.last.encode(token, ec)
+          models.foreach(d => d.learn(token))
+        }
+        models.last.encode(DEOF(), ec)
       case ByteModel(models) =>
         val byteIterable = JavaConversions.iterableAsScalaIterable(
           IOTools.byteSequenceFromInputStream(inStream))
@@ -234,16 +263,32 @@ class Compressor {
         arith
 
     models match {
-      case TokenModel(models) =>
+      case SimpleTokenModel(models) =>
         def decompress(): Unit = {
           val token = models.last.decode(dc)
-          if (!token.equals(EOF())) {
+          if (!token.equals(SEOF())) {
             models.foreach(d => d.learn(token))
             val bytes =
               if (outputTokens) {
                 token.toString().getBytes()
               } else {
-                UTF8Encoder.tokenToBytes(token)
+                SimpleUTF8Encoder.tokenToBytes(token)
+              }
+            outStream.write(bytes)
+            decompress()
+          }
+        }
+        decompress()
+      case DetailedTokenModel(models) =>
+        def decompress(): Unit = {
+          val token = models.last.decode(dc)
+          if (!token.equals(DEOF())) {
+            models.foreach(d => d.learn(token))
+            val bytes =
+              if (outputTokens) {
+                token.toString().getBytes()
+              } else {
+                DetailedUTF8Encoder.tokenToBytes(token)
               }
             outStream.write(bytes)
             decompress()

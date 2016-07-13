@@ -17,25 +17,25 @@ package uk.ac.cam.cl.arg58.mphil.utf8
 
 import org.scalatest.FlatSpec
 
-class TokenSpec extends FlatSpec  {
+class DetailedTokenSpec extends FlatSpec  {
   "Tokens" should "be in bijection with the integers" in {
-    for (i <- 0 to Token.Range - 1) {
-      val t = Token.ofInt(i)
+    for (i <- 0 to DetailedToken.Range - 1) {
+      val t = DetailedToken.ofInt(i)
       assertResult(i, "token produced is [" + t + "]") {
-        Token.toInt(t)
+        DetailedToken.toInt(t)
       }
     }
   }
 
   "Tokens" should "lie in the specified range" in {
     def check(i: Int): Unit = {
-      assert(i < Token.Range)
+      assert(i < DetailedToken.Range)
       assert(i > 0)
     }
 
     val unicodeCharacters = (0 to 0x10ffff)
       .filter(cp => !UTF8.SurrogateCodePoints.contains(cp))
-      .map(cp => UnicodeCharacter(cp))
+      .map(cp => DUnicodeCharacter(cp))
     val surrogates = UTF8.SurrogateCodePoints.map(cp => SurrogateCodePoint(cp))
     val overlong =
       for ((range, index) <- UTF8.CodePoints.zipWithIndex;
@@ -43,13 +43,13 @@ class TokenSpec extends FlatSpec  {
             cp <- range)
         yield Overlong(cp, wrong_length)
     val tooHigh = (0x110000 to 0x1fffff).map(cp => TooHigh(cp))
-    val illegalBytes = (0x80 to 0xff).map(b => IllegalByte(b.toByte))
-    val eof = Array(EOF())
+    val illegalBytes = (0x80 to 0xff).map(b => DIllegalByte(b.toByte))
+    val eof = Array(DEOF())
 
     val allTokens = unicodeCharacters ++ surrogates ++ overlong ++ tooHigh ++ illegalBytes ++ eof
     for (t <- allTokens) {
-      val c = Token.toInt(t)
-      assert(c < Token.Range)
+      val c = DetailedToken.toInt(t)
+      assert(c < DetailedToken.Range)
       assert(c >= 0)
     }
   }

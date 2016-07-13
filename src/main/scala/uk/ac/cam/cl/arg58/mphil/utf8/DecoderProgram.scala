@@ -19,10 +19,10 @@ import java.io.{FileInputStream, InputStream}
 
 object DecoderProgram {
   private def decode(in : InputStream, encode_after_decode : Boolean) = {
-    val decoder = new UTF8Decoder(in)
+    val decoder = new DetailedUTF8Decoder(in)
     for (token <- decoder)
       if (encode_after_decode) {
-        System.out.write(UTF8Encoder.tokenToBytes(token))
+        System.out.write(DetailedUTF8Encoder.tokenToBytes(token))
       } else {
         System.out.print(token)
       }

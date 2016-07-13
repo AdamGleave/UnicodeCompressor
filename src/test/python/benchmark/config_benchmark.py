@@ -39,6 +39,8 @@ priors = {'uniform_token': 'uniform_token',
           'lzw_byte': 'lzw_byte',
           'polya_token': 'polya_token',
           'polya_token_base': 'polya_token_base',
+          'uniform_stoken': 'uniform_stoken',
+          'polya_stoken_uniform_token': 'polya_stoken_uniform_token',
           'uniform_byte': 'uniform_byte',
           'polya_byte': 'polya_byte' }
 

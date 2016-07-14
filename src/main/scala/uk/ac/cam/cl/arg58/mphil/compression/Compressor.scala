@@ -58,6 +58,7 @@ class Compressor {
     "polya_token_uniform_token" -> polyaDetailedTokenUT,
     "uniform_stoken" -> uniformSimpleToken,
     "polya_stoken" -> polyaSimpleToken,
+    "polya_stoken_uniform_byte" -> polyaSimpleTokenUB,
     "polya_stoken_uniform_token" -> polyaSimpleTokenUT,
     "uniform_byte" -> uniformByte,
     "lzw_byte" -> lzwByte,
@@ -148,6 +149,9 @@ class Compressor {
 
   private def uniformSimpleToken(params: String): Unit = simpleTokenBase(FlatSimpleToken.UniformToken)
   private def polyaSimpleToken(params: String): Unit = simpleTokenBase(FlatSimpleToken.PolyaToken(params))
+  private def polyaSimpleTokenUB(params: String): Unit = simpleTokenBase(
+    FlatSimpleToken.PolyaTokenBase(SimpleTokenUniformByte, params)
+  )
   private def polyaSimpleTokenUT(params: String): Unit = simpleTokenBase(FlatSimpleToken.PolyaTokenBase(
     new UniformIntegerCDF(SimpleToken.Range), params)
   )

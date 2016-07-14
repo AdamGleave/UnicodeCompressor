@@ -38,10 +38,11 @@ priors = {'uniform_token': 'uniform_token',
           'categorical_token': 'categorical_token',
           'lzw_byte': 'lzw_byte',
           'polya_token': 'polya_token',
-          'polya_token_uniform_token': 'polya_token_uniform_token',
+          'polya_btoken_uniform_token': 'polya_token_uniform_token',
           'uniform_stoken': 'uniform_stoken',
           'polya_stoken': 'polya_stoken',
-          'polya_stoken_uniform_token': 'polya_stoken_uniform_token',
+          'polya_bstoken_uniform_byte': 'polya_stoken_uniform_byte',
+          'polya_bstoken_uniform_token': 'polya_stoken_uniform_token',
           'uniform_byte': 'uniform_byte',
           'polya_byte': 'polya_byte' }
 
@@ -64,7 +65,7 @@ for (algo_name, algo_config) in algos.items():
   for (prior_name, prior_config) in priors.items():
     name = algo_name + '_' + prior_name
     if not is_excluded(name):
-      COMPRESSORS[name] = (my_compressor, {'base': prior_name, 'algorithms': algo_config})
+      COMPRESSORS[name] = (my_compressor, {'base': prior_config, 'algorithms': algo_config})
 
 def group_parameters(group, prior):
   fname = '{0}_ppm_multi_optimal_alpha_beta:depths=0,1,2,3,4,5,6,7,8,9:granularity=10:prior={1}.csv'.format(group, prior)

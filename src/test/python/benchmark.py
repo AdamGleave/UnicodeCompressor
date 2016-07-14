@@ -46,7 +46,9 @@ if __name__ == "__main__":
                       help='write the resutlts to stdout in an ASCII table in specified units, ' +
                       'one of bits (bits output/byte input), per (percentage output/input), ' +
                       'size (output file size), time (runtime in seconds) (default: bits).')
-  parser.add_argument('--rerun-errors', dest='rerun', action='store_true',
+  parser.add_argument('--rerun-all', dest='rerun_all', action='store_true',
+                      help='rerun all tests')
+  parser.add_argument('--rerun-errors', dest='rerun_errors', action='store_true',
                       help='rerun compressors if it ended in an error')
   parser.add_argument('--include', dest='include', nargs='+',
                       help='paths which match the specified regex are included; ' +
@@ -57,6 +59,10 @@ if __name__ == "__main__":
                       help='regex of compression algorithms to match; if unspecified, defaults to *.')
 
   args = vars(parser.parse_args())
+  if args['rerun_all']:
+    print("Are you sure you want to rerun tests? This will delete the previous results,  " +
+          "and could take a while to regenerate. Hit enter to continue.")
+    sys.stdin.readline()
 
   table_type = 'bits'
   csv_fname = None
@@ -90,15 +96,18 @@ if __name__ == "__main__":
       kwargs.update({'fname': fname, 'paranoia': True})
       work += [compressor.s(**kwargs)]
 
-      if args['rerun']:
+      if args['rerun_errors'] or args['rerun_all']:
         import benchmark.tasks
         memoised = benchmark.tasks.memo(compressor.__wrapped__.func)
         if memoised.exists(kwargs=kwargs):
-          cached = memoised.get(kwargs=kwargs)
-          if type(cached) != int:
-            print("Detected error '{0}' on {1} over {2}: rerunning"
-                  .format(cached, compressor_name, fname))
+          if args['rerun_all']:
             memoised.delete(kwargs=kwargs)
+          else:
+            cached = memoised.get(kwargs=kwargs)
+            if type(cached) != int:
+              print("Detected error '{0}' on {1} over {2}: rerunning"
+                    .format(cached, compressor_name, fname))
+              memoised.delete(kwargs=kwargs)
 
   async_res = celery.group(work)()
   result_list = async_res.get()

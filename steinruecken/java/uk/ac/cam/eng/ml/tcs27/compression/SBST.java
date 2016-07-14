@@ -49,7 +49,14 @@ public class SBST extends SimpleMass<Integer>
       this.le = le;
       this.ge = ge;
       //this.proc = new BernoulliProcess<Boolean>(true,false);
-      this.proc = new BernoulliProcess<Boolean>(false,true, g1,g2, g1,g2);
+      if (max == min) {
+        // One-element node, there's no choice.
+        // By convention, always take the 'right-hand' branch (true)
+        this.proc = new BernoulliProcess<Boolean>(false, true,
+                                                  (short)0, (short)1, (short)1, (short)1);
+      } else {
+        this.proc = new BernoulliProcess<Boolean>(false,true, g1,g2, g1,g2);
+      }
     }
 
     /** Samples an integer from the range <var>min</var> to <var>max</var>
@@ -95,14 +102,15 @@ public class SBST extends SimpleMass<Integer>
           ge.learn(k);
         }
       } else {
-        if (k == min) {
-          proc.learn(false);
-          //System.err.println("\033[30;1mUpped "+k+", left of "+mid+"\033[m");
-        } else
         if (k == max) {
           proc.learn(true);
           //System.err.println("\033[30;1mUpped "+k+", right of "+mid+"\033[m");
-        } else {
+        }
+        else if (k == min) {
+          proc.learn(false);
+          //System.err.println("\033[30;1mUpped "+k+", left of "+mid+"\033[m");
+        }
+        else {
           throw new IllegalArgumentException("Invalid element.");
         }
       }

@@ -53,17 +53,20 @@ public class SBSTBase extends SimpleMass<Integer>
       this.ge = ge;
 
       int totalMass = base.discreteMassBetween(this.min, this.max);
-      int leftMass = base.discreteMassBetween(this.min, this.mid - 1);
+      int rightMass = base.discreteMassBetween(this.mid, this.max);
 
       // TODO: this is a hack
       long reduceBy = Tools.nb2p(totalMass);
       short roundedTotalMass = (short) (((long)totalMass << 8) / reduceBy);
-      short roundedLeftMass = (short) (((long)leftMass << 8) / reduceBy);
+      short roundedRightMass = (short) (((long)rightMass << 8) / reduceBy);
 
-      short leftNumerator = (short)(roundedLeftMass * g1);
-      short rightNumerator = (short)((roundedTotalMass - roundedLeftMass) * g1);
+      short rightNumerator = (short)(roundedRightMass * g1);
+      short leftNumerator = (short)((roundedTotalMass - roundedRightMass) * g1);
       short denominator = (short)(roundedTotalMass * g2);
 
+      // Edge case when min==max. Here, the convention is that we always take the right-hand side
+      // which corresponds to true in the Bernoulli process. In this case, rightMass == totalMass
+      // and so leftNumerator is 0.
       this.proc = new BernoulliProcess<Boolean>(false,true,
           leftNumerator, denominator, rightNumerator, denominator);
     }
@@ -111,14 +114,15 @@ public class SBSTBase extends SimpleMass<Integer>
           ge.learn(k);
         }
       } else {
-        if (k == min) {
-          proc.learn(false);
-          //System.err.println("\033[30;1mUpped "+k+", left of "+mid+"\033[m");
-        } else
         if (k == max) {
           proc.learn(true);
           //System.err.println("\033[30;1mUpped "+k+", right of "+mid+"\033[m");
-        } else {
+        }
+        else if (k == min) {
+          proc.learn(false);
+          //System.err.println("\033[30;1mUpped "+k+", left of "+mid+"\033[m");
+        }
+        else {
           throw new IllegalArgumentException("Invalid element.");
         }
       }

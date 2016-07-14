@@ -18,37 +18,52 @@ package uk.ac.cam.cl.arg58.mphil.utf8
 import java.io.{FileInputStream, InputStream}
 
 object DecoderProgram {
-  private def decode(in : InputStream, encode_after_decode : Boolean) = {
-    val decoder = new DetailedUTF8Decoder(in)
-    for (token <- decoder)
-      if (encode_after_decode) {
-        System.out.write(DetailedUTF8Encoder.tokenToBytes(token))
-      } else {
-        System.out.print(token)
-      }
+  private def decode(in : InputStream, detailed : Boolean, encode_after_decode : Boolean) = {
+    if (detailed) {
+      val decoder = new DetailedUTF8Decoder(in)
+      for (token <- decoder)
+        if (encode_after_decode) {
+          System.out.write(DetailedUTF8Encoder.tokenToBytes(token))
+        } else {
+          System.out.print(token)
+        }
+    } else {
+      val decoder = new SimpleUTF8Decoder(in)
+      for (token <- decoder)
+        if (encode_after_decode) {
+          System.out.write(SimpleUTF8Encoder.tokenToBytes(token))
+        } else {
+          System.out.print(token)
+        }
+    }
   }
 
   private def usage(): Unit = {
-    System.err.println("USAGE: <IDENTITY|INFO> [fname1] [fname2] ...")
+    System.err.println("USAGE: <IDENTITY|INFO> <DETAILED|SIMPLE> [fname1] [fname2] ...")
     System.exit(1)
   }
 
   def main(args: Array[String]) {
-    if (args.length == 0) {
+    if (args.length < 2) {
       usage()
     } else {
-      var encode_after_decode : Boolean = args(0) match {
+      val encode_after_decode : Boolean = args(0) match {
         case "IDENTITY" => true
         case "INFO" => false
         case _ => usage(); assert(false); false
       }
-      val fnames = args.drop(1)
+      val detailed : Boolean = args(1) match {
+        case "DETAILED" => true
+        case "SIMPLE" => false
+        case _ => usage(); assert(false); false
+      }
+      val fnames = args.drop(2)
       if (fnames.length == 0) {
-        decode(System.in, encode_after_decode)
+        decode(System.in, detailed, encode_after_decode)
       } else {
         for (fname <- fnames) {
           val in: InputStream = new FileInputStream(fname)
-          decode(in, encode_after_decode)
+          decode(in, detailed, encode_after_decode)
         }
       }
     }

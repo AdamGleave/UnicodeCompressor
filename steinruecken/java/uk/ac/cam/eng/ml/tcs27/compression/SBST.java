@@ -36,6 +36,10 @@ public class SBST extends SimpleMass<Integer>
     /** Stochastic process over branch decisions. */
     BernoulliProcess<Boolean> proc = null;
 
+    // cached data
+    NavigableSet<Integer> cached_elts = null;
+    double cached_mass = 0.0;
+
     /** Constructs a new tree node.
       * @param min inclusive minimum
       * @param max inclusive maximum
@@ -84,6 +88,8 @@ public class SBST extends SimpleMass<Integer>
 
     /** Learns a new integer and updates the tree accordingly. */
     public void learn(int k) {
+      cached_elts = null; // invalidate cache
+
       if (max-min > 1) {
         if (k < mid) {
           //System.err.println("\033[36mLearning le...\033[m");
@@ -151,27 +157,32 @@ public class SBST extends SimpleMass<Integer>
     }
 
     public double mass(NavigableSet<Integer> elts) {
-      // INVARIANT: elts is a subset of [min,max]
-      double mass = 0.0;
-      if (max-min > 1) {
-        NavigableSet<Integer> leftElts = elts.headSet(mid, false);
-        NavigableSet<Integer> rightElts = elts.tailSet(mid, true);
-        if (!leftElts.isEmpty()) {
-          mass += proc.mass(false) * le.mass(leftElts);
-        }
-        if (!rightElts.isEmpty()) {
-          mass += proc.mass(true) * ge.mass(rightElts);
-        }
+      if (cached_elts != null && cached_elts.equals(elts)) {
+        return cached_mass;
       } else {
-        if (elts.contains(max)) {
-          mass += proc.mass(true);
+        double mass = 0.0;
+        if (max - min > 1) {
+          NavigableSet<Integer> leftElts = elts.headSet(mid, false);
+          NavigableSet<Integer> rightElts = elts.tailSet(mid, true);
+          if (!leftElts.isEmpty()) {
+            mass += proc.mass(false) * le.mass(leftElts);
+          }
+          if (!rightElts.isEmpty()) {
+            mass += proc.mass(true) * ge.mass(rightElts);
+          }
+        } else {
+          if (elts.contains(max)) {
+            mass += proc.mass(true);
+          }
+          if (min != max && elts.contains(min)) {
+            mass += proc.mass(false);
+          }
         }
-        if (min != max && elts.contains(min)) {
-          mass += proc.mass(false);
-        }
+        //System.err.println("mass of " + elts + " between [" + min + "," + max + "] = " + mass);
+        cached_elts = elts;
+        cached_mass = mass;
+        return mass;
       }
-      //System.err.println("mass of " + elts + " between [" + min + "," + max + "] = " + mass);
-      return mass;
     }
     
     public double logMass(int k) {

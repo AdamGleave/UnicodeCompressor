@@ -61,7 +61,9 @@ object SimpleTokenUniformByte extends SimpleMass[Integer] with IntegerMass {
     // Or if first and second byte are continuation, but third byte isn't: 64 * 64 * 192
     Pair(0x10ffff + 0xf8, 192 * (256*256 + 64*256 + 64*64)),
     // All other bytes, 0xf8 to 0xff, are illegal in any context
-    Pair(0x10ffff + 0x100, 256 * 256 * 256)
+    Pair(0x10ffff + 0x100, 256 * 256 * 256),
+    // EOF. Give it same probability as an ASCII character.
+    Pair(0x0ffff + 0x100 + 1, 256 * 256 * 256)
   )
   val totalMass = masses.fold((0,0)) { (acc, x) =>
     acc match { case (start, s) =>
@@ -90,18 +92,16 @@ object SimpleTokenUniformByte extends SimpleMass[Integer] with IntegerMass {
   }
 
   // start and end inclusive
-  override def discreteMassBetween(start: Integer, end: Integer): Int = {
-    var acc = 0
+  override def discreteMassBetween(start: Integer, end: Integer): Long = {
+    var acc = 0l
     var start_from = start
 
     // range_end exclusive
     for ((range_end, mass) <- masses) {
       val nearest_end = Math.min(end + 1, range_end)
-      val left_in_range = nearest_end - start
-      if (left_in_range > 0) {
-        acc += left_in_range * mass
-        start_from = nearest_end
-      }
+      val left_in_range = Math.max(0, nearest_end - start_from)
+      acc += (left_in_range : Long) * mass
+      start_from = range_end
     }
 
     acc

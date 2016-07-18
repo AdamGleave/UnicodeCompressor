@@ -25,7 +25,7 @@ public class UniformIntegerCDF extends SimpleMass<Integer>
   }
 
   @Override
-  public int discreteMassBetween(Integer start, Integer end) {
+  public long discreteMassBetween(Integer start, Integer end) {
     if (end < start) {
       return 0;
     } else {

@@ -600,12 +600,24 @@ public class Tools {
     x |= (x >> 16);
     return x+1;
   }
+
+  public static long nb2p(long x) {
+    x |= (x >> 1);
+    x |= (x >> 2);
+    x |= (x >> 4);
+    x |= (x >> 8);
+    x |= (x >> 16);
+    x |= (x >> 32);
+    return x+1;
+  }
   
   /** Returns the next power-of-two bigger or equal to <var>x</var>.
     * @see #nb2p(int) */
   public static int nbe2p(int x) {
     return nb2p(x-1);
   }
+
+  public static long nbe2p(long x) { return nb2p(x-1); }
 
   /** Returns the information entropy of a discrete random
     * variable whose probability distribution is given by the

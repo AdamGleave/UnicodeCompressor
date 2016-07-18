@@ -335,7 +335,7 @@ public class SBST extends SimpleMass<Integer>
         }
         double rightMass = proc.mass(true);
         if (!rightOmit.isEmpty()) {
-          rightMass *= (1- ge.mass(rightOmit));
+          rightMass *= (1 - ge.mass(rightOmit));
         }
         double p = rightMass / (rightMass + leftMass);
         //System.err.println("[" + min + "," + max + "]: p = " + p);

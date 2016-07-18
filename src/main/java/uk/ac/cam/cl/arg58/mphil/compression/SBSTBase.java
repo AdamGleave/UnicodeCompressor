@@ -433,15 +433,26 @@ public class SBSTBase extends SimpleMass<Integer>
   }
 
   /** Constructs a new SBST process over the
-   * range <var>min</var> to <var>max</var> (inclusive). */
+   *  range <var>min</var> to <var>max</var> (inclusive),
+   *  with uniform base distribution.
+   */
+  public SBSTBase(int min, int max) { this(min, max, null); }
+
+  /** Constructs a new SBST process over the
+   * range <var>min</var> to <var>max</var> (inclusive),
+   * with base distribution <var>base</var>. */
   public SBSTBase(int min, int max, IntegerMass base) {
     this(min, max, base, (short)1, (short)2);
   }
 
   /** Constructs a new SBST process over the
    * range <var>min</var> to <var>max</var> (inclusive)
-   * with a given concentration.
-   * @param alpha concentration parameter */
+   * with a given concentration <var>alpha</var>. */
+  public SBSTBase(int min, int max, double alpha) { this(min, max, null, alpha); }
+
+  /** Constructs a new SBST process over the
+   * range <var>min</var> to <var>max</var> (inclusive)
+   * with a given concentration <var>alpha</var> and base distribution <var>base</var>. */
   public SBSTBase(int min, int max, IntegerMass base, double alpha) {
     this(min, max, base,
         Tools.fraction(alpha,4096).get0().shortValue(),
@@ -449,12 +460,23 @@ public class SBSTBase extends SimpleMass<Integer>
   }
 
   /** Constructs a new SBST process over the
+   * range <var>min</var> to <var>max</var> (inclusive)
+   * with a base distribution <var>base</var> and given concentration.
+   * @param g1 concentration parameter numerator
+   * @param g2 concentration parameter denominator */
+  public SBSTBase(int min, int max, short g1, short g2) { this(min, max, null, g1, g2); }
+
+  /** Constructs a new SBST process over the
     * range <var>min</var> to <var>max</var> (inclusive)
-    * with a given concentration.
+    * with a base distribution <var>base</var> and given concentration.
     * @param g1 concentration parameter numerator
     * @param g2 concentration parameter denominator */
   public SBSTBase(int min, int max, IntegerMass base, short g1, short g2) {
-    this.base = base;
+    if (base == null) {
+      this.base = new UniformIntegerCDF(min, max);
+    } else {
+      this.base = base;
+    }
     this.g1 = g1;
     this.g2 = g2;
     this.tree = new Node(min, max, null, null);

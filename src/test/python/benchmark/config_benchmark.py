@@ -34,7 +34,7 @@ algos = {'none': [], 'crp': ['crp:a=1:b=0'], 'lzw': ['lzwEscape']}
 for d in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]:
   algos['ppm{0}'.format(d)] = ['ppm:d={0}'.format(d)]
 
-priors = {'uniform_token': 'uniform_token',
+PRIORS = {'uniform_token': 'uniform_token',
           'categorical_token': 'categorical_token',
           'lzw_byte': 'lzw_byte',
           'polya_token': 'polya_token',
@@ -44,7 +44,7 @@ priors = {'uniform_token': 'uniform_token',
           'polya_bstoken_uniform_byte': 'polya_stoken_uniform_byte',
           'polya_bstoken_uniform_token': 'polya_stoken_uniform_token',
           'uniform_byte': 'uniform_byte',
-          'polya_byte': 'polya_byte' }
+          'polya_byte': 'polya_byte'}
 
 EXCLUDED = ['crp_polya_.*', # fails as Polya doesn't implement discreteMass
             # only permit none_categorical_token: possible to run with algos, but it's just not
@@ -62,7 +62,7 @@ def is_excluded(name):
   return False
 
 for (algo_name, algo_config) in algos.items():
-  for (prior_name, prior_config) in priors.items():
+  for (prior_name, prior_config) in PRIORS.items():
     name = algo_name + '_' + prior_name
     if not is_excluded(name):
       COMPRESSORS[name] = (my_compressor, {'base': prior_config, 'algorithms': algo_config})
@@ -80,7 +80,7 @@ def group_parameters(group, prior):
         b = float(row['beta'])
 
         name = 'ppm_{0}_group_{1}_{2}'.format(group, d, prior)
-        COMPRESSORS[name] = (my_compressor, {'base': prior,
+        COMPRESSORS[name] = (my_compressor, {'base': PRIORS[prior],
                                              'algorithms': ['ppm:d={0}:a={1}:b={2}'.format(d, a, b)]})
 
         e = float(row['mean_efficiency'])
@@ -91,7 +91,8 @@ def group_parameters(group, prior):
     print("WARNING: could not open " + path)
 
 for group, prior in itertools.product(['training', 'test'],
-                                      ['uniform_byte', 'uniform_token', 'polya_token']):
+                                      ['uniform_byte', 'uniform_token', 'polya_token',
+                                       'polya_bstoken_uniform_byte', 'polya_bstoken_uniform_token']):
   group_parameters(group, prior)
 
 # For resources.py

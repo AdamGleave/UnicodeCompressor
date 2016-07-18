@@ -60,7 +60,7 @@ if __name__ == "__main__":
 
   args = vars(parser.parse_args())
   if args['rerun_all']:
-    print("Are you sure you want to rerun tests? This will delete the previous results,  " +
+    print("Are you sure you want to rerun tests? This will delete the previous results, " +
           "and could take a while to regenerate. Hit enter to continue.")
     sys.stdin.readline()
 

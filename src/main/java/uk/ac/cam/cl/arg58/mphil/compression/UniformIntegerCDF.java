@@ -7,37 +7,41 @@ import java.util.Random;
 
 public class UniformIntegerCDF extends SimpleMass<Integer>
                                implements IntegerMass {
-  int n;
+  int start, end, n;
 
-  public UniformIntegerCDF(int n) {
-    this.n = n;
+  /** Constructs a uniform distribution over integers
+   *  between <var>start</var> (inclusive) and <var>end</var> (inclusive). */
+  public UniformIntegerCDF(int start, int end) {
+    this.start = start;
+    this.end = end;
+    this.n = end - start + 1;
   }
 
   @Override
-  public double massBetween(Integer start, Integer end) {
-    if (end < start) {
+  public double massBetween(Integer from, Integer to) {
+    if (to < from) {
       return 0;
     } else {
-      end = Math.min(end, n - 1);
-      start = Math.max(start, 0);
-      return (end - start + 1) / n;
+      to = Math.min(to, end);
+      from = Math.max(from, start);
+      return (to - from + 1) / n;
     }
   }
 
   @Override
-  public long discreteMassBetween(Integer start, Integer end) {
-    if (end < start) {
+  public long discreteMassBetween(Integer from, Integer to) {
+    if (to < from) {
       return 0;
     } else {
-      end = Math.min(end, n - 1);
-      start = Math.max(start, 0);
-      return end - start + 1;
+      to = Math.min(to, end);
+      from = Math.max(from, start);
+      return to - from + 1;
     }
   }
 
   @Override
   public double mass(Integer x) {
-    if (x >= 0 && x < n) {
+    if (x >= 0 && x <= end) {
       return 1 / n;
     } else {
       return 0;
@@ -46,7 +50,7 @@ public class UniformIntegerCDF extends SimpleMass<Integer>
 
   @Override
   public double logMass(Integer x) {
-    if (x >= 0 && x < n) {
+    if (x >= 0 && x <= end) {
       return -Math.log(n);
     } else {
       return Double.NEGATIVE_INFINITY;
@@ -55,6 +59,6 @@ public class UniformIntegerCDF extends SimpleMass<Integer>
 
   @Override
   public Integer sample(Random rnd) {
-    return rnd.nextInt(n);
+    return rnd.nextInt(n) + start;
   }
 }

@@ -189,7 +189,7 @@ def ppm_minimize(fnames, paranoia, prior, depth, initial_guess, method='Nelder-M
       else:
         return float('inf')
     opt = optimize.minimize(fun=ppm, args=(), x0=initial_guess, method=method,
-                            options={'maxfev': 100})
+                            options={'maxfev': 100, 'ftol': 0.0005, 'disp': True})
     # can't pickle opt, extract the useful results
     optd = {
       'x': opt.x,

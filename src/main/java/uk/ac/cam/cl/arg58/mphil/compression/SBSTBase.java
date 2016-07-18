@@ -38,6 +38,10 @@ public class SBSTBase extends SimpleMass<Integer>
     /** Stochastic process over branch decisions. */
     BernoulliProcess<Boolean> proc = null;
 
+    // cached data
+    NavigableSet<Integer> cached_elts = null;
+    double cached_mass = 0.0;
+
     /** Constructs a new tree node.
       * @param min inclusive minimum
       * @param max inclusive maximum
@@ -98,6 +102,8 @@ public class SBSTBase extends SimpleMass<Integer>
 
     /** Learns a new integer and updates the tree accordingly. */
     public void learn(int k) {
+      cached_elts = null; // invalidate cache
+
       if (max-min > 1) {
         if (k < mid) {
           //System.out.println("\033[36mLearning le...\033[m");
@@ -167,27 +173,32 @@ public class SBSTBase extends SimpleMass<Integer>
     }
 
     public double mass(NavigableSet<Integer> elts) {
-      // INVARIANT: elts is a subset of [min,max]
-      double mass = 0.0;
-      if (max-min > 1) {
-        NavigableSet<Integer> leftElts = elts.headSet(mid, false);
-        NavigableSet<Integer> rightElts = elts.tailSet(mid, true);
-        if (!leftElts.isEmpty()) {
-          mass += proc.mass(false) * le.mass(leftElts);
-        }
-        if (!rightElts.isEmpty()) {
-          mass += proc.mass(true) * ge.mass(rightElts);
-        }
+      if (cached_elts != null && cached_elts.equals(elts)) {
+        return cached_mass;
       } else {
-        if (elts.contains(max)) {
-          mass += proc.mass(true);
+        double mass = 0.0;
+        if (max - min > 1) {
+          NavigableSet<Integer> leftElts = elts.headSet(mid, false);
+          NavigableSet<Integer> rightElts = elts.tailSet(mid, true);
+          if (!leftElts.isEmpty()) {
+            mass += proc.mass(false) * le.mass(leftElts);
+          }
+          if (!rightElts.isEmpty()) {
+            mass += proc.mass(true) * ge.mass(rightElts);
+          }
+        } else {
+          if (elts.contains(max)) {
+            mass += proc.mass(true);
+          }
+          if (min != max && elts.contains(min)) {
+            mass += proc.mass(false);
+          }
         }
-        if (min != max && elts.contains(min)) {
-          mass += proc.mass(false);
-        }
+        //System.err.println("mass of " + elts + " between [" + min + "," + max + "] = " + mass);
+        cached_elts = elts;
+        cached_mass = mass;
+        return mass;
       }
-      //System.err.println("mass of " + elts + " between [" + min + "," + max + "] = " + mass);
-      return mass;
     }
 
     public double logMass(int k) {
@@ -422,15 +433,26 @@ public class SBSTBase extends SimpleMass<Integer>
   }
 
   /** Constructs a new SBST process over the
-   * range <var>min</var> to <var>max</var> (inclusive). */
+   *  range <var>min</var> to <var>max</var> (inclusive),
+   *  with uniform base distribution.
+   */
+  public SBSTBase(int min, int max) { this(min, max, null); }
+
+  /** Constructs a new SBST process over the
+   * range <var>min</var> to <var>max</var> (inclusive),
+   * with base distribution <var>base</var>. */
   public SBSTBase(int min, int max, IntegerMass base) {
     this(min, max, base, (short)1, (short)2);
   }
 
   /** Constructs a new SBST process over the
    * range <var>min</var> to <var>max</var> (inclusive)
-   * with a given concentration.
-   * @param alpha concentration parameter */
+   * with a given concentration <var>alpha</var>. */
+  public SBSTBase(int min, int max, double alpha) { this(min, max, null, alpha); }
+
+  /** Constructs a new SBST process over the
+   * range <var>min</var> to <var>max</var> (inclusive)
+   * with a given concentration <var>alpha</var> and base distribution <var>base</var>. */
   public SBSTBase(int min, int max, IntegerMass base, double alpha) {
     this(min, max, base,
         Tools.fraction(alpha,4096).get0().shortValue(),
@@ -438,12 +460,23 @@ public class SBSTBase extends SimpleMass<Integer>
   }
 
   /** Constructs a new SBST process over the
+   * range <var>min</var> to <var>max</var> (inclusive)
+   * with a base distribution <var>base</var> and given concentration.
+   * @param g1 concentration parameter numerator
+   * @param g2 concentration parameter denominator */
+  public SBSTBase(int min, int max, short g1, short g2) { this(min, max, null, g1, g2); }
+
+  /** Constructs a new SBST process over the
     * range <var>min</var> to <var>max</var> (inclusive)
-    * with a given concentration.
+    * with a base distribution <var>base</var> and given concentration.
     * @param g1 concentration parameter numerator
     * @param g2 concentration parameter denominator */
   public SBSTBase(int min, int max, IntegerMass base, short g1, short g2) {
-    this.base = base;
+    if (base == null) {
+      this.base = new UniformIntegerCDF(min, max);
+    } else {
+      this.base = base;
+    }
     this.g1 = g1;
     this.g2 = g2;
     this.tree = new Node(min, max, null, null);

@@ -18,7 +18,7 @@ OPTIMISATION_GRANULARITIES="0 5 10 20"
 
 OPTIMISATION_MODELS=""
 for granularity in $OPTIMISATION_GRANULARITIES; do
-	OPTIMISATION_MODELS="${OPTIMISATION_MODELS} ppm_optimal_parameters:depths=${OPTIMISATION_DEPTH}:prior=${OPTIMISATION_PRIOR}:granularity=${granularity}"
+	OPTIMISATION_MODELS="${OPTIMISATION_MODELS} ppm_optimal_parameters:depths=${OPTIMISATION_DEPTH}:granularity=${granularity}:prior=${OPTIMISATION_PRIOR}"
 done
 #${OPTIMISE} ${OPTIMISATION_MODELS} --include ${OPTIMISATION_FILES} 
 #cd ${BASE}/experiments/tables; (for granularity in 0 5 10 20; do awk -F, -v OFS=',' "{print \$1, \$2, ${granularity}, \$3, \$4, \$5, \$6}" ppm_optimal_parameters\:depths\=5\:granularity\=${granularity}:prior=uniform_byte.csv; done) > cat.csv
@@ -29,7 +29,7 @@ PARAMETER_GRANULARITY=10
 
 PARAMETER_MODELS=""
 for prior in $PARAMETER_PRIORS; do
-	PARAMETER_MODELS="${PARAMETER_MODELS} ppm_optimal_alpha_beta:depths=${PARAMETER_DEPTHS}:prior=${prior}:granularity=${PARAMETER_GRANULARITY} ppm_optimal_parameters:depths=${PARAMETER_DEPTHS}:prior=${prior}:granularity=${PARAMETER_GRANULARITY}"
+	PARAMETER_MODELS="${PARAMETER_MODELS} ppm_optimal_alpha_beta:depths=${PARAMETER_DEPTHS}:granularity=${PARAMETER_GRANULARITY}:prior=${prior} ppm_optimal_parameters:depths=${PARAMETER_DEPTHS}:granularity=${PARAMETER_GRANULARITY}:prior=${prior}"
 done
 #${OPTIMISE} ${PARAMETER_MODELS} ${EXTENDED_CORPUS}
 
@@ -57,7 +57,7 @@ wait
 
 MULTI_PARAMETER_MODELS=""
 for prior in $PARAMETER_PRIORS; do
-	MULTI_PARAMETER_MODELS="${MULTI_PARAMETER_MODELS} ppm_multi_optimal_alpha_beta:depths=${PARAMETER_DEPTHS}:prior=${prior}:granularity=${PARAMETER_GRANULARITY}"
+	MULTI_PARAMETER_MODELS="${MULTI_PARAMETER_MODELS} ppm_multi_optimal_alpha_beta:depths=${PARAMETER_DEPTHS}:granularity=${PARAMETER_GRANULARITY}:prior=${prior}"
 done
 cd $BASE/experiments/tables
 ${OPTIMISE} ${MULTI_PARAMETER_MODELS} --include training/* 

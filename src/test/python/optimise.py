@@ -363,8 +363,12 @@ def ppm_multi_optimal_alpha_beta(pool, files, test_name, prior,
       writer.writerow(fieldnames)
 
       for depth, row in zip(depths, res):
-        (alpha, beta), efficiency, status = row
-        writer.writerow([depth, alpha, beta, efficiency, status])
+        if row:
+          (alpha, beta), efficiency, status = row
+          writer.writerow([depth, alpha, beta, efficiency, status])
+        else:
+          print('ppm_multi_optimal_alpha_beta - {0} on {1}: optimisation failed for {2}'
+                .format(test_name, files, depth))
 
   ec = functools.partial(error_callback, 'ppm_multi_optimal_alpha_beta - {0} on {1}'
                                           .format(test_name, files))

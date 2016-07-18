@@ -56,21 +56,22 @@ public class SBSTBase extends SimpleMass<Integer>
       long rightMass = base.discreteMassBetween(this.mid, this.max);
 
       // TODO: this is a hack
-      long reduceBy = Tools.nb2p(totalMass) >> 8;
-      reduceBy = Math.max(reduceBy, 1);
-      short roundedTotalMass = (short)(totalMass / reduceBy);
-      short roundedRightMass = (short)Math.max(rightMass / reduceBy, 1);
-      short roundedLeftMass = (short)Math.max(roundedTotalMass - roundedRightMass, 1);
+      if (min != max) {
+        long reduceBy = Tools.nb2p(totalMass) >> 8;
+        reduceBy = Math.max(reduceBy, 1);
+        short roundedTotalMass = (short) (totalMass / reduceBy);
+        short roundedRightMass = (short) Math.max(rightMass / reduceBy, 1);
+        short roundedLeftMass = (short) Math.max(roundedTotalMass - roundedRightMass, 1);
 
-      short rightNumerator = (short)(roundedRightMass * g1);
-      short leftNumerator = (short)(roundedLeftMass * g1);
-      short denominator = (short)((roundedLeftMass + roundedRightMass) * g2);
+        short rightNumerator = (short) (roundedRightMass * g1);
+        short leftNumerator = (short) (roundedLeftMass * g1);
+        short denominator = (short) ((roundedLeftMass + roundedRightMass) * g2);
 
-      // Edge case when min==max. Here, the convention is that we always take the right-hand side
-      // which corresponds to true in the Bernoulli process. In this case, rightMass == totalMass
-      // and so leftNumerator is 0.
-      this.proc = new BernoulliProcess<Boolean>(false,true,
-          leftNumerator, denominator, rightNumerator, denominator);
+        this.proc = new BernoulliProcess<Boolean>(false, true,
+            leftNumerator, denominator, rightNumerator, denominator);
+      } else {
+        this.proc = new BernoulliProcess<Boolean>(false, true, (short)0, (short)1, (short)1, (short)1);
+      }
     }
 
     /** Samples an integer from the range <var>min</var> to <var>max</var>

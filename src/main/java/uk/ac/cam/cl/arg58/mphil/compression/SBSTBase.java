@@ -102,6 +102,8 @@ public class SBSTBase extends SimpleMass<Integer>
 
     /** Learns a new integer and updates the tree accordingly. */
     public void learn(int k) {
+      cached_elts = null; // invalidate cache
+
       if (max-min > 1) {
         if (k < mid) {
           //System.out.println("\033[36mLearning le...\033[m");

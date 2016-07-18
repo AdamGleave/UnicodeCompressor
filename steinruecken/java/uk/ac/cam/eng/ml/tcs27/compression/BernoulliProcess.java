@@ -310,4 +310,9 @@ public class BernoulliProcess<X> extends SimpleMass<X>
       return 0;
     }
   }
+
+  public String toString() {
+    return "BernoulliProcess(na = " + na + ", a0/a1 = " + a0 + "/" + a1 +
+                             ", nb = " + nb + ", b0/b1 = " + b0 + "/" + b1 + ")";
+  }
 }

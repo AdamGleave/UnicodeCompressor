@@ -49,14 +49,15 @@ public class SBST extends SimpleMass<Integer>
       this.le = le;
       this.ge = ge;
       //this.proc = new BernoulliProcess<Boolean>(true,false);
-      if (max == min) {
-        // One-element node, there's no choice.
-        // By convention, always take the 'right-hand' branch (true)
-        this.proc = new BernoulliProcess<Boolean>(false, true,
-                                                  (short)0, (short)1, (short)1, (short)1);
-      } else {
-        this.proc = new BernoulliProcess<Boolean>(false,true, g1,g2, g1,g2);
-      }
+      this.proc = new BernoulliProcess<Boolean>(false,true, g1,g2, g1,g2);
+//      if (max == min) {
+//        // One-element node, there's no choice.
+//        // By convention, always take the 'right-hand' branch (true)
+//        this.proc = new BernoulliProcess<Boolean>(false, true,
+//                                                  (short)0, (short)1, (short)1, (short)1);
+//      } else {
+//        this.proc = new BernoulliProcess<Boolean>(false,true, g1,g2, g1,g2);
+//      }
     }
 
     /** Samples an integer from the range <var>min</var> to <var>max</var>
@@ -85,7 +86,7 @@ public class SBST extends SimpleMass<Integer>
     public void learn(int k) {
       if (max-min > 1) {
         if (k < mid) {
-          //System.out.println("\033[36mLearning le...\033[m");
+          //System.err.println("\033[36mLearning le...\033[m");
           //System.err.println("\033[30;1mLearning "+k+", < "+mid+"\033[m");
           proc.learn(false);
           if (le == null) {
@@ -93,7 +94,7 @@ public class SBST extends SimpleMass<Integer>
           }
           le.learn(k);
         } else {
-          //System.out.println("\033[31mLearning ge...\033[m");
+          //System.err.println("\033[31mLearning ge...\033[m");
           //System.err.println("\033[30;1mLearning "+k+", >= "+mid+"\033[m");
           proc.learn(true);
           if (ge == null) {
@@ -104,13 +105,11 @@ public class SBST extends SimpleMass<Integer>
       } else {
         if (k == max) {
           proc.learn(true);
-          //System.err.println("\033[30;1mUpped "+k+", right of "+mid+"\033[m");
-        }
-        else if (k == min) {
+          //System.err.println("\033[30;1mUpped " + k + ", right of " + mid + "\033[m");
+        } else if (k == min) {
           proc.learn(false);
-          //System.err.println("\033[30;1mUpped "+k+", left of "+mid+"\033[m");
-        }
-        else {
+          //System.err.println("\033[30;1mUpped " + k + ", left of " + mid + "\033[m");
+        } else {
           throw new IllegalArgumentException("Invalid element.");
         }
       }
@@ -150,6 +149,30 @@ public class SBST extends SimpleMass<Integer>
         return proc.mass(k >= mid);
       }
     }
+
+    public double mass(NavigableSet<Integer> elts) {
+      // INVARIANT: elts is a subset of [min,max]
+      double mass = 0.0;
+      if (max-min > 1) {
+        NavigableSet<Integer> leftElts = elts.headSet(mid, false);
+        NavigableSet<Integer> rightElts = elts.tailSet(mid, true);
+        if (!leftElts.isEmpty()) {
+          mass += proc.mass(false) * le.mass(leftElts);
+        }
+        if (!rightElts.isEmpty()) {
+          mass += proc.mass(true) * ge.mass(rightElts);
+        }
+      } else {
+        if (elts.contains(max)) {
+          mass += proc.mass(true);
+        }
+        if (min != max && elts.contains(min)) {
+          mass += proc.mass(false);
+        }
+      }
+      //System.err.println("mass of " + elts + " between [" + min + "," + max + "] = " + mass);
+      return mass;
+    }
     
     public double logMass(int k) {
       if (max-min > 1) {
@@ -174,35 +197,38 @@ public class SBST extends SimpleMass<Integer>
     }
 
     public void encode(int k, Encoder ec) {
-      //System.out.println("\033[33mEncoding ("+min+":"+mid+":"+max+")\033[m");
+      //System.err.println("Node: encoding " + k + " / proc: " + proc);
+      //System.err.println("\033[33mEncoding ("+min+":"+mid+":"+max+")\033[m");
       if (max-min > 1) {
         if (k < mid && k >= min) {
           proc.encode(false,ec);
-          //System.out.println("\033[36mTook le branch\033[m");
+          //System.err.println("\033[36mTook le branch\033[m");
           if (le == null) {
             le = new Node(min, mid-1, null, null); 
           }
-          //System.out.println("\033[33mEncoding le ("+min+"-"+(mid-1)+")\033[m");
+          //System.err.println("\033[33mEncoding le ("+min+"-"+(mid-1)+")\033[m");
           le.encode(k,ec);
         } else
         if (k >= mid && k <= max) {
           proc.encode(true,ec);
-          //System.out.println("\033[31mTook ge branch\033[m");
+          //System.err.println("\033[31mTook ge branch\033[m");
           if (ge == null) {
             ge = new Node(mid, max, null, null); 
           }
-          //System.out.println("\033[33mEncoding ge ("+mid+"-"+max+")\033[m");
+          //System.err.println("\033[33mEncoding ge ("+mid+"-"+max+")\033[m");
           ge.encode(k,ec);
         } else {
           throw new RuntimeException("attempt to encode invalid element");
         }
       } else {
         //proc.encode(k >= mid, ec);
-        //System.out.println("\033[33mEncoded "+k+".\033[m");
+        //System.err.println("\033[33mEncoding "+k+".\033[m");
         if (k == max) {
+          //System.err.println("Coding true, " + proc.mass(true));
           proc.encode(true, ec);
         } else
         if (k == min) {
+          //System.err.println("Coding false, " + proc.mass(false));
           proc.encode(false, ec);
         } else {
           throw new RuntimeException("attempt to encode invalid element");
@@ -210,113 +236,90 @@ public class SBST extends SimpleMass<Integer>
       }
     }
     
-    public int getCount(Integer k) {
-      if (max-min > 1) {
-        if (k < mid) {
-          if (le == null) {
-            return 0;
-          } else {
-            return le.getCount(k);
-          }
-        } else {
-          if (ge == null) {
-            return 0;
-          } else {
-            return ge.getCount(k);
-          }
-        }
-      } else {
-        if (max == k) {
-          return proc.nb;
-        } else
-        if (min == k) {
-          return proc.na;
-        } else {
-          throw new RuntimeException("count got lost");
-        }
-      }
-    }
-    
     public void encode(int k, NavigableSet<Integer> omit, Encoder ec) {
+      //System.err.println("Node: exclusion coding " + k + " / proc: " + proc);
       //System.err.println("Encoding: "+k+" in ("+min+","+max+") with omit set "+omit);
       if (max-min > 1) {
-        // complicated case
-        int rle = 0; // number of total removals
-        int rge = 0; // number of total removals
-        int ole = 0; // number of unique removed elements
-        int oge = 0; // number of unique removed elements
-        for (Integer o : omit) {
-          if (o < mid && o >= min) {
-            ole += 1;
-            if (le != null) {
-              rle += le.getCount(o);
-            }
-          } else
-          if (o >= mid && o <= max) {
-            oge += 1;
-            if (ge != null) {
-              rge += ge.getCount(o);
-            }
-          }
+        NavigableSet<Integer> leftOmit = omit.headSet(mid, false);
+        NavigableSet<Integer> rightOmit = omit.tailSet(mid, true);
+        double leftMass = proc.mass(false);
+        if (!leftOmit.isEmpty()) {
+          leftMass *= (1 - le.mass(leftOmit));
         }
-        int nle = mid-min;
-        int nge = max-mid+1;
+        double rightMass = proc.mass(true);
+        if (!rightOmit.isEmpty()) {
+          rightMass *= (1 - ge.mass(rightOmit));
+        }
+        double p = rightMass / (rightMass + leftMass);
+        //System.err.println("[" + min + "," + max + "]: p = " + p);
+        Bernoulli<Boolean> b = new Bernoulli<>(true, false, p);
         if (k < mid && k >= min) {
-          proc.encode(false, rle, rge, nle-ole, nle, nge-oge, nge, ec);
+          b.encode(false, ec);
+          //System.err.println("\033[36mTook le branch\033[m");
           if (le == null) {
             le = new Node(min, mid-1, null, null);
           }
-          le.encode(k, omit.headSet(mid,false), ec);
+          //System.err.println("\033[33mEncoding le ("+min+"-"+(mid-1)+")\033[m");
+          le.encode(k, leftOmit, ec);
         } else
         if (k >= mid && k <= max) {
-          proc.encode(true, rle, rge, nle-ole, nle, nge-oge, nge, ec);
+          b.encode(true, ec);
+          //System.err.println("\033[31mTook ge branch\033[m");
           if (ge == null) {
             ge = new Node(mid, max, null, null);
           }
-          ge.encode(k, omit.tailSet(mid,true), ec);
+          //System.err.println("\033[33mEncoding ge ("+mid+"-"+max+")\033[m");
+          ge.encode(k, rightOmit, ec);
         } else {
           throw new RuntimeException("attempt to encode invalid element");
         }
       } else {
         // simpler case
-        if ((k == max && omit.contains(min))
-         || (k == min && omit.contains(max))) {
-           // no action needed.
-        } else {
+        //System.err.println("\033[33mExclusion coding "+k+".\033[m.");
+        boolean emin = omit.contains(min);
+        boolean emax = omit.contains(max);
+        if (emin && !emax || emax && !emin) {
+          //System.err.println("No coding needed.");
+          // no action needed.
+        } else if (!emin && !emax) {
           if (k == max) {
+            //System.err.println("Coding true, " + proc.mass(true));
             proc.encode(true, ec);
           } else
           if (k == min) {
+            //System.err.println("Coding false, " + proc.mass(true));
             proc.encode(false, ec);
           } else {
             throw new RuntimeException("attempt to encode invalid element");
           }
+        } else {
+          throw new AssertionError("omit contains all possible elements");
         }
       }
     }
     
     public int decode(Decoder dc) {
-      //System.out.println("\033[33mDecoding ("+min+":"+mid+":"+max+")\033[m");
+      //System.err.println("\033[33mDecoding ("+min+":"+mid+":"+max+")\033[m");
       boolean b = proc.decode(dc);
       if (max-min > 1) {
         if (b) {
-          //System.out.println("\033[31mTook ge branch\033[m");
+          //System.err.println("\033[31mTook ge branch\033[m");
           if (ge == null) {
             ge = new Node(mid, max, null, null); 
           }
-          //System.out.println("\033[33mDecoding ge ("+mid+"-"+max+")\033[m");
+          //System.err.println("\033[33mDecoding ge ("+mid+"-"+max+")\033[m");
           return ge.decode(dc);
         } else {
-          //System.out.println("\033[36mTook le branch\033[m");
+          //System.err.println("\033[36mTook le branch\033[m");
           if (le == null) {
-            //System.out.println("\033[33mCreating le node ("+min+"-"+(mid-1)+")...");
+            //System.err.println("\033[33mCreating le node ("+min+"-"+(mid-1)+")...");
             le = new Node(min, mid-1, null, null); 
           }
-          //System.out.println("\033[33mDecoding le ("+min+"-"+(mid-1)+")\033[m");
+          //System.err.println("\033[33mDecoding le ("+min+"-"+(mid-1)+")\033[m");
           return le.decode(dc);
         }
       } else {
-        //System.out.println("\033[33mDecoded "+(b ? max : min)+"...");
+        //System.err.println("\033[33mDecoded "+(b ? max : min)+"...");
         return b ? max : min;
       }
     }
@@ -324,28 +327,20 @@ public class SBST extends SimpleMass<Integer>
     public int decode(NavigableSet<Integer> omit, Decoder dc) {
       //System.err.println("Encoding: "+k+" in ("+min+","+max+") with omit set "+omit);
       if (max-min > 1) {
-        // complicated case
-        int rle = 0; // number of total removals
-        int rge = 0; // number of total removals
-        int ole = 0; // number of unique removed elements
-        int oge = 0; // number of unique removed elements
-        for (Integer o : omit) {
-          if (o < mid && o >= min) {
-            ole += 1;
-            if (le != null) {
-              rle += le.getCount(o);
-            }
-          } else
-          if (o >= mid && o <= max) {
-            oge += 1;
-            if (ge != null) {
-              rge += ge.getCount(o);
-            }
-          }
+        NavigableSet<Integer> leftOmit = omit.headSet(mid, false);
+        NavigableSet<Integer> rightOmit = omit.tailSet(mid, true);
+        double leftMass = proc.mass(false);
+        if (!leftOmit.isEmpty()) {
+          leftMass *= (1 - le.mass(leftOmit));
         }
-        int nle = mid-min;
-        int nge = max-mid+1;
-        boolean b = proc.decode(rle, rge, nle-ole, nle, nge-oge, nge, dc);
+        double rightMass = proc.mass(true);
+        if (!rightOmit.isEmpty()) {
+          rightMass *= (1- ge.mass(rightOmit));
+        }
+        double p = rightMass / (rightMass + leftMass);
+        //System.err.println("[" + min + "," + max + "]: p = " + p);
+        Bernoulli<Boolean> bernoulli = new Bernoulli<>(true, false, p);
+        boolean b = bernoulli.decode(dc);
         if (b) {
           if (ge == null) {
             ge = new Node(mid, max, null, null);
@@ -480,6 +475,7 @@ public class SBST extends SimpleMass<Integer>
   }
 
   public void encode(Integer k, Encoder ec) {
+    //System.err.println("SBST: encoding " + k);
     tree.encode(k,ec);
   }
   
@@ -488,6 +484,7 @@ public class SBST extends SimpleMass<Integer>
   }
   
   public void encode(Integer k, Collection<Integer> omit, Encoder ec) {
+    //System.err.println("SBST: exclusion coding " + k);
     if (omit instanceof NavigableSet) {
       tree.encode(k, (NavigableSet<Integer>) omit, ec);
     } else {

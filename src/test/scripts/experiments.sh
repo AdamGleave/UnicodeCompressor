@@ -59,18 +59,18 @@ MULTI_PARAMETER_MODELS=""
 for prior in $PARAMETER_PRIORS; do
 	MULTI_PARAMETER_MODELS="${MULTI_PARAMETER_MODELS} ppm_multi_optimal_alpha_beta:depths=${PARAMETER_DEPTHS}:granularity=${PARAMETER_GRANULARITY}:prior=${prior}"
 done
-cd $BASE/experiments/tables
-${OPTIMISE} ${MULTI_PARAMETER_MODELS} --include training/* 
-for model in $MULTI_PARAMETER_MODELS; do
-	mv ${model}.csv training_${model}.csv
-done
+#cd $BASE/experiments/tables
+#${OPTIMISE} ${MULTI_PARAMETER_MODELS} --include training/* 
+#for model in $MULTI_PARAMETER_MODELS; do
+#	mv ${model}.csv training_${model}.csv
+#done
 #${OPTIMISE} ${MULTI_PARAMETER_MODELS} ${TEXT_TEST_CORPUS} 
 #for model in $MULTI_PARAMETER_MODELS; do
 #	mv ${model}.csv test_${model}.csv
 #done
 
 # Reference models
-BASE_MODELS="uniform_byte uniform_token polya_token polya_bstoken_uniform_byte polya_bstoken_uniform_token"
+BASE_MODELS="uniform_byte uniform_token polya_token polya_stoken_uniform_byte polya_stoken_uniform_token"
 SINGLE_MODELS=""
 CRP_MODELS=""
 LZW_MODELS="none_lzw_byte"
@@ -82,7 +82,7 @@ for base in ${BASE_MODELS}; do
 	PPM_MODELS="${PPM_MODELS} ppm_training_group_opt_${base} ppm_test_group_opt_${base}"
 done
 #TODO: update once you know optimal depth for the new Polya models 
-PPM_MODELS="ppm4_uniform_token ppm4_polya_token ppm6_uniform_byte ppm5_uniform_byte ppm5_uniform_token ppm5_polya_token"
+PPM_MODELS="ppm6_uniform_byte ppm4_uniform_token ppm4_polya_token ppm4_polya_stoken_uniform_token ppm4_polya_stoken_uniform_byte ppm5_uniform_byte ppm5_uniform_token ppm5_polya_token ppm5_polya_stoken_uniform_byte ppm5_polya_stoken_uniform_token"
 PPM_DETAILED_MODELS=""
 for d in 1 2 3 4 5 6 7 8 9; do
 	for src in training test; do
@@ -92,4 +92,4 @@ for d in 1 2 3 4 5 6 7 8 9; do
 	done
 done
 REFERENCE_MODELS="ref_bzip2 ref_cmix ref_compress ref_gzip ref_lzma ref_paq8hp12 ref_PPMd ref_SCSU ref_zpaq"
-#${BENCHMARK} ${SINGLE_MODELS} ${CRP_MODELS} ${LZW_MODELS} ${PPM_MODELS} ${PPM_DETAILED_MODELS} ${REFERENCE_MODELS} ${EXTENDED_CORPUS} --csv ${BASE}/experiments/tables/benchmark.csv --rerun-errors
+${BENCHMARK} ${SINGLE_MODELS} ${CRP_MODELS} ${LZW_MODELS} ${PPM_MODELS} ${PPM_DETAILED_MODELS} ${REFERENCE_MODELS} ${EXTENDED_CORPUS} --csv ${BASE}/experiments/tables/benchmark.csv --rerun-errors

@@ -101,7 +101,7 @@ object SimpleTokenUniformByte extends SimpleMass[Integer] with IntegerMass {
       val nearest_end = Math.min(end + 1, range_end)
       val left_in_range = Math.max(0, nearest_end - start_from)
       acc += (left_in_range : Long) * mass
-      start_from = range_end
+      start_from = Math.max(start_from, range_end)
     }
 
     acc

@@ -81,7 +81,7 @@ for base in ${BASE_MODELS}; do
 	LZW_MODELS="${LZW_MODELS} lzw_${base}"
 	PPM_MODELS="${PPM_MODELS} ppm_training_group_opt_${base} ppm_test_group_opt_${base}"
 done
-PPM_MODELS="${PPM_MODELS} ppm6_uniform_byte ppm4_uniform_token ppm4_polya_token ppm4_polya_stoken_uniform_token ppm4_polya_stoken_uniform_byte ppm5_uniform_byte ppm5_uniform_token ppm5_polya_token ppm5_polya_stoken_uniform_byte ppm5_polya_stoken_uniform_token"
+PPM_MODELS="${PPM_MODELS} ppm6_uniform_byte ppm4_uniform_token ppm4_polya_token ppm4_polya_stoken_uniform_token ppm4_polya_stoken_uniform_byte ppm5_uniform_byte ppm5_uniform_token ppm5_polya_token ppm5_polya_stoken_uniform_byte ppm5_polya_stoken_uniform_token ppm_training_group_optut_polya_stoken_uniform_byte"
 PPM_DETAILED_MODELS=""
 for d in 1 2 3 4 5 6 7 8 9; do
 	for src in training test; do

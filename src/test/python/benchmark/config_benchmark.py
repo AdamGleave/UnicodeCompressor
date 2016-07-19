@@ -92,7 +92,7 @@ def group_parameters(group, prior):
 
 for group, prior in itertools.product(['training', 'test'],
                                       ['uniform_byte', 'uniform_token', 'polya_token',
-                                       'polya_bstoken_uniform_byte', 'polya_bstoken_uniform_token']):
+                                       'polya_stoken_uniform_byte', 'polya_stoken_uniform_token']):
   group_parameters(group, prior)
 
 # For resources.py

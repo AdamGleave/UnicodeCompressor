@@ -53,7 +53,7 @@ def corpus(data, files):
 if __name__ == '__main__':
   data = load_benchmark(config.BENCHMARK_INPUT)
   cmpres = {}
-  for corpus_name, files in config.FULL_CORPUS:
+  for corpus_name, files in config.FULL_CORPUS.items():
     cmpres[corpus_name] = corpus(data, files)
 
   with open(config.JSON_OUTPUT, 'w') as out:

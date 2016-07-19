@@ -52,16 +52,14 @@ public class SBST extends SimpleMass<Integer>
       //System.err.println("\033[36mCreating node ("+min+","+mid+","+max+")\033[m");
       this.le = le;
       this.ge = ge;
-      //this.proc = new BernoulliProcess<Boolean>(true,false);
-      this.proc = new BernoulliProcess<Boolean>(false,true, g1,g2, g1,g2);
-//      if (max == min) {
-//        // One-element node, there's no choice.
-//        // By convention, always take the 'right-hand' branch (true)
-//        this.proc = new BernoulliProcess<Boolean>(false, true,
-//                                                  (short)0, (short)1, (short)1, (short)1);
-//      } else {
-//        this.proc = new BernoulliProcess<Boolean>(false,true, g1,g2, g1,g2);
-//      }
+      if (max == min) {
+        // One-element node, there's no choice.
+        // By convention, always take the 'right-hand' branch (true)
+        this.proc = new BernoulliProcess<Boolean>(false, true,
+                                                  (short)0, (short)1, (short)1, (short)1);
+      } else {
+        this.proc = new BernoulliProcess<Boolean>(false,true, g1,g2, g1,g2);
+      }
     }
 
     /** Samples an integer from the range <var>min</var> to <var>max</var>

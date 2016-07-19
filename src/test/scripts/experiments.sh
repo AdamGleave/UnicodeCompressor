@@ -60,7 +60,7 @@ for prior in $PARAMETER_PRIORS; do
 	MULTI_PARAMETER_MODELS="${MULTI_PARAMETER_MODELS} ppm_multi_optimal_alpha_beta:depths=${PARAMETER_DEPTHS}:granularity=${PARAMETER_GRANULARITY}:prior=${prior}"
 done
 #cd $BASE/experiments/tables
-#${OPTIMISE} ${MULTI_PARAMETER_MODELS} --include training/* 
+#${OPTIMISE} ${MULTI_PARAMETER_MODELS} --include training/*
 #for model in $MULTI_PARAMETER_MODELS; do
 #	mv ${model}.csv training_${model}.csv
 #done
@@ -81,7 +81,6 @@ for base in ${BASE_MODELS}; do
 	LZW_MODELS="${LZW_MODELS} lzw_${base}"
 	PPM_MODELS="${PPM_MODELS} ppm_training_group_opt_${base} ppm_test_group_opt_${base}"
 done
-#TODO: update once you know optimal depth for the new Polya models 
 PPM_MODELS="${PPM_MODELS} ppm6_uniform_byte ppm4_uniform_token ppm4_polya_token ppm4_polya_stoken_uniform_token ppm4_polya_stoken_uniform_byte ppm5_uniform_byte ppm5_uniform_token ppm5_polya_token ppm5_polya_stoken_uniform_byte ppm5_polya_stoken_uniform_token"
 PPM_DETAILED_MODELS=""
 for d in 1 2 3 4 5 6 7 8 9; do

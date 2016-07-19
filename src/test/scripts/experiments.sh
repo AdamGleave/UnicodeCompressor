@@ -77,12 +77,12 @@ LZW_MODELS="none_lzw_byte"
 PPM_MODELS=""
 for base in ${BASE_MODELS}; do
 	SINGLE_MODELS="${SINGLE_MODELS} none_${base}"
-	CRP_MODELS="${SINGLE_MODELS} crp_${base}"
-	LZW_MODELS="${SINGLE_MODELS} lzw_${base}"
+	CRP_MODELS="${CRP_MODELS} crp_${base}"
+	LZW_MODELS="${LZW_MODELS} lzw_${base}"
 	PPM_MODELS="${PPM_MODELS} ppm_training_group_opt_${base} ppm_test_group_opt_${base}"
 done
 #TODO: update once you know optimal depth for the new Polya models 
-PPM_MODELS="ppm6_uniform_byte ppm4_uniform_token ppm4_polya_token ppm4_polya_stoken_uniform_token ppm4_polya_stoken_uniform_byte ppm5_uniform_byte ppm5_uniform_token ppm5_polya_token ppm5_polya_stoken_uniform_byte ppm5_polya_stoken_uniform_token"
+PPM_MODELS="${PPM_MODELS} ppm6_uniform_byte ppm4_uniform_token ppm4_polya_token ppm4_polya_stoken_uniform_token ppm4_polya_stoken_uniform_byte ppm5_uniform_byte ppm5_uniform_token ppm5_polya_token ppm5_polya_stoken_uniform_byte ppm5_polya_stoken_uniform_token"
 PPM_DETAILED_MODELS=""
 for d in 1 2 3 4 5 6 7 8 9; do
 	for src in training test; do
@@ -92,4 +92,5 @@ for d in 1 2 3 4 5 6 7 8 9; do
 	done
 done
 REFERENCE_MODELS="ref_bzip2 ref_cmix ref_compress ref_gzip ref_lzma ref_paq8hp12 ref_PPMd ref_SCSU ref_zpaq"
+echo ${BENCHMARK} ${SINGLE_MODELS} ${CRP_MODELS} ${LZW_MODELS} ${PPM_MODELS} ${PPM_DETAILED_MODELS} ${REFERENCE_MODELS} ${EXTENDED_CORPUS} --csv ${BASE}/experiments/tables/benchmark.csv --rerun-errors
 ${BENCHMARK} ${SINGLE_MODELS} ${CRP_MODELS} ${LZW_MODELS} ${PPM_MODELS} ${PPM_DETAILED_MODELS} ${REFERENCE_MODELS} ${EXTENDED_CORPUS} --csv ${BASE}/experiments/tables/benchmark.csv --rerun-errors

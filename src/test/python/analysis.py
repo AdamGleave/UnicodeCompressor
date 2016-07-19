@@ -16,7 +16,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-import argparse, csv, functools, os
+import argparse, csv, functools, math, os
 
 import numpy as np
 
@@ -114,7 +114,8 @@ def autoscale(settings, data):
   for _group, files in settings['files'].items():
     for f in files:
       for a in settings['algos']:
-        subset.append(data[f][a])
+        if math.isfinite(data[f][a]):
+          subset.append(data[f][a])
   return min(subset), max(subset)
 
 def effectiveness_format(x, is_best, scale, leading, fg_cm, bg_cm):

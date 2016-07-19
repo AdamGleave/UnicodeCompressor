@@ -95,5 +95,11 @@ for group, prior in itertools.product(['training', 'test'],
                                        'polya_stoken_uniform_byte', 'polya_stoken_uniform_token']):
   group_parameters(group, prior)
 
+# Optimal parameters for polya_stoken_uniform_token, but with a polya_stoken_uniform_byte base
+COMPRESSORS['ppm_training_group_optut_polya_stoken_uniform_byte'] = (my_compressor, {
+  'base': PRIORS['polya_stoken_uniform_byte'],
+  'algorithms': ['ppm:d=5:a=0.00437641206922:b=0.512045268891']
+})
+
 # For resources.py
 NUM_REPLICATIONS = 5

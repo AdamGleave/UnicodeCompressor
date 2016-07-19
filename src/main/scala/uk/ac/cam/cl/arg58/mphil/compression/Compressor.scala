@@ -149,7 +149,7 @@ class Compressor {
 
   private def uniformSimpleToken(params: String): Unit = simpleTokenBase(FlatSimpleToken.UniformToken)
   private def polyaSimpleToken(params: String): Unit = simpleTokenBase(FlatSimpleToken.PolyaToken(params))
-  private def polyaSimpleTokenUB(params: String): Unit = simpleTokenBase(FlatSimpleToken.PolyaTokenBase(null, params))
+  private def polyaSimpleTokenUB(params: String): Unit = simpleTokenBase(FlatSimpleToken.PolyaTokenBase(SimpleTokenUniformByte, params))
   private def polyaSimpleTokenUT(params: String): Unit = simpleTokenBase(FlatSimpleToken.PolyaTokenBase(null, params))
 
   private def byteBase(model: Distribution[Integer]): Unit = models match {

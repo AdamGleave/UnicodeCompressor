@@ -92,5 +92,4 @@ for d in 1 2 3 4 5 6 7 8 9; do
 	done
 done
 REFERENCE_MODELS="ref_bzip2 ref_cmix ref_compress ref_gzip ref_lzma ref_paq8hp12 ref_PPMd ref_SCSU ref_zpaq"
-echo ${BENCHMARK} ${SINGLE_MODELS} ${CRP_MODELS} ${LZW_MODELS} ${PPM_MODELS} ${PPM_DETAILED_MODELS} ${REFERENCE_MODELS} ${EXTENDED_CORPUS} --csv ${BASE}/experiments/tables/benchmark.csv --rerun-errors
 ${BENCHMARK} ${SINGLE_MODELS} ${CRP_MODELS} ${LZW_MODELS} ${PPM_MODELS} ${PPM_DETAILED_MODELS} ${REFERENCE_MODELS} ${EXTENDED_CORPUS} --csv ${BASE}/experiments/tables/benchmark.csv --rerun-errors

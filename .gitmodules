@@ -1,0 +1,4 @@
+[submodule "src/test/resources/corpora/scripts/gutenberg"]
+	path = src/test/resources/corpora/scripts/gutenberg
+	url = https://github.com/AdamGleave/gutenberg-bulk-downloader
+	branch = adam

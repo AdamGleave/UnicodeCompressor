@@ -1,0 +1,3564 @@
+日本酒（にほんしゅ）は、米を発酵させて作る日本の伝統的な酒の一つである。
+Sake is a traditional alcoholic drink in Japan that is produced by fermenting rice.
+
+日本の酒税法上では清酒（せいしゅ）と呼ぶ。
+It is called seishu in the Japanese Liquor Tax Law.
+
+日本では、一般には単に酒（さけ）またはお酒（おさけ）、日本古語では酒々（ささ）、僧の隠語で般若湯（はんにゃとう）と呼ぶ。
+In Japan, it is called in general simply "sake" or "osake," and "sasa" in old Japanese and "hannyato" in jargon of Buddhism priests.
+
+現代ではポン酒（ぽんしゅ）と呼ばれることもある。
+In modern times, it is sometimes called "ponshu."
+
+約5℃から約60℃まで幅広い飲用温度帯がある（参照：温度の表現（飲用温度））。
+It has a wide temperature range good for drinking, from five degrees centigrade approx. to sixty degrees centigrade approx. (Refer to "Expressions of temperature - drinking temperature.")
+
+同じアルコール飲料を同じ土地で異なった温度で味わうのを常としているのは、世界的に見て日本酒だけである。
+Sake is the only alcoholic drink in the world which is habitually drunk at different temperatures in the same area.
+
+料理で魚介類の臭み消しや香り付けなどの調味料としても使用される。
+It is also used for cooking as seasoning agent for cleaning away odor of fishery products and flavoring.
+
+近年、日本国内での消費は減退傾向にある一方、アメリカ合衆国・フランスを中心とした海外市場では日本酒、とくに吟醸酒・純米吟醸酒の消費が拡大しており、「sake」として知られている。
+Recently, while consumption in Japan shows as declining tendency, consumption of sake, in particular, ginjoshu (high-quality sake brewed at low temperatures from rice grains milled to sixty percent weight or less) and junmai ginjoshu (ginjoshu with no added alcohol) in overseas market has been growing and it is known as "sake."
+
+（参照：日本酒の歴史昭和時代以降）
+(Refer to "History of Sake: Showa Period and On.")
+
+日本酒の歴史を参照。
+Refer to "History of Sake."
+
+日本酒の主な原料は、米と水と麹（米麹）である。
+Principal raw materials of sake are rice, water and koji (malted rice).
+
+それ以外にも酵母、乳酸菌など多くのものに支えられて日本酒が醸造されるので、広義にはそれらすべてを「日本酒の原料」と呼ぶこともある。
+Other than such ingredients, as sake is brewed using many substances such as yeast and lactic acid bacterium, all of them are in certain cases called "ingredients for making sake."
+
+専門的には、香味の調整に使われる「醸造アルコール」「酸味料」「調味料」「アミノ酸」「糖」などは副原料と呼んで区別する。
+Among specialists, "distilled alcohol," "sour agent," "seasoning," "amino acid, " and "sugars," which are used for adjusting the flavor are called auxiliary ingredients in order to distinguish them.
+
+米
+Rice
+
+用途によって、麹米（こうじまい）用と掛け米（かけまい）用の2種類がある。
+Depending on the intended use, there are two types of rice, namely kojimai (rice for koji) and kakemai (rice used to produce moromi or raw unseishu).
+
+麹米には通常酒米（酒造好適米）が使われる。
+For kojimai, sakamai (shuzo kotekimai - literally, rice suitable for brewing sake) is usually used.
+
+掛け米には、全部または一部に一般米（米）が使われるが、特定名称酒の場合、酒米のみが使われることが多い。
+Usually, general-purpose rice is used totally or partially for kakemai, but, in case of sake with a specific class name, often only sakamai is used.
+
+普通酒は麹米、掛け米ともにすべて一般米で造られるのがほとんどである。
+For most futsushu (ordinary sake), general-purpose rice is used for kojimai and kakemai.
+
+しかし、一般米からも高い評価を得る酒が造られている。
+However, even from general-purpose rice, sake that receives high marks of appreciation is produced.
+
+高級酒となるとかつて山田錦一辺倒の傾向すらあった原料米の選び方や使い方も、近年は新種の開発などにより変化が著しい。
+With respect to high-class sake, once Yamadanishiki enjoyed a predominant position, but recently the way of selecting and using rice as raw materials has drastically been changed partly because of the development of new varieties of sakamai.
+
+詳しくは「酒米」参照。
+For more information, refer to "Sakamai."
+
+水
+Water
+
+水は日本酒の80%を占める成分で、品質を左右する大きな要因となる。
+Water is the principal ingredient that makes up eighty percent of sake and an important factor that determines the quality.
+
+水源はほとんどが伏流水や地下水などの井戸水である。
+The water supply source is usually well water such as infiltrated and subsoil water.
+
+条件が良い所では、これらを水源とする水道水が使われることもあるが、醸造所によって専用の水源を確保することが多い。
+In certain places where conditions are met, tap water is the source, many breweries secure a dedicated source of water supply.
+
+都市部の醸造所などでは、水質の悪化のために遠隔地から水を輸送したり、良質な水源を求めて移転することもある。
+With respect to breweries in urban districts, some transport water from a remote locations because of the deterioration of local water quality and some change the brewery location to a location that has a water supply with good quality.
+
+酒造りに使われる水は酒造用水と呼ばれ、仕込み水として、また瓶、バケツの洗浄用水として利用される。
+Water used for brewing sake is called shuzo yosui (literally, water for sake brewing) and used as water for preparation for brewing and water for cleaning bottles and buckets.
+
+蔵元の一部は、仕込み水を商品として販売している。
+Some breweries sell water preparaed for brewing as merchandise.
+
+水の硬度 (水)は、酒の味に影響する要素の一つである。
+The hardness of water is one element that determines the taste of sake.
+
+日本の日常生活では、硬度の測定に硬度 (水)アメリカ硬度を用いているが、醸造業界では長らく硬度 (水)ドイツ硬度を用いてきた。
+In daily life in Japan, we usually use American standards for measuring the hardness of water, but, in the brewery industry, German standards have been used from a long time ago.
+
+最近はアメリカ硬度へ移行する兆しも見受けられる。
+Recently, we can see a shift to American standards.
+
+造られる酒の味は、おおざっぱに言えば、軟水で造れば醗酵の緩い、いわゆるソフトな酒、硬水で造れば醗酵の進んだハードな酒になる。
+With respect to the taste of sake produced, roughly speaking, if soft water is used, so-called soft sake with delayed fermentation is obtained and, if hard water is used, hard sake with progressed fermentation is obtained.
+
+理由は、醸造過程で硬水を使用すると、ミネラルにより酵母の働きが活発になり、アルコール発酵すなわち糖の分解が速く進むからである。
+The reason is that, if hard water is used in the brewing process, yeast becomes vivid because of the existence of minerals and therefore alcoholic fermentation, namely the decomposition of sugar, is expedited.
+
+逆に軟水を使用するとミネラルが少ないため酵母の働きが低調になり発酵がなかなか進まないからである。
+On the contrary, if soft water is used, and the mineral content is little, yeast activity becomes dull and fermentation takes more time.
+
+江戸時代以来、高品質な酒を産出してきた灘五郷では宮水と呼ばれる硬水が使用されていた。
+Nada gogo (literally, five districts in Nada) where high quality sake have been produced since the Edo Period, hard water called Miyamizu have been used.
+
+一方、1897年（明治30年）には広島県の三浦仙三郎により軟水醸造法が開発された。
+On the other hand, in 1897, Senzaburo MIURA, who lived in Hiroshima Prefecture, developed a fermenting technique with soft water.
+
+かつては、硬水が酒造用水としてもてはやされていたが、軟水で醸した酒の味わいが現代人の味覚に合っているとして、近年では軟水も見直されている傾向もある。
+In the past, hard water was used to make much of the shuzo yosui, but, in recent years, new merits of soft water have been discovered and the taste of sake brewed with soft water matches the taste of people today.
+
+古来、酒蔵は川の近くに多い。
+From olden times, a majority of the breweries existed in the vicinity of a river.
+
+これは、酒造用水として川の伏流水を汲み上げることによるもの。
+The reason is to draw infiltrated water up from the river as shuzo yosui.
+
+水は、酒の原材料のなかで唯一、表示義務の対象とされていない。
+Among the raw materials used for sake, water is the only ingredient not included in mandatory information.
+
+したがって、原料水が、井戸水であるか水道水であるかを明らかにする必要は無い。
+Therefore, it is not required to reveal whether water used as raw material for sake is from a well or is tap water.
+
+ただし、酒造用水に課せられている水質基準は、水道水などと比べるとはるかに厳格である。
+However, water quality criteria applied to shuzo yosui is far stricter than for tap water.
+
+酒蔵は、使用する水を事前にそれぞれの都道府県の醸造試験所、食品試験所、酒造指導機関などに送って監査を受けなくてはならない。
+Sake breweries are required to submit water used for brewing to the brewing laboratory, food laboratory, brewing guidance institute, etc., in the prefecture for examination in advance.
+
+監査は以下のような項目で行なわれる。
+Examinations are conducted on the following items:
+
+臭気
+Odor
+
+味覚
+Taste
+
+色度
+Color
+
+濁度
+Turbidity
+
+水素イオン指数
+Hydrogen-ion exponent
+
+塩素イオン
+Chlorine ion
+
+カルシウム
+Calcium
+
+総硬度
+Overall hardness
+
+マグネシウム
+Magnesium
+
+トリクロロエチレン
+Trichlorethylene
+
+リン
+Phosphorus
+
+- 不検出でなければならない。
+should not be detected.
+
+過マンガン酸カリウム消費量
+Amount of consumption of permanganic acid potassium salt
+
+- 不検出でなければならない。
+should not be detected.
+
+- 不検出でなければならない。
+should not be detected.
+
+水銀
+Mercury
+
+鉄
+Iron
+
+- 許容範囲は0.02mg/l以下（水道水では0.3mg/l以下）。
+Acceptable range: 0.02 mg/l or less (for tap water: 0.3 mg/l or less)
+
+- 許容範囲は0.02mg/l以下（水道水では0.3mg/l以下）。
+Acceptable range: 0.02 mg/l or less (for tap water: 0.3 mg/l or less)
+
+中国大陸とは違い、日本の水は各地によって小差はあるもののほとんどが中硬水であり、香味を損ねる鉄分やマンガンの含有量が少ないので、醸造に適していると言える。
+Different from the Chinese continent, water in almost all districts in Japan is medium-hard water, although there is a slight difference depending on the district, and, since the content of iron and manganese that spoils the taste is small, it is suitable for brewing.
+
+太平洋戦争前に満州へ渡り、在留日本人のために当地で日本酒を造ろうとした醸造業者たちが利用できる水を見つけるのに苦労したという話が多い。
+We often hear that breweries that moved to Manchuria before the Pacific War and tried to brew sake for Japanese people who lived there, had difficulty finding water that could be used.
+
+なお、発酵、および麹菌や酵母菌の繁殖を促進するのに有効なだけの微量のカリウム・マグネシウム・リン酸については、成分調整として添加することができる。
+With respect to potassium, magnesium, and phosphoric acid in minute amounts that are effective for fermentation and propagation of aspergillus and yeast, we can add them to adjust the ingredients.
+
+酒造りに用いられる酒造用水は、以下のように分類される。
+Shuzo yosui used for sake brewing is classified as follows:
+
+- 醸造作業の最中に酒のなかに成分として取りこまれる水。
+Water which is used for sake during the brewing process as an ingredient
+
+- 米を洗い、浸しておく水。
+Water that is used for washing and soaking rice
+
+仕込みの前に米の中に吸収される水でもある。
+Also water that is absorbed in rice before preparation for brewing.
+
+- 醸造時に主原料として加える水。
+Water added as main raw materials at the time of brewing
+
+酒が「液体」として商品になるゆえんともいえる。
+We can say that it is one of reasons to make sake a "liquid" merchandise."
+
+- 洗浄やボイラーに用いられる水。
+Water that is used for cleaning and boiler.
+
+これにも、水質で述べられているような厳しい基準を通過した酒造用水が用いられる。
+Even for such purposes, shuzo yosui that has fulfilled the rigid criteria described in the section for water quality, is used.
+
+瓶詰用水
+Water for bottling
+
+‐瓶を洗う水である。
+Water that is used for cleaning bottles
+
+- アルコール度数を調整するために加える水。
+Water that is added to adjust alcohol content
+
+醸造後に酒にとりこまれる。
+It is transformed into sake after brewing.
+
+- タンクやバケツの清掃に用いる水。
+Water that is used for cleaning tanks and buckets
+
+これにも、水質の項で述べられているような厳しい基準を通過した酒造用水が用いられる。
+Even for such purposes, shuzo yosui that has fulfilled the rigid criteria described in the section for water quality, is used.
+
+杜氏や蔵人の日常生活（食事や洗面など）には、一般人のそれと同じく水道水が用いられる。
+For daily life of the toji (chief sake brewer) and other workers in the brewery (for food and washing their hands and face, etc.), tap water is used as it is in lives of other people.
+
+なお、興味深いことに、蔵人たちが入る風呂には酒造用水を用いる酒蔵が多い。
+What is interesting is that, in many sake breweries, shuzo yosui is used in the bath for workers in the brewery.
+
+すでにその段階から「仕込み」が始まっているとの酒蔵の考えによるものであり、縁起かつぎとして行っている。
+It is because of the belief of the sake breweries that the "preparation for brewing" begins already from that stage and they do out of superstition for good luck.
+
+麹
+Koji (malted rice)
+
+日本酒に用いる麹は、蒸した米に麹菌というコウジカビの胞子をふりかけて育てたものであり、米麹（こめこうじ）ともいう。
+Koji used for sake brewing is produced by sprinkling spores of koji mold, namely aspergillus onto steamed rice and it is also called rice koji.
+
+これが米のデンプンをグルコースに変える、すなわち糖化の働きをする。
+Koji converts rice starch into glucose, and carries out saccharification.
+
+穀物である米は、主成分が多糖であるデンプンであり、そのままでは酵母がエネルギー源として利用できない。
+The main ingredient of rice, which is a cereal, is starch, which is a polysaccharide, and it cannot be utilized as source of energy for yeast.
+
+麹の働きによって分子量の小さな糖へと分解せねばならない。
+Therefore, it is necessary to decompose it into sugar having a smaller molecular weight with the action of koji.
+
+言いかえれば、酵母がデンプンから直接アルコール発酵を行うことはできないので、アルコールが生成されるには酵母が発酵を始められるように、いわば下ごしらえとしてデンプンが糖化されなければならない。
+In other words, since yeast cannot carry out alcohol fermentation directly from starch, starch must be saccharified in preparation for fermentation.
+
+その役割を担うのが、日本酒の場合は米麹である。
+In case of sake, rice koji plays such role.
+
+米麹は、コウジカビが生成するデンプンの分解酵素であるアミラーゼやグルコアミラーゼを含んでいる。
+Rice koji contains amylase and glucoamylase, which are degrading enzymes produced by koji mold and degrade starch.
+
+これらの働きによって糖化が行われる。
+Those degrading enzymes carry out saccharification.
+
+米麹は、ほかにタンパク質の分解酵素も含んでおり、分解によって生じたアミノ酸やペプチドは、酵母の生育や完成した酒の風味に影響する（参照：麹造り）。
+Rice koji also contains degrading enzymes for protein and amino acids and peptides produced by degradation have an affect on the growth of yeast and the flavor of the final sake. (Refer to "Producing koji.")
+
+洋酒では、ワインに代表されるように、原料であるブドウ果汁の中にすでにグルコースが含まれているので、わざわざこうした糖化の工程が要らず、そのため単発酵文化圏となった。
+In case of foreign liquors, for example wine, because grape juice as raw material contains glucose, no additional saccharification process is required and zones of culture of single-stage fermentation is formed.
+
+東洋においては、日本酒だけでなく、他の酒類や味噌、みりん、醤油など多くの食品に麹が使われている。
+In the East, koji is used for many food products, not only for sake, but also for other liquors, bean pastes, mirin (sweet cooking rice wine), soy sauces and, etc.
+
+それが食文化的に複発酵文化圏、カビ文化圏などとも呼ばれるゆえんともなっている。
+That is the reason why such zones are called, from the food culture point of view, zones of culture of multiple-stage fermentation or zones of mold culture.
+
+これは東南アジア - 東アジアの中高温湿潤地帯という気候上の特性から可能であった醸造法であり、微生物としての「カビ」の効果を利用したものである。
+This is a method of fermentation that is possible because of climate characteristics of medium- or high-temperature wet zones in the Southeast to East Asia and the method utilizes the effect of "mold" as a microorganism.
+
+東洋で使われる麹菌には数々の種類がる。
+There are various type of aspergillus used in the East.
+
+焼酎には白麹・黒麹（黒麹菌）・黄麹、泡盛には黒麹、紹興酒には赤麹が用いられるのが通常である。
+Typically, white koji, kuro koji (kuro-koji bacterium) and yellow koji is used for shochu (distilled spirit), kuro koji for awamori (distilled spirit originated in Okinawa), and aka koji (ang-khak) for Shaoxing rice wine.
+
+日本酒の場合は味噌、みりん、醤油と同じく黄麹（きこうじ）（黄麹菌、黄色麹菌）が用いられる。
+In case of sake, ki koji (yellow aspergillus) is used the same as in bean paste, mirin, and soy sauce.
+
+ただし、「黄色」と言われるわりには、実際の色は緑や黄緑に近い。
+Although it is called "yellow" koji, its color is actually closer to green or yellow green in reality.
+
+また形状から分類すると、日本で用いられる麹は肉眼で見るかぎり米粒そのままの形をしているため、散麹（ばらこうじ）と呼ばれる。
+If classified by their shapes, koji used in Japan is in the shape of rice grain as it is, as far as can be observed by the naked eye, and, therefore, it is called bara koji (literally, loose koji).
+
+それに対して、中国など他の東洋諸国で用いられる麹は、餅麹（もちこうじ）と呼ばれている。
+On the other hand, koji used in other Eastern countries, including China, is called mochi koji (literally, rice-cake koji).
+
+原料となる米・ムギなど穀物の粉に水を加えて練り固めたものに、自然界に存在するクモノスカビ・ケカビの胞子が付着・繁殖してできるものである。
+It is produced by adding water to raw materials, grain powder such as rice and wheat, and stiffening them by kneading and spores of rhizopus or mucon existing naturally adhere to and grow on it.
+
+主原料ではないが、日本酒造りの大きな要素であるため、ここに記す。
+Although it is not the main raw material, it is noted here because it is an important factor for sake brewing.
+
+詳細は清酒酵母を参照。
+For more information, refer to "Sake yeast."
+
+酵母とは、生物学的には菌類に属する単細胞生物である。
+From the biological point of view, yeast is a monocellular organism that belongs to fungi.
+
+酒造りにおいては、通常は出芽酵母を指す。
+In sake brewing, it usually means budding yeast.
+
+これも何十万を超える種類が自然界に広く存在しており、それぞれ異なった資質をもっている。
+In the natural world, there exist over several hundred thousand types of such yeast, and each has its own quality.
+
+この酵母の多様性が酒の味や香りや質を決定づける重要な鍵となる。
+The diverse qualities of yeast is an important key to determine taste, flavor, and quality of sake.
+
+また多種多様な酵母のなかで日本酒の醸造に用いられる酵母を清酒酵母といい、種は80%以上がSaccharomyces cerevisiae（出芽酵母）である。
+Among the large number of yeasts, yeasts used for sake brewing are called sake yeast and more than eighty percent of the varieties are Saccharomyces cerevisiae (budding yeast).
+
+近代以前は、麹と水を合わせる過程において空気中に自然に存在する酵母を取り込んだり、酒蔵に棲みついた「家つき酵母」もしくは「蔵つき酵母」に頼っていた。
+Prior to the modern era, in the process of mixing koji and water, yeasts naturally existing in the air were taken into or "yeast of the house" or "yeast of a brewing house" were utilized.
+
+その時々の運任せで、科学的再現性に欠けており、醸造される酒は品質が安定しなかった。
+It was left to chance, scientific reproducibility was lacking and the quality of brewed sake could not be stabilized.
+
+明治になると微生物学の導入によって有用な種菌の分離と養育が行われ、それが配布されることによって品質の安定と向上が図られた。
+During the Meiji period, through the introduction of microbiology, selection and breeding of useful seed bacteria and thanks to distribution of such seed bacteria, the stabilization of and improvement in quality could be realized.
+
+1911年（明治44年）第1回全国新酒鑑評会が開かれると、日本醸造協会が全国レベルで有用な酵母を収集するようになり、鑑評会で1位となるなどして客観的に優秀と評価された酵母を採取し、純粋培養して頒布した。
+After the first Zenkoku Shinshu Kanpyokai (National New Sake Appraising and Deliberating Fair) was held in 1911, the Brewing Society of Japan commenced to collect useful yeasts nationwide and the yeasts judged objectively to be excellent, for example, by winning the first prize were collected and distributed after cultivating a pure culture.
+
+こうして頒布された酵母には、日本醸造協会にちなんで「協会n号」(nには番号が入る）という名がつけられた。
+Yeast delivered in such a way was named "Sake yeast Kyokai No. n" ("n" stands for a number.) after Nihon Jozo Kyokai (the Brewing Society of Japan).
+
+このような酵母を協会系酵母、または協会酵母という。
+Such yeasts are called Kyokai-line yeast or Kyokai yeast.
+
+アルコール発酵時に二酸化炭素の泡を出す泡あり酵母と、出さない泡なし酵母に大別される。
+It is divided roughly into bubbling yeasts that produce carbon dioxide during alcoholic fermentation and non-bubbling yeasts.
+
+もともとの日本酒は、米のもつ地味な香りだけで、いわゆるワインのようなフルーティーな香りは無い。
+Originally, sake had only the simple fragrance that rice has and does not have a fruity fragrance like wine.
+
+香りをもつようになった吟醸酒・純米吟醸酒を誕生させるのに大きな役割を果たしたのは、協会系酵母のなかの協会系酵母協会7号と協会系酵母協会9号であった。
+Sake yeast Kyokai No. 7 and Sake yeast Kyokai No. 9. among Kyokai-line yeasts played a big role in giving birth to ginjoshu (high-quality sake brewed at low temperatures from rice grains milled to sixty percent weight or less)and junmai ginjoshu that has a fragrance.
+
+1980年代に吟醸酒が消費者層に広く受け入れられると、協会系酵母の他にも、少酸性酵母、高エステル生成酵母、リンゴ酸高生産性多酸酵母といった高い香りを出す酵母が多数つくられた。
+In the 1980's, once ginjoshu was widely accepted by consumers, a large number of yeasts that produce a strong fragrance such as low-acidity yeast, high ester producing yeast, and high malic acid producing high acidity yeast were made in addition to Kyokai-line yeasts.
+
+今も大メーカーやバイオ研究所、大学などでさまざまな酵母がつくられている。
+Even today, various yeasts are created by large manufacturers, biological research institutes, and universities.
+
+1990年代以降は、それぞれ開発地の地名を冠する静岡酵母、山形酵母、秋田酵母、福島酵母なども高く評価されるようになった。
+In and after 1990's, sake yeasts named after the place of development, such as Shizuoka yeast, Yamagata yeast, Akita yeast and Fukushima yeast came to be highly valued.
+
+最近では、アルプス酵母に代表されるカプロン酸エチル高生産性酵母や、東京農業大学がなでしこ、ベコニア、ツルバラの花から分離した花酵母などが、強吟醸香を引き出すのに注目を集めている。
+Recently, attention is focused on the fact that yeasts that produce high content of ethyl caproate represented by alps yeast as well as yeasts from flowers that were separated by Tokyo University of agriculture from flowers of dianthus, begonia and climbing rose extract strong ginjoko (fragrance of ginjo sake).
+
+しかし、日本酒における吟醸香は、ちょうど人が香水をやたらにつければ逆効果であるのに似て、あまり強すぎれば酒の味を損なう。
+Ginjoko with respect to sake, however, similar to the fact that if one applies too much perfume, it gives the opposite effect of what was expected, may spoil the taste of the sake if flavor of ginjoshu is too much.
+
+そこで、強い吟醸香を出す酵母は蔵元に敬遠される一面もある。
+Therefore, under certain situations, yeasts that give too strong of a ginjo fragrance to sake are kept at a distance by breweries.
+
+そういう酵母は、他の酵母とブレンドしたり、鑑評会への出品酒だけに使ったりと、まだ使い方が模索されている途上にあるといってよい。
+With respect to such yeasts, we can say that their use is still in the groping stage, for example blending with other yeasts or limiting its use for sake to be exhibited in kanpyokai (sake exhibition).
+
+自然の乳酸菌を用いる場合もあるが、多くの酒では添加する。
+Although natural lactic acid bacteria are used in certain cases, it is often added.
+
+酵母と同じように、日本醸造協会の「醸造用乳酸」もある。
+Same as with yeasts, there are "lactic acid bacteria for brewing" by the Brewing Society of Japan.
+
+乳酸菌によって生産される乳酸は、他の雑菌が繁殖しないようにするために、とくに仕込みの初期に重要である。
+Lactic acid produced by lactic acid bacteria plays an important role especially at the initial stage of preparation to prevent propagation of other bacteria.
+
+また、乳酸を始めとする酸が、酒に“腰”を与える。
+Acids including lactic acid gives "koshi" to sake.
+
+もし酸が全くなければ、酒はただ甘いだけのアルコール液になってしまう。
+If sake includes no acid whatsoever, it becomes just sweet water including alcohol.
+
+酒造りでは、ほどよく酸を出すことも重要である。
+In sake brewing, it is important to appropriately produce acids.
+
+正式には副原料に区分されるもの。
+Items which are classified officially as auxiliary materials
+
+〈ラベルに表示される項目〉
+(Items to be denoted on the label)
+
+‐すっきりした味わいにするため、あるいは香りを残すためにもろみに加えられる。
+It is added to moromi (raw unseishu) to give an elegant taste to sake or to cause the fragrance to remain.
+
+単に増量のために加えられることもある（三倍増醸清酒）。
+In certain cases, distilled alcohol is added just to increase the volume (three-time increased sake).
+
+加えられたものはアル添酒と呼ばれる。
+Sake added with distilled alcohol is called arutenshu (literally, sake added with alcohol).
+
+糖類
+Sugar
+
+‐酒に甘みを付け加える。
+Sugar adds sweetness to sake.
+
+また、糖化液として加えられ、それを発酵させる場合もある。
+In certain cases, sugar is added as a saccharified solution and fermented.
+
+‐酒に旨みを付け加える。
+Amino acid adds umami to sake.
+
+- 酒に旨みを付け加える。
+Flavoring adds umami to sake.
+
+- 酒に酸味を付け加える。
+Sour agent adds sour taste to sake.
+
+＜ラベルに表示されない項目＞
+(Items not denoted on the label)
+
+‐麹菌が造る「酵素」を補うためなどに「酵素剤」を使用することがある。
+In certain cases, exogenous enzyme is used to supplement the "enzyme" produced by aspergillus.
+
+原料重量の 1,000分の1 以下の場合、原料として扱われない。
+If the weight is less than one thousandth of that of raw materials, it is not treated as a raw material.
+
+- 酒の雑味を取る。
+It is used to remove zatsumi (unfavorable taste in sake).
+
+使いすぎると酒自体の味が薄くなる。
+If too much activated charcoal is used, the taste of sake becomes thin.
+
+清澄剤
+Fining agent
+
+ろ過助剤
+Filter aid
+
+日本酒はビールやワインとおなじく醸造酒に分類され、原料を発酵させてアルコールを得る。
+Sake is classified as a brewage same as beer and wine and alcohol is obtained by fermenting raw materials.
+
+しかし、日本酒やビールはワインと違い、原料に糖を含まないため、糖化という過程が必要である。
+Different from wine, however, in the case of beer and sake, as no sugar is included in the raw materials, but the process of saccharification is necessary.
+
+ビールの場合は、完全に麦汁を糖化させた後に発酵させるが、日本酒は糖化と発酵を並行して行う工程があることが大きな特徴である。
+Although in the case of beer, sweet wort is fermented after it is completely saccharified, this is a significant feature of sake brewing that a process in which saccharification and fermentation are carried out in parallelism, exists.
+
+並行複発酵と呼ばれるこの日本酒独特の醸造方法が、他の醸造酒に比べて高いアルコール度数を得ることができる要因になっている。
+This unique brewing method for sake, called parallel multi-stage fermentation, is the factor that makes it possible for it to have a higher alcohol content than other brewages.
+
+日本酒は、次の過程を経て醸造される。
+Sake is brewed through the following stages during the process.
+
+玄米から糠・胚芽を取り除き、あわせて胚乳を削る。
+Bran and embryo are removed and albumen is scraped.
+
+削られた割合は精米歩合によって表わされる。
+The ratio of scraping is denoted as the rice-polishing ratio.
+
+米に含まれる蛋白質・脂肪は、米粒の外側に多く存在する。
+Protein and oil contained in rice exists mainly in the outer portion of the grain of rice.
+
+醸造の過程において、蛋白質・脂肪は雑味の原因となるため、米が砕けないよう慎重に削り落とされ、それにより洗練された味を引き出すことができる。
+In the brewing process, as protein and oil cause zatsumi, they are scraped off carefully so that the grains of rice are not fractured in order to produce a sophisticated taste.
+
+その反面、精米歩合が高くなればなるほど米の品種の個性が生かしにくくなり、発酵を促すミネラル分やビタミン類も失われるので、後の工程での高度な技術が要求されることになる。
+On the other hand, the higher the rice-polishing ratio, the more difficult to use most of characteristics of the varieties of rice and the more minerals and vitamins, which promote fermentation, are lost, a highly sophisticated technique is required for subsequent stages.
+
+精米の速度が速すぎると、米が熱をもって変質したり、砕けて使い物にならなくなるので、細心の注意をもってゆっくり行なわなくてはならない。
+If the speed of rice polishing is too high, rice generates heat and degenerates or becomes fractured and becomes unusable, it should be carried out carefully.
+
+吟醸、大吟醸となると、削りこむ部分が大きいだけでなく、そのぶん対象物が小さくなって神経も使うので、精米に要する時間は丸二日を超えることもある。
+With respect to ginjo and daiginjo, the problem is that not only the portion to be scraped off is large, but also the object becomes smaller and requires special attention, the time needed for rice polishing sometimes exceeds two full days.
+
+1930年（昭和5年）ごろ以降は縦型精米機の出現により、より高度で迅速な精米作業が可能になった。
+Since around 1930, thanks to emergence of an upright rice polisher, faster high grade rice polishing became possible.
+
+ひいてはのちの吟醸酒の大量生産を可能にした（参照：吟醸酒の誕生）。
+Later, this also made mass production of ginjoshu possible. (Refer to "Birth of Ginjoshu.")
+
+最近ではこの縦型精米機をコンピュータで制御して精米している大メーカーもある。
+Recently, there are large manufacturers who polish rice by controlling the upright rice polisher with a computer.
+
+精米後の白米、分け後の酒母、出麹後の麹を次の工程で使用されるまで放置すること。
+"Horei" (sanding to cool) or "karashi" means to leave white rice after polishing, sake mash after wake and koji after koji delivery as they are until using in the next stage.
+
+精米された米はかなりの摩擦熱を帯びている。
+Polished rice carries certain a degree of heat caused by friction.
+
+精米歩合が高く、精米時間が長ければ長いほど、帯びる熱量も大きくなる。
+The higher the rice-polishing ratio is or the longer the time of rice-polishing is, the bigger the heat volume will be.
+
+そのままでは次の工程へ進むには米の質が安定していない（杜氏や蔵人の言葉では「米がおちついていない」）ため、袋に入れて倉庫のなかでしばらく冷ますことになる。
+As the quality of rice is not stabilized as it is to proceed to the next stage (according to the language of toji and other workers in the brewery "the rice is not settled."), it is put into bags and left in the warehouse for a while to cool down.
+
+また、摩擦熱によって蒸発した水分を元に戻す。
+Moisture evaporated by heat caused by friction is restored.
+
+これを放冷（ほうれい）、また杜氏・蔵人の言葉では枯らし（からし）という。
+Such a step is called "horei" or, in the language of toji and other workers in brewery "karashi."
+
+「しばらく」と言っても数時間単位で済む作業ではなく、摩擦熱が放散しきって完全に米が落ち着くまで通常3週間から4週間はかかる。
+Even if we say "for a while," this work cannot be completed within several hours, it takes usually three to four weeks until heat caused by friction is totally radiated and the rice settles down.
+
+精米された米は、精米の過程で表面に付いた糠・米くずを徹底的に除去される。
+With respect to the polished rice, bran and rice powder adhering to the surface in the rice polishing process are thoroughly removed.
+
+これが洗米（せんまい）である。
+This is called rice washing.
+
+普通酒を造る米などは、機械で一度に大量に洗米される。
+Rice for producing futsushu is washed in large quantity at a time using machines.
+
+他方、高級酒を造る米は、手作業でおよそ10kgぐらいずつ、5℃前後の冷水で、流れる水圧を利用して少しずつ洗われる。
+On the other hand, rice used for producing high-class sake is manually washed in a quantity of approximately ten kilograms using cold water with a temperature of around five degrees centigrade utilizing water pressure of flowing water.
+
+洗っている間にも米は必要な水分を吸収しはじめており、「第二の精米作業」と言われるほどに、細心の注意を払う工程である。
+Even while washing rice, rice begins to absorb moisture and this step requires utmost attention as seen from the fact that it is called the "second rice washing stage."
+
+こうして洗われた米は浸漬へ回される。
+Rice washed in such way is sent to a soaking process.
+
+洗米された米は、水につけられ、水分を吸わされる。
+Washed rice is soaked in water and made to absorb moisture.
+
+これを浸漬（しんせき、若しくはしんし）という。
+This step is called soaking (in Japanese, "shinseki" or "shinsi").
+
+浸漬は、のちのち蒸しあがった米にムラができないように、米の粒全般に水分を行き渡らせるために施される工程である。
+Soaking is a step used to make moisture penetrate throughout the whole rice grain so that steamed rice should not have any unevenness.
+
+水が、米粒の外側から、中心部の酒米構造（杜氏蔵人言葉では「目んたま」）と呼ばれるデンプン質の多い部分へ浸透していくと、米粒が文字通り透き通ってくる。
+When water has penetrated from the outside of a rice grain into the central structure of sakamai (rice for brewing sake) where starch content is high (according to the language of toji and other workers in brewery "mentama" (literally, "eyeball"), the rice grain become literally transparent.
+
+米の搗（つ）き方、その日の天気、気温、湿度、水温などさまざまな条件によって、浸漬に必要な時間は精緻に異なる。
+The time required for soaking differs subtly depending on various conditions such as the method of rice polishing, as well as weather, air temperature, humidity and water temperature of the day.
+
+冬の厳寒のさなかの手仕事である。
+It is manual work that is carried out in the coldest part of the year.
+
+このとき、米にどれだけ水を吸わせるかによって、できあがりの酒の味が著しく違ってくる。
+The taste of produced sake remarkably differs depending upon to what degree rice has absorbed water.
+
+米の品種や、目指す酒質によって、浸漬時間も数分から数時間と幅広い。
+The time used for soaking widely ranges from several minutes to several hours depending upon the variety of rice and the targeted quality of sake.
+
+精米歩合が高い米ほど、その違いが大きく結果を左右するので、高級酒の場合はストップウォッチを使って秒単位まで厳密に浸漬時間を管理する。
+The higher the rice-polishing ratio is, the more the difference influences the results, the soaking time is controlled very strictly on the second time scale using a stop watch especially in the case of high-class sake.
+
+米は水からあげた後もしばらく吸水しつづけるので、その時間も計算に入れた上で浸漬時間は判断される。
+As rice continues absorbing water even after having been removed from the water, the soaking time is determined taking such time into consideration.
+
+なお、できあがりの酒質のコンセプトによっては、意図的に途中で水から上げるなど、ある一定の時間だけ米に吸水させる。
+Depending upon the concept for quality of produced sake, rice is made to absorb water for a limited time by intentionally taking it out of the water.
+
+これを限定吸水（げんていきゅうすい）という。
+Such way is called "gentei kyusui" (literally, limited water absorption).
+
+浸漬を経た米は広げて、湿度を保たせる。
+After soaking, rice is spread to maintain humidity.
+
+このあいだも米は水分を吸収し続ける。
+Even during this time, rice continues absorbing moisture.
+
+その後、麹の酵素が米のデンプンを分解しやすくさせるために、米を蒸す。
+After that, rice is steamed so that the rice starch will be easily decomposed by the koji enzyme.
+
+この工程を正式には蒸きょう（じょうきょう：「きょう」は「食へんに強」）、もしくは杜氏蔵人言葉で蒸しという。
+This step is officially called "jokyo" ("kyo" is composed of a left radical "食" (eating or food) and a right radical "強" (strong), or "mushi" (steaming) by the language of toji.
+
+普通酒などでは自動蒸米機（じどうじょうまいき）という機械で蒸す。
+For futsushu, rice is steamed with a machine called an automatic rice steamer.
+
+高級酒などでは和釜に載せた甑（こしき）という大きな蒸籠（せいろ）に移して、約1時間ほど乾燥蒸気で蒸す。
+For high-class sake, rice is put into a large-sized steamer called "koshiki" that is placed on a Japanese-style pot and steamed with dry steam for approximately one hour.
+
+蒸しあがった米は、「外硬内軟」といって、外側がパサパサとしていて内側が柔らかいのがよいとされている。
+Steamed rice is judged good if it is "gaiko nainan" (literally, hard outside and soft inside), in other words, the outside is dried out and the inside soft.
+
+外側が溶けていると、コウジカビの定着の前に腐敗が始まる恐れがあり、また、内側に芯が残っていると、米で一番良質のデンプン質を含んだ部分が、糖化・発酵しない可能性があるからである。
+The reasons are; if the outside is melted, there is a risk of decomposition before koji aspergillus settles down and, if the inside of rice is half-cooked, the part where the best quality starch is included may not be saccharized and fermented.
+
+なお、和釜から甑を外すことを甑倒し（こしきだおし）という。
+The action to remove the koshiki from the pot is called "koshikidaoshi" (literally, toppling down koshiki).
+
+それは単に蒸しの作業が終わることだけでなく、杜氏や蔵人たちにとっては気の抜けない酒造りの季節が終わり、ほっと一息つく日の到来をも意味する。
+It means not only completion of steaming, but also, for toji and other workers in the brewery, the end of the season for sake brewing, during which they are not allowed to relax their attention, has come to the end and the arrival of the day when they can give themselves a break.
+
+麹とは、蒸した米に麹菌というコウジカビの胞子をふりかけて育てたもので、米のデンプンをグルコースへ変える糖化の働きをする（詳しくは麹参照）。
+Koji is produced by sprinkling koji mold spores, namely aspergillus onto steamed rice to breed them and it works to carry out the conversion of the starch in rice into glucose, namely carries out saccharification. (For more information, refer to "Koji.")
+
+麹造りは正式には製麹（せいぎく）という。
+Officially, the step koji production is called "seigiku" in the Japanese language.
+
+口嚼ノ酒（くちかみのさけ）とカビの酒で醸されていた原初期の日本酒をのぞいて、奈良時代の初めにはすでに麹を用いた製法が確立していたと考えられる。
+Other than sake in the initial stage in which sake was brewed as kuchikami-no-sake (sake by mouth-chewing) and kabi-no-sake (literally, sake from mold), sake brewing using koji was established by the beginning of the Nara period.
+
+以来、永らく麹造りは、酒造りの工程に占める重要性と、味噌や醤油など他の食品への供給需要から、酒屋業とは別個の専門職として室町時代まで営まれてきた。
+For a long time since, until the Muromachi period, koji production was operated by specialists who were independent from sake traders because of its importance for the process of sake brewing and the supply and demand for other foodstuffs such as miso and soy sauce.
+
+1444年の文安の麹騒動によって酒屋業の一部へと武力で吸収合併された（参照：日本酒の歴史室町時代）。
+Because of the Bunan koji disturbance in 1444, koji production was forced to merge by military force as a part of sake trading (Refer to "History of Sake - Muromachi period).
+
+現在、たいてい酒蔵には麹室（こうじむろ）と呼ばれる特別の部屋があり、そこで麹造りが行なわれている。
+In most sake breweries, there is a special room called "kojimuro" (literally, chamber for koji) where koji production is carried out.
+
+床暖房やエア・コンディショナーなどで温度は30℃近く、湿度は60%以下に保たれている。
+The temperature is kept at around thirty degrees centigrade and the humidity not higher than sixty percent by means of floor panel heating or air conditioning.
+
+温度が高いのは、そうしないと黄麹菌が培養されないからである。
+The high temperature is necessary for yellow koji aspergillus to be cultivated.
+
+また湿度に関しては、それ以上高いと黄麹菌以外のカビや雑菌が繁殖してしまうからである。
+With respect to humidity, the reason is because, if the humidity is higher, mold other than yellow koji aspergillus as well as other bacteria, may propagate.
+
+入室には全身の消毒が必要で、関係者以外は入れない。
+To enter the room, whole body sterilization is required and none other than people concerned are allowed to enter the room.
+
+それに加え、室外から雑菌が入り込まないように二重扉、密閉窓、断熱壁など、かなりの資本をかけて念入りに造られている。
+In addition, to prevent sundry bacteria to enter from the outside of the room, the room is made carefully by investing a certain amount of capital for double doors, sealable windows, adiabatic walls, etc.
+
+よく「麹室は酒蔵の財産」と言われる。
+Often, it is said "kojimuro is a precious property of brewery."
+
+「麹」の項に詳しく述べられているように、麹からは糖化作用のためのデンプン分解酵素のほか、タンパク質分解酵素なども出ており、これらが蒸し米を溶かし、なおかつ酒質や酒味を決めていく。
+As described in details in the section "Koji," koji produces proteolytic enzyme and so on, in addition to amylolytic enzyme for saccharification, and they melt rice and determine the quality and taste of sake.
+
+あまり酵素が出すぎると目指す酒質にならないため、米の溶け具合がちょうどよいところで止まるように麹を造る必要がある。
+As the target quality of sake cannot be obtained if too much enzyme is produced, it is necessary to produce koji in such a way that the degree of melting rice stops at the appropriate point.
+
+それを見極めるのに着目されるのが、米のところどころに生じる破精（はぜ）である。
+In order to judge it, haze, that occurs in several positions on rice, is focused on.
+
+ちょうど植物が土中へ根を生やすように、酵母が蒸米の中へ菌糸を伸ばしていくことを破精込み（はぜこみ）といい、その態様を破精込み具合（はぜこみぐあい）という。
+The action of yeast elongating bacterial threads into steamed rice like a plant elongates its roots into the ground is called hazekomi and the conditions of hazekomi is called hazekomi conditions.
+
+破精込み具合によって麹は次のように分類される。
+Koji is classified as follows by hazekomi conditions.:
+
+酵母の菌糸は蒸米の表面全体を覆うことなく、破精の部分とそうでない部分がはっきり分かれており、なおかつ菌糸は蒸米の内部奥深くへしっかり喰いこみ伸びている状態。
+The condition in which bacterial threads of yeast do not cover the whole surface of steamed rice and the portions with haze and other portions are clearly separated and bacterial threads are elongated intruding firmly and deeply into the inside of steamed rice
+
+強い糖化と、適度なタンパク質分解力を持つ理想的な麹となり、淡麗で上品な酒質に仕上がるため、一般的な傾向としては吟醸酒によく使われる。
+Koji with ideal conditions having strong power for saccharification and appropriate protelolytic ability is obtained gives clear and smooth, elegant sake quality, it is used for ginjoshu as a general tendency.
+
+酵母の菌糸が蒸米の表面全体を覆い、内部にも深く菌糸が喰いこんでいる状態。
+The condition in which bacterial threads of yeast cover the whole surface of steamed rice and bacterial threads have intruded inside.
+
+糖化力、タンパク質分解力ともに強いが、使用する量によっては味の多い酒になりやすい。
+It has a powerful strength for saccharification and proteolytic ability and, depending on the quantity of used koji, it tends to result in sake with various tastes obtained.
+
+濃醇でどっしりした酒質に仕上がるため一般に純米酒に好んで使われる。
+As produced sake has deep flavor and tasteful quality, it is preferred for producing junmaishu (sake made without added alcohol or sugar)
+
+酵母の菌糸は蒸米の表面全体を覆っているが、内部には菌糸が深く喰いこんでいない状態。
+The condition in which bacterial threads of yeast cover the whole surface of steamed rice, but bacterial threads have not intruded deep inside
+
+糖化力、タンパク質分解力ともに弱く、粕歩合が高く、力のない酒になりやすい。
+Both the power for saccharification and proteolytic ability are weak and its ratio of lees is high and it tends to result in weak sake.
+
+前の工程、蒸しの段階で手加減を間違えたため、蒸米がやわらかすぎて、表面にも内部にも菌糸が喰いこみすぎ、グチャグチャになった状態。
+Condition in which koji is in a mushy state as the steamed rice is too soft and bacterial threads intrude too much into both the surface and the inside because of an error in adjustment during the preceding step when steaming rice.
+
+こうなると雑菌に汚染されている危険もある。
+Under such conditions, there is a risk that koji has been contaminated by various bacteria.
+
+酒造りには通常使えない。
+Generally speaking, it cannot be used for sake brewing.
+
+杜氏や蔵人のあいだではよく「一、麹。二、酛（もと）。三、造り。」と言われる。
+Among toji and other workers in a brewery, it is said "First, koji. Second, moto (sake mash), and Third, tsukuri" (preparation).
+
+「よい麹ができれば酒は七割できたも同然」という杜氏や蔵人もいるくらいで、酒造りの根本として重要視される。
+In sake brewing, great importance is attached to koji as the basis for sake brewing as certain toji and other workers in a brewery who say "If we can obtain good koji, sake is seventy percent made."
+
+目安としては蒸し米30kgにつき約1坪のスペースが必要で、また大吟醸酒・純米大吟醸酒などでは蒸し米100kg当たりに振りかける黄麹菌は5gほどである。
+As a guide, a space of approximately 3.3 square meters is needed for 30 kg of steamed rice and, for daiginjoshu or junmai daiginjoshu, approximately 5 g of yellow aspergillus is sprinkled on 100 kg of steamed rice.
+
+目指す酒質によって、麹造りには以下のような方法がある。
+Depending on the target sake quality, a method for producing koji is chosen from the following:
+
+蓋麹法（ふたこうじほう）は、主に吟醸酒かそれ以上の高級酒のための方法である。
+Futa koji method is a method used mainly for ginjoshu or higher quality.
+
+麹造りに要する時間は丸2日以上、だいたい50時間で、おおかた以下のような順番で作業がおこなわれる。
+Time needed to produce koji is not shorter than two days, approximately fifty hours and the process is carried out in the following order:
+
+種切り まだ35℃近くの蒸し米を薄く敷き詰め、篩（ふるい）から種麹（たねこうじ）、すなわち粉状の黄麹菌を振りかけていく。
+"Tanekiri" - In this process, steamed rice, which is as warm as approximately thirty-five degrees centigrade is spread and seed koji, namely powder-like yellow aspergillus is sprinkled using a sieve.
+
+終わると米を大きな饅頭のように中央に集めて布で包む。
+After sprinkling, rice is gathered in the center forming a big bun-like shape and wrap with a cloth.
+
+切り返し 種切りから8 - 9時間経つと、黄麹菌の繁殖熱により水分が蒸発し米が固くなっている。
+"Kirikaeshi" - After eight to nine hours has elapsed from "Tanekiri," the rice has become hard because moisture has evaporated from heat generated by the breeding yellow aspergillus.
+
+いったん広げて熱を放散させたうえで、ふたたび大きな饅頭にして包む。
+Rice is spread once to diffuse the heat and, then, it is gathered in the form of a big bun and wrapped again.
+
+盛り 翌日あたりになると黄麹菌の活動が盛んになり、米の温度も上昇がいちじるしい。
+"Mori" (literally, "filling") - From around the next day, yellow aspergillus become active and the rise of the temperature of rice is remarkable.
+
+そこで大きな饅頭を解き、小さな箱に米を少量ずつ小分けにしていき、この箱を決められたスペースに積み重ねて管理する。
+Then, the big bun is loosened and rice is put into small boxes in small quantity and such boxes are stacked in predetermined space and controlled.
+
+この小さな箱のことを麹蓋（こうじぶた）といい、麹蓋に米を盛りつけることからこの工程を盛りと呼ぶ。
+This small box is called "kojibuta" and since rice fills the kojibuta, this process is called "mori (literally, "filling")."
+
+非吟醸系の酒の場合、麹蓋は使われないことも多い。
+In the case of non-ginjo sake, kojibuta is not used in may cases.
+
+積み替え 盛りから3 - 4時間経つと、ふたたび米が熱を持ってくるので、麹蓋を上下に積み替えて温度を下げる。
+"Tsumikae" (literally, "re-stacking") - In three to four hours after mori, heat is accumulated in rice again and the order of stacking of kojibuta is changed to lower the temperature.
+
+仲仕事（なかしごと） ふたたび熱を散らすために米を広げて温度を下げる。
+"Nakashigoto" (literally, "intermediate work") - In order to disperse heat again, rice is spread and its temperature is lowered.
+
+仕舞い仕事（しまいしごと） また熱を散らすため、米を広げる。
+"Shimaishigoto"(literally, "final work") - In order to further disperse heat, rice is spread and its temperature is lowered.
+
+これで米の熱を散らす作業は終わりという意味から仕舞い仕事と呼ぶのだが、実際上はこれが最後ではない。
+This process is called shimaishigoto meaning that it is the final work to disperse heat of rice, but, in fact, it is not final.
+
+最高積み替え 仕舞い仕事のあとも米の温度はさらに上がる。
+"Saiko tsumikae" - Even after shimaishigoto the temperature of rice continues to increase.
+
+温度が最高になったときに、最後の温度調整のために麹蓋の上下積み替えをおこなう。
+When the temperature reaches its maximum, the order of stacking kojibuta is changed for final temperature adjustment.
+
+温度が最高になったときに行なうので最高積み替えという。
+As it is carried out when the temperature reaches the maximum ("saiko" in Japanese), it is called saiko tsumikae.
+
+この後も何回か米の温度を見て、適宜に積み替えをして温度を下げる作業が続く。
+Even after this, work to lower the temperature by appropriately changing the order of stacking is continued in order to check the temperature of the rice several times.
+
+出麹（でこうじ） 50時間ほど経過したころになると、栗を焼いたような香ばしい匂いがしてくる。
+"Dekoji" (literally, "taking out koji") - After around fifty hours have elapsed, a fragrant flavor like that of roasted chestnuts comes out.
+
+これが麹ができたサインとなる。
+This is the sign of completion of koji manufacturing.
+
+こうなったら麹室から麹を出す。
+Such condition is reached, koji is removed from kojimuro.
+
+箱麹法（はここうじほう）は、蓋麹法から「3. 盛り」以降を簡略化する手法で、普通酒を中心とした酒質に用いられる。
+Hako koji method is a technique in which the procedures of "3. Mori" and after that in futa koji method are simplified and it is used for sake quality centering on futsushu.
+
+麹蓋を大きくしたような麹蓋をつかって米を小分けするが、大きい分だけ一度に処理できる米の量が増え、ひいては手間やコストの低減化につながる。
+Rice is separated into small lots using kojibako, that is bigger than kojibuta, and amount of rice that can be processed at a time increases because the kojibako is bigger, resulting in decrease in required labor and lowering of costs.
+
+床麹法（とここうじほう）は、麹蓋や麹箱を用いずに、麹蓋（こうじどこ）などと呼ばれる、米に黄麹を振りかける台で米の熱を放散させて造る方法である。
+The Toko koji method is a method where no kojibuta or kojibako is used, but heat of rice is dispersed on kojidoko (a board on which yellow aspergillus is sprinkled onto rice).
+
+普通酒を中心とした酒質に用いられる。
+It is used for sake quality centering on futsushu.
+
+機械製麹法（きかいせいぎくほう）は、機械を用いて麹を大量生産できる方法。
+Kikai seigikuho is a method to produce koji in a large lot using machines.
+
+手間がかからず生産コストは抑えられるが、できる酒質には限界があるので、高級酒には適さないとされる。
+It requires less labor enabling to keep manufacturing cost at a low level, but, as there are certain limits for producing quality sake, it is understood as not suitable for high-class sake.
+
+普通酒を中心とした酒質に用いられる。
+It is used for sake quality centering on futsushu.
+
+酵母を増やす行程のこと。
+This is a process for increasing sake yeast.
+
+杜氏・蔵人言葉では「酛立て」（もとだて）という。
+According to the language of toji and other workers in a brewery it is also called "motodate."
+
+酵母にはグルコースをアルコールに変える働き、すなわち発酵作用があるものの、酒蔵で扱うような大量の米を発酵させるためには、微生物である酵母が一匹や二匹ではまったく不十分で、米の量に見合っただけの何百億、何千億匹もの酵母が必要となる。
+Although yeast has the function to change glucose into alcohol (namely, the action of fermentation), in order to make rice ferment in such large amounts that are handled in a brewery, one or two yeasts, that are microorganisms, are quite insufficient and yeasts in the order of several tens or hundreds of billions are required corresponding to the amount of rice.
+
+だが、じっさいの酵母の数を数える単位は匹ではなくcellという。
+In reality, however, the number of yeasts is not calculated one by one, but as a unit called "cell."
+
+こうした状況のなかで酒蔵では、アンプルに入っている少量の協会系酵母を特定の環境で大量に育てることになる。
+Under the circumstances, breweries are obliged to breed a small quantity of Kyokai sake yeast in a large amount under specific environmental conditions.
+
+このように大量に培養されたものを酒母（しゅぼ / もと）または酛（もと）という。
+Yeasts bred in such large quantities are called sake mash (in Japanese, "shubo" or "moto").
+
+作業としては、まず酛桶（もとおけ）と呼ばれる高さ1mほどの桶もしくはタンクに、麹と冷たい水を入れ、それらをよく混ぜる。
+The work begins with a process to put koji and cold water into a tub or a tank, which is called motooke, about one meter high and mixing them well.
+
+すると水麹（みずこうじ）と呼ばれる状態のものができあがる。
+Then, interim product called mizukoji (literally, water-like koji) is obtained.
+
+酛桶は、最近では高品質のステンレス鋼のものが多く、どうみても「タンク」といった風体だが、醸造器としてはあくまでも「酛桶」という。
+Recently, motooke made of high-quality stainless steel is mainly used and, although it looks like a "tank, "it is called "motooke" as a piece of equipment used for sake brewing.
+
+そのあと水麹に醸造用乳酸と、採用すると決めた酵母を少量だけ入れる。
+Brewing lactic acid and a small quantity of adopted yeast are added to mizukoji.
+
+採用する酵母は、多種多様な清酒酵母から、造り手が目指す酒質に適すると考えるものが通常は一種類だけ選ばれる。
+Usually, only one type of yeast, which is considered best suiting the sake quality targeted by the sake manufacturer, is chosen from various sake yeasts.
+
+その酵母があまりにも強い特性を持つ場合などには、それを緩和するためにもう一種類の酵母をブレンドして入れることも多い。
+In a such case as the yeast chosen has overly unique characteristics, however, it is often blended with another type of yeast to dilute it.
+
+上記のものに蒸し米を加えると酒母造りの仕込みは完成する。
+By adding steamed rice to the above-mentioned interim product, the preparation of sake mash-making is complete.
+
+あとは製法によって2週間から1ヶ月待つと、仕込まれた桶のなかで酵母が大量に培養され酒母すなわち酛の完成となる。
+Depending upon the production method, it is left for a period from two weeks to one month as it is and a large quantity of yeast is bred in the tub used for the preparation and the production of sake mash, or moto is completed.
+
+酒母造りの場所は、酒母室（しゅぼしつ）もしくは酛場（もとば）と呼ばれ、雑菌や野生酵母が入り込まないように室温は5℃ぐらいに保たれている。
+Places used for sake mash-making are called shuboshitsu (literally, chamber of sake mash) or motoba (literally, place of sake mash) and the room temperature is kept around five degrees Celsius so that no undesirable bacteria or natural yeast will enter.
+
+しかし麹室に比べると管理の厳重さを必要としないので、酒蔵によっては見学者を入れてくれるところもある。
+Compared to kojimuro, however, as strict control is not required, certain breweries allow visitors to enter.
+
+酒母室のなかでは、酵母が発酵する小さな独特の音が響いている。
+In shuboshitsu, a unique sound produced by the yeast is heard.
+
+酒母造りの際には、タンクの蓋は開け放しの状態になるから、空気中からタンク内にたくさんの雑菌や野生酵母が容易に入り込んでくる。
+During sake mash-making, as the cover of the tank is left open, a lot of undesirable bacteria or natural yeast in the air easily enter into the tank.
+
+そのため硝酸還元菌や乳酸菌を加え、乳酸を生成させることによって雑菌や野生酵母を死滅させ駆逐することが必要となる。
+Therefore, it becomes necessary to kill or get rid of undesirable bacteria or natural yeast by adding nitrate reducing bacteria or lactobacillus in order to produce lactic acid.
+
+この乳酸を、どのように加えるかによって、酒母造りは大きく生酛系（きもとけい）と速醸系（そくじょうけい）の2つに分類される。
+Depending upon the way of adding lactic acid, sake mash-making is classified into two methods, the kimoto-kei (Kimoto system) and the Sokujo-kei (Sokujo system).
+
+生酛系（きもとけい）の酒母造りは現在大きく生酛（きもと）と山廃酛（やまはいもと）に分けられる。
+At present, sake mash-making of the kimoto-kei is classified into two methods, Kimoto and Yamahaimoto.
+
+生酛（きもと）とは、現在でも用いられる中で最も古くから続く製法で、乳酸菌を空気中から取り込んで乳酸を作らせ、雑菌や野生酵母を駆逐するものである。
+Kimoto is the oldest method among those used today and it takes lactobacillus from the air and allows it to produce lactic acid to get rid of undesirable bacteria and natural yeast.
+
+酒母になるまでの所要期間は約1ヶ月。
+It takes approximately one month until sake mash is obtained.
+
+所要期間が長いのは、工程が多く手間がかかるのと、醗酵段階も完全醗酵させるからである。
+The reasons for the long period required for this process are the many steps requiring much labor and fermentation which is carried out completely.
+
+現在でも時間や労力がかかるので敬遠される傾向にある。
+Even today, there is a tendency to hesitate to use this method because the amount of time and labor required.
+
+しかし、成功すればしっかりとした酒質となるため、伝統の復活のために取り組んでいる酒蔵も増えてきている。
+However, the number of breweries that pursue the revival of tradition has been increasing because reliable sake quality is obtained when they succeed.
+
+主な工程は以下の通り。
+The main steps of this process are as follows:
+
+米、麹、水を桶（タンク）に投入 > 山卸 > 温度管理 > 酵母添加 > 温度管理 > 酒母完成
+Rice, koji, and water are put into a tub (tank).-> Yamaoroshi -> Temperature control -> Adding yeast -> Temperature control -> Sake mash-making completed
+
+しかし、腐造や酸敗のリスクが大きかったことから明治42年（1909年）に国立醸造試験所（現在の独立行政法人酒類総合研究所）によって山廃酛が開発された。
+However, as the risk of putrefaction or acidification is large, the National Research Institute of Brewing (presently the National Research Institute of Brewing - NRIB) developed Yamahaimoto in 1909.
+
+次項参照。
+Refer to the next section.
+
+山廃酛（やまはいもと）とは、生酛系に属する仕込み方の一つで山卸廃止酛（やまおろしはいしもと）の略である。
+Yamahaimoto is an abbreviation of Yamaororoshi-haishi-moto that means a method of preparation that belongs to the Kimoto-kei.
+
+この方法で醸造した酒のことを 山廃仕込み（やまはいしこみ / -じこみ）あるいは単に山廃（やまはい）という。
+Sake which is brewed with this method is called Yamahai-shikomi (or -jikomi) or simply Yamahai.
+
+おおざっぱに言えば、生酛造りの工程から山卸を除いたものとなる。
+Roughly speaking, it is a process in which the step of yamaoroshi is excluded from the kimotozukuri.
+
+単に山卸を省略したものではなく、関連するその他の細部の作業もいろいろ異なる。
+However, it is not just the exclusion of yamaoroshi, but also there are other differences in many minor respects.
+
+「山卸」とは米と麹と水を櫂で混ぜる作業のことで「酛すり」ともいう。
+"Yamaoroshi" means working to mix rice, koji and water using an oar-like tool and it is also called "Motosuri."
+
+詳しくは「山廃仕込み」「生酛生酛・山廃・速醸酛の関係」参照。
+For more information, refer to "Yamahaishikomi" and "the Relationship between Kimoto, Yamahai, and Sokujomoto."
+
+速醸系（そくじょうけい）では、乳酸を人工的にあらかじめ加える、近代的な製法。
+Sokujo-kei is a modern method of adding lactic acid artificially in advance.
+
+明治43年（1910年）に考案された。
+It was devised in 1910.
+
+仕込み水に醸造用の乳酸を加え、じゅうぶんに混ぜ合わせた上で、掛け米と麹を投入して行なわれる。
+It is carried out by adding brewing lactic acid to water for preparation and, after mixing well, kakemai and koji are added.
+
+速醸酛（そくじょうもと）とも呼ばれる。
+It is also called sokujomoto.
+
+所要期間は約2週間。
+The time required is approximately two weeks.
+
+現在造られている日本酒のほとんどは、速醸系である。
+Most sake produced today is sokujo-kei.
+
+工程は以下のとおり。
+The process is as follows:
+
+米、麹、水、乳酸を混ぜる > 酵母添加 > 温度管理 > 酒母完成
+Rice, koji, water and lactic acid are mixed. -> Adding yeast -> Temperature control -> Sake mash-making completed.
+
+もろみとは、仕込みに用いるタンクのなかで酒母、麹、蒸米が一体化した、白く濁って泡立ちのある粘度の高い液体のことである。
+Moromi is a white-colored turbid bubbling thick liquid composed of perfectly blended sake mash, koji and steamed rice in a tank used for preparation.
+
+学問的・専門的にではなく、あくまでも一般的理解のためという前提で補足すると、日本酒の製法という文脈に限っては、「醪（もろみ）」＝「仕込み」＝「造り」としてほぼ同意に使われることが多い。
+As a supplement not academic or professional, but for helping the general understanding, limited to the context related to the production method for sake, "moromi," "shikomi" and "tsukuri" are often used meaning the same.
+
+したがってこの醪造りも、単に「造り」と呼ばれる。
+Therefore, "moromizukuri" is also called simply "tsukuri."
+
+「一に麹、二に酛、三に造り」というときの「造り」はこれを意味している。
+When we say "First 'koji,' second 'moto,' and third 'tsukuri', " "tsukuri" is used for this meaning.
+
+またこの造りをおこなう場所を仕込み場（しこみば）という。
+On the other hand, the place for conducing tsukuri is called shikomiba (place for preparation).
+
+現在の仕込み場は、たいてい温度センサーのとりつけられた３段仕込みタンクが並んでいる。
+In most shikomiba today, tanks for three-stage preparation equipped with a temperature sensor, stand one after another.
+
+醪造りの工程においては、酵母のはたらきでもろみがアルコールを生成すると同時に、麹によってデンプンが糖に変わる。
+In the process of moromi zukuri, moromi produces alcohol from the action of yeast and, at the same time, starch is changed into sugar by koji.
+
+この同時並行的な変化が日本酒に特徴的な並行複発酵である。
+This simultaneous change is called parallel multiple fermentation which is unique to sake brewing.
+
+また仕込むときに三回に分けて蒸米と麹を加える。
+In preparation, steamed rice and koji are added in three steps.
+
+これが室町時代の記録『御酒之日記』にもすでに記載されている段仕込みもしくは三段仕込みである。
+This is dan-jikomi (stage-wise preparation) or sandan-jikomi (three-stage preparation) which is described in records from the Muromachi period, "Goshu no nikki (Diary of sake)."
+
+この方法により酵母が活性を失わずに発酵を進めるため、醪造りの最後にはアルコール度数20度を超えるアルコールが生成される。
+With this method, as fermentation is carried out without spoiling the activity of the yeast, alcohol exceeding a concentration of over twenty percent is produced near the end of moromi making.
+
+これは醸造酒としては稀に見る高いアルコール度数であり、日本酒ならではの特異な方法で、世界に誇れる技術的遺産といえる。
+This is exceptionally high alcohol concentration for brewing and is a unique method used only for sake that we can call of a technical heritage which we can be proud of.
+
+1回目を初添（はつぞえ 略称「添」）という。
+The first stage is called "hatsuzoe" (literally, "first adding")(abbreviated as "soe").
+
+踊りと呼ばれる中一日を空けて、2回目を仲添（なかぞえ 略称「仲」）という。
+The second stage, after one day interval called odori (literally, "dancing"), is called nakazoe (literally, "intermediate adding") (abbreviated as "naka").
+
+3回目を留添（とめぞえ 略称「留」）という。
+The third stage is called "tomezoe" (literally, "stopping adding") (abbreviated as "tome").
+
+20 - 30日かけて発酵させる。
+Fermentation is carried out over twenty to thirty days.
+
+吟醸系（吟醸酒・純米吟醸酒・大吟醸酒・純米大吟醸酒）と非吟醸系（それ以外の酒）は、この過程において以下の二つの点で造り方が分かれる。
+Ways of producing ginjo system (ginjoshu, junmai ginjoshu, daiginjoshu and junmai daiginjoshu) and non-ginjo system (other than above-mentioned) sake differ in the following two points in this stage.
+
+精米歩合
+Rice-polishing ratio
+
+精米は、米に含まれるタンパク質を取り除くために行われる。
+Rice polishing is conducted to remove protein contained in rice.
+
+生物の構成において蛋白質が重要である以上、精米歩合の高い麹米・掛米から造られた醪は、酵母が生きていくにはよい環境ではない。
+Since protein plays an important role in the composition of an organism, moromi produced from kojimai and kakemai with a high rice-polishing ratio is not a good environment for yeast to live.
+
+そのため、酵母はその環境で生存するために、それら自身がアミノ酸、クエン酸、リンゴ酸などの有機酸を生成する。
+Therefore, in order to survive under such an environment, yeast generates, by itself, organic acids such as amino acid, citric acid and malic acid.
+
+これらの中で、揮発性のものが独特の吟醸香を構成する。
+Among such organic acids, volatile ones compose unique ginjoko.
+
+米が削り込んであればあるほど、酵母は苦しんで、吟醸香を出す。
+The more the rice is scraped, the more ginjoko yeast is produced, resulting from its agony.
+
+温度管理
+Temperature control
+
+酵母がブドウ糖からエネルギーを得るためにも、また酵母が自身にとって快適な生存環境を構築するためにも、熱が放出される。
+Heat is radiated both when yeast obtains energy from glucose sugar and when yeast creates, by itself, an environment suitable for its survival.
+
+しかし、その熱は醪の中の化学成分、特に有機酸に影響を与えて、雑味となる成分を生成してしまう。
+Such heat influences chemical ingredients in moromi, in particular organic acids and generates ingredients that cause zatsumi.
+
+また生物は、主な構成物質が蛋白質であるために、その大半は蛋白質の凝固温度の手前である35℃前後が活動に適した温度である。
+On the other hand, since the main components of an organism are protein, a temperature around thirty-five degrees centigrade, which is below the coagulation temperature of protein, is suitable for most activities.
+
+雑味を抑えるためには、発酵熱が放出されてもなお35℃を下回らなければならない。
+In order to suppress the generation of zatsumi, the temperature must be kept below thirty-five degrees centigrade even with release of fermentation heat.
+
+そのために、日本酒造りは冬の寒い時期に行われることになった。
+Therefore, sake brewing has been carried out during the cold season in winter.
+
+通常の造りは15℃前後に熱を抑えるのに対し、さらに有機酸への影響を多く考えなくてはならない吟醸系の場合は10℃前後が目安とされる。
+While the heat is suppressed around fifteen degrees centigrade for usual tsukuri, it is said that around ten degrees centigrade is the target for the ginjo system in which influence on organic acids must be taken into consideration.
+
+温度計もセンサーもなかった時代から、杜氏や蔵人たちはもろみの表面の泡立ちの様子を観察し、いくつかの段階に区分けすることによって、内部の発酵の進行状況を把握してきた。
+Since times when no thermometer or sensor existed, toji and other workers in the brewery observed the condition of the foam on the surface of moromi and, by classifying several stages, they were able to grasp the progress of fermentation taking place inside.
+
+この醪の表面の泡立ちの状態を（泡の）状貌（じょうぼう）といい、以下のように示される。
+The condition of forming on the surface of moromi is called jobo (of foam) and is shown as follows:
+
+筋泡（すじあわ） 段仕込み留添から2 - 3日ほど経つと生じてくる筋のような泡で、醪の内部での発酵の始まりを告げる。
+Sujiawa (stripe-like foam): Foam generated in two to three days after tomezoe of dan-jikomi that looks like stripes showing the start of fermentation inside moromi.
+
+水泡（みずあわ） 筋泡からさらに2日ほど経ったころ。
+Mizuawa (literally, watery foam): After two days approx. from sujiawa
+
+カニが口から吹くような白い泡。
+White foam that looks like foam ejected from a crab's mouth.
+
+醪の中の糖分は頂点に達している。
+Sugar content in moromi is at its peak.
+
+岩泡（いわあわ） 水泡からさらに2日ほど経ったころ。
+Iwaawa: Two more days after mizuawa
+
+岩のような形となる泡。
+Foam forming the rock-like shape
+
+発酵にともなって放熱されるので温度上昇も著しいころである。
+Since heat is released in line with progress of fermentation, the temperature rise is most significant during this stage.
+
+高泡（たかあわ） 岩泡からさらに2日ほど経ったころ。
+Takaawa: Two more days after iwaawa
+
+段仕込み留添から通算すると1週間から10日前後。
+One week to ten days in total after tomezoe of dan-jikomi
+
+岩泡全体が盛り上がりを見せる。
+Whole iwaawa rises.
+
+化学的には発酵が糖化に追いつこうとしている状態。
+As a chemical process, it is the situation in which fermentation is catching up to saccharification.
+
+泡あり酵母と泡なし酵母の区別は、この高泡の有無で決められることが多い。
+Discrimination between bubbling yeast and non-bubbling yeast is often made whether or not takaawa is formed.
+
+落泡（おちあわ） 留添から12日前後経ったころ。
+Ochiawa: After around twelve days from tomezoe
+
+泡の盛り上がりが落ち着いてくる。
+The rising of foam settles down.
+
+化学的には発酵が糖化に追いついた状態。
+As a chemical process, it is a situation whereby fermentation has caught up saccharification.
+
+玉泡（たまあわ） さらに2日ほど、また留添から通算で2週間ほど経ったころ。
+Tamaawa: After two more days and after approximately two weeks in total from tomezoe
+
+詳しくは大玉泡→中玉泡→小玉泡に分けられる。
+In more detail, it is classified into large tamaawa -> middle tamaawa -> small tamaawa.
+
+泡は玉のかたちになってどんどん小さくなっていく。
+Foam forms the shape of a ball and become smaller and smaller.
+
+小さければ小さいほど発酵はだいぶ落ち着いてきている。
+The smaller the foam is, the more the fermentation has settled down.
+
+地（じ） さらに5日ほど、または留添から通算3週間近く経ったころ。
+Ji: After five more days, or close to three weeks after tomezoe
+
+玉泡が小さくなりきって、今度は消えていく。
+Tamaawa becomes the smallest and, then, disappears.
+
+発酵も終盤に近いことを示す。
+It shows that fermentation is close to its end.
+
+だが、どの段階で「醪造り」の全工程の終了とみなすかは、杜氏の判断に任されている。
+It is left to toji's discretion as to which stages it should be judged that whole process of "moromi production" is completed
+
+目的とする酒質によっては、このまま何日か時間を置いたほうがよく、また吟醸系の場合はさらにその状態を持続させることが好ましいとされるからである。
+For certain types of sake quality targeted, it is better to leave moromi as it is for several days more and, especially for sake in the ginjo system, it is preferable to maintain such conditions further.
+
+近年、泡なし酵母が多く開発されてきた。
+In recent years, a number of non-bubbling yeasts have been developed
+
+今日でも泡あり酵母を使った醸造では、仕込みタンクのなかで日々刻々と上記のような状貌の推移を見ることができる。
+Even today, however, during sake brewing using bubbling yeast, the above-described process of appearance can be seen in the tank.
+
+上槽の約2日前から2時間前にかけて、ゆっくりと丹念に30%程度に薄めた醸造アルコールを添加していくこと。
+Within the period from approximately two days before joso (a stage to squeeze sake out of moromi) to two hours before, distilled alcohol diluted to approximately thirty percent is added slowly and carefully.
+
+「アルコール添加」または略して「アル添（アルてん）」という語感から、工業的に何か不純な添加物を加えるかのようなイメージをもたれることが多い（参照：当記事内『美味しんぼ』）が、古くは江戸時代の柱焼酎という技法にさかのぼる、伝統的な工程のひとつである。
+From the impression of the term "adding alcohol" or "aruten" in short form, it gives often an impression that certain impurity is added industrially (Refer to "Oishinbo" in this article.), but it is a traditional process that goes back to hashira-shochu during the Edo period.
+
+次のような目的がある。
+It has the following purposes.
+
+防腐効果 現在のアルコール添加の起源となっている、江戸時代の柱焼酎は、酒の腐造を防ぐために焼酎を加える技法であった。
+Effect of preservation from putrefaction: Hashira-shochu during the Edo period, the origin of the process of adding alcohol at present, was a technique of adding shochu to sake to keep sake from putrefaction.
+
+かつては防腐効果がアルコール添加の最も重要な目的であった。
+In the past, the most important purpose of the process to add alcohol was preservation from putrefaction.
+
+衛生管理が進んだ現代では、こうした意味合いは薄れてきている。
+Today, because of progress in sanitation technique, process of adding alcohol is no longer necessary for preservation.
+
+香味の調整 現在のアルコール添加の目的の第一はこれである。
+Adjustment of flavor: This is the first reason for adding alcohol today.
+
+適切なアルコール添加は、醪からあがった原酒に潜在している香りを引き出す。
+The appropriate addition of alcohol draws out fragrance that lurks in unprocessed sake obtained for moromi..
+
+特に吟醸系の酒の香味成分は、水には溶けないものが多く、それを溶かしだすためにアルコール添加が必要となる。
+In particular, many ingredients used for fragrance in sake in the ginjo system are insoluble in water and addition of alcohol is necessary for dissolving them.
+
+そもそも吟醸酒自体が、アルコール添加を前提として開発された酒種であった（参照：日本酒の歴史吟醸酒の誕生）。
+Ginjoshu itself is a type of sake that has been developed on the premise of adding alcohol. (Refer to "Nihonshu no Rekishi - Ginjoshu no Tanjo" - literally, "History of Sake - Birth of Ginjoshu".)
+
+現在、吟醸酒を生産する酒蔵ではアルコール添加は酒質を高めるために必須と考えているところが多い。
+At present, majority of sake breweries producing ginjoshu consider that it is fundamental to add alcohol.
+
+味の軽快化 現在のアルコール添加の目的の第二。
+Lightening the taste: This is the second purpose for adding alcohol today.:
+
+もろみの中には発酵の過程で生成された糖や酸が多く含まれており、これらを放置しておくと、完成した酒が、良く言えば重厚、悪く言えば鈍重な味わいになる。
+Moromi contains a lot of sugars and acids generated in the process of fermentation and, it they are left as they are, the final sake has a heavy taste, if we speak favorably of it, or dull taste if we speak unfavorably of it.
+
+ここでアルコール添加をおこなっておくと、それらが調整される。
+If alcohol is added at this stage, the flavor can be adjusted.
+
+また純米酒はその性質上、多かれ少なかれ酸味が飲んだ後に残る。
+In particular, junmaishu leaves a sour taste more or less after drinking it because of its nature.
+
+アルコール添加により酸味が抑えられ、飲み口がまろやかになる。
+The sour taste is suppressed by adding alcohol and the taste becomes more mellow.
+
+さらに、現代の食生活では旨み・油が多用され、飲料としては軽快な味わいのものが求められるようになってきた。
+With the eating habits of today, umami, fat and oil are used very much and, therefore, a light taste is required for drinks.
+
+そのため、酒の切れ味を良くするためにアルコール添加が活用されている側面もある。
+Therefore, the addition of alcohol is used to improve taste of sake.
+
+増量 三倍増醸清酒の全盛時代には、酒の量を水増しするために行なわれたことが多かった。
+Increasing volume: In the age where sanbai zojo seishu (literally, three-time increased sake) was in full flower, alcohol adding was carried out often in order to increase the amount of sake.
+
+「アル添」という工程が一般的に悪いイメージを持たれるのには、主にそうした前の時代の負の遺産であると言い訳されることもある。
+By way of excuse, some say that the reason why the process of "aruten" presents a generally negative image is mainly because of the negative legacy from the past age.
+
+しかし、実際に「アル添」されたものは臭みが増すとの声もある。
+On the other hand, some say that "aruten" increases the unfavorable smell of sake.
+
+「香味の調整」や「味の軽快化」などは建前であって「増量」こそが本当の目的の場合もある。
+In some cases, "adjustment of the fragrance" and "lightening of the taste" are just stated reasons and the true purpose is to "increase the amount."
+
+増量目的と言えばイメージが悪いので、そうは言えないのである。
+As it gives a negative impression to say that the purpose is to increase the amount of sake, they keep it quiet.
+
+上槽（じょうそう）とは、もろみから生酒（なまざけ）を搾る工程である。
+Joso is a process to squeeze namazake (raw sake) out of moromi.
+
+杜氏の判断で「熟成した」と判断された醪へ、アルコール添加や副原料が投入される。
+When the toji judges that moromi has "matured, "alcohol and auxiliary materials are added to it.
+
+これを搾って、白米・米麹などの固形分と、生酒となる液体分とに分離する。
+Such moromi is squeezed to separate the solids such as polished rice and malted rice, and liquid which becomes namazake.
+
+杜氏蔵人言葉では搾り（しぼり）、上槽（あげふね）ともいう。
+In the language of toji and other workers in the brewery, it is also called "shibori" or "agefune."
+
+なお、固形分がいわゆる酒粕（さけかす）になる。
+The solids are transformed into sakekasu (sake lees).
+
+原材料白米に対する酒粕の割合を、粕歩合（かすぶあい）という。
+The ratio of sakekasu to polished rice as raw material is called kasubuai (literally, ratio of sake lees).
+
+上槽をおこなう場所を上槽場（じょうそうば）といい、普通酒、本醸造酒、純米酒は、そこで醪自動圧搾機（もろみじどうあっさくき）や遠心分離機（えんしんぶんりき）などの機械で搾られる。
+The place where joso is conducted is called "josoba" and futsushu, honjozoshu and junmaishu are squeezed out using a moromi automatic squeezer or centrifuge separator.
+
+吟醸酒のように丁寧な作業を要する酒は、昔ながらの槽搾り（ふねしぼり）、ヤブタ搾り、袋吊りなどの方法で搾られる。
+Sake, where special care is required, such as ginjoshu, is squeezed using traditional methods such as funeshibori, yabutashibori and fukurozuri.
+
+それは単に手造り感を演出しているわけではない。
+It is not only to create the atmosphere of handmade products.
+
+吟醸酒の醪には溶解していない米が他種の酒よりも多く残る結果となるので、機械で搾ろうとしても酒粕が詰まってしまうからである。
+As ginjoshu moromi contains more undissolved rice than moromi for other types of sake, sakekasu clogs the machine.
+
+搾りだされた酒が出てくるところを槽口（ふなくち）という。
+The opening from which sake that has been squeezed comes out is called funakuchi.
+
+また酒蔵では、その年初めての酒が上槽されると、軒下に杉玉（すぎたま）もしくは杉玉（さかばやし）を吊るし、新酒ができたことを知らせる習わしがある。
+In breweries, when joso of the first sake of the year is conducted, a sugitama (a large ornamental ball made with cedar leaves) or sakabayashi is hung in the space under the eaves to announce that new sake has been produced.
+
+吊るしたばかりの杉玉は蒼々としているが、やがて枯れて茶色がかってくる。
+The sugitama, when newly hung, looks fresh and green, but its color changes to brown as it runs dry.
+
+この色の変化がまた、その酒蔵の新酒の貯蔵・熟成具合を人々に知らせる役割をしている。
+Such change in color of the sugitama plays a role of a sign to signal the status of storage and maturing of new sake in the brewery.
+
+滓下げ（おりさげ）とは、上槽を終えた酒の濁りを取り除くために、待つことを指す。
+Orisage means to wait in order to remove turbidness of the sake that just came out from the process of joso.
+
+槽口（ふなくち）から搾り出されたばかりの酒は、まだ炭酸ガスを含むものも多く、酵母・デンプンの粒子・蛋白質・多糖類などが漂い、濁った黄金色をしている。
+Sake just squeezed out from the funakuchi often still contains carbon dioxide gas and it has a turbid golden color in which yeast, particles of starch, protein, polysaccharide and so on are suspended.
+
+この濁りの成分を滓（おり）といい、これらを沈殿させるため、酒はしばらくタンクのなかで放置される。
+Ingredients causing such turbidness are called ori and sake is left in the tank as it is for a while in order to let them precipitate.
+
+滓下げによる効果は、単に濁りをとることに留まらず、余分な蛋白質を除去することで、瓶詰後の温度変化や経時変化によって引き起こされる蛋白変性での濁りを予防する。
+Effects of orisage is not only to remove turbidness, but also to remove excess protein to prevent turbidness because of denaturation of protein caused by the change in temperature and aging after bottling.
+
+後工程となる濾過の負担軽減へも影響を及ぼす。
+It also lessens the load of the filtration in the following process.
+
+滓下げを施した上澄みの部分を「生酒」（なましゅ）という。
+The clear upper portion after orisage is called "namashu."
+
+「生酒」（なまざけ）とは別の概念なので注意を要する。
+As "namashu" is a different concept from "namazake," we have to be careful in this regard.
+
+完成酒を生酒（なまざけ）や無ろ過酒（むろかしゅ）に仕立てる場合などは異なるが、大多数の一般的な酒の場合、上槽から出荷までには二度ほど滓下げを施すことが多い。
+Excluding cases where completed sake should be prepared as "namazake" or "murokashu" (literally, "non-filtered sake"), orisage is conducted usually twice between joso and shipments for most of the usual types of sake.
+
+第一回目の滓下げをおこなったあとの生酒（なましゅ）にも、まだ酵母やデンプン粒子などの滓が残っているのがふつうである。
+Even after the first orisage, usually, namashu still contains lees such as yeast and particles of starch.
+
+そのため、雑味もかなりあり、これらを漉し取るために濾過（ろか）の工程が必要となってくる。
+Therefore, it also contains zatsumi and the process of filtration becomes necessary to filter them out.
+
+近年では、消費者の「生」志向に乗じて、滓下げ以降の工程を施さず無濾過生原酒として出荷する酒蔵もあらわれてきている。
+In recent years, in line with the tendency of the orientation for "nama" (raw) by consumers, some breweries deliver sake as unfiltered raw unprocessed sake without conducting process from orisage and thereafter.
+
+ろ過（ろか）とは、滓下げの施された生酒（なましゅ）の中にまだ残っている細かい滓（おり）や雑味を取り除くことである。
+Filtration means to remove minute lees still remaining in namashu after orisage and zatsumi.
+
+液体の色を、黄金色から無色透明にできるだけ近づける目的もある。
+Also, one purpose is to change the color from golden color to colorless transparent status as much as possible.
+
+なお、この工程をあえて省略して、無濾過酒（むろかしゅ）として出荷する場合も多い。
+There are many cases where sake is shipped out as murokashu omitting this process intentionally.
+
+活性炭濾過 生酒（なましゅ）の中に、粉末状の活性炭を投入して行なわれる濾過を炭素濾過（たんそろか）もしくは活性炭濾過（かっせいたんろか）ともいう。
+Filtration with active charcoal: Filtration conducted by introducing powdered active charcoal is called filtration with carbon or filtration with active charcoal.
+
+この活性炭粉末を、酒蔵では単に炭（すみ）と呼ぶ。
+Powdered active charcoal is called simply "sumi" (charcoal) in the brewery.
+
+基本的には一般家庭の冷蔵庫などで使われる脱臭炭や、タバコのフィルターに入っている黒い粉末と同じものである。
+Basically, it is same as charcoal contained in deodorizers for home-use refrigerators or black powder in cigarette filters.
+
+目安として、生酒（なましゅ）1キロリットルにつき炭1kgを投入し、取り除きたい成分や色をその炭に吸着させて沈澱させる。
+As a guide, one kilogram of charcoal is thrown in for one kiloliter of namashu and the charcoal adsorbs the impurities, color, and precipitate.
+
+その後に不要成分ごと炭を脱去する。
+After that, charcoal is removed together with the impurities.
+
+活性炭を投入するといっても、単に投げ入れるだけではなく、取り除きたい成分や色だけを抜くところにこの工程の難しさがある。
+Although we say "throw" in active charcoal, it is not just thrown in and the difficult part of this process is to remove only those impurities and colors that should be removed.
+
+あまり入れすぎると酒は澄んでくるが、味も色も香りもすべて無化して面白くも何ともない完成酒になってしまう。
+If we put in too much active charcoal, the sake becomes clear, but the taste, color and fragrance are lost and the sake produced will have no character.
+
+じつは高級酒ほど炭の使用量は少なく、根強いファン層を持つ銘酒では0.06キログラム程度であるともされる。
+In reality, the higher the class of sake, the smaller the amount of charcoal used and, for choice sake for which stable consumers exist, it is only around 0.06 kg..
+
+このように、炭加減（すみかげん）がたいへん微妙であることから、地酒の本場では蔵人のあいだで炭屋（すみや）と呼ばれる、この工程だけの専門家が多く存在した。
+Thus, as the amount of charcoal is very critical, a large number of specialists only for this process called sumiya (literally, specialist for charcoal) existed in places where jizake (local sake) is brewed
+
+活性炭濾過そのものが過去の手法になりつつあり、現在では活性炭の使用量、使用の有無、炭屋なる専門職は減少傾向にある。
+However, filtration with active charcoal itself is now a technique of the past, and recently the amount of active charcoal used, the frequency with which it is used, and the number of charcoal specialists (known as sumiya) have been on the decline.
+
+また活性炭を使用してから他の方法で濾過する場合も多いので、「活性炭の使用」の有無と「濾過」の有無は、まったく別の次元の話である。
+In addition, as sake is often filtered using other methods after it has been filtered using active charcoal, the "use of active charcoal" and "filtration" are processes that are on totally different levels.
+
+珪藻土濾過 精製された珪藻土の層を用いた濾過を行い、夾雑物を、そして活性炭濾過を行なったあとであれば活性炭そのものを取り除く。
+Filtration with diatomaceous earth: This process carries out filtration using a layer of diatomaceous earth to remove impurities and, if it is carried out after filtration with active charcoal, the active charcoal itself.
+
+珪藻土とは珪藻類の化石で、非常に小さな孔を多数持つ形状をしており、色の元となる物質、雑味物質、香り物質もある程度除去する。
+Diatomaceous earth is composed of porous fossil remains of diatoms and it removes substances that cause coloring, zatsumi and fragrance to a certain degree.
+
+この濾過技術の進歩は、活性炭の使用が減少している一助ともなっている。
+Progress made in this filtration technique is one of reasons for the decrease in the use of active charcoal.
+
+濾紙による濾過 特殊な濾紙を用いて濾過をする場合もある。
+Filtration with filter paper: In certain cases, filter paper is used for filtration.
+
+フィルター濾過 最近とみに増加してきた。
+Filtration with a filter: Recently, it has become significantly popular.
+
+カートリッジ式のフィルターを用いて濾過する方法。
+Method using a cartridge type filter.
+
+カートリッジ式なので取替えが可能で、手軽さがメリットである。
+Cartridge type filters can be replaced and, therefore, are simple and convenient.
+
+とくに生酒（なまざけ）として出荷する場合は、火落ち菌対策として、火入れをしないことから、高精度な（0.22 - 0.65μ程度の）除菌のための濾過をこれによっておこなう。
+In particular for sake to be shipped out as namazake (raw sake), because hiire (pasteurization) as a measure against hiochi bacteria is not done, filtration for removing bacteria with high precision (in the order of 0.22 to 0.65 μ) is carried out with this method.
+
+槽口（ふなくち）から搾られたばかりの日本酒は、たいてい秋の稲穂のように美しい黄金色をしている。
+Most sake just came out from funakuchi has beautiful golden color like ears of rice in autumn.
+
+かつての全国新酒鑑評会では、酒に色がついた出品酒を減点対象にしていた時代があった。
+In certain periods in the past, points were deducted for sake that has color in Zenkoku Shinshu Kanpyokai (National New Sake Appraising and Deliberating Fair).
+
+いきおい、酒蔵はどこも懸命に活性炭濾過で色を抜き、水のような無色透明の状態にして出荷することが多かった。
+As a matter of course, most breweries removed color by filtration with active charcoal and delivered sake which is clear and colorless like water.
+
+いわゆる「清酒」という言葉から一般的に連想される無色透明な色調は、そのような時代の名残りともいえる。
+We can say that clear and colorless tone which is associated generally with the word "seishu" (literally, clear sake) is a reminder of such an age.
+
+現在では、雑味や雑香はともかく色の抜去は求められなくなってきたので、色のついたまま流通する酒が復活し、むしろ自然な色のついた酒の素朴さを好む消費者も増えてきている。
+At present, apart from zatsumi and unfavorable smell, it is not necessary to remove color, sake that is distributed without removing color has been revived and the number of consumers who like the naiveness of sake with natural color has been increasing.
+
+このような流れのなかで、濾過のあり方も今後どうなるか注目されている。
+Under such situations, it is worth taking notice about the future of sake filtration.
+
+火入れ（ひいれ）とは、醸造した酒を加熱して殺菌処理を施すこと。
+Hiire means to heat brewed sake for the purpose of pasteurization.
+
+火当て（ひあて）ともいう。
+It is also called "hiate."
+
+火入れされる前の酒は、まだ中に酵母が生きて活動している。
+In sake before hiire, yeast is still alive and acting.
+
+また、麹により生成された酵素もその活性を保っているため酒質が変化しやすい。
+Enzymes generated by koji also maintains its activity and, therefore, sake quality tends to change.
+
+また、乳酸菌の一種である火落ち菌が混入している恐れもある。
+Also, hiochikin, which is a kind of lactic acid bacterium, might be included.
+
+これを放置すると酒が白く濁ってしまう（火落ち）。
+If hiochi bacteria are left as they are, sake will become clouded (hiochi).
+
+そこで火入れにより、これら酵母・酵素・火落菌を殺菌あるいは失活させて酒質を安定させる。
+Therefore, hiire is conducted to sterilize or make lose active yeast, enzyme, and hiochi bacteria and to stabilize sake quality.
+
+これにより酒は常温においても長期間の貯蔵が可能になる。
+Through this processing, it becomes possible to store sake for a long period at a natural temperature.
+
+しかし、あまり加熱が過ぎれば、アルコール分や揮発性の香気成分が蒸発して飛んでしまい酒質を損なう。
+If heating is conducted excessively, however, alcohol and volatile ingredients that give fragrance are evaporated and sake quality is spoiled.
+
+そのため、これも加減が難しい。
+Therefore, this process is also difficult.
+
+現在は通常は62℃ - 68℃程度で行なわれる。
+Currently, this process is usually carried out with temperature sixty-two to sixty-eight degrees centigrade.
+
+火入れの技法は、室町時代に書かれた醸造技術書『御酒之日記』にもすでに記載され、中古から畿内を中心に行なわれていたことがわかる。
+The hiire technique was already described in "Goshu no Nikki" (literally, "diary of sake"), which is the technical guidebook for sake brewing written during the Muromachi period and we can know that this technique was used since the medieval times in the area centering on the Kinai region (provinces surrounding Kyoto and Nara).
+
+これはすなわち、西洋における細菌学の祖、ルイ・パスツールが1862年に殺菌温度を発見するより500年も前に、日本ではそれが酒造りにおいて一般に行なわれていたことになる。
+This means that, even 500 years before discovery of the pasteurizing temperature in 1862 by Louis Pasteur, who is called the father of bacteriology in the West, it was generally conducted in sake brewing in Japan.
+
+明治時代前期に来日したイギリス人アトキンソンは、1881年に各地の酒屋を視察、「酒の表面に“の”の字がやっと書ける」程度が適温（約130°華氏（55℃））であるとして、温度計のない環境で寸分違わぬ温度管理を行っている様子を観察し、驚きをもって記している。
+Atkinson, who was a British and came to Japan in the early part of the Meiji period, visited sake breweries in various places in 1881 and observed the practice in which temperature control was conducted very accurately without using thermometer telling that the condition in which "the character "の" can just be written on the surface of sake" shows the appropriate temperature (approximately 130 degrees Centigrade or 55 degrees Fahrenheit) and he recorded this fact showing his astonishment.
+
+火入れをしていない酒は「生酒」「無濾過生原酒」などとして人気がある。
+Sake which does not undergo hiire is popular as "namazake" or "non-filtered raw unprocessed sake."
+
+たしかにそういう「生」系の酒はみずみずしく、香りも若やいで華やかであり、また残存する微発泡感はのど越しもよく、それなりの商品価値がある。
+Sake belonging to such "nama" (literally, raw) group really gives a fresh feeling and its fragrance is also felt to be young and glamorous and remaining slight sparkling feeling goes down smoothly giving sake certain value as a commodity.
+
+しかし、一般にもたれている次のようなイメージはほとんど誤りである。
+However, almost all of following images that are generally common are wrong.
+
+生酒は、火入れをしていないので、それだけ新鮮さが保たれている。
+As namazake has not undergone hiire, freshness is preserved accordingly.
+
+火入れは、酒の若さを失わせる工程である。
+Hiire is a process that cause sake to lose it's youth.
+
+生酒は、蔵で飲めるしぼりたての新酒の味である。
+Namazake gives the taste of new sake which has been just squeezed and can be enjoyed in the brewery.
+
+火入れをしなければ劣化が早く、すぐに生老ね香を発する。
+If hiire is not conducted, sake deteriorates very quickly, and soon generates namahineka.
+
+正しい保存管理をしていない飲食店などでは、劣化した酒を5℃前後まで冷やし、冷たさでわからないようにして出しているところも多い。
+In many catering establishments where correct preservation control is not conducted, deteriorated sake is often served at low temperature around five degrees centigrade so that deterioration is not noticed because of coldness.
+
+ゆえに火入れとは、かえってその酒の新鮮さを長く保つために行なう工程であるという人もいる。
+Therefore, some say that hiire is a process to keep the freshness of sake for a long time.
+
+「生」系の酒の味は荒々しく、貯蔵・熟成を経た酒が持つ旨みやまろみ、深みに欠ける。
+The taste of sake which belongs to "nama" group is somehow harsh and lacks umami and profoundness which sake that undergoes storage and maturing gives.
+
+そのため、おおざっぱな言い方をすれば、筋金入りの愛飲家のあいだでは一般に火入れの工程を経た酒の方が好まれる傾向がある。
+Therefore, roughly speaking, hard-core regular drinkers tend to prefer generally sake that has undergone the hiire process.
+
+しかし正しい保存管理をしていない「生酒」を飲んでいるために保存管理が楽な火入れされた酒が好まれているという面もある。
+In many cases, however, as "namazake" which is not stored under proper control is consumed, sake undergoes hiire for easier preferred storage control.
+
+火入れをすると酒の繊細さが失われるのは事実であり、保存管理さえ徹底されていれば火入れした酒にはない味わいがあることを忘れてはならない。
+It is true that sake loses delicacy from the hiire process and we should not forget that sake that has not undergone hiire, as long as it is properly stored, has a flavor that sake that has undergone hiire cannot have.
+
+刺身に代表される「生」の食文化圏である日本では、新鮮であることが抜きん出て好まれる。
+In Japan where "nama" (raw or fresh) represented by sashimi is favored, freshness is especially favored.
+
+また日本の日本酒業界は、「生」や「辛口」で売り上げを伸ばしたビール業界の影響を受けやすい。
+The sake industry in Japan tends to be influenced by the beer industry which increased their turnover with "nama" (not pasteurized) and "karakuchi"(dry).
+
+それらの要因から、日本酒も上記のような「生」と銘打った商品が1980年代から増えてきたのであった。
+Because of such factors, with respect to sake also, the number of products described as "nama" has been increasing since the 1980s.
+
+そうした状況を「生酒ブーム」という表現で切り捨てる酒類評論家も多く、また近年の消費低迷期と関連づけて具体的な苦言を提している識者もいる。
+Many sake commentators speak of the "namazake boom" and there is a knowledgeable person who brought up the difficulties in concrete form with regard to the recent stagnation in sake consumption.
+
+生貯蔵酒（なまちょぞうしゅ）や生詰酒（なまづめしゅ）に仕立てる場合などをのぞいて、大多数の一般的な酒の場合、上槽から出荷までのあいだに火入れは二度ほど行なわれる。
+Excluding the cases where sake is produced as namachozoshu (literally, raw-stored sake) or namazumeshu (literally, raw bottled sake), for most of common sake, hiire has been carried out twice between joso and the shipment.
+
+すなわち、一回目は貯蔵して熟成させる前、二回目は瓶詰めして出荷する直前である。
+The first hiire is carried out before storage for maturing and the second hiire immediately before bottling for shipment.
+
+とくに一回目の火入れは、成分に落ち着きを与え、その先の貯蔵中にどういうふうに熟成していくかの方向性を左右する。
+The first hiire makes ingredients settle down and determines how mature the sake is during storage.
+
+これをわかりやすくチャートにすると以下のようになる。
+This can be charted for easy reference as follows:
+
+上槽 → 滓下げ1回目 → 濾過1回目 → 火入れ1回目 →貯蔵・熟成 → 滓下げ2回目 → 濾過2回目→割水→火入れ2回目 → 瓶詰め → 出荷
+Joso -> first orisage -> first filtration -> first hiire -> storage and maturing -> second orisage -> second filtration -> warimizu (literally, dilution with water) -> second hiire -> bottling -> shipment
+
+生貯蔵酒（なまちょぞうしゅ） 火入れ1回目をしない。
+Namachozoshu: No first hiire conducted
+
+杜氏蔵人言葉では「先生」（さきなま）、「生貯」（なまちょ）などという。
+In the language of toji and other workers in breweries, "sakinama" or "namacho"
+
+生詰酒（なまづめしゅ） 火入れ2回目をしない。
+Namazumeshu: No second hiire conducted
+
+杜氏蔵人言葉では「後生」（あとなま）などという。
+In languages of toji and other workers in breweries, "atonama"
+
+生酒（なまざけ） 火入れ1回目も2回目もしない。
+Namazake: No first and second hiire conducted
+
+杜氏蔵人言葉では「生生」（なまなま）、「本生」（ほんなま）などという。
+In languages of toji and other workers in breweries, "namanama" or "honnama"
+
+生酒（なましゅ） 滓下げ1回目を施された上澄み部分の酒のこと。
+Namashu: The clear upper portion after orisage
+
+以上のような前提の中で、生貯蔵酒や生詰酒は、少なくとも一回は火入れをしていて本当は「生」ではないわけだから、「生」を名称に含めるのは妥当ではない、という議論がなされている。
+Based on the above-described premises, there is an opinion that as namachozoshu or namazumeshu undergoes hiire at least once and literally not "nama," it is not appropriate to include the word "name" in the name.
+
+また、「生」好みの消費者心理を利用し、生貯蔵酒や生詰酒の「生」の字だけを大きく、あるいは目立つ色彩でラベルに印刷し、その他の文字を小さく地味に添えるなどして、あたかも生貯蔵酒や生詰酒が「生」の酒であるかのようにイメージを演出して流通させている蔵元もある。
+Also, certain breweries take advantage of consumers' mindset favoring "nama" by printing the character "nama" in namachozoshu or namazumeshu in large size or with eye-catching color on the label adding other characters in small size to create the image of "nama" sake for namachozoshu or namazumeshu.
+
+こういう傾向が行き過ぎたものは不当表示にあたる、と指摘する識者もいる。
+There was a knowledgeable person who pointed out that if such tendency goes too far, it constitutes false labeling.
+
+一方では、吟醸酒や純米酒のなかには「生詰」と表示しているだけでも、ほんとうの生酒（なまざけ）、言うならば「生生」も流通されるようになってきた。
+On the other hand, some ginjoshu and junmaishu are distributed as real namazake, namely "namanama, just labeled as "namazume" (literally, bottled raw).
+
+居酒屋など日本酒を出す飲食店のなかには、じっさいは本当の生酒（なまざけ）ではなく、生貯蔵酒や生詰酒であるのにもかかわらず、メニューや張り紙に「生酒」と書いて客に提示している店も多く見かける。
+In certain eating and drinking establishments in which sake is served such as an izakaya (Japanese-style pub), we see rather often that, although they do not sell real namazake, but only namachozoshu or namazumeshu, write "namazake" on their menus or posters.
+
+生酒（なまざけ）は、保存や流通のコストが高くなり、それだけ販売価格も高くなるものである。
+For namazake, costs for storage and distribution are high and, therefore, the selling price becomes higher accordingly.
+
+それを、生貯蔵酒や生詰酒の値段でメニュー表示されたならば、とうぜん消費者は「割安だ」と勘違いする。
+Therefore, if the price equivalent to namachozoshu or namazumeshu is shown on the menu, consumers misunderstand it as "comparatively low in price."
+
+こういう表示の仕方は、れっきとした偽装表示にあたるので、消費者はためらいなく指摘することができる。
+Because such way constitutes a real disguised presentation, consumers can point it out without hesitation.
+
+熟成（じゅくせい）とは、貯蔵されている間に進行する、酒質の成長や完成への過程をいう。
+Maturing means the course of growth or completion of sake quality that progresses during storage.
+
+上槽や滓下げのあと、無濾過や生酒として出荷するために、濾過や火入れを経ないものもある。
+After joso and orisage, some sake is shipped without filtration or hiire as murokashu (non-filtered sake) or namazake.
+
+そうでない製成酒は通常それらの工程を経た後に、さらに酒の旨み、まろみ、味の深みなどを引き出すためにしばらく貯蔵（ちょぞう）される。
+Other sake, after being processed with such steps, is usually stored for a while in order to draw out umami, mellowness and deep taste.
+
+吟醸酒の酒は、香りや味わいを安定させるために、半年かそれ以上、熟成の期間を持たせるものも多い。
+Ginjo or higher quality sake is often given a maturing period of a half year or more in order to stabilize its fragrance and flavor.
+
+しかし、いちいち新酒・古酒・秘蔵酒、新酒・古酒・秘蔵酒といった表示をするのは、吟醸の品格からして無粋であるというような感覚から、そういった表示はラベルにされないのが通常である。
+From the feeling that the indication of shinshu (literally, new sake), koshu (old sake), hizoshu (treasured sake), etc. is not suitable for the status of ginjoshu even in such case an indication is not usually printed on the label.
+
+非吟醸系であっても、本醸造酒や純米酒では、酒蔵のある風土の自然条件、水の特徴、杜氏が目的とするコンセプトなどさまざまな理由から、長期間貯蔵して熟成させるものがある。
+Even for non-ginjoshu, certain honjozoshu and junmaishu are stored for a long period for the purpose of maturing due to various reasons, such as natural conditions of the place where the brewery is located, features of the local water, and the concept which the toji aimed at.
+
+火入れを経過させない酒においては発酵が止まっておらず、調熟作用（ちょうじゅくさよう）といって、アミノ酸分解や糖化により風味の自然調和が続いている。
+In sake that has not undergone the process of hiire, fermentation has not yet stopped and chojukusayo (literally, maturing adjusting effect), in other words natural adjustment of the flavor by degrading the amino acid and saccharization still continues.
+
+そのため、調熟作用によって最終的にその酒の持ち味を生み出している銘柄では、すぐに出荷せず貯蔵・熟成させるのは、欠かすことのできない工程の一部である。
+Therefore, for brands for which characteristic taste is finally created by chojukusayo, it is a part of the indispensable process not to ship immediately, but to store until the sake matures.
+
+一般的に完全醗酵させた純米酒は熟成がゆっくりと進み、劣化しにくい。
+Generally speaking, for junmaishu which has been totally fermented, maturing progresses slowly and degradation does not easily occur.
+
+完全醗酵完全醗酵でないの製成酒は、アルコールに分解されていない成分が多く含まれるため、酒質の変化は早いが劣化しやすいと言われている。
+For sake which has not totally fermented, it is said that, it has a lot of the ingredients which have not been degraded to alcohol, change in sake quality is quick and tends to become degraded.
+
+熟成の原因は、大きく分けて外部から加わる熱や酸素になどによる物理的要因と、内部で起こるアミノ酸を初めとする窒素酸化物やアルデヒドなどによる化学的原因とに分かれる。
+Causes of maturing can be classified roughly into physical factors such as heat and enzymes from the outside and chemical factors which occurs inside, such as nitrogen oxide like amino acids and aldehyde.
+
+しかし、具体的な理論に関しては未解明な部分が多い。
+However, with respect to this detailed theory, there are many unsolved questions.
+
+たとえば、廃坑や廃線になったトンネルなど或る特定の場所で貯蔵すると、いくら温度や湿度など科学的に条件を同じにしても、他の場所で貯蔵するよりもあきらかに味がまろやかになる、といった例は多い。
+For example, there are many cases in which storage is conducted in specific places such as in an abandoned mine or tunnel of dead track and the obtained taste is mellower than that of sake stored in other places even if conditions such as temperature and humidity are kept scientifically the same.
+
+福岡銘酒会に加盟する16場の酒蔵が共同で使用している黒木町トンネルなどが一例である。
+One example is the Kurokicho Tunnel which is used jointly by sixteen breweries that are members of Fukuoka Meishukai.
+
+そのトンネル内の何が、好ましい熟成に作用しているのかは未だ解明されていない。
+It has not been clarified what it is in the tunnel that works on favorable maturing.
+
+日本酒は、牛乳などと同じく、新鮮さが命であるため、「生酒」の問題点はもちろんのこと、そうではない火入れをしてある酒であっても、原則的には出荷後はできるだけ早く飲んだほうがよい、と一般に言われている。
+As freshness is very important to sake, the same as with milk, it is generally said that, regarding the problems of "namazake," even for sake that has undergone hiire, it is better to drink it as soon as possible after shipment.
+
+しかしじつは、これは主に酒蔵側の主張にすぎない。
+In reality, however, this is mainly the opinion of the breweries.
+
+蔵元と密着して執筆活動を営んでいる酒類評論家も、たいていこの立場を取る。
+Most sake commentators who are engaged in writing activities keeping close contact with kuramoto (sake brewers) take such position.
+
+しかし一方では、開封さえしなければ、たいていの酒は買ってから自分の手元で手軽に熟成させうると主張する者が、流通・販売・消費者の側には多く存在する。
+On the other hand there are many persons on distribution, selling, and on the consumer side who insist that, if not opened, most sake can be matured easily after purchase, in their hand.
+
+「早く飲むべきである」と言いつつも、酒蔵側が出荷前に熟成の期間をおく理由は、貯蔵・熟成の期間をおいて最高の酒質になったときを見計らって出荷するからである。
+The reason why sake breweries provide a period for maturing before shipment while advising to "drink " as soon as possible," is that they ship sake when the sake quality reaches the optimum taste after a certain time period for storage required for maturing.
+
+だから、腐敗などの危険をさておけば、酒蔵が意図したコンセプトを味わってもらうために、自然と「出荷後はできるだけ早く飲んでほしい」と言うことになる。
+Apart from the risk of putrefaction, breweries want consumers to "drink as soon as possible after shipment," to have consumers taste the concept the brewery intended.
+
+しかし酒蔵の意図したコンセプトが、必ずしも消費者、とりわけ熟達した飲み手の嗜好に合わないこともある。
+Sometimes, however, the concept intended by the brewery does not necessarily fit the taste of the consumers, particularly experienced drinkers.
+
+こういうときには、しばらく自宅で寝かせて（貯蔵・熟成させて）みて、もっとおいしくなることもある、というわけである。
+In such cases, there may be a case in which sake becomes more tasty after storing and maturing at home.
+
+わかりやすく言えば、料理人が「これは何もかけないでこのまま食べてみてください」と言って出してきても、グルメは一口食べて「やはりこの方が私は」と言って柚子を垂らしたり、自分の側でひと手間かけることもある、というわけである。
+To speak in plain language, it is like the cook serves certain dish saying "Please try this without adding any seasoning." but gourmet tries a small portion and says "For me, it is better this way." and squeezes yuzu (Citrus junos) on it or spices it up further.
+
+滋賀県の鮒寿司のように、その地方の基本的食品がある一定の期間の貯蔵・熟成を経てから食べられる土地などにおいては、食品が熟成する時間と同じだけの時間が、酒質の完成にももとよりかかるように醸造される酒もある。
+In places where local basic food is eaten after storage and maturing for a certain amount of time like funazushi (fermented crucian carp sushi) in Shiga Prefecture, there is sake which is brewed using the same amount of time needed for maturing food to complete the sake quality.
+
+つまり食と酒を同じ時期に仕込み、同じ年月を隔てて同時に食べるわけである。
+Namely, food and sake are prepared at the same time and eaten at the same time after certain period.
+
+こういった熟成は、まさに食文化の基礎にある相互補完という地酒の原点を物語るものである。
+Such maturing shows the original point of local sake, namely the relation to supplement each other with food underlying in the food culture.
+
+日本酒は、毎年7月から翌年6月が醸造年度と定められており、通常は製造年度内に出荷されたものが新酒と呼ばれる。
+For sake, the brewing year begins from July, every year, and ends in June the next year and, usually, sake shipped within the brewing year is called shinshu.
+
+しかし最近は、上槽した年の秋を待たず6月より前に出荷する酒に「新酒」というラベルを貼って、ひやおろしから差別化して新鮮さをアピールする酒が増えたために、「新酒」の定義に混乱が生じつつある。
+Recently, however, there is some confusion about the definition of shinshu because of the increase of sake which is shipped before June without waiting for the autumn in the year of joso labeling it as "shinshu" to discriminate with hiyaoroshi (refer to definition below).
+
+また古酒に関しても、酒類評論家のなかには「5年以下は古酒と認めない」という立場をとる人もおり、明確な定義が確立されているわけではない。
+With respect to koshu, also, no clear definition has been established as some sake commentators take the position that "Below five years, it cannot be acknowledged as koshu."
+
+なお、蔵元のなかには西洋のワインにおけるヴィンテージという考え方を導入し、ラベルに酒の製造年度を明記しているところもある。
+Some sake breweries have introduced the concept of vintage for wine in the West to sake, and display the year of production of sake on the label.
+
+熟成することによって味に奥行きが出るように造るこうしたヴィンテージ系日本酒は、熟成期間の長いものでは20 - 30年にも及ぶ。
+For sake made with such a vintage system the taste becomes deeper by maturing, the period of maturing is as long as twenty to thirty years.
+
+ひやおろしとは、冬季に醸造したあと春から夏にかけて涼しい酒蔵で貯蔵・熟成させ、気温の下がる秋に瓶詰めして出荷する酒のことである。
+Hiyaoroshi is sake brewed in winter and stored and matured in a cool sake storehouse in spring and summer and bottled and shipped in autumn when air temperature is low.
+
+その際、火入れをしない（冷えたままで卸す）ことから、この名称ができた。
+As such sake is sold wholesale (oroshi or oroshiuri in Japanese) without conducting hiire (wholesale of sake in cold status), such a name came into existence.
+
+醸造年度を越して出荷されるという意味では、ほんらい古酒に区分されることになるが、慣行的に新酒の一種として扱われる。
+Based on the fact that it is shipped one year after being brewed, it should be classified as koshu, but it is treated customarily as a type of shinshu.
+
+大古酒（だいこしゅ / おおこしゅ）という語に関して、現在のところ明確には定義されていない。
+At present, there is no clear definition of the word "daikoshu (or okoshu)."
+
+しかし概して「大」が付くにふさわしい、桁違いの熟成が求められる。
+Generally speaking, however, incommensurable maturing, suitable for using the word "dai" (great), is required.
+
+1968年（昭和43年）に開封された元禄の大古酒のように279年まで行かなくとも、熟成期間100年を超した年代ものは一般に大古酒と呼ばれる。
+Aged sake, stored over 100 years is generally called daikoshu, needless to mention about 279 years of daikoshu from the Genroku period opened in 1968.
+
+割水（わりみず）とは、貯蔵・熟成のための貯蔵タンクから出された酒へ、出荷の直前に水を、より正確には酒造用水を加える作業をいう。
+Warimizu means adding water, to be more precise, shuzo yosui to sake, that was taken out of the storage tank used for storing and maturing, immediately before shipment.
+
+加水調整（かすいちょうせい）あるいは単に加水とも呼ばれる。
+It is also called "kasuichosei" (literally, adjustment by adding water) or "kasui" (literally, water adding)
+
+ちなみに焼酎の製造過程では、まったく同じ工程を和水（わすい）と呼んでいる。
+In the process of producing shochu, the exactly same operation is called "wasui."
+
+この工程の目的は、酒のアルコール度数を下げることにある。
+The purpose of this operation is to decrease the alcohol concentration of sake.
+
+もろみができた直後には、ほとんどの酒が並行複発酵により20度近いアルコール度数となっている。
+Immediately after moromi is produced, almost all sake has an alcohol concentration close to twenty percent because of parallel multiple fermentation.
+
+アルコール度数の高いほうが腐敗の危険が少ないので、貯蔵・熟成もこの20度近いアルコール度のまま行なわれる。
+Because the higher the alcohol concentration is, the less the possibility of putrefaction, storage and maturing are carried out with an alcohol concentration close to twenty percent.
+
+出荷するときには酒税法の規定との兼ね合いもあり、また消費者が低アルコール度を好むという事情もあって、目的とするアルコール度数まで下げる必要がある。
+When shipping, in relation to the provisions of the Liquor Tax Act, and because that consumers prefer low alcohol-concentration, it is necessary to lower the alcohol concentration to a desired level.
+
+（「低濃度酒」参照。）
+(Refer to "Sake of low alcohol concentration.")
+
+いっぽう、割水をしないで、醪ができた時点のアルコール度のまま出荷した酒のことを原酒（げんしゅ）という（ただし、アルコール度数の変化が1%未満の加水は認められている）。
+Sake shipped without warimizu at the original alcohol concentration at the time when moromi was produced is called "genshu" (unprocessed sake) (Kasui that causes change in alcohol concentrations below one percent is allowed.)
+
+原酒というと、一般的にはその酒の元となった醪や酵母を使った本源的な酒、あるいは何かどろっとした濃いエキスのような酒がイメージされるようであるが、実際はそういうものではない。
+The word unprocessed sake seems to make people imagine primary sake with moromi and yeast, the source of the sake, or thick syrupy extract-like sake, but it is not so in reality.
+
+ただ、割水をしていない分、一般酒よりもアルコール度数が高めであることは確かである。
+It is certain that, if warimizu is not done, its alcohol concentration is higher than that of usual sake.
+
+こうして割水など最後の調整を果たした酒は、洗浄用水で洗浄された瓶の中へ瓶詰め（びんづめ）され、出荷され、各自の蔵元がそれぞれ独自に切り拓いている流通販路に乗る。
+Sake, for which final adjustment such as warimizu is completed, is put into bottles which have been washed with washing water, and supplied to the distribution channel that each brewer has developed independently.
+
+現在は使われていない、歴史上の製法にかかわる表現を含む。
+Expressions related to the historical production method which is not used today are included.
+
+「- 歩合（ぶあい）」で終わる用語には、次のものがある。
+Terms ending in "-buai" are as follows:
+
+精米歩合
+Seimai buai (rice-polishing ratio)
+
+重量精米歩合
+Juryo seimai buai (rice-polishing ratio by weight)
+
+見掛精米歩合
+Mikake seimai buai (rough rice-polishing ratio)
+
+真精米歩合
+Shin seimai buai (true rice-polishing ratio)
+
+整粒歩合
+Seiryu buai (ratio of perfect grains)
+
+麹歩合
+koji buai (ratio of koji)
+
+粕歩合
+Kasu buai (ratio of sake lees)
+
+汲み水歩合
+Kumimizu buai (ratio of drawn water)
+
+酒垂れ歩合または 「清酒垂れ歩合」
+Sakedare buai or "seishudare buai" (rate of produced sake to rice as raw material)
+
+学問的・専門的にではなく、あくまでも一般的な理解のためという前提で補足すると、日本酒の製法という文脈に限っては、「仕込む」　=　「造る」、「仕込み」　＝　「造り」というように、ほぼ同義語として考えてよい。
+As a supplement neither academic or professional, but for promoting general understanding, we can consider, limiting the context related to producing method for sake, that they are synonyms like "shikomu" (to prepare) = "tsukuru (to produce) and "shikomi" (preparation)="tsukuri" (production).
+
+どちらが呼称として一般的であるかは、その時代の趨勢と、造り手の意図によるところが大きい。
+Which is more popular as a designation largely depends on the trend during the period and the intention of the producer.
+
+「- 仕込み」または「- 造り」で終わる用語には、次のものがある。
+Terms ending in "-jikomi" or "-zukuri"are as follows:
+
+山廃仕込み（やまはいじこみ）
+Yamahai jikomi (preparation using yamahai moto)
+
+段仕込み（だんじこみ）
+Dan jikomi
+
+三段仕込み（さんだんじこみ）
+Sandan jikomi
+
+四段仕込み
+Yodan jikomi (four-stage preparation)
+
+寒造り（かんじこみ） または 寒造り（かんづくり）
+Kan jikomi or kan zukuri (preparation in cold season)
+
+十水仕込み（とみずじこみ）
+Tomizu jikomi (preparation using tomizu)
+
+宮水仕込み（みやみずじこみ）
+Miyamizu jikomi (preparation using miyamizu)
+
+高熱液化仕込みまたは高温液化仕込み
+Konetsu ekika jikomi (preparation using high heat liquefaction) or koon ekika jikomi
+
+木桶仕込み または 木桶造り
+Kioke jikomi or kioke zukuri (preparation using a wooden bucket)
+
+木樽造り
+Kidaru zukuri (preparation using a wooden cask)
+
+融米造り（ゆうまいづくり）
+Yumai zukuri (brewing with dissolved rice)
+
+焙炒造り（ばいしょうづくり）
+Baisho zukuri (brewing with roasted rice)
+
+姫飯造り（ひめいいづくり）
+Himeii zukuri (brewing with deeply steamed soft rice)
+
+学問的・専門的にではなく、あくまでも一般的な理解のためという前提で補足すると、日本酒の製法という文脈に限っては、「酛（もと）」＝「酒母（もと/しゅぼ）」はほぼ同義語として考えてよい。
+As a supplement, neither academic or professional, but to promote general understanding, we can consider, limiting the context related to the production method for sake as being synonyms like "moto" = "shubo."
+
+「- 酛」または「- 酒母」で終わる用語には、次のものがある。
+Terms ending in "-moto" or "-shubo" are as follows:
+
+菩提酛（ぼだいもと）
+Bodaimoto (sake mash used since the mid Heian Period to produce high-class sake) (sake mash used since the middle of Heian Period for high-class sake)
+
+煮酛（にもと）
+Nimoto (sake mash used since the mid Heian Period to produce high-class sake using a process of heating sake mash in a pot)
+
+高温糖化酛（こうおんとうかもと）または「高温糖化酒母」
+Koontokamoto (sake mash made using a high temperature saccharification method instead of steaming rice)
+
+速醸酛（そくじょうもと）
+Sokujomoto (sake mash produced using the modified yamahai method for greater efficiency)
+
+中温速醸酛（ちゅうおんそくじょうもと） または 「中温速醸酒母」
+Chuonsokujomoto (sokujomoto produced under a medium temperature) or chuonsokujoshubo
+
+山廃酛（やまはいもと）または「山卸廃止酛」
+Yamahaimoto (sake mash produced using the yamahai method, which is the same as the kimotozukuri method but without yamaoroshi) or yamaoroshihaishimoto
+
+生酛（きもと）
+Kimoto (sake mash produced using a more traditional method)
+
+以上の分類にあてはまらない用語には、次のものがある。
+Terms which do no fit to the above-mentioned classifications are as follows:
+
+アルコール添加（あるてん）
+Alcohol adding (or "aruten")
+
+ひやおろし
+Hiyaoroshi
+
+酛立て（もとだて）
+Motodate (producing sake mash)
+
+四段掛け（よんだんがけ / よだんがけ）
+Yodangake
+
+柱焼酎
+Hashirashochu
+
+汲水
+Kumimizunobashi or "kumimizu wo nobasu" (literally, to dilute with drawn water)
+
+打瀬（うたせ）
+Utase (time period immediately after sake mash production until the next heating is commenced)
+
+高温糖化法
+High-temperature saccharification
+
+火落ち
+Hiochi (putrefaction of sake by bacteria called "hiochikin")
+
+無濾過（むろか）
+Muroka (non-filtered)
+
+炭素濾過（たんそろか）または活性炭濾過（かっせいたんろか）
+Tansoroka (filtering with charcoal) or kasseitanroka (filtering with active charcoal)
+
+現在の清酒の分類において、もっとも重要なのは特定名称である。
+Most important classification of seishu at present is the classification by specific class name.
+
+原料や製法が一定の基準を満たす清酒は、純米酒（じゅんまいしゅ）、吟醸酒・純米吟醸酒（ぎんじょうしゅ）、本醸造酒（ほんじょうぞうしゅ）といった特定名称酒（とくていめいしょうしゅ）に分類される。
+Sake of which raw material and/or manufacturing method meets specified standards is classified into specific class name of sake, such as ginjoshu, junmai ginjoshu (ginjo sake with no added alcohol), and honjozoshu (a sake brewed with rice of polishing ratio not exceeding 70 % as main material and distilled alcohol of as auxiliary material not exceeding 10 % of rice by weight
+
+特定名称酒に該当しない清酒は、普通酒（ふつうしゅ）と呼ばれる。
+Seishu that does not correspond to specific class name sake is called futsushu (literally, ordinary sake).
+
+ただし、平成16年（2004年）1月1日から精米歩合規定が撤廃されたため、下記に示す条件に合わない場合でも記載は可能となっているのが現状であるため、名称はあくまで目安に過ぎない。
+Provisions related to rice-polishing ratios were abolished from January 1, 2004, however, it became possible to describe even when it does not meet the following conditions, the names are used just as a guide.
+
+（詳しくは「純米酒」の項を参照。）
+(For more information refer to the section "Junmaishu.")
+
+特定名称以外にも、特徴的な原料や製法によって様々な分類がある。
+Other than specific name, there are various classifications by characteristic raw materials or manufacturing method.
+
+これらは国税庁の告示である清酒の製法品質表示基準により定められるものと、酒造メーカーや業界団体によって伝統的・慣用的に用いられるものとがある。
+They contain those established by notification of the National Tax Agency, the Standards for Manufacturing Methods and Quality Indication for Seishu, and those which have been used traditionally and customarily by sake breweries and the industry organization.
+
+前者においては、特定名称といくつかの記載事項・国税庁による任意記載事項・記載禁止事項が定められている。
+With respect to the former, specific names and several items to be described as well as arbitrary items to be denoted and items which are prohibited from being denoted specified by the National Tax Agency.
+
+後者においては、付加価値を高めるため前者において定義されていない多様な分類が見られる。
+With respect to the latter, in order to increase the value added, there are various classifications not defined in the former.
+
+同意の分類でも地方や世代などによって異なる用語が用いられることがあり（中取り / 中汲み 等）、統一されていない。
+In certain cases different terms are used for the classification of the same meaning depending upon the district and generation (example: nakadori/nakagumi etc.), and they are not uniform.
+
+特定名称の使用が定められる以前は、特級、一級、二級という日本酒級別制度が存在した（詳しくは日本酒の歴史を参照）。
+Before the use of specific names is provided for, there existed the sake grading system of tokkyu (special class), ikkyu (first class) and nikyu (second class). (For more information, refer to the "History of Sake.")
+
+なお、酒造メーカー独自のランク付けとして、特撰、上撰、佳撰などという呼称も一部で使われている。
+As a ranking system unique to breweries, words such as tokusen (literally, special selection), josen (literally, higher selection) and kasen (literally, good selection).
+
+特定名称酒以外の清酒。
+Seishu other than sake with a specific class name
+
+一般に流通している大部分の日本酒である。
+Most types of sake distributed generally are futsushu.
+
+米、米麹（こめこうじ）以外にも、醸造アルコール、糖類、酸味料、うま味調味料、酒粕（さけかす）などの原料を加えて作ることが、副原料の重量が米・米麹の重量を超えない範囲という条件つきで認められている。
+Other than rice and malted rice, it is allowed to add other raw materials such as distilled alcohol, sugars, sour agents, umami-chomiryo (chemical seasoning) and sake lees on condition that the total weight of auxiliary materials does not exceed the weight of rice and malted rice.
+
+三倍増醸清酒、またはそれをブレンドした酒も普通酒に含まれる。
+Three-time increased volume of sake and sake in which three-time increased sake volume is blended are also included in futsushu.
+
+三等米以上の白米を用い、白米の重量に対する米麹の使用割合が15%以上の清酒。
+Specific name sake is seishu for which polished rice of the third grade or higher and the ratio of malted rice to the weight of polished rice is fifteen percent or more.
+
+原料や精米歩合により本醸造酒（ほんじょうぞうしゅ）・純米酒（じゅんまいしゅ）・吟醸酒（ぎんじょうしゅ）に分類される。
+Depending upon raw materials and the rice-polishing ratio, specific name sake is classified into honjozoshu, junmaishu and ginjoshu.
+
+精米歩合70%以下の白米、米麹および水と醸造アルコールで造った清酒で、香味及び色沢が良好なもの。
+Honjozoshu is seishu which is produced with polished rice of a polishing ratio not exceeding seventy percent, malted rice and water and distilled alcohol and has a delicious flavor and color.
+
+使用する白米1トンにつき120リットル（重量比でおよそ1/10）以下のアルコール添加（アル添）をしてよいことになっている。
+The addition of an amount of alcohol (aruten) not exceeding 120 liters per ton of polished rice (the weight ratio of alcohol to rice is 1:10) is allowed.
+
+そのままではアルコール度数が高いので水で割ってあることが多い（割水）。
+As the concentrated alcohol added sake is too high, it is often diluted with water (warimizu).
+
+そのため、旨味や甘味にとぼしく、一般的に味は軽くなり、すっきりしたものとなる。
+Therefore, honjozoshu has less umami and sweetness and, generally speaking, its taste becomes light and simple.
+
+白米、米麹および水だけを原料として製造した清酒で、香味及び色沢が良好なもの。
+Junmaishu is a seishu which is produced with only polished rice, malted rice, and water.
+
+ただし、その「白米」は、3等以上に格付けた玄米又はこれに相当する玄米を使用する。
+However, such "polished rice" must be produced from unpolished rice which is graded to the third grade or higher or the equivalent.
+
+さらに「米麹」の総重量は、白米の総重量に対して15%以上必要である。
+It is also required that the total weight of "malted rice" is fifteen or more of the total weight of polished rice.
+
+一般に吟醸酒や本醸造に比べて濃厚な味わいであり、蔵ごとの個性が強いといわれる。
+Generally speaking, junmaishu has a thicker consistency compared to ginjoshu and honjozo and the uniqueness of each brewery is strong.
+
+歴史的にはもともと日本酒は昭和初期まですべて純米酒であった。
+Historically, all types of sake were junmaishu up to the beginning of the Showa period.
+
+アルコール添加の原型と見なされる柱焼酎でさえも、原料は米だったからである。
+This is because even hashirashochu, deemed as the origin of alcohol adding, is produced from rice.
+
+それが太平洋戦争前後の米不足から、増量目的のアルコール添加による三倍増醸清酒が出回り、かたわらではそのアルコール添加を善用しようと吟醸酒が開発された。
+Because of the insufficient supply of rice during and after the Pacific War, however, three-time increased sake volume by adding alcohol became popular and, on the other hand, ginjoshu was developed with the aim to utilize alcohol adding for improvement.
+
+こうして純米酒以外の日本酒が主流を占める時代が長く続いた。
+Accordingly, the era, in which sake other than junmaishu was the mainstream, lasted for a long time.
+
+しかし、近年では「米だけで造ってある酒」という、もとは当たり前だった前提がかえって新鮮なイメージを呼び、純米酒は日本酒のなかに一つのカテゴリーを形成しつつある。
+In recent years, however, the preconditioned, "sake produced only from rice," which was taken for granted in the past, gives a fresh image and junmaishu has been forming one of the categories in the world of sake.
+
+また純米酒に関わる規定として、1991年に日本酒級別制度が廃止されて以降、2003年（平成15年）12月31日まで、「精米歩合が70%以下のもの」という項目があり、「純米酒」という名称に品格を持たせるために、精米歩合を法的に規制していた。
+With respect to provisions relating to junmaishu, since the sake grading system was abolished in 1991, there was a provision, "with a polishing ratio of seventy percent or less" that was valid until December 31, 2003 and the polishing ratio was legally regulated in order to maintain the status of the name of "junmaishi."
+
+なぜならば、当時は精米歩合が高ければ高いほど高級酒になるという一般通念があったからである。
+The reason is that there was a commonplace assumption at that time that the higher the polishing ratio is, the higher the grade of sake would be.
+
+しかし近年の規制緩和の一環として、この規定は2004年（平成16年）1月1日以降削除され、米だけで造ってあれば、たとえ普通酒なみの精米歩合であっても純米酒の名称を認め、評価は消費者の選択に任せるようになった。
+As a part of easing of the regulations in recent years, this provision was deleted as of January 1, 2004, and, for sake produced only from rice, even if the polishing ratio is same as for futsushu, use of name "junmaishu" is allowed and the evaluation is left to the choice of the consumers.
+
+これに対しては、「消費者権利の拡大」と賛同的に取る立場と、「酒造技術の低下を招くもの」と批判的に取る立場がある。
+Some understood this affirmatively as an "expansion of the rights of consumers" and the other understood critically as "inducing the degrading of sake brewing technology."
+
+この規制緩和によって、アルコール添加をしていなくても、米粉などを使用していたために純米酒を名乗れなかった銘柄が、数多く純米酒に格上げされる形になるのではないかという疑念がある。
+Because of this easing of regulations, there is a lingering doubt that many brands which could not be named junmaishu because of using rice powder, etc. although no alcohol was added, were upgraded to junmaishu.
+
+実際は上記にあるように「麹歩合15%以上」「規格米使用」といった縛りがあり、麹歩合15%未満の酒、規格外米・屑米・米粉を使用した酒は純米酒を名乗れないようになっている。
+In reality, however, as there are restrictions "koji ratio 15 % or more" and "use of standard rice, "sake with the ratio of koji below fifteen percent, produced from substandard rice, crushed rice produced in the process of polishing rice, or rice powder cannot be called "junmaishu."
+
+一方では上記の条件を満たした上で、かつて普通酒にも用いられなかったような精米歩合の低い酒米をあえて原料とすることで、独特の酒質を引き出す低精白酒などの新しい純米酒の開発も産んだ。
+On the other hand, new types of junmaishu have been developed, such as low polishing ratio sake for which sakamai with low polishing ratio not used even for futsushu, is used as raw material in order to create unique sake quality, while fulfilling the above-mentioned conditions.
+
+精米歩合60%以下の白米、米麹および水を原料とし、吟味して製造した清酒で、固有の香味及び色沢が良好なもの。
+They are a seishu which is produced with rice with a polishing ratio of sixty percent or lower, malted rice and water and produced with special care and it has a unique flavor and the color is favorable.
+
+低温で長時間かけて発酵させて造る。
+They are produced by fermenting at low temperature spending a long time.
+
+吟醸香と呼ばれる、リンゴやバナナを思わせる華やかな香りを特徴とする。
+They are characterized by a gorgeous fragrance called ginjoko that makes a person remember apples or bananas.
+
+最後に吟醸香を引き出すために使用する白米1トンにつき120リットル（重量比でおよそ1/10）以下の醸造アルコールを添加する。
+At the end, in order to draw out the ginjoko, distilled alcohol is added in an amount not exceeding 120 liters per ton of polished rice (the weight ratio of alcohol to rice is 1:10).
+
+吟醸酒のうち、醸造用アルコールを添加していないものを特に純米吟醸酒と言う。
+Among ginjoshu, those to which no distilled alcohol is added, is called especially, junmai ginjoshu.
+
+一般に、他の吟醸酒に比べて穏やかな香り（控えめな香り）となる。
+Generally speaking, it has a gentler fragrance (reserved fragrance) compared to other ginjoshu.
+
+本記事を含めて、よく「吟醸系（の酒）」と表現される場合は、これら吟醸酒・純米吟醸酒・大吟醸酒・純米大吟醸酒・山廃吟醸酒など、吟醸香を持つ酒すべてをグループ化して意味している。
+Including this article, the expression "ginjo system (sake)" means a group of sake having ginjoko such as ginjoshu, junmai ginjoshu, daiginjoshu, junmai daiginjoshu, and yamahai ginjoshu (ginjoshu produced with yamahai method).
+
+1920年代から開発が着手され、1930年代の精米技術の向上と、1970年代の温度管理技術の進歩に促されて、しだいに一般市場に出回るだけの生産量が確保できるようになった。
+Development was commenced in 1920's and, promoted by the improvement of rice polishing techniques in the 1930's and development of temperature control techniques in 1970's, the production volume which is sufficient to distribute in the general market could be secured.
+
+吟醸酒が日本国内の市場に流通するようになったのは1980年代以降であり、2000年代以降では日本国外でも需要が高まっている（参照：吟醸酒の誕生）。
+Distribution of ginjoshu in the domestic market of Japan has been conducted since the 1980's and, after 2000, the demand has increased even outside Japan. (Refer to "Birth of Ginjo Sake.)
+
+大吟醸酒とは精米歩合50%以下の白米、米麹および水を原料とし、吟味して製造した清酒で、吟醸酒よりさらに徹底して低温長期発酵する。
+Daiginjoshu is a seishu which is produced with rice with a polishing ratio of fifty percent or lower, malted rice and water and produced with special care and for which fermentation is carried out at a lower temperature spending a longer time compared to ginjoshu.
+
+固有の香味及び色沢が特に良好なもの。
+Unique flavor and color must be especially favorable.
+
+最後に吟醸香を引き出すために少量の醸造アルコールを添加する場合もある。
+At the end, in order to draw out ginjoko, a small amount of distilled alcohol is added in some cases.
+
+フルーティで華やかな香りと、淡くサラリとした味わいが特徴。
+They are characterized by fruity and gorgeous fragrance and a light and smooth taste.
+
+大吟醸酒のうち、精米歩合50%以下の白米、米麹及び水のみを原料とするものを純米大吟醸酒と言う。
+Among daiginjoshu, those for which only polished rice, malted rice, and water are used as raw materials are called junmai daiginjoshu.
+
+一般に、他の大吟醸酒に比べて、穏やかな香りで味わい深い。
+Generally speaking, it has a gentler fragrance and deeper flavor compared to other daiginjoshu.
+
+大吟醸酒は最高の酒米を極限まで磨き、蔵人の力を結集して醸した日本酒の最高峰といえる。
+We can say that daiginjoshu is the top product among sake brewed by polishing sakamai of the best quality to the ultimate level and combining capabilities of the workers in the sake brewery.
+
+（参照：吟醸酒の誕生）
+(Refer to "Birth of Ginjoshu.)
+
+国税庁の清酒の製法品質表示基準による任意記載事項は、以下のとおり。
+Arbitrary items to be denoted, provided for in the Standards for Manufacturing Methods and Quality Indication for Sake for the National Tax Agency, are as follows:
+
+原料米の品種名
+Variety name of raw material rice
+
+酒造好適米など、特定の品種を原料米の50%以上使用した場合、品種名とその使用割合を表示することができる。
+If raw material rice of a specific variety, such as shuzo kotekimai is used for 50 % or more, the variety name and the ratio of usage may be denoted.
+
+清酒の産地名
+Place of sake production
+
+単一の産地で製造された場合、産地名を表示することができる。
+If sake is produced in a single production facility, the facility may be denoted.
+
+貯蔵年数
+Number of years stored
+
+一年以上貯蔵・熟成された清酒には、貯蔵年数を表示することができる。
+If sake is stored and matured for one year or longer, the number of years of storage may be denoted.
+
+酒造メーカーによっては、1年以上熟成した酒に古酒・古々酒・大古酒・熟成酒・秘蔵酒などの名称を冠して販売することがある。
+Certain sake breweries sell sake, which has been stored for one year or longer, under names such as koshu (old sake), kokoshu (old old sake), daikoshu (very old sake), jukuseishu (matured sake) and hizoshu (treasured sake).
+
+年数と用語に関する統一された基準はない。
+There is no uniform standard for the number of years and terms.
+
+原酒
+Unprocessed sake
+
+上槽後、割水もしくは加水調整　（アルコール分1%未満の範囲内の加水調整を除く）をしない清酒。
+Seishu for which no warimizu or kasuichosei (excluding kasuichosei by which alcohol concentration is not changed one percent or more) has been conducted after joso
+
+生酒
+Raw sake
+
+製成後、加熱処理もしくは火入れを一度もしない清酒。
+seishu for which no heating or pasteurization has been conducted
+
+牛乳などと同様に生もので劣化しやすいので、鮮度には注意が必要であり、冷蔵保存する必要がある（参照：「生酒」の問題点）。
+As raw sake is perishable the same as cow milk and vulnerable to degradation, appropriate care must be used for freshness and it must be refrigerated. (Refer to "Problems of 'Raw sake.")
+
+生貯蔵酒
+Raw stored sake
+
+製成後、火入れをしないで貯蔵し、製造場から移出する際に火入れした清酒。
+seishu stored without pasteurization after production and pasteurized just before carrying out from the production site
+
+貯蔵期間については規定されていない（参照：「生酒」の問題点）。
+The period of storage is not provided for. (Refer to "Problems of 'Raw Sake.")
+
+生一本
+Kiippon
+
+単一の製造場のみで醸造した純米酒。
+Junmaishu brewed in a single brewery
+
+樽酒
+Taruzake (literally, cask sake)
+
+木製の樽で貯蔵し、香りのついた清酒（瓶その他の容器に詰め替えたものを含む）。
+seishu stored in a wooden cask and having a lingering fragrance (including those rebottled to bottle or other container).
+
+生詰酒
+Namazumezake (raw bottled sake)
+
+生貯蔵酒とは逆に、製成後、火入れをしてから貯蔵し、製造場から移出する際には火入れを行わない清酒（参照：「生酒」の問題点）。
+Opposite to raw stored sake, seishu which, after production, has been pasteurized and stored and for which no pasteurization is conducted before shipping from the production site. (Refer to "Problems of 'Raw Sake.")
+
+ひやおろし
+Hiyaoroshi
+
+冬季に醸造した後に春・夏の間涼しい酒蔵で熟成させ、気温の下がる秋に瓶詰めし出荷された清酒。
+seishu which, after brewing in wintertime, has matured in a cool brewery during spring and summer and bottled and shipped in autumn when the air temperature becomes low
+
+本ページ「ひやおろし」参照。
+Refer to "Hiyaoroshi" on this page.
+
+以下3項目は、上槽時に搾りが施されている間の時期（前期・中期・後期など）で分類されるが、明確な基準はない。
+The following three items are classification according to timing (preceding stage, medium stage and late stage) during squeezing at the time of joso, but there is no clear standard.
+
+荒走り（あらばしり）
+Arabashiri
+
+上槽時、すなわち槽という搾り器を使って醪（もろみ）をしぼるときに、最初にほとばしるように出てくる部分の酒のこと。
+Sake gushing out at the beginning of joso, in other words, when moromi is squeezed using a squeezer called fune
+
+圧力を加えないで、最初に積まれた酒袋の重みだけで自然に出てくるもの。
+Arabashiri comes out automatically with the weight of sakabukuro (bag for squeezing) stacked at first without applying any additional pressure.
+
+一般に固形分である滓下げ（おり）が多く、アルコール度は比較的に低めで、香りも高く切れ味が良い。
+Generally speaking, arabashiri contains much solid content, ori (lees), and the alcohol concentration is rather low, it is very fragrant and has a crisp taste.
+
+中取り（なかどり）・中汲み（なかぐみ）・中垂れ（なかだれ）
+Nakadori, nakagumi or nakadare
+
+上槽時、荒走りの次に、中間層として出てくる部分。
+A portion which comes out as the medium layer after arabashiri during joso process
+
+アルコール度や味は、ほどほどの中間点。
+Alcohol concentration and taste are medium.
+
+味と香りのバランスが最も良い、あるいは荒走りより練られた味だ、とも評される。
+It has the best balance between taste and fragrance and some say that it has a more refined taste than arabashiri.
+
+厳密には、この中取り、もしくは中汲み、中垂れという一つの段階の中にも、酒袋が槽いっぱいになるまで積まれたときに酒袋の山の自重で出てきたものと、自重に加えてさらに圧力を掛けたときに出てきたものの二段階がある。
+Strictly speaking, at the stage of nakadori, nakagumi or nakadare, there are two stages; the first one is sake squeezed by the weight of stacked sakabukuro when sakabukuro is stacked to completely fill the fune and the second one is sake that comes out when additional weight is applied in addition to the weight of the sakabukuro.
+
+責め（せめ）・押し切り（おしきり）
+Seme, or oshikiri
+
+上槽時、最後に出てくる部分。
+The portion that comes out last during joso.
+
+特に槽搾りにおいて、圧搾して出てきた部分。
+In particular, in the case of funeshibori, the portion that comes out when squeezed
+
+アルコール度は高く、かなり練られた濃い味。
+It has a rather high alcohol concentration and a thick taste.
+
+袋吊り・袋しぼり・雫しぼり・首吊り
+Fukurozuri (literally, bag hanging), fukuroshibori (bag squeezing), sizukushibori (drip squeezing), or kubitsuri,(hanging)
+
+上槽時、もろみを袋に詰め、袋を吊り下げてそこから垂れてくる酒をとる方法。
+It is a method of taking sake which, at the time of joso, bags are filled with moromi and hung and sake drippings are collected.
+
+出品酒などの高級酒に多く用いられる。
+This method is often used for high-class sake such as sake to be sent to exhibitions.
+
+こうして採られた酒は雫酒（しずくざけ）と呼ばれることもある。
+Sometimes, sake which is obtained by such method is called shizukuzake (literally, drop sake).
+
+斗瓶取り・斗瓶囲い
+Tobintori or tobinkakoi
+
+上槽時、出てきた酒を斗瓶（18リットル瓶）単位に分け、そこから良いものを選ぶ方法。
+This is a method of selecting sake, at the time of joso, when the sake is divided by filling the tobin (bottle with a capacity of eighteen liters) and good sake is selected from the bottles.
+
+出品酒等の高級酒に多く用いられる。
+This method is often used for high-class sake such as sake to be sent to exhibitions.
+
+無濾過
+Muroka (non-filtered)
+
+活性炭濾過による香味調整をしない酒。
+It is sake for which no flavor adjustment by filtration with active charcoal is conducted.
+
+にごり酒・おりがらみ
+Nigorizake or origarami
+
+にごり酒は、上槽の際に粗い目の布などで濾して、意図的に滓を残したもの。
+Nigorizake (literally, cloudy sake) is sake which, at the time of joso, is filtered with rough-textured cloth, etc to intentionally allow the lees to remain.
+
+火入れをしない場合は瓶内部で発酵が持続し、発泡性のものになる。
+If no pasteurization takes place, fermentation continues in the bottle and sake changes into a sparkling one.
+
+おりがらみは、滓下げをしないままのもの。
+Origarami is sake for which no orisage is conducted.
+
+どちらも、滓に含まれているや旨み、醪独特の濃厚な香りや味わいを楽しむために作られる。
+Both are produced to enjoy umami contained in ori and the strong fragrance or flavor which are unique to moromi.
+
+地理的表示
+Geographical indication
+
+国税庁の地理的表示に関する表示基準を定める件により、国税庁長官の指定を受けた地域において表示できる。
+It may be labeled in an area which is designated by the Commissioner of the National Tax Administration Agency under the "Establishing Standards for Labeling of Geographical Indications" by the National Tax Administration Agency.
+
+産地の特長を生かすよう原料や製法等が制限される。
+Raw materials, manufacturing method, etc. are restricted so that features of the area are fully used.
+
+また、この指定を受けると、他の地域で製造された清酒での類似表示（「○○風仕込み」「○○式清酒」）が禁止されるため、地域ブランドを保護できる。
+If such designation is obtained, as similar indications ("prepared by XXX method," "seishu in XXX style") for seishu produced in other areas are prohibited, local brands can be protected.
+
+これらの理由から活用が期待されているが、2008年3月現在、日本酒では白山（白山菊酒、石川県白山市、2005年12月指定）のみがその指定を受けている。
+Although it is expected to be utilized widely because of such reasons, only Hakusan (Hakusan Kikusake, Hakusan City, Ishikawa Prefecture, designated in December 2005) has obtained the designation as sake as of March 2008.
+
+近年、外国産の清酒（日本酒）が市場に出回るようになり、一般消費者がこれを目にする機会が多くなっている。
+In recent years, seishu produced in foreign countries has entered circulation and general consumers often see such sake.
+
+アルコール飲料のうちの1つとして日本酒を見たとき、それはウイスキーやワインなど他の酒と比較しても高度な醸造技術が必要とされるため、製品として完成するには大変手間のかかる種類の酒である。
+When we consider sake as an alcoholic drink, as it requires high-level fermenting technology compared to other alcoholic drinks such as whisky and wine, it is a type of alcoholic drink that requires a lot of effort and labor to complete as a product.
+
+また、原料となる酒米を調達する場合においても、大型機械を導入し大規模栽培が行えるような地理的条件に恵まれた地域（国）では、極めて有利な条件で日本酒の醸造を行うことが可能となる。
+In procuring sakamai as raw material, sake can be brewed with very favorable conditions in areas (countries) with favorable geographical conditions that allow large-scale cultivation using large machines.
+
+一部の大手日本酒醸造メーカーは、外国で日本酒の醸造を行っている。
+Some large sake brewing companies have been brewing sake in foreign countries.
+
+出来上がった製品は現地で販売されるだけでなく、日本へも輸入されている。
+Completed products are not only sold in their local market, but also imported into Japan.
+
+日本国内で販売される場合には、原産国名および外国産清酒を使用したことの表示が必要となる。
+When such sake is sold in Japan, it is necessary to label the country of origin and use of sake produced in foreign country.
+
+（昭和28年3月6日大蔵省令第11号）第11条の5により、清酒は日本酒と表示することが認められているので、実際には「外国産清酒」もしくは「外国産日本酒」と表示される。
+Under Article 11-5 of the Ministerial Ordinance No. 11 of the Ministry of Finance dated March 6, 1953, it is allowed to label seishu as Japanese sake, they are labeled as "seishu manufactured in foreign country" or "Japanese sake manufactured in foreign country."
+
+なお、地理的表示に関する表示基準を定める件が改定され、平成17年10月1日から施行された。
+The "Establishing Standards for Labeling of Geographical Indications" was amended and enforced October 1, 2005.
+
+これによって、「清酒の産地のうち国税庁長官が指定するものを表示する地理的表示は、当該産地以外の地域を産地とする清酒について使用してはならない。」とする地理的表示の保護についての規定が新設された。
+With this amendment, a new provision for the protection of geographical indications, "Among places of manufacturing seishu, the geographical indication for the place designated by the Commissioner of the National Tax Administration Agency may not be used for seishu that is produced in an area other than the designated one." was newly established.
+
+この改定に先立ち、当時国税庁ではに対して一般から意見を募った。
+Before this amendment, the National Tax Administration Agency advertised for public opinions.
+
+寄せられた意見は、国税庁パブリックコメントで一般公開されている。
+Submitted opinions are opened to the general public in Public Comment of the National Tax Administration Agency.
+
+1升（しょう）＝10合（ごう）＝1.8リットル
+1 sho = 10 go = 1.8 liters
+
+1石高（こく）＝10斗（と）＝100升
+1 koku = 10 to = 100 sho (approx. 180 liters)
+
+これらの体積単位はすべて日本の単位系である尺貫法の一部である。
+All of those units for volume belong to Shakkanho, the Japanese unit system.
+
+1升とは、酒屋などでごく普通に目にする日本酒の大瓶、すなわち一升瓶に入る容量である。
+1 sho is a volume that can be put into obin (literally, large bottle) for sake, namely isshobin (literally, one-sho bottle) which is usually seen in liquor shops.
+
+1901年（明治34年）に『白鶴』が一升瓶で日本酒を販売するようになって以来、百年余りにわたって主流を占めてきた。
+Since "Hakutsuru" commenced to sell sake with ishobin in 1901, it was the mainstream for over one hundred years.
+
+近年では、その大きさやつきまとうイメージの泥臭さなどが消費減退の理由だと唱える人々がおり、小型化する傾向もある（参照：日本酒の現在）。
+In recent years, some say that the size and associated image of unrefinedness are causes of decrease in consumption and there is a tendency to switch to smaller bottles. (Refer to "Nihonshu no Genzai" - Current situation of sake)
+
+いわゆる中瓶は四合瓶で、文字通り4合（720ミリリットル）入る。
+So-called chubin (middle-size bottle) is yongobin which can literally contain 4 go (720 milliliters).
+
+酒蔵では、18リットル入る斗瓶を使っており、消費者が販売店で見る「斗瓶囲い」といった記載表示はそれに由来する（参照：その他の記載表示）。
+Breweries use tobin which can contain 18 liters and the labeling words "tobin kakoi," which we see in liquor shops, came from this fact. (Refer to other indications)
+
+石（こく）は、おもに酒蔵の生産量を示すのに用いられる。
+The unit "koku" is mainly used to show the production volume of the brewery.
+
+これも極めておおざっぱな目安であるが、一般の小さな酒蔵だと年間500石、大手の酒蔵で年間5,000石以上といったところである。
+As this also is a very rough guide, a small brewery in general produces 500 koku annually and a large brewery more than 5,000 koku.
+
+当然ではあるが、生産石高と生産される酒質には何の相関関係もない。
+Of course, there is no correlative relationship between the number of koku for produced sake and the quality of produced sake.
+
+1荷（か）＝酒樽2個 ＝（約）酒70升 ＝ 126リットル
+1 ka = two sake casks = 70 sho of sake (approx.) = 126 liters
+
+「荷」は、主に酒の陸上輸送に使われた単位である。
+"Ka" is a unit mainly used for overland transportation of sake.
+
+樽は、安土桃山時代ごろから酒を運ぶ手段となった。
+Casks became a mean to transport sake since the Azuchimomoyama period.
+
+人足が酒樽を天秤棒（てんびんぼう）で前後に1個ずつかついだことに由来する。
+It can be traced back to the fact a carrier shouldered a carrying pole with sake casks, one each for the front and rear.
+
+樽は4斗樽（よんとだる）だが、ふつうは4斗いっぱい入れずに3斗5升ほど入れる。
+Casks are yontodaru (4 to cask), but, usually, a cask is filled with approximately 3.5 to of sake instead of full, namely 4.to.
+
+そのため70升と計算した。
+Therefore, it was calculated as 70 sho.
+
+日本酒度を見ればわかるように、酒の比重も若干の幅がある。
+As seen from nihonshudo, there is a certain width of the range of specific gravity of sake.
+
+ほぼ水と同じとして考えれば、人足は約126kgの荷をかついで街道を行く仕事であった、ということになる。
+If we assume that the specific gravity of sake is the same as water, carrier walks on the road with approximately 126 kg load on his shoulder.
+
+1盃（はい）
+1 hai (or ippai; literally, one cup)
+
+現代では、挨拶などで「一杯やりましょう」と発言してもそれは、ワイングラスやコップなどの入れ物で「1杯」という意味には必ずしもならない。
+Today, even if we say "Let's have ippai.," it does not necessarily mean to have "one drinking cup or glass" of sake.
+
+さかのぼって江戸時代以前は、「一盃」はれっきとした容積単位であった。
+Going back to the Edo period or before, "ippai" was a unit for volume.
+
+ただ、地方や藩によって違いがあり、厳密なものではなかった。
+It was not a strictly uniform unit and there were certain differences depending on the district or feudal domain.
+
+豊臣秀吉が太閤検地を行なった際に度量衡の基準を示し、容積についても「京枡（きょうます）」を定めた。
+When Hideyoshi TOYOTOMI carried out taiko kenchi (the cadastral surveys conducted by Hideyoshi), he also established standards for weights and measures and established "kyomasu" for volume.
+
+ところが、江戸時代になっても東北地方の藩などに普及しなかった。
+Even during the Edo period, however, it was not popularly used in feudal domains in the Tohoku District.
+
+小差はあっても概して「100盃＝（約）4斗」であったという。
+Regardless of minor differences, as it is said that, in general, "100 hai (or pai) was equal to (approximately) 4 to. "
+
+「1盃＝（約）720ミリリットル」ということになり、4合瓶やワイン1本と同じくらいの分量ということになる。
+Therefore, "1 hai is (approximately) 720 milliliters, which is a volume similar to a 4 go bottle or a wine bottle.
+
+当時は「一盃」飲むとなると、4合瓶を飲み干すことを意味したのである。
+At that time, to drink "1 hai" of sake meant to dry up a 4 go bottle.
+
+献（こん）
+kon
+
+現在では「一献やりましょう」と言うように、「一緒に酒を飲む」という意味で用いられる。
+Today, kon is used to mean "to drink sake together" as we say "Let's have 1 kon."
+
+古くは一盃になみなみと酒を満たし、酒席をぐるりとひと回りするのが「一献」であった。
+In ancient times, "1 kon" meant to fill a sake cup full with sake and the sake cup was passed around to all members of the drinking party.
+
+例えば「宴が三献ほどしたら」というような表現があった。
+For example, we can find an expression like "after three kon of the drinking party."
+
+清酒の比重を示す単位。
+It is a unit that represents sake's specific gravity.
+
+対象とする清酒を15℃にし、規定の浮秤（ふひょう）を浮かべて計測する。
+It is measured by adjusting sake's temperature to fifteen degrees centigrade using a specified aerometer that floats in sake.
+
+そのときに、4℃の蒸留水と同じ重さの酒の日本酒度を0とする。
+Nihonshudo zero is defined as sake that has same weight as that of distilled water of four degrees centigrade.
+
+それよりも軽いものは+（プラス）の値、重いものは-（マイナス）の値をとる。
+Lighter sake has a value in plus and heavier sake a value in minus.
+
+計量法により、日本酒度は次のように定義されている。
+Nihonshudo is defined in the Measuring Act as follows:
+
+日本酒度＝（（1/比重）-1）×1,443
+Nihonshudo = ((1/specific gravity) - 1) x 1.443
+
+これを逆算すると、以下の式も得られる。
+By back calculating this formula, the following formula is obtained.
+
+酒を15℃にした時の比重＝1,443/(1,443+日本酒度)
+Sake's specific gravity at fifteen degrees centigrade = 1.443/(1.443 + Nihonshudo)
+
+近年、とくに辛口ブーム以降、この日本酒度が酒の辛口甘口を論じる決定的な規準のように考えられている風潮があるが、これは厳密な意味では正しくない。
+In recent years, especially since the dry sake boom, there is the tendency to deem nihonshudo as the decisive standard to determine the dryness of sake, but this is not correct.
+
+たしかに日本酒度はそれを推定するのに便利な目安ではあるが、厳密にはそれをもっと正確にあらわすのは甘辛度（あまからど）である。
+Certainly, nihonshudo is a convenient guide for estimating, but, to be precise, it is shown more exactly by amakarado (literally, degree of sweetness/dryness).
+
+とはいっても、甘辛度ですら、人の味覚のすべてを数値化できるわけではない。
+However, even amakarado cannot quantify all human sense of taste.
+
+一般の人の舌が知覚する「甘辛感」は、酒の持つ香り、旨み、こく、食べあわせている食品や調味料、また飲んでいるときの体調などにより、大きな揺らぎを持つ。
+"Sensing sweetness and dryness" which an ordinary person can sense with his tongue fluctuates depending upon fragrance, umami, koku (body) and food and seasoning that is eaten together with sake as well as the physical condition of the person.
+
+清酒10ミリリットルを中和するのに要する、10分の1規定水酸化ナトリウム溶液の滴定ミリリットル数のこと。
+Acid level is defined as the number of milliliters of 1/10 normal solution of sodium hydrate for titration that is required for disacidifying ten milliliters of sake.
+
+この値が大きければ「さっぱり」、小さければ「こくがある」といった表現が使われる。
+If this value is large, such expression as "sappari (flinty)"is used and if small, such expression as "kokugaaru (having plenty of body)" is used.
+
+しかし、これも日本酒度の場合と同じで、一般の人の味覚は、香り、食べあわせ、体調などにより大きく変動するものである。
+However, same as in the case of nihonshudo, the sense of taste of an ordinary person fluctuates greatly depending on fragrance, combination of food and drink and physical condition.
+
+甘辛度（あまからど）は、清酒の甘辛の度合いを示す値。
+Amakarado is a value that represents the degree of sweetness/dryness of sake.
+
+清酒のブドウ糖濃度と酸度から次のように計算される。
+It is calculated from the concentration of glucose sugar and acid level as follows:
+
+甘辛度 0.86×ブドウ糖濃度 - 1.16 × 酸度 - 1.31
+Amakarado= 0.86 x glucose concentration - 1.16 x acid level - 1.31
+
+また、ブドウ糖濃度の代わりに日本酒度を用いて、 - 1.16 × 酸度 - 132.57 とすることもできる。
+It is also calculated using nihonshudo instead of glucose concentration as - 1.16 x acid level - 132.57.
+
+この式によって人間が酒を甘い辛いと感じる感覚の81%が説明できる。
+This formula explains eighty-one percent of human sense to sense the sweetness/dryness of sake.
+
+清酒の甘辛の程度と甘辛度の関係は下記のとおりである。
+The relationship between the degree of sweetness/dryness and the number of amakarado is as shown in the table below.
+
+濃淡度（のうたんど）は、清酒の味の濃淡の度合いを示す値。
+Notando is a value that represents the degree of depth of flavor of sake.
+
+清酒のブドウ糖濃度と酸度から次のように計算される。
+It is calculated with the glucose concentration and acid level of sake as follows:
+
+濃淡度 0.42×ブドウ糖濃度 - 1.88 × 酸度 - 4.44
+Notando = 0.42 x glucose concentration - 1.88 x acid level -4.44
+
+ブドウ糖濃度は直接還元糖であり、分子構造の大きなデキストリンをのぞいた残りの糖分の量をさす。
+Glucose concentration represents the amount of sugar after excluding dexistrin, which is a direct reducing sugar and has a large molecular structure.
+
+濃淡度がプラスになるほど味が濃い。
+The larger the notando on the plus side is, the deeper the flavor of sake.
+
+甘辛度や濃淡度はあまり表示されることはないが、味の指標としては日本酒度よりは頼りになる。
+Amakarado and notando are seldom labeled, but as indexes of taste, they are more reliable than nihondhudo.
+
+清酒10ミリリットルを酸度の場合と同様に10分の1規定水酸化ナトリウムで中和した後，中性ホルマリン液を5ミリリットル加え再度10分の1規定水酸化ナトリウムで中和したのに要した滴定ミリリットル数のこと（ホルモール法による測定）。
+Same as in the case of acid level, amino acid level is defined as the number of milliliters of 1/10 normal solution of sodium hydrate that is required for disacidifying 10 milliliters of sake after disacidifying 10 milliliters of sake with 1/10 normal sodium hydrate and adding 5 milliliter of neutral formalin (measurement by formol titration).
+
+値は後者の水酸化ナトリウム滴定数量に等しい。
+The value is equal to the number obtained by the sodium hydrate titration of the latter.
+
+値が大きいと濃醇、小さいと淡麗の傾向がある。
+Generally speaking, if the value is large the flavor of sake is deep and if it is small, the flavor is tanrei (crispy and dry).
+
+これも日本酒度・酸度の場合と同じで、一般の人の味覚は、香り、食べあわせ、体調などにより大きく変動するものである。
+However, same as in the case of nihonshudo, sense of taste of an ordinary person fluctuates greatly depending on fragrance, combination of food and drink and physical condition.
+
+酒中のアミノ酸は、グルタミン酸、プロリン、アラニン、ヴァニン、ロイシンなど多種類の、もともと原料の米が含んでいたタンパク質が分解された微量成分によって構成される。
+Amino acids contained in sake consist of various types of minor constituents, which are derived from protein contained in raw material, rice, and decomposed, such as glutamic acid, proline, alanine, valine and leucine.
+
+この構成の割合によってじつに多様な旨味が生じる。
+Depending upon the composition of such constituents, a large variety of umami are created.
+
+日本酒の味が日本酒度や甘辛度はじめ数々の指数に数量化されてもなお、けっきょく数字では日本酒の味は語れないとよく言われるのは、大きくこのアミノ酸の構成の多様性によるものである。
+The reason why it is often said that, even if the taste of sake is quantified with various indexes such as nihonshudo and amakarado, we cannot tell the taste of sake with figures in this large variety in the composition of amino acids.
+
+また完全発酵させた純米酒には、ごく少量ではあるが醪造りの末期に酵母が極限状態に置かれることで発するヒスタミンなどの核酸が生成され、これらは味にふくらみを与えることになる。
+In completely fermented junmaishu, nucleic acids such as histamine are generated, though in very small quantity, which sake yeast generates by being placed in an extreme condition at the end of the process of producing moromi.
+
+基本的にはアミノ酸度が高いほど旨味のある濃い味となる。
+Basically, the higher the amino acid level is, the deeper the taste with umami is.
+
+しかし、高すぎると鈍重な味となる。
+If it is too high, however, the taste becomes dull.
+
+一般に生酛や山廃酛ではアミノ酸が多くなる傾向がある。
+Generally speaking, kimoto and yamahaimoto have a tendency to have a lot of amino acids.
+
+たとえ生酛や山廃酛でもアミノ酸を低く抑えるのが、名人と言われる杜氏たちの造り方ともいわれる。
+It is also said that it is the way of brewing of capable toji to keep amino acids content low even with kimoto or yamahaimoto.
+
+アミノ酸の多くなった生酛や山廃酛のどっしりした味わいを好む愛飲家も多いこともまた事実である。
+It is also true, however, that there are many sake drinkers who like taste of kimoto or yamahaimoto containing a lot of amino acids.
+
+アミノ酸が生成される主な原因はタンパク質分解酵素の酸性プロテアーゼであり、麹造りの仲仕事（なかしごと）から仕舞い仕事（しまいしごと）のあいだに、34℃から38℃の温度帯でほとんどが生成される。
+The main cause of amino acid generation is acid protease that is a protein-cutting enzyme and almost all amino acids are generated between nakashigoto and shimaishigoto in the koji producing process in the temperature range of thirty-four to thirty-eight degrees centigrade.
+
+したがって最終的な仕上がりを軽い味にしたい杜氏は、麹米が乾かないようにしながらジリジリと麹造りを進ませ、できるだけ敏速にこの工程を切り抜ける。
+Therefore, any toji who wants to make the final taste of sake light progresses the koji production process keeping rice for koji from becoming dry and completes this process as quickly as possible.
+
+逆に重い味に仕上げたい場合は時間をかける。
+In contrast, if he wants to make sake taste heavy, he uses a longer time for this process.
+
+辛口
+Karakuchi (dry)
+
+日本酒の味覚評価も、基本的に五味（酸苦甘辛鹹）であるが、料理のそれと同じ言葉を使っていても概念は大きく異なる。
+Evaluation of sake taste is basically made on five flavors; san (sour), ku (bitter), kan (sweet), shin (hot or dry), and kan (salty), concept is quite different from those for cooking even if the same words are used.
+
+「辛い」といっても、料理における辛（トウガラシやコショウのような味）や鹹（塩辛さ）ではない。
+Even if we say "karai (shin), " it does not mean "hot" in cooking (taste of red pepper or pepper) or kan (saltiness).
+
+また、舌の表面にある味蕾（みらい）でキャッチされ脳へ送られる味覚は甘味、酸味、塩味、苦味、うま味のみである。
+Sense of taste which is sensed by taste buds on the surface of the tongue and sent to the brain can feel only sweetness, sourness, saltiness, bitterness and umami.
+
+味細胞には辛味の受容体はないため、「酒が辛い」と感じるのは、舌表の痛覚がアルコールに刺激されているだけと考えられている。
+Because taste cells do not have any accepter of "karami (dryness), "it is considered that to sense "sake is dry," pain sensation on the surface of tongue is stimulated by alcohol.
+
+そのため一般に、アルコール度や日本酒度が高ければそれだけ辛口に感じる。
+Therefore, generally speaking, sake is felt to be dry if its alcohol content and nihonshudo are high.
+
+かつて昭和時代にはやみくもにアルコール添加して三倍増醸清酒が作られたりしていた。
+During the Showa period, three-time increased sake volume was produced by adding alcohol randomly.
+
+「質の良い辛さ」ではなかった。
+It was not a "dryness of good quality."
+
+本当の辛口は、アルコール度数だけでは造られていない。
+True dry sake cannot be produced only with alcohol content.
+
+また、「淡麗辛口が優れた酒の基本条件である」かのような認識（参照：辛口ブーム）が蔓延していたころもあったが、これも正しい理解ではない。
+Once understanding that "tanrei karakuchi (tanrei and dry) is the basic condition for excellent sake that "prevailed (Refer to "Karakuchi boom"), but it is not a correct understanding.
+
+つまるところ「辛口には辛口の良さ、旨口には旨口の良さがある」という当たり前なことに返ってくる。
+It adds up to; "karakuchi has karakuchi's feature and umakuchi has umakuchi's feature."
+
+また人の味覚はその日の体調によって大きく左右されるため、「この酒は甘口だ/辛口だ」というだけの品評にはあまり意味はない（参照：日本酒度・甘辛度・アミノ酸度）。
+As sense of taste fluctuates depending on physical conditions, the comment "This sake is sweet/dry." does not have important meaning. (Refer to nihonshudo, amakarado and amino acid level.).
+
+熟達した愛酒家たちはまったくといってよいほど「甘口/辛口」で酒を評価しない。
+Experienced sake drinkers scarcely evaluate sake with "amakuchi (literally, sweet sake)/karakuchi."
+
+甘口
+Amakuchi
+
+旨口（うまくち）と混同されることが多いので注意。
+As it is often confused with umakuchi, sufficient care should be used.
+
+「日本酒度が低ければ甘口」と短絡的に考えるのは正しくない。
+It is not correct to consider too quickly "If nihonshudo is low, the sake is amackuchi."
+
+酒糟が多く混ざっている酒、すなわち濁り酒（にごりざけ）やおりがらみのように比重が大きければ、日本酒度は低く、ときに「-15」のように大きく0（ゼロ）を下回る。
+If the specific gravity of sake is large as in sake with a large lees content, such as nigoriｚake and origarami, such sake has very low nihonshudo, and it sometimes goes far below zero like "minus 15."
+
+こういう中にも「辛口の濁り酒」が多く存在する事実が、比重や日本酒度と「甘い/辛い」にはさほどの関係がないことを示す例である。
+The fact that there are many "dry nigorizake" among such sake with low nihonshudo is an example which shows that the specific gravity or nihonshudo does not have a close connection with "sweetness" and "dryness."
+
+甘酒（あまざけ）、女性消費者向けのデザート日本酒、諸白などで作った製成酒が甘口の例として挙げられる。
+Amazake (a sweet low-alcohol drink made from fermented rice or sake lees), dessert sake especially for female consumers and sake products made from morohaku (sake of 100% polished white rice), etc. are examples of amakuchi.
+
+旨口（うまくち）
+Umakuchi
+
+一般に清酒に関して「甘口」と表現されるのは、じつはこの旨口である場合がほとんど。
+With respect to seishu, what is expressed as "amakuchi" is usually in most cases umakuchi.
+
+相対的に辛味が刺激されないため「甘口」と間違えられやすいのである。
+Umakuchi can be easily mistaken for "amakuchi" because, relatively speaking, the human organ that senses karami (dryness) is not really stimulated when something that is umakuchi is drunk.
+
+旨口は、辛口の要素となりやすいキレよりも、コクと奥行きのある馥郁（ふくいく）たる味わいである。
+Umakuchi is a sweet-smelling flavor having rather koku (body) and okuyuki (literally, depth) than kire which often constitutes a factor of karakuchi.
+
+目指す仕上がりへ持っていくためには、アルコール度数の高さでごまかせないため、造り手にとってはある意味でいっそう難しい味ともいわれる。
+In order to obtain a targeted final product, it is said that umakuchi is more difficult to create for a brewer as it cannot be falsified with high alcohol content.
+
+端麗 / 淡麗（たんれい）
+Tanrei (crispy and dry)
+
+口に含んだときに、きれいで滑らかな感じを受けたときに用いる表現。
+The expression is used when sake gives clear and smooth feeling when put into the mouth
+
+日本語としては本来「端麗」が正しい。
+Originally, "端麗" is correct as a Japanese word.
+
+1980年代に始まる辛口ブームの間に商標などを通じていつしか「淡麗」と書かれ始めた。
+During the karakuchi boom started in 1980's, they started to write it as "淡麗"through trademark, etc.
+
+そういう酒の味の代表格である新潟県で奨励品種の酒米として「越淡麗」（こしたんれい）を開発するに至り、現在ではすっかり酒の味に関しては「淡麗」と書くようになった。
+As sakamai "越淡麗 (koshitanrei)" was developed in Niigata Prefecture, which is representative sake for sale with such taste as a recommendable variety, it has become popular to write as "淡麗" as far as sake taste is concerned.
+
+芳醇 / 豊醇（ほうじゅん）
+Hojun
+
+香りが高く味がよいこと。
+It means strong fragrance and good taste.
+
+これも日本語としては本来「芳醇」が正しい（日本語の辞書の中には「芳醇」がなく、「芳純」「芳潤」とするものもある）。
+In this case also, originally, "芳醇" is correct (in certain dictionaries for Japanese language, it is written as "芳純" or "芳潤" instead of "芳醇").
+
+商標や酒銘などで一般化したため「豊醇」とも書くようになってきている。
+As it has become popular through trademarks, names of sake, etc. it is also written as "豊醇."
+
+濃醇（のうじゅん）
+Nojun
+
+味が濃いこと。
+It means strong taste.
+
+「淡麗」の対極にあるのはむしろこの濃醇である。
+Nojun is in the opposite end of "tanrei."
+
+ピン
+Pin
+
+後味が引き締まった感じをさす。
+It represents a firm crispy aftertaste.
+
+辛・甘・旨の味のバランスによって織り成される。
+It constitutes the balance of tastes kara (dry), ama (sweet) and uma (umami).
+
+そのバランスが酒の味のアウトラインを決めるといってもよい。
+We can say that this balance defines the outline of sake taste.
+
+キレ
+Kire
+
+後味がすっきりして軽快な場合に「キレがある」と表現する。
+If aftertaste is refreshing and light, it is expressed as "Kire ga aru (It has sharpness)."
+
+地方によっては「サバケがよい」と表現する。
+In certain districts, it is expressed as "Sabake ga yoi."
+
+荒い
+Arai (literally, harsh)
+
+口に含んだときに、口中に刺激を受ける状態をさす。
+It means to feel a stimulus when put into the mouth.
+
+よく言えば元気のある若々しい味、わるく言えば熟成感に欠ける味である。
+It is an uplifting and youthful taste, if spoken with good intention, but, if spoken ill, a taste that lacks feeling of maturity.
+
+吟味（ぎんあじ）
+Ginaji
+
+長い時間をかけて低温熟成した酒に生まれる、あっさりとした旨みをさす。
+It denotes plain umami obtained with sake that has been matured at low temperature spending a long time.
+
+ふくらみ
+Fukurami
+
+口中に広がる、バランスの良いしっかりとしたコクのある味をさす。
+It denotes a well-balanced taste with body that spreads in the mouth.
+
+「ゴク味」「味の幅」などとも表現される。
+It is also expressed as "gokumi" or "aji no haba (literally, width of taste."
+
+ゴク味
+Gokumi
+
+酒の五味がほどよく調和して、バランスの良いコクが感じられる状態を「ゴク味がある」と表現する。
+The condition in which five tastes are well-harmonized and give a feeling of well-balanced koku (body) is expressed as "It has gokumi."
+
+収斂味（しゅうれんみ）
+Shurenmi
+
+酒がまだ若いときに感じられる、思わず口をすぼめたくなるような渋みのこと。
+It means a bitter taste that is sensed when sake is still young and causes a person to make his mouth narrower.
+
+たいていは酒の熟成とともに自然に消えていく。
+In most cases, it disappears in line with the maturity of sake.
+
+逆に、これが消えていくのを以って酒の熟成度を舌で測ることもできる。
+Contrarily, the degree of maturity of sake by tongue checking to see if shurenmi has disappeared or not.
+
+押し味
+Oshiaji
+
+酒を利いたあとの後味にふくらみがあり、安定して余韻を響かせているような味。
+It means a taste that, after tasting sake, gives an aftertaste that makes a person feel full and have a stable afterglow.
+
+コシ
+Koshi
+
+押し味があって、安定した味わい残すときにはを「コシがある」「コシが強い」という。
+If there is oshiaji and a stable flavor remaining, it is expressed as "koshi ga aru (Literally, "It has koshi") or "koshi ga tsuyoi (Literally, "Koshi is strong").
+
+反対に後味がぼけた感じがするときは「コシがない」「コシが弱い」という。
+Contrarily, if the aftertaste is unclear one, it is expressed as "koshi ga nai (Literally, "It has no koshi") or "koshi ga yowai (Literally, "Koshi is weak").
+
+どっしり
+Dossiri
+
+ふくらみとコシのある、容易に燗崩れしない、丹念な造りの味に用いられる表現。
+This expression is used for an elaborately created taste that gives fukurami (fullness) and koshi and is not disturbed by warming sake.
+
+しっかり
+Shikkari
+
+安定感とコシのある、容易に燗崩れしない、丹念な造りの味に用いられる表現。
+This expression is used for an elaborately created taste that gives the feeling of stability and koshi and is not disturbed by warming sake.
+
+ある意味では「どっしり」よりも頻繁に使われる「しっかり」だが、しっかりかどうかを判断するのは初心者には難しいのもまた現実である。
+In a certain sense, "shikkari" is used more often than "dosshiri," it is true that it is difficult for beginners to judge whether or not the taste is shikkari.
+
+初心者にもわかりやすい手軽な判断方法としては、酒をアルコール14度くらいにまで水で割って飲用温度にして味わってみることである。
+An easy method for beginners to judge is to taste sake after diluting sake to alcohol content of 14 % and at drinking temperature.
+
+そのときに味切れが良い酒は「しっかり」した造りである。
+If sake gives a good ajikire, the sake is of "shikkari" brewing.
+
+酒中に未分解の成分が多かったり、醪末期に急激に酵母が死滅してしまうと、酵母からよけいなアミノ酸が出ることによって、味切れが悪くなることがある。
+If sake contains too many undegraded ingredients or the yeasts has died abruptly at the last stage of sake mash, the yeasts gives off unfavorable amino acids making ajikire bad.
+
+こういう酒は概して完全醗酵させた酒に比べて劣化が早く、味も「しっかりしている」とは言わない。
+Generally speaking, such sake tends to be degraded quickly compared with sake after complete fermentation and its taste is not expressed as "shikkari."
+
+こういうことは個々人の主観、すなわち味覚で判断するのが一番である。
+Such matters can be best judged by the subjective view of the individual, namely sense of taste.
+
+裏ラベルに表示されているアミノ酸度など見てわかることではない。
+It cannot be judged by the amino acid level shown on the backside label.
+
+（味/香りが）開く
+(Taste/fragrance) opens
+
+冷やでは、その酒質が本来持つ味や香りが冷たさの奥に閉じ込められてしまい、官能として感じられないことがある。
+If sake is taken unwarmed, in certain cases, the original taste, fragrance, etc. of sake are confined in the coldness and cannot be sensed.
+
+それらを人肌燗・飲用温度あたりまで温めると、花がゆっくり開くようにそれらが感じられてくる。
+But, if such sake is warmed to so-called hitohadakan (literally, temperature of human skin) or drinking temperature, such taste, fragrance, etc. the taste awakens like flower petals opening slowly.
+
+そのような時に用いる表現である。
+This expression is used for such occasion.
+
+しかしあまり熱すると、かえって感じられなくなる。
+If sake is heated too much, however, it become tasteless.
+
+ちなみに日本酒匠研究会では、「甘い/辛い」「淡麗/濃醇」を座標軸とする味の分類には実用性がないとして、温度や料理、酒器を連想しやすい「香りが高い/低い」「味が濃い/淡い」を新たな座標軸とし、次のような四分法を用いている。
+For your information, Nihon Sakasho Kenkyukai has the opinion that the classification of taste using "amai/karai" and "tanrei/hojun" as coordinate axes has no practical meaning and uses the following four-category method using "strong/weak fragrance" and "much/little taste" as new coordinate axes.
+
+熟酒（じゅくしゅ）
+Jukushu (literally, matured sake)
+
+香りが高く、味が濃い酒。
+Sake with strong fragrance and much flavor
+
+時間をかけて熟成された濃厚な味わい。
+Flavor of full-bodied matured sake spending a long time
+
+熟成酒、古酒、秘蔵酒など。
+Jukuseishu, koshu, hizoshu, etc.
+
+醇酒（じゅんしゅ）
+Junshu
+
+香りが低く、味が濃い酒。
+Sake with weak fragrance and strong flavor
+
+いわゆるコクが感じられる味わい。
+Flavor that make a person feel so-called koku
+
+純米酒、生酛系（きもとけい）など。
+Junmaishu, kimotokei, etc.
+
+薫酒（くんしゅ）
+Kunshu
+
+香りが高く、味が淡い酒。
+Sake with strong fragrance and a little flavor
+
+吟醸香の在り方が鑑賞できるもの。
+Sake that allows one to enjoy ginjoko
+
+大吟醸酒など。
+Daiginjoshu, etc.
+
+爽酒（そうしゅ）
+Soshu
+
+香りが低く、味が淡い酒。
+Sake with weak fragrance and a little flavor
+
+軽快でなめらかなもの。
+It is light and smooth.
+
+生酒、生貯蔵酒、低アルコール酒など。
+Namazake, namachozoshu, low-alcohol sake, etc.
+
+ほんらい酒蔵の槽口から出てくる、できたての酒は秋の稲穂のような黄金色に近い色をしている。
+Fresh sake coming out from the funakuchi at the brewery has an original color very close to the golden color seen in the ears of rice plants during the autumn.
+
+また熟成が進むと深い茶色へと進んでいったり、少しばかり緑がかってくるものもある。
+As maturing progresses, the color changes to dark brown or some gets a slight greenish tint.
+
+あるいは精米歩合が高く、造りがしっかりしている大吟醸酒などは、ダイヤモンドのように鮮やかにきらめく光沢を持つ。
+Daiginjoshu with a high rice-polishing ratio that has been elaborately produced has a luster clearly shining like a diamond.
+
+そうした酒の色は、愛飲家たちにとって格好の鑑賞の的である。
+Such color of sake is appreciated by those who are fond of drinking sake.
+
+しかし全国新酒鑑評会では過去に、色のついたまま出品されている酒は減点の対象としていた時代があり、それゆえ酒蔵では活性炭などで必死に色を抜いていた。
+With respect to the Zenkoku Shinshu Kanpyokai, in the past, there was a period in which sake submitted by leaving color of sake as it was, was subjected to deduction of points and, therefore, breweries tried their best to eliminate the color of sake using active charcoal, etc.
+
+その結果が今日「清酒」という言葉から一般的にイメージされる水のような無色透明である。
+As a result, sake became clear and colorless like water as generally imagined form the word "seishu."
+
+昨今は天然の色のまま販路に乗せる酒蔵も増えてきたので、再び酒の色も楽しめるようになってきた。
+As the number of breweries that distribute sake with its natural color has been increasing, it has become possible to enjoy sake color.
+
+冴え（さえ）
+Sae
+
+美しく透き通った光沢。
+Beautiful and clear luster
+
+とくに、やや青みがかって見える状態を青冴え（あおざえ）といい、高く評価される。
+The condition in which bluish tint is observed is called aozae and is appreciated very highly.
+
+照り（てり）
+Teri
+
+うっすら山吹色に艶の出た状態。
+Condition in which bright yellow luster is observed
+
+たいてい好まれる。
+It is popular in most cases.
+
+ぼけ
+Boke
+
+少々混濁して、色彩がぼやけていること。
+This means that sake is a little clouded and the colors are unclear.
+
+透明度
+Transparency
+
+どれだけ透明に製成されたかを語る指標。
+Index that shows how transparent produced sake is
+
+澄明度
+Clearness
+
+自然に造られた澄んだみずみずしいきらめき。
+Naturally made clear and twinkling fresh
+
+黄金色（こがねいろ）
+Golden yellow
+
+照りのなかでも最も好まれる色調。
+Color tone which is the most liked among various teri (luster)
+
+番茶色（ばんちゃいろ）
+Banshairo (color of coarse tea)
+
+古酒などに多い、やや濃く熟成した色調。
+A little dark and matured color tone which is often seen in koshu
+
+黄金色ほどは、色が鑑賞の対象とはならないことが多い。
+Compared to golden yellow, this color is less often an object of appreciation.
+
+色沢良好（しきたくりょうこう）
+Colored well
+
+鑑評会などで語られる、色合いが好ましいさまを語る定番の表現。
+Standard expression used in Kanpyokai, etc. to mean that color tone is favorable
+
+色沢濃厚（しきたくのうこう）
+Colored deeply
+
+かなり色がついている状態。
+Condition in which sake is rather deeply colored
+
+好ましいと受け取る者も多い。
+Many accept it as favorable.
+
+混濁
+Cloudiness
+
+いろいろな色調に濁っていること。
+It means cloudy with various color tones.
+
+見た目としては評価を得がたいが、こうした酒が一概に味もまずいとは限らない。
+Although not highly appreciated for its appearance, such sake is not necessarily bad tasting in general.
+
+これも製法に関わる用語・表現と同じく、時代・世代や地方によってさまざまであるが、標準的なものを示しておく。
+Same as in the case of words and expressions for manufacturing methods, they differ depending on the period, generation, and district, but the standard words follow:
+
+熟成香
+Jukuseiko
+
+熟成によって生じる好ましい香りで、強いものは「古酒香」とも呼ばれる。
+Favorable fragrance generated by maturing and a strong one is also called "koshuko (flavor of koshu)."
+
+香りの様態はさまざまで、それぞれ紹興酒、シェリー酒、カラメル、干ししいたけ、干しブドウなどに例えて表現される。
+Natures of fragrances are different and they are expressed by comparison to Shaoxing rice wine, sherry, caramel, dried shiitake mushroom, raison, etc.
+
+吟醸香（ぎんじょうこう / ぎんじょうか）
+Ginjoko (or ginjoka)
+
+「ぎんじょうこう」が正しい読み方とよく言われる。
+It is often said that "ginjoko" is the correct pronunciation.
+
+専門家の中でもわざわざ「ぎんじょうか」とルビを振り読者の注意を促す者もいるので注意を要する。
+We must be careful because even some specialists indicate reading it as "ginjoka" purposely to ask the special care of readers.
+
+吟醸酒・純米吟醸酒や大吟醸酒・純米大吟醸酒に特有の芳香。
+Fragrance specific to ginjoshu, and junmai ginjoshu as well as daiginjoshu and junmai daiginjoshu
+
+リンゴやバナナのような香りが最も一般的だが、酒によってはマロン、クリーム、チョコレートのような吟醸香を出しているものもある。
+Fragrances of apple and banana are most popular, but some sake produce ginjoko like marron, cream or chocolate.
+
+決して香料を加えているのではない。
+Ginjoko is not generated by adding perfumes.
+
+吟醸造りのような低温発酵時に酵母が出すエステル類、特にカプロン酸エチルや酢酸イソアミルに起因する香りである（参照：醪）。
+It is a fragrance derived from esters, especially ethyl caproate and isoamyl acetate, generated by sake yeast in the process of low-temperature fermentation like ginjo brewing. (Refer to "Moromi.")
+
+造りの良い純米酒など、吟醸酒以外にも感じられることは多い。
+It is often felt from other sake which elaborately produced junmaishu rather than ginjoshu.
+
+なお、生成された吟醸香はすべて醪の中に留まるわけではなく、多くは大気中に放散される。
+Not all of the generated ginjoko remain in moromi, a large portion is diffused into the air.
+
+ヤコマン装置によりそれを回収・液化して、醪の中に戻したり、あるいは元の醪以外の日本酒へ添加することもかつて行われていた。
+In the past, such flavor was recollected and liquefied by Yakoman equipment and returned into moromi and, sometimes, added to other sake than moromi from which such flavor is recollected.
+
+最近は新型酵母の開発により、そういう必要はなくなってきたといわれる。
+It is said that such a process has became unnecessary thanks to development of new types of sake yeasts.
+
+リンゴ香
+Apple-like fragrance
+
+吟醸香の一種で、カプロン酸エチルに起因するデリシャスリンゴのような芳香。
+A type of ginjoko that is similar to fragrance of Delicious apple due to ethyl capronate
+
+適度なリンゴ香は吟醸酒に気品を与えるとされる。
+They say that moderate apple-like fragrance gives ginjoshu elegance.
+
+バナナ香
+Banana-like fragrance
+
+吟醸香の一種で、酢酸イソアミルに起因するバナナのような芳香。
+A type of ginjoko that is similar to banana fragrance due to isoamyl acetate
+
+適度なバナナ香は日本酒に甘くフルーティーな香りの厚みを加えるものとして好まれる。
+Moderate banana-like fragrance is popular as it adds a sweet and fruity fragrance to sake.
+
+強すぎると異臭に感じられ「酢酸エチル臭」「セメダイン臭」と呼ばれて減点の対象となる。
+However, if a banana-like fragrance is too strong, it is felt to be an unusual smell and called the "smell of ethyl acetate" or "smell of Cemedine" and it becomes the cause of point deduction.
+
+ヤコマン装置によって回収される主な香り成分でもある。
+It is also a main fragrance which is recollected with Yakoman equipment.
+
+新酒ばな
+Shinshubana (literally, flower of fresh sake)
+
+主に麹に由来する新酒特有の若々しい香りで、熟成するにしたがって消えていく。
+Young fragrance unique to fresh sake derived from koji and it disappears as maturing progresses.
+
+燗酒を好む熟達した飲み手は、燗によって強められた新酒ばなを敬遠することが多い。
+Experienced drinkers who like warmed sake usually do not like shinshubana which is strengthened by the process of warming sake.
+
+アルコール臭
+Smell of alcohol
+
+アルコール添加がうまく行かなかったときに生じる薬品のような臭い。
+It is a drug-like smell generated by incorrectly adding alcohol.
+
+醗酵によって生じるアルコール成分と違って、酒そのものと一体化していない、添加したアルコールが浮いた感じになって起こる。
+Different from alcohol produced by fermentation, added alcohol which has not been integrated with sake becomes detached causing such smell.
+
+老ね香（ひねか）
+Hineka
+
+「熟成が進みすぎた（過熟）」、「熟成しないうちに劣化した」、「保存方法が正しくなかった」などの理由で、酒が酸化してしまったときに生じる異香。
+Unfavorable smell which is generated when sake becomes oxidized due to reasons such as "Maturing progressed too much (over maturing)," "degraded before maturity" and "improper storing method."
+
+熟成香と紙一重で、不快であれば老ね香とされる。
+Quite close to jukuseiko (fragrance of matured sake); it is classified into hineka if it is unpleasant
+
+それゆえごく稀に、少しばかりの老ね香はかえって酒に箔をつけるものとしてプラスに評価される場合もある。
+Therefore, in very rare case, a slight hineka is positively appreciated as adding some value to sake.
+
+生老ね香（なまひねか）
+Namahineka
+
+「生酒が古くなった」、「保存方法が正しくなかった」などの理由から、酵素の働きから生じる、むれたような猛烈な悪臭。
+Powerful stuffy malodor generated by action of enzyme due to "namazake aging" or "storing method was not proper."
+
+濾過でも除去できず、出荷前に発生すると蔵にとって致命傷となる。
+It cannot be removed even by filtration and if it occurs before shipment, it is serious trouble for the brewery.
+
+じっさいには出荷後の流通・小売業者、あるいは購入後の消費者の、保存方法や温度管理のまずさによるところが大きい。
+In reality, however, it is usually caused by improper storing method or temperature control by a distributor, or retailer after shipment or consumer after purchase.
+
+「生酒は米の牛乳」と思っておけば、まず間違いない。
+We will make no errors if we consider that "namazake is milk from rice."
+
+つわり香
+Tsuwariko (literally, the smell of morning sickness)
+
+醪の醗酵の失敗などに起因する、乳製品が腐ったような臭いで、吐き気を催させることからこう呼ばれる。
+It is a malodor like sour milk products caused by failure in fermentation of moromi and it is called tsuwariko because it makes a person feel like vomiting.
+
+専門的には「ダイアセチル臭」と呼ばれ、「火落ち臭」と似ている。
+Specialists call it "smell of diacetyl" and is similar to "Hiochishu."
+
+火落ち臭
+Hiochishu
+
+火落ち菌が繁殖することによって生じる臭いで、菌の種類によって様態は異なるが、おおむねつわり香と似ている。
+It is a smell caused by the breeding of hiochi bacteria and, although manner differs depending upon the type of bacteria, it is similar to tsuwarishu.
+
+濾過臭（ろかしゅう）
+Rokashu (smell by filtration)
+
+濾過の工程でつく異臭の総称。
+Collective term for unusual odor added in the process of filtering
+
+和紙を水で濡らしたときの臭いに似ているとされる。
+They say that it is similar to a smell which is felt when Japanese paper is made wet with water.
+
+炭臭（すみしゅう）
+Sumishu (smell of charcoal)
+
+濾過の工程で、質の悪い炭を使ったり、炭を入れすぎたときにつく異臭。
+This is unusual odor added if low quality charcoal is used in the process of filtration or too much charcoal is used.
+
+炭自体が臭気を吸収しやすいので、保存中に炭が外部から吸収した臭い成分を、酒に投入されたときに酒の中へ放出して生じることも多い。
+As charcoal itself tends to absorb odors, it is often caused by odor absorbed by charcoal during storage and discharged into sake when charcoal is put into sake.
+
+酸敗臭（さんぱいしゅう）
+Sanpaishu (oxidative rancidity)
+
+腐造菌という雑菌が醪を汚染し、酢酸などが生成されてつく極めて不快な臭い。
+Highly unpleasant odor caused by contamination of moronic with fuzokin, a type of unfavorable bacterium and resulting generated acetic acid, etc.
+
+袋臭（ふくろしゅう）
+Fukuroshu (smell of bags)
+
+醪をしぼる酒袋の臭いが酒に移ったもの。
+Smell of sakabukuro (literally, bag for sake) used for squeezing moromi lingered into sake
+
+酒袋の管理が正しくなく、酸化した付着物があったときなどに生じる。
+It happens if sakabukuro is not controlled properly and there is oxidized adhered material.
+
+日光臭
+Nikkoshu (smell of sunshine)
+
+光にさらされて発生する、刺激性のある異臭。
+Unusual acrid odor generated through exposure to sunshine
+
+「ひなた臭」「けもの臭」ともいう。
+It is also called "hinatashu (smell of a sunny place)" or "kemonoshu (smell of a wild animal)."
+
+室内蛍光灯など、日光以外の光線に長時間さらされていても発生する。
+It also occurs through exposure for a long time period to a light beam other than sunshine such as fluorescent lamp for indoor use.
+
+出荷後の流通・小売業者、あるいは購入後の消費者の、保存方法のまずさに起因することが多い。
+It is usually caused by improper storing method by distributor, or retailer after shipment or consumer after purchase.
+
+瓶を新聞紙などにくるんでおくと防げる。
+It can be prevented by wrapping the bottle with newspaper, etc.
+
+かつては瓶の臭いが酒についたものと考えられ「瓶臭」という語があった。
+In the past, it was thought to be the smell of the bottle containing the sake and, therefore, the word "binshu (smell of bottle)" was used.
+
+現在ではそれは日光臭と老ね香の混じった臭気とされている。
+At present, it is said this smell is the mixture of nikkoshu and hineko.
+
+木香（きか / きが / もくが / もくか / もっか）
+Kika (or, kiga, mokuga, mokuka or mokka) (literally, smell of wood)
+
+「きか」が正しい読み方とよく言われる。
+It is often said that "kika" is the correct pronunciation.
+
+専門家の中でもわざわざ「きが」とルビを振り読者の注意を促す者もいるので注意を要する。
+We must be careful because even some specialists indicate reading as "kiga" purposely to ask special care of readers.
+
+スギなど樽の木材の香りが酒に移ったもの。
+It is a fragrance of wood used for a cask such as Japanese cedar that contains the sake.
+
+香りの程度と酒質によってはプラスに評価されることもあるが、鑑評会などでは「木香臭（きがしゅう）がする」というと往々にしてマイナス点である。
+Although it is appreciated positively depending on the degree of fragrance and sake quality, the fact that "sake has kigashu" is often a cause of point deduction in kanpyokai, etc.
+
+ちなみに醗酵の最中にアルコール添加すると生成されることがある、木香のような臭いを「木香様臭」という。
+A smell similar to kika which may be generated if alcohol is added in the process of fermentation, it is called "kikayoshu (kika-like smell)."
+
+本質的には別物であるが混同されやすい。
+Although, it is completely different, it is often confused with something else.
+
+また、酒器を手に取ってから飲み込むまでの各段階において感じられる香りは以下のように呼ばれる。
+Fragrances that are felt in each step from taking the sake cup in hand until sake is swallowed are called respectively as follows:
+
+上立香（うわだちか）
+Uwadachika
+
+まだ酒を口に含まず、酒の表面から鼻先へ匂い立つ香。
+Fragrance that is sensed before putting sake into the mouth coming from the surface of sake to the nose
+
+酒を猪口に注いで、丸く揺らしたときに立ち上がってくる揮発性の芳香。
+It is volatile bouquet that comes out when sake is poured into a choko (sake cup) and choko is moved around.
+
+吟醸香に重きを置く酒や、全国新酒鑑評会に出品される酒では、とかく重視される。
+With respect to sake for which ginjoko is focused on or sake displayed in Zenkoku Shinshu Kanpyokai, an importance is attached to this fragrance.
+
+含み香（ふくみか）
+Fukumika
+
+酒を口に含み、舌先でころがしたときに、鼻へ抜けていく香。
+Fragrance that goes through to the nose when sake is taken into mouth and tasted on the tongue
+
+香りの成分としては、上立香ほど揮発性が高くないので、口に含むまでは感じられない。
+As the component for this fragrance is less volatile than that for uwadachika, the fragrance cannot be sensed until sake is put into the mouth.
+
+吟香（ぎんか）
+Ginka
+
+酒を呑みこむとき、喉を過ぎるときに感じられる香。
+Fragrance that is sensed when sake is swallowed and passes through the throat
+
+鑑評会などで利き酒をするときは、酒は呑みこまず、味わったあとは吐き出してしまうので、吟香は味わえない。
+In sake tasting on the occasion of kanpyokai, sake is not swallowed and forced out after tasting, ginka cannot be tasted.
+
+よって鑑評会での評価の対象になりえないという問題がある。
+Therefore, the problem is that ginka cannot be the object of appreciation in kanpyokai.
+
+今ではほとんど「吟醸香」と同じものをさす。
+At present, ginka represents almost the same smell as "ginjoko."
+
+返り香（かえりか）
+Kaerika
+
+呑んだあとに、腹から鼻に抜けるように感じられる香。
+Fragrance that, after drinking sake, comes up from stomach to the nose
+
+これも鑑評会などでは評価の対象から漏れてしまうとして問題視する識者も多い。
+There are many knowledgeable persons who are of opinion that kaerika is excluded from the objects of appreciation in kanpyokai, etc.
+
+これも統一された用語というわけではないが標準的なものを示しておく。
+Also, they are not unified terms, but the standard ones are as follows:
+
+ただし、2000年代初頭では「冷や」が拡大解釈され、常温よりも冷やしたものを指して用いられていることもある。
+However, at the beginning of 2000's, the term "hiya (literally, cold sake)" is sometimes overinterpreted to mean sake that is cooled down below normal temperature.
+
+一般に温度上昇によって、舌に感じられる酸味が相対的に下がり、旨味が上がる。
+Generally speaking, a sour taste sensed by the tongue decreases as the rise of sake temperature, and umami increases.
+
+「冷や」から「熱燗」くらいまでの温度帯に限っておおざっぱに言うならば、上に行くほどコクと深みを持った味になり、また辛さを感じるようになる。
+Therefore, roughly speaking in the range between "hiya" and "atsukan," the higher the sake temperature is, the more the taste has body and depth and also karasa (dryness) is felt.
+
+生酛系や純米酒など、昔からある製法で造っている酒では、冷やで飲んでもさほど印象的でなかった酒が、燗にすると本領を発揮し、奥深い味を展開することが多い。
+With sake produced with traditional methods such as kimotokei and junmaishu, in many cases, sake that is not so impressive when taken cold shows itself at its best.
+
+そういう酒は「燗映え（かんばえ）する」という。
+Such sake is expressed as sake that does "kanbae."
+
+また燗をしたときに、温かさがほんのり酒全域に均等に行き渡り、その酒の良さがうまく引き出されることを「燗上がり（かんあがり）する」という。
+To do "kanagari" means that, when sake is warmed, the warmness goes through evenly and the complete sake making features are shown at its best.
+
+うまく燗上がりさせるのに最も確実な方法は、徳利に入れて湯煎することである。
+The most sure method to let sake do "kanagari" is to put sake into a tokuri (sake bottle) and warm it with hot water.
+
+猪口に入れて電子レンジで温めるのも多少は有効だが、中にムラができやすい。
+It is also effective to certain extent to put sake into a choko and warm with a kitchen microwave, but it tends to cause uneven heat distribution in the sake.
+
+いちど燗をした酒が再び冷えることを「燗冷まし（かんざまし）になる」という。
+If sake warmed once gets cold again, it is expressed that sake becomes "kanzamashi."
+
+ていねいに造ってある酒は、燗冷ましになってもそれなりに味わいがある。
+Elaborately produced sake has a certain flavor even if it becomes kanzamashi.
+
+そうでないものは風味のバランスが崩れ、薬品のようなアルコール臭が上立香としてのぼってくる。
+With respect to other sake, the balance of flavors is spoiled and a smell of alcohol like a drug comes out as uwadachika.
+
+これを「燗崩れ（かんくずれ）」という。
+This is called "kankuzure."
+
+ゆえに、それぞれの酒質によって飲用に最も適するとされる温度は多様である。
+Therefore, depending on the quality of each sake, the best drinking temperature differs.
+
+最近は造り手が薦める温度帯がサブラベル（裏ラベル）に表示されることも多くなった。
+In recent years, the temperature range recommended by the brewer is shown on the sub-label (label on the backside).
+
+しかし熟練した飲み手のあいだでは、「冷たくすればどんな酒でも、冷たさでごまかされて美味しく感じるが、舌と同じ温度にすれば、本当に美味しい酒しか美味しいと感じられない」として、夏場でも体温とほぼ同じぬる燗や熱燗で飲む者が多い。
+Among experienced drinkers, however, many drink sake even in the summer with nurukan (approximately same as body temperature) or atsukan telling "If cooled down, any sake can be thought delicious cheated by the coldness, but, if the temperature is the same as that of the tongue, only really good sake can taste good."
+
+また、アルコールは体内で、体温と同程度にならないと胃壁や腸壁から吸収されない。
+Because alcohol is not absorbed from stomach or the bowel walls unless its temperature becomes same as the body temperature.
+
+冷や以下の温度帯で飲むと初めは口あたりが先行して良く、なかなか酔わず、いくらでもスルスルと飲めそうに感じられる。
+Therefore, if taken at the temperature range below hiya, the drinker feels it is smooth in the mouth and does not get drunk easily and feels like he can drink without any limits.
+
+そして自分では思ってもみなかったころになって一気に酔いが回り始めるため、舌が微妙な味覚を感じ分けるころ、いわゆる「ほろ酔い」の時間があまり体験できない。
+Then, he becomes drunk unexpectedly suddenly and the time of so-called "horoyoi (being slightly drunk)" whereby a delicate flavor could be tasted cannot be experienced for long time.
+
+言い換えれば、リアルタイムで酒の味が味わえる時間が短い。
+In other words, the time in which the taste of sake can be enjoyed in real time is short.
+
+これも、酒の「酔い」よりも「味」を優先させたい人が、温かい温度帯を好む理由である。
+This is also a reason why the person who places a priority on "flavor" rather than on "drunkenness" prefers a warm temperature zone.
+
+生酒などフレッシュさを売り物にしている酒質の場合は、本当に燗に耐えられないため涼冷え以下で飲んだほうがうまいこともある。
+In the case of sake quality which is characterized by freshness, such as namazake, as it cannot stand kan (warming), it tastes better to drink ryobie or below.
+
+たとえ客が燗を注文しても、店がそれを受け付けず、冷やした酒を出してくるところが、2008年現在は非常に多い。
+However, as of 2008, in many shops, even if the customer orders warmed sake, the shop will not accept the order and serves cooled sake instead.
+
+それは平成時代初期に日本酒文化が一時期衰退した名残であるといっても過言ではない。
+It is not too much to say that it is a vestige of temporary decline of the culture of sake at the beginning of the Heisei period.
+
+（参照「日本酒消費低迷期」）。
+(Refer to "Slumped Period of Sake Consumption.")
+
+燗にするにも微妙なスキルが存在し、燗下手（かんべた）であるとばれないために、しつこく冷や以下を勧める店もあれば、燗をつけるとなると、冷や以下で出すよりも手間がかかるので、自分たちの面倒を省くためにそうする店もある。
+Some shops recommend to take sake hiya or below so that unskilled warming is not revealed, because warming sake requires a delicate skill and others do so just to prevent trouble because to serve warmed sake requires more time than hiya.
+
+いずれにせよ、店が「その酒は燗に向かないから」と酒質のせいにして燗を断るときには、本当にそうなのかどうか判断できる知識を、消費者も身につけておくことが望ましい。
+Anyway, if a shop declines to serve sake warm by reason of sake quality saying "The sake is not good warm." it is desirable that consumers have knowledge to judge whether or not it is true.
+
+なかには埼玉「神亀酒造」（しんかめ）に代表されるように、燗にしてこそ味が開くように造っている蔵も多いからである。
+It is because, as represented by Shinkame, Saitama Prefecture, that there are many breweries that produce sake so the flavor of sake can be enjoyed best if taken warm.
+
+また、各都道府県の酒造組合によっては、自主鑑評会や利き酒会、フェアやフェスタのような機会に、「消費者に自分のところの酒を燗で提供したい蔵は、主催者としては燗にする機材を会場に設置しないので、各自ポットなどで燗酒を用意して来られたし」といった具合に、昔ながらの燗酒本位の造りをする酒蔵に対して冷淡な組合も存在する。
+Among prefectural sake brewers associations, there are certain associations that are not favorable to breweries that produce traditionally sake to be taken warm saying on the occasion of autonomous kanpyokai, kikizakekai (sake tasting party), fairs and fiesta telling "Any brewery that wishes to serve its sake warm, warmed sake should be brought with brewer's own pot because the organizer does not provide any tool or materials for warming sake."
+
+どの酒造組合がそういう傾向を持つかは、一般消費者が各種の日本酒イベントへ行ったときに、自らの目で見聞することができる。
+General consumers can see with their own eyes when they visit various sake events where sake brewers associations have such a tendency.
+
+暖めて飲む方法が広く普及しているという点で中国の紹興酒とともに、日本酒は特異な存在である。
+Sake, together with Shaoxing rice wine of China, is unique in the way of drinking to take it warm is popular.
+
+「酒は燗、肴は気取り（小味なさかな）、酌はたぼ（髷を結った芸者）」などと江戸人は粋がった。
+People in Edo showed off saying "Sake should be taken warm, sakana (dishes eaten with sake) should be kidori (dishes without peculiar flavor), and shaku (a person who serves sake) should be done by tabo (geisha with traditional Japanese hair style)."
+
+燗は季節の温度と密接に関わるため、別火のような年中行事をも生んだ。
+As kan has a close relation with a seasonal temperature, it gave birth to regular annual events such as bekka (using separate fire for cooking).
+
+酒を飲むときに用いられる道具で、日本の生活をきめ細やかに支えている。
+Utensils used for drinking sake that support life in Japan carefully in detail
+
+盃（さかづき）
+Sakazuki (sake cup)
+
+「盃を交わす」「盃を取らせる」といった表現があるように、日本文化の中では盃はたんに酒を飲む容器であるだけではなく、人間関係、名誉、格式などのさまざまな文化事象と関係した複雑な媒体である。
+As we see in expressions like "exchanging sakazuki" and "to give sakazuki," in Japanese culture, sakazuki is not only a vessel used for drinking sake, but also a complicated medium that has a connection with various cultural factors such as human relations, honor, and formalities.
+
+今日の私たちが思い描くのは「塗り盃」だが、江戸時代後期には陶磁器の盃も用いられた。
+Today, we bring up the image of "nurisakazuki (lacquerware sakazuki)," but ceramic sakazuki were also used in the latter part of the Edo period.
+
+徳利（とっくり / とくり）
+Tokkuri (or tokuri)
+
+今でも酒を注ぐのに用いられている。
+Even today, tokkuri is used for pouring sake.
+
+近代に入り、瓶売りが一般化するまで、量り売りが一般的で、酒屋は徳利に入れて酒を販売していた。
+Until it became popular to sell sake by bottles in the modern age, sake traders usually sold sake by measure using tokkuri.
+
+販売用の徳利は個人の所有ではなく酒屋の貸し物であることが普通で、酒屋の屋号が大きく書かれていた。
+Usually, tokkuri used for selling sake was not owned by individuals but it was lent by sake trader and yago (the name of the store) was written with large-sized characters.
+
+江戸時代以前は上方と江戸では色が違っていた。
+During and before the Edo period, the color of used tokkuri was different in Kamigata (Kansai District) and Edo.
+
+上方では、五合あるいは一升が入る、茶色がかった陶器。
+In Kamigata, brown earthenware tokkuri that can contained five go (900 milliliters) or one sho (1.8 liters) was used.
+
+江戸では、ねずみ色の陶器か取っ手のついた樽であった。
+In Edo, gray earthenware or kegs with a handle was used.
+
+猪口（ちょこ / ちょく）
+Choko (or choku)
+
+現在では徳利から酒を受け、飲むのに用いる小さな器である。
+Currently, choko is a small vessel used for receiving sake from a tokkuri to drink it.
+
+しかし、徳利とセットで使うようになったのはそんなに古いことではない。
+However, there is not a long history in using choko in combination with tokkuri.
+
+江戸時代では上方でも江戸でも、宴の初めのうちは盃で酒を受け、宴も半ばを過ぎ座がくだけてくると猪口に変えたという。
+During the Edo period, both in Kamigata and Edo, sake was received with sakazuki at the beginning of the party and, in the latter half of the party where the mood changed to a relaxed one, choko was used instead.
+
+銚子（ちょうし）
+Choshi (sake decanter)
+
+現在も使われる、燗をつけた酒を移し入れる器を指す。
+This is a container used to pour warmed sake used even today.
+
+時代を下るに従って小型になってきている。
+As one goes forward in time, the size of choshi has been becoming smaller.
+
+江戸時代、上方では御殿から娼家に至るまでどこでも銚子で燗をつけていたが、江戸では銚子は正式の膳である式正（しきじょう）にのみ使うものであったという。
+During the Edo period, choshi was used to warm sake in Kamigata in a palace and a house of prostitution, but, in Edo, choshi was used only for shikijo which was a formal meal.
+
+現代では銚子と徳利はほぼ同じものとして扱っているが、江戸時代には別物であった。
+At the present day, choshi and tokkuri ware treated as almost same things, but, in the Edo period, they were completely different things.
+
+江戸時代中期ごろまでは、宴も初めのうちは銚子を使い、三献すると徳利に切り替えた。
+Until the middle of the Edo period, choshi was used at the beginning of the party and, after sankon, it was switched to tokkuri.
+
+やがて初めから徳利を用いるようになり、江戸時代末期には大名ですら酒宴で徳利で酒を飲むようになったという。
+Later, they began using tokkuri from the beginning and it is said that, at the end of the Edo period, even daimyo used tokkuri for drinking sake in a drinking party.
+
+片口（かたくち）
+Katakuchi
+
+器の縁に酒を注ぐための注ぎ口が付いているもの。
+Katakuchi is a vessel with a pouring spout for pouring sake on its edge.
+
+一合ないし二合程度の量を入れることが出来る、鉢状のものやコップのようなものなどさまざまな形状がある。
+There are many types of katakuchi that can contain one to two go (180 to 360 milliliters) with various shapes like a bowl, cup and so on.
+
+現代では徳利の代わりに使用され、瓶から一度酒を注いでおき、片口から盃に注いで飲むのが一般的な使い方である。
+In the present day, katakuchi is used in place of tokkuri and the usual way to use it is for sake to be first poured from a bottle to a katakuchi and then poured from the katakuchi to a sakazuki.
+
+日本酒の器以外にも用いられる日本の伝統的な食器である。
+Katakuchi is a traditional eating utensil in Japan which is also used for purposes other than as a container for sake.
+
+ぐい呑み（ぐいのみ）
+Guinomi
+
+日本酒を飲むための盃の一種。
+Guinomi is a type of sakazuki for drinking sake.
+
+一般的にお猪口と呼ばれるものより大きいサイズのものを指す。
+Usually, it denotes a sake cup with a bigger size than one called ochoko (or choko).
+
+升 / 枡 / 桝 / 斗（ます）
+Masu (measuring container)
+
+瓶子（へいし）
+Heishi
+
+昔はこれに酒を入れて持ち歩いた。
+In the past, it was used to carry sake.
+
+今はもう用いられない。
+It is not used today.
+
+土器（かわらけ）
+Kawarake (earthen vessel)
+
+中世には公家や高級武士の宴会ではこれに酒をそそいで飲み干した。
+In the Middle Ages, sake was poured into kawarake and dried up in a party of court nobles and high-rank samurai.
+
+一回切りの使用で廃棄され、携帯用の、使い捨ての盃のようなもの。
+It was disposed after one-time use and it was like a portable and disposable sakazuki.
+
+近世以降、神社の神事で御神酒を供えたり、供食するために使用されるようになる。
+In recent times, it has been used for making an offering of sacred sake or food in Shinto rituals at a shinto shrine.
+
+錫（すず）
+Suzu (literally, tin)
+
+錫でできた瓶子と思われる。
+It seems to mean heishi made of tin.
+
+安土桃山時代あたりまで用いられたようである。
+It seems tin heishi was used up until the Azuchi-Momoyama period.
+
+江戸時代以降は、京都にある一軒の古い工房のみで作られている。
+In and after the Edo period, such heishi was produced by only one old craft center in Kyoto.
+
+角樽（つのだる）
+Tsunodaru (literally, keg with horn)
+
+今でも結納（ゆいのう）の際に用いられる、上は朱塗り、下は黒漆塗りの樽。
+Tsunodaru is a keg used as a betrothal gift even today of which upper part is painted red and the lower part with black japan.
+
+角が出ているように取っ手がついていることからこの名がある。
+The name tsunodaru is derived from the shape of a keg in which the handle is fixed like horn.
+
+指樽（さしだる）
+Sashidaru
+
+江戸時代の人々が花見などの際に酒を背負っていくときに使ったらしい、黒漆塗りの角型の樽だが、幕末以降は見られないようである。
+Sashidaru is a black-lacquered square barrel used in the Edo period for carrying sake on one's shoulder for a cherry blossom viewing party, but it was not seen during and after the end of the Edo period.
+
+燗鍋（かんなべ）
+Kannabe
+
+平安時代ごろ、酒を燗するときに用いた銅製または鉄製の鍋。
+Kannabe is a copper or iron pan used for warming sake used during the Heian Period.
+
+直火で加熱した。
+It was heated with a direct fire.
+
+膳（ぜん）
+Zen
+
+高御膳、中御膳など。
+Such as takagozen (high small dining table) and nakagozen (small dining table of medium height)
+
+出される酒と肴の意味を外側から規定していたといってよい。
+We can say that the meanings of sake and sakana were defined from the outside.
+
+ちろり
+Chirori
+
+酒を燗するときに使う細長い金属性の入れ物。
+Chirori is a slender metal container used for warming sake.
+
+かつては銅または錫製、近年ではアルミ製の物もある。
+Chirori was made of copper or tin in the past and in recent years there are chirori made of aluminum.
+
+これに酒を入れ、湯に浸けて酒を温める。
+Sake is poured into a chirori and warmed by dipping it into hot water.
+
+主に居酒屋・小料理店で使われる道具である。
+It is a utensil used in Japanese style pubs and cookshops.
+
+一般家庭で見られる道具ではないが、ちろりで暖めた酒に拘り、個人的に購入して使用する例も見られる。
+It is not a utensil seen in usual home, but there are cases where chirori is purchased and used personally sticking to sake warmed with chirori.
+
+酒を造るために用いる道具。
+Tools and equipment for brewing
+
+壺（つぼ） / 甕（かめ） / 桶（おけ）
+Tsubo (pot)/kame (crock)/oke (tub)
+
+樽（たる） / 結樽（ゆいだる） / 箍（たが）
+Taru (barrel)/yuidaru (barrel with hoops)/taga (hoop)
+
+釜（かま） / 甑（こしき） / 蒸籠（せいろ）
+Kama (pot)/koshiki (utensil for steaming)/seiro (steaming basket)
+
+麹室（こうじむろ） / 麹蓋（こうじぶた） /麹箱（こうじばこ） / 麹床（こうじどこ）
+Kojimuro/kojibuta/kojibako/kojidoko (wooden chest for koji making)
+
+酛場（もとば） / 酛桶（もとおけ）
+Motoba/motooke
+
+仕込み場（しこみば）
+Shikomiba
+
+笊籬（いかき） / 槽（ふね） / 袋（ふくろ） / やぶた
+Ikaki (bamboo sieve)/fune/fukuro/yabuta (sake squeezing machine)
+
+炭（すみ）
+Sumi (charcoal)
+
+精米機（せいまいき） / 縦型精米機（たてがたせいまいき）
+Rice polisher/upright rice polisher
+
+ごく少数の寺院もあるが、ほとんどが神道系で、神社や祠（ほこら）である。
+There are few Buddhism temples, but almost all are Shinto facilities like shrines and hokora (small shrines)
+
+日本の酒に関する神社は全国で40社近くで、全部で55以上の神がまつられている。
+There are close to forty sake-related shrines in Japan and fifty-five or more gods are enshrined.
+
+なかには麹や水に祀る対象を特化している神社もある。
+There are certain shrines for which the object of worship is limited to koji or water.
+
+日本においては、ヨーロッパのバッカス、中国の杜康のように、酒のみの神として特定できる神様はいないと言われている。
+It is said that there is no god than what can be identified as a god only for sake like Bacchus in Europe and Du Kang in China.
+
+祀られている主な神々
+Main enshrined gods
+
+大国主（おおくにぬしのみこと）
+Okuninushi no mikoto (chief god of Izumo in southern Honshu Island, Japan, and the central character in the important cycle of myths set in that region)
+
+大山咋神
+Ohoyamakuhi no kami
+
+スクナビコナ
+Sukunabikona
+
+大己貴神
+Onamuchi no kami
+
+木華佐久耶姫,木花之佐久夜毘売,木花開耶姫とも。
+It is also written as 木華佐久耶姫, 木花之佐久夜毘売, or 木花開耶姫.
+
+佐牙弥豆男神と佐牙弥豆女神 - 酒弥豆男神と酒弥豆女神、酒美豆男と酒美豆女に同じ。
+Sakamizu onomikoto (佐牙弥豆男) and Sakamizu menomikoto (佐牙弥豆女神) - Same as "酒弥豆男神" and "酒弥豆女神," as well as "酒美豆男" and "酒美豆女."
+
+応仁天皇の御代に渡来した醸造技術者、兄曽曽保利と妹曽曽保利と考えられている。
+It is believed they are elder brother and younger sister of Sosohori, who were brewing technicians that came over to Japan in the era of Emperor Ojin.
+
+興味深いことに、日本酒に関する神社は、千葉から福岡のあいだだけに位置するという。
+Interestingly, sake-related shrines are located between Chiba Prefecture and Fukuoka Prefecture only.
+
+なかでも京都と奈良に集中している。
+In particular, they are centered in Kyoto and Nara.
+
+主な神社
+Main shrines
+
+大神神社
+Omiwa jinja shrine
+
+奈良市。
+Nara City
+
+酒の神として大物主が奉られている。
+Omononushi is enshrined as a god for sake.
+
+三輪明神とも。
+It is also called Miwa myojin shrine.
+
+松尾大社
+Matsuo taisha shrine
+
+京都市。
+Kyoto City
+
+醸造の神として信仰されている。
+It is worshipped as a god for brewing.
+
+弓弦羽神社
+Yuzuruha jinja shrine
+
+灘五郷の古社。
+Old shrine in Nada Gogo
+
+梅宮大神
+Umenomiya okami shrine
+
+京都市。
+Kyoto City
+
+出雲大社
+Izumo taisha shrine
+
+島根県出雲市。
+Izumo City, Shimane Prefecture
+
+佐香神社
+Saka jinja shrine
+
+島根県平田市。
+Hirata City, Shimane Prefecture
+
+島根県が開発した酒米佐香錦の名称由来ともなった。
+It became the origin of the name of sakamai, Sakanishiki, developed by Shimane Prefecture.
+
+日吉神社
+Hiyoshi jinja shrine
+
+滋賀県大津市。
+Otsu City, Shiga Prefecture
+
+佐牙神社
+Saga jinja shrine
+
+京都市。
+Kyoto City
+
+佐牙弥豆男神と佐牙弥豆女神を祀る。
+Sakamizu onomikoto and Sakamizu menomikoto are enshrined.
+
+壺神神社
+Tsubogami jinja shrine
+
+奈良市。
+Nara City
+
+佐牙弥豆男神と佐牙弥豆女神を祀る。
+Sakamizu onomikoto and Sakamizu menomikoto are enshrined.
+
+酒見神社
+Sakami jinja shrine
+
+愛知県一宮市。
+Ichinomiya City, Aichi Prefecture
+
+佐牙弥豆男神と佐牙弥豆女神を祀る。
+Sakamizu onomikoto and Sakamizu menomikoto are enshrined.
+
+神社以外
+Other than shrines
+
+正暦寺
+Shoryakuji temple
+
+奈良市。
+Nara City
+
+かつて僧坊酒を造っていた中心的な寺院であった。
+It was the central temple for the production of soboshu (sake brewed in major temples).
+
+初めて清酒がここで醸造されたという伝承があり、「日本清酒発祥之地」の碑が建つ。
+There is a tradition that seishu was first brewed in this place and there is a monument of the "Birthplace of seishu in Japan."
+
+（参照：清酒の起源）
+(Refer to "Origin of seishu.")
+
+博物館・資料館
+Museums and libraries
+
+男山酒造り資料館（北海道旭川市）
+Otokoyama Museum of Sake Brewing (Asahikawa City, Hokkaido Prefecture)
+
+- もとは摂泉十二郷の銘柄であった『男山』340年の歴史と江戸時代の資料、文献、酒器などが展示、公開されている。
+The history for 340 years of "Otokoyama" which was one of brands for Sessen Junigo and materials, literatures, sake drinking sets and so on during the Edo Period are exhibited to the public.
+
+南部杜氏の里（岩手県石鳥谷町）
+Nanbu toji no sato (hometown of Nanbu toji) (Ishidoriyacho, Iwate Prefecture)
+
+南部杜氏伝承館、南部杜氏会館、南部杜氏歴史民族資料館、石鳥谷農業伝承館など多くの南部杜氏に関する歴史や文物の展示施設が点在している。
+Many exhibition facilities for history and documents and materials concerning Nanbu toji such as Nanbu Toji Denshokan (museum of tradition of Nanbu toji), Nanbu Toji Kaikan (clubhouse for Nanbu toji), Nanbu Toji Rekishi Minzoku Shiryokan (museum of historical and cultural materials concerning Nanbu toji), and Ishidoriya Nogyo Denshokan (Ishidoriya museum of agricultural tradition) are scattered.
+
+秩父錦 酒づくりの森（埼玉県秩父市）
+Chichibunishiki Sakezukuri no Mori (Chichibunishiki forest for sake brewing) (Chichibu City, Saitama Prefecture)
+
+- 秩父市矢尾酒造が開設している資料館で、江戸時代の酒造関係の文書や機具、また全国に散在する江州蔵の成り立ちについての資料を展示している。
+This is a museum established by Yao Shuzo, Chichibu City and documents and tools and equipment for sake brewing during the Edo Period and materials for formation of Goshugura scattered in Japan.
+
+日本の酒情報館 Sake Plaza（東京都港区 (東京都)）
+Nihon no sake johokan Sake Plaza (Minato Ward, Tokyo Prefecture)
+
+- 日本酒造組合中央会が直営する日本酒や焼酎に関する資料館。
+This is a museum for sake and shochu directly operated by the Japan Sake Brewers Association.
+
+各種展示のほか、約6,000冊の関係資料の閲覧もできる。
+In addition to various exhibitions, around 6,000 relevant materials can be seen.
+
+イベント開催のため閉館の日も多い。
+The museum is often closed because of events to be held.
+
+ぽんしゅ館（新潟県湯沢町）
+Ponshukan (Yuzawamachi, Niigata Prefecture)
+
+- 上越新幹線越後湯沢駅構内に併設されている小規模の博物館だが、新潟県内ほぼ全ての酒を利けるコーナーや酒風呂などがある。
+This is a small museum established on the premises of Echigo-Yuzawa station of the Joetsu New Trunk Line where you can taste almost all sake produced in Niigata Prefecture, an sakaburo (sake bath).
+
+月桂冠大倉記念館（京都市伏見区）
+Gekkeikan Okura Kinenkan (Fushimi Ward, Kyoto City)
+
+キザクラカッパカントリー（京都市伏見区）
+Kizakura Kappa Country (Fushimi Ward, Kyoto City)
+
+ブルワリーミュージアム（兵庫県伊丹市）
+Brewery Museum (Itami City, Hyogo Prefecture)
+
+日本盛酒蔵通り煉瓦館（兵庫県西宮市）
+Nihonsakari Sakaguradori Rengakan (Nishinomiya City, Hyogo Prefecture)
+
+白鹿記念酒造博物館（兵庫県西宮市）
+Hakushika Kinen Shuzo Hakubutukan (Nishinomiya City, Hyogo Prefecture)
+
+白鷹禄水苑（兵庫県西宮市）
+Hakutaka Ryokusuien (Nishinomiya City, Hyogo Prefecture)
+
+酒匠館（兵庫県神戸市東灘区）
+Sakashokan (Higashi-Nada Ward, Kobe City, Hyogo Prefecture
+
+白鶴酒造資料館（兵庫県神戸市東灘区）
+Hakutsuru Shuzo Shiryokan (Higashi-Nada Ward, Kobe City, Hyogo Prefecture)
+
+神戸酒心館（兵庫県神戸市東灘区）
+Kobe Shushinkan (Higashi-Nada Ward, Kobe City, Hyogo Prefecture)
+
+沢の鶴資料館（兵庫県神戸市東灘区）
+Sawanotsuru Shiryokan (Higashi-Nada Ward, Kobe City, Hyogo Prefecture)
+
+浜福鶴吟醸工房（兵庫県神戸市東灘区）
+Hama Fukutsuru Ginjo Kobo (Higashi-Nada Ward, Kobe City, Hyogo Prefecture)
+
+櫻正宗記念館櫻宴（兵庫県神戸市東灘区）
+Sakuramasamune Kinenkan Sakuraen (Higashi-Nada Ward, Kobe City, Hyogo Prefecture)
+
+菊正宗酒造記念館（兵庫県神戸市東灘区）
+Kikumasamune Shuzo Kinenkan (Higashi-Nada Ward, Kobe City, Hyogo Prefecture)
+
+明石江井島酒館（兵庫県明石市）
+Akashi Eijima Shukan (Akashi City, Hyogo Prefecture)
+
+屠蘇 / 屠蘇散（とそさん）
+Toso (New Year's spiced sake)/tososan (spices for flavoring toso)
+
+別火（わかれび） 桃の節句。
+Wakarebi (parting from fire), momo no sekku (literally, a festival of the peach)
+
+燗をやめることをさす。
+It means to discontinue taking warm sake.
+
+花見酒（はなみざけ）
+Hanamizake (taking sake while enjoying cherry blossoms)
+
+夏越酒（なつこしざけ）
+Natsukoshizake (sake that passed the summer)
+
+菊酒（きくざけ） 菊の節句。
+Kikuzake, kikunosekku (festival or chrysanthemum)
+
+燗のつけはじめでもあった。
+It is also time to start taking warm sake.
+
+月見（つきみざけ）
+Tsukimizake (taking sake while enjoying viewing the moon)
+
+雪見（ゆきみざけ）
+Yukimizake (taking sake enjoying a snow scene)
+
+酒祭り（広島県東広島市西条）
+Sakematsuri (sake festival) (Saijo, Higashihiroshima City, Hiroshima Prefecture)
+
+どろめ祭り（高知県香美郡赤岡町）
+Doromematsuri (dorome festival) (Akaoka Town, Kami-gun, Kochi Prefecture)
+
+どぶろく祭り（日本各地多数）
+Doburokumatsuri (doburoku festival) (various places in Japan)
+

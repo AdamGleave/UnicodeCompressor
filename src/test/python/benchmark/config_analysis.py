@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import collections, os
+import collections, itertools, os
 import matplotlib.pyplot as plt
 
 from benchmark.config import *
@@ -112,6 +112,212 @@ FULL_CORPUS['training'] = [
   'training/shimazaki.txt'
 ]
 
+DCC_SMALL_CORPUS = collections.OrderedDict()
+DCC_SMALL_CORPUS['cantb'] = STANDARD_CORPUS['cantb']
+DCC_SMALL_CORPUS['single_language'] = [
+  'dcc_small/ar-tabula.txt',
+  'dcc_small/hin-baital.txt',
+  'dcc_small/ita-histo.txt',
+  'dcc_small/lah-udhr.txt',
+  'dcc_small/rus-mosco.txt',
+  'dcc_small/tel-kolla.txt',
+  'dcc_small/spa-trans.txt',
+  'dcc_small/zho-hua.txt',
+  'dcc_small/zho-lie.txt',
+  'dcc_small/zho-you.txt',
+]
+DCC_SMALL_CORPUS['mixed_language'] = [
+  'dcc_small/nguyenkuhyen.txt',
+  'dcc_small/sake.txt'
+]
+
+DCC_SMALL_CORPUS_GROUPED = collections.OrderedDict()
+DCC_SMALL_CORPUS_GROUPED['English'] = STANDARD_CORPUS_GROUPED['ASCII']
+DCC_SMALL_CORPUS_GROUPED['Non-English'] = [
+  'dcc_small/ar-tabula.txt',
+  'dcc_small/hin-baital.txt',
+  'dcc_small/lah-udhr.txt',
+  'dcc_small/rus-mosco.txt',
+  'dcc_small/tel-kolla.txt',
+  'dcc_small/zho-hua.txt',
+  'dcc_small/zho-lie.txt',
+  'dcc_small/zho-you.txt',
+]
+DCC_SMALL_CORPUS_GROUPED['Binary'] = [
+  'canterbury/canterbury/kennedy.xls',
+  'canterbury/canterbury/ptt5',
+  'canterbury/canterbury/sum',
+]
+
+DCC_LARGE_CORPUS = collections.OrderedDict()
+DCC_LARGE_CORPUS['ar'] = [
+	'dcc_large/ar/bookofroadsandkingdoms.txt',
+	'dcc_large/ar/canonofmedicine_book1.txt',
+	'dcc_large/ar/ibnal-baitar.txt',
+	'dcc_large/ar/onethousandandonenights_extract.txt',
+	'dcc_large/ar/tabularogeriana.txt',
+	'dcc_large/ar/udhr.txt',
+]
+DCC_LARGE_CORPUS['ben'] = [
+	'dcc_large/ben/anandamath.txt',
+	'dcc_large/ben/meghnadbodhkavya.txt',
+	'dcc_large/ben/mountainofthemoon.txt',
+	'dcc_large/ben/shesherkobita.txt',
+	'dcc_large/ben/udhr.txt',
+]
+DCC_LARGE_CORPUS['deu'] = [
+	'dcc_large/deu/becker.txt',
+	'dcc_large/deu/freud.txt',
+	'dcc_large/deu/freytag.txt',
+	'dcc_large/deu/schefer.txt',
+	'dcc_large/deu/udhr.txt',
+	'dcc_large/deu/urzidil.txt',
+]
+DCC_LARGE_CORPUS['fas'] = [
+	'dcc_large/fas/cursingoftheland.txt',
+	'dcc_large/fas/datebeyhaqi.txt',
+	'dcc_large/fas/kalilawadimna.txt',
+	'dcc_large/fas/lawrence.txt',
+	'dcc_large/fas/shahnameh_extract.txt',
+	'dcc_large/fas/udhr.txt',
+]
+DCC_LARGE_CORPUS['fra'] = [
+	'dcc_large/fra/buysse.txt',
+	'dcc_large/fra/confucius.txt',
+	'dcc_large/fra/feval.txt',
+	'dcc_large/fra/philippe.txt',
+	'dcc_large/fra/robida.txt',
+	'dcc_large/fra/udhr.txt',
+]
+DCC_LARGE_CORPUS['hin'] = [
+	'dcc_large/hin/baitalpachisi.txt',
+	'dcc_large/hin/barfi.txt',
+	'dcc_large/hin/specialrelativity.txt',
+	'dcc_large/hin/udhr.txt',
+]
+DCC_LARGE_CORPUS['ita'] = [
+	'dcc_large/ita/bracco.txt',
+	'dcc_large/ita/concilio.txt',
+	'dcc_large/ita/history1.txt',
+	'dcc_large/ita/history2.txt',
+	'dcc_large/ita/panzini.txt',
+	'dcc_large/ita/udhr.txt',
+]
+DCC_LARGE_CORPUS['jav'] = [
+	'dcc_large/jav/franzkafka.txt',
+	'dcc_large/jav/kakawinnitisastra.txt',
+	'dcc_large/jav/pramoedya.txt',
+	'dcc_large/jav/rangsangtuban.txt',
+	'dcc_large/jav/udhr.txt',
+]
+DCC_LARGE_CORPUS['jpn'] = [
+	'dcc_large/jpn/lowndes.txt',
+	'dcc_large/jpn/morley.txt',
+	'dcc_large/jpn/mushanokoji1.txt',
+	'dcc_large/jpn/mushanokoji2.txt',
+	'dcc_large/jpn/oppenheim.txt',
+	'dcc_large/jpn/udhr.txt',
+]
+DCC_LARGE_CORPUS['kor'] = [
+	'dcc_large/kor/choenamseon.txt',
+	'dcc_large/kor/leekwangso.txt',
+	'dcc_large/kor/soilofslavery.txt',
+	'dcc_large/kor/tolstoy.txt',
+	'dcc_large/kor/udhr.txt',
+]
+DCC_LARGE_CORPUS['lah'] = [
+	'dcc_large/lah/udhr.txt',
+]
+DCC_LARGE_CORPUS['mar'] = [
+	'dcc_large/mar/dasbodh_extract.txt',
+	'dcc_large/mar/ekach.txt',
+	'dcc_large/mar/eknathi.txt',
+	'dcc_large/mar/sangeet.txt',
+	'dcc_large/mar/shyamchiaai.txt',
+	'dcc_large/mar/udhr.txt',
+]
+DCC_LARGE_CORPUS['msa'] = [
+	'dcc_large/msa/akta.txt',
+	'dcc_large/msa/minang.txt',
+	'dcc_large/msa/sultan.txt',
+	'dcc_large/msa/udhr.txt',
+]
+DCC_LARGE_CORPUS['multilingual'] = [
+	'dcc_large/multilingual/nguyenkuhyen.txt',
+	'dcc_large/multilingual/sake.txt',
+]
+DCC_LARGE_CORPUS['por'] = [
+	'dcc_large/por/bastos.txt',
+	'dcc_large/por/branco.txt',
+	'dcc_large/por/escrich.txt',
+	'dcc_large/por/feydeau.txt',
+	'dcc_large/por/garrett.txt',
+	'dcc_large/por/udhr.txt',
+]
+DCC_LARGE_CORPUS['rus'] = [
+	'dcc_large/rus/apostol.txt',
+	'dcc_large/rus/derzhavin.txt',
+	'dcc_large/rus/pushkin.txt',
+	'dcc_large/rus/rachinskii.txt',
+	'dcc_large/rus/udhr.txt',
+	'dcc_large/rus/zhenskoe.txt',
+]
+DCC_LARGE_CORPUS['spa'] = [
+	'dcc_large/spa/transfusion.txt',
+	'dcc_large/spa/udhr.txt',
+	'dcc_large/spa/unamuno.txt',
+	'dcc_large/spa/valera.txt',
+	'dcc_large/spa/valls.txt',
+	'dcc_large/spa/verdugo.txt',
+]
+DCC_LARGE_CORPUS['tam'] = [
+	'dcc_large/tam/kambar.txt',
+	'dcc_large/tam/nachiyappan.txt',
+	'dcc_large/tam/parthasarathy.txt',
+	'dcc_large/tam/sundaravadivelu.txt',
+	'dcc_large/tam/udhr.txt',
+]
+DCC_LARGE_CORPUS['tel'] = [
+	'dcc_large/tel/agnigundam.txt',
+	'dcc_large/tel/eedaari.txt',
+	'dcc_large/tel/kattula.txt',
+	'dcc_large/tel/kollayi.txt',
+	'dcc_large/tel/onamaalu.txt',
+	'dcc_large/tel/udhr.txt',
+]
+DCC_LARGE_CORPUS['tur'] = [
+	'dcc_large/tur/ataturk.txt',
+	'dcc_large/tur/bildirki.txt',
+	'dcc_large/tur/dedekorkut.txt',
+	'dcc_large/tur/udhr.txt',
+	'dcc_large/tur/yunusemre.txt',
+	'dcc_large/tur/ziyagokalp.txt',
+]
+DCC_LARGE_CORPUS['urd'] = [
+	'dcc_large/urd/cricket.txt',
+	'dcc_large/urd/ghalib.txt',
+	'dcc_large/urd/mirtaqirmir.txt',
+	'dcc_large/urd/udhr.txt',
+]
+DCC_LARGE_CORPUS['vie'] = [
+	'dcc_large/vie/hobieuchanh.txt',
+	'dcc_large/vie/nguyendo.txt',
+	'dcc_large/vie/nguyentrai.txt',
+	'dcc_large/vie/spratlyislands.txt',
+	'dcc_large/vie/udhr.txt',
+]
+DCC_LARGE_CORPUS['zho'] = [
+	'dcc_large/zho/digong.txt',
+	'dcc_large/zho/hua.txt',
+	'dcc_large/zho/lie.txt',
+	'dcc_large/zho/tao.txt',
+	'dcc_large/zho/udhr.txt',
+	'dcc_large/zho/you.txt',
+]
+
+DCC_CORPUS_GROUPED = collections.OrderedDict(DCC_SMALL_CORPUS_GROUPED)
+DCC_CORPUS_GROUPED['Large Corpus'] = list(itertools.chain(*DCC_LARGE_CORPUS.values()))
+
 FILE_ABBREVIATIONS = {
   'single_language/beowulf.txt': 'beowulf.txt',
   'single_language/crime_and_punishment.txt': 'dostoevsky.txt',
@@ -129,6 +335,7 @@ FILE_ABBREVIATIONS = {
 }
 FILE_ABBREVIATIONS.update(abbreviate_by_fname('canterbury/canterbury'))
 FILE_ABBREVIATIONS.update(abbreviate_by_fname('training/'))
+FILE_ABBREVIATIONS.update(abbreviate_by_fname('dcc_small/'))
 
 ## Algorithms
 
@@ -339,20 +546,45 @@ SCORE_TABLES = {
     'scale': (1.0, 6.0),
     'files_last': True,
   },
-  'new_polya': {
+  # 'new_polya': {
+  #   'algos': [
+  #     ('Polya', ['none_polya_token_broken', 'none_polya_token',
+  #                'none_polya_stoken_uniform_token', 'none_polya_stoken_uniform_byte']),
+  #     ('LZW', ['lzw_uniform_byte', 'lzw_uniform_token', 'lzw_polya_token_broken', 'lzw_polya_token',
+  #              'lzw_polya_stoken_uniform_token', 'lzw_polya_stoken_uniform_byte']),
+  #     ('PPM', ['ppm_training_group_opt_uniform_byte', 'ppm_training_group_opt_uniform_token',
+  #              'ppm_training_group_opt_polya_token_broken', 'ppm_training_group_opt_polya_token',
+  #              'ppm_training_group_opt_polya_stoken_uniform_token',
+  #              'ppm_training_group_optut_polya_stoken_uniform_byte',
+  #              'ppm_training_group_opt_polya_stoken_uniform_byte']),
+  #   ],
+  #   'files': STANDARD_CORPUS,
+  # },
+  'dcc_small_longtable1': {
     'algos': [
-      ('Polya', ['none_polya_token_broken', 'none_polya_token',
-                 'none_polya_stoken_uniform_token', 'none_polya_stoken_uniform_byte']),
-      ('LZW', ['lzw_uniform_byte', 'lzw_uniform_token', 'lzw_polya_token_broken', 'lzw_polya_token',
-               'lzw_polya_stoken_uniform_token', 'lzw_polya_stoken_uniform_byte']),
-      ('PPM', ['ppm_training_group_opt_uniform_byte', 'ppm_training_group_opt_uniform_token',
-               'ppm_training_group_opt_polya_token_broken', 'ppm_training_group_opt_polya_token',
-               'ppm_training_group_opt_polya_stoken_uniform_token',
-               'ppm_training_group_optut_polya_stoken_uniform_byte',
-               'ppm_training_group_opt_polya_stoken_uniform_byte']),
+      ('Static', ['none_uniform_byte', 'none_uniform_token']),
+      ('Adaptive', ['crp_uniform_byte', 'crp_uniform_token', 'none_polya_token']),
+      ('LZW', ['ref_compress', 'none_lzw_byte', 'lzw_uniform_byte', 'lzw_uniform_token', 'lzw_polya_token']),
     ],
-    'files': STANDARD_CORPUS,
-  }
+    'files': DCC_SMALL_CORPUS,
+    'column_type': long_column_type,
+    'padding': long_padding,
+    'scale': (1.0, 6.0),
+  },
+  'dcc_small_longtable2': {
+    'algos': [
+      ('PPM',
+       ['ppm_training_group_opt_uniform_byte', 'ppm_training_group_opt_uniform_token',
+        'ppm_training_group_opt_polya_token', 'ppm_training_group_5_uniform_byte', 'ref_PPMd']
+       ),
+      ('Reference', ['ref_SCSU', 'ref_gzip', 'ref_bzip2', 'ref_cmix', 'ref_paq8hp12']),
+    ],
+    'files': DCC_SMALL_CORPUS,
+    'column_type': long_column_type,
+    'padding': long_padding,
+    'scale': (1.0, 6.0),
+    'files_last': True,
+  },
 }
 
 ## Score tables for presentation (one column for each file)
@@ -409,7 +641,23 @@ SCORE_SUMMARIES = {
     'algos': BEST_ALGOS,
     'files': STANDARD_CORPUS_GROUPED, 
     #'files': {k: STANDARD_CORPUS_GROUPED[k] for k in ['ASCII', 'Unicode']},
-  }
+  },
+  'dcc_lzw_summary': {
+    'algos': ['none_lzw_byte', 'lzw_uniform_byte', 'lzw_polya_token', 'ref_gzip', 'ref_bzip2'],
+    'files': DCC_SMALL_CORPUS_GROUPED,
+  },
+  'dcc_large_lzw_summary': {
+    'algos': ['none_lzw_byte', 'lzw_uniform_byte', 'lzw_polya_token', 'ref_gzip', 'ref_bzip2'],
+    'files': DCC_CORPUS_GROUPED,
+  },
+  'dcc_ppm_summary': {
+    'algos': BEST_ALGOS,
+    'files': DCC_SMALL_CORPUS_GROUPED,
+  },
+  'dcc_large_ppm_summary': {
+    'algos': BEST_ALGOS,
+    'files': DCC_CORPUS_GROUPED,
+  },
 }
 
 ## Parameters

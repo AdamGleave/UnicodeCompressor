@@ -53,3 +53,61 @@ The following files are all from Project Gutenberg, and are under the Gutenberg 
 * jushi.txt: Tou Peng Hsien Hua, Aina Jushi. Chinese. From http://www.gutenberg.org/ebooks/25328
 * rizal.txt: Ang "Filibusterismo", José Rizal. Tagalog. From http://www.gutenberg.org/ebooks/47629 
 * russel.html: An essay on the foundations of geometry, Bertrand Russel. English in HTML with mathematical symbols. From http://www.gutenberg.org/ebooks/52091
+
+# metadata
+
+Not part of the corpus itself. languages.csv includes the number of speakers of the 22 most common languages, from Ethnologue. Sources.ods documents the origin of all files in dcc_large.
+
+# dcc_large
+
+A corpus containing files from all the 22 most common languages listed above. Common sources are:
+* UN Declaration of Human Rights, which has been widely translated.
+* Books from Project Gutenberg.
+* Public-domain texts from Wikitexts.
+For some languages, these sources were insufficient to collect a representative range of source files, and I have searched other public domain sources.
+
+There are also two multilingual files, included for variety. 
+
+N.B. English was specifically excluded as other corpora adequately cover this.
+
+# scripts
+
+A suite of scripts used to generate dcc_small and dcc_small_capped (below) from metadata and dcc_large. subset.sh is the master script, calling the others where necessary.
+
+# dcc_small
+
+A subset of dcc_large. It contains ten single-language files, and the two multilingual files included in dcc_large. 
+
+The single-language files were chosen by first sampling ten languages, using systematic probability proportional to size. Sampling was with replacement, and Chinese was selected three times due to its very large number of native speakers. A text was chosen for each language by a hash competition, selecting the file(s) with the smallest hashes.
+
+I then manually edited the files slightly to clean them up, e.g. removing text headers giving the titles and copyright in project Gutenberg books.
+
+The files are:
+* ar-tabula.txt, called ar/tabularogeriana.txt in dcc_large. The Tabula Rogeriana is a classic Arabic text about geography.
+* hin-baital.txt, called hin/baitalpachis.txt in dcc_large. Ancient collection of tales and legends from India.
+* ita-histo.txt, called ita/history2.txt in dcc_large. History work by Jean Charles Léonard de Sismondi. 
+* lah-udhr.txt, called lah/uhdr.txt in dcc_large. UN Declaration of Human Rights, translated into Lahnda. Some sections missing (translator refused to translate them.)
+* rus-mosco.txt, called rus/apostol.txt in dcc_large. History work by Pavel Nikolayevich Apostol.
+* spa-trans.txt, called spa/transfusion.txt in dcc_large. Novel by Enrique de Vedia.
+* tel-kolla.txt, called tel/kollayi.txt in dcc_large. Novel by Mahidhara Rama Mohana Rao.
+* zho-lie.txt, called zho/lie.txt in dcc_large. Novel by Xiang Liu.
+* zho-hua.txt, called zho/hua.txt in dcc_large. Novel by Siou Ren Wei.
+* zho-you.txt, called zho/you.txt in dcc_large. Novel You Xue Qiong Lin by Yun Sheng Cheng. 
+
+# dcc_small_capped
+
+Like dcc_small, but sampling of the languages was without replacemnet. As a result, Chinese has only one file, promoting more diversity in texts. 
+
+Translated versions of the UHDR won the hash competition for Bengali [ben], Javanese [jav], Lahnda [lah] and Portugues [por]. For Lahnda, UHDR was in fact the only public-domain text I could locate, so I retained this choice. For the other languages, there were a number of other texts that could have been chosen, and I forced the selection of the text with the second-lowest text.
+
+The files are:
+* ar-tabula.txt, called ar/tabularogeriana.txt in dcc_large. The Tabula Rogeriana is a classic Arabic text about geography.
+* ben-kobita.txt, called ben/shesherkobita.txt in dcc_large. Bengali poem.
+* hin-baital.txt, called hin/baitalpachis.txt in dcc_large. Ancient collection of tales and legends from India.
+* jav-tuban.txt, called jav/rangsangtuban.txt in dcc_large. Javanese novel, considered by some to be the earliest prose work.
+* jpn-yujo.txt, called jpn/mushankoji1.txt in dcc_large. Japanese novel, 'Friendship', by Saneatsu Mushanokōji.
+* lah-udhr.txt, called lah/uhdr.txt in dcc_large. UN Declaration of Human Rights, translated into Lahnda. Some sections missing (translator refused to translate them.)
+* por-branco.txt, called por/branco.txt in dcc_large. Novel by Camilo Castelo Branco.
+* rus-mosco.txt, called rus/apostol.txt in dcc_large. History work by Pavel Nikolayevich Apostol.
+* spa-trans.txt, called spa/transfusion.txt in dcc_large. Novel by Enrique de Vedia.
+* zho-you.txt, called zho/you.txt in dcc_large. Novel You Xue Qiong Lin by Yun Sheng Cheng. 

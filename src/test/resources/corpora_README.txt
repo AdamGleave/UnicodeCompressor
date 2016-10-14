@@ -66,7 +66,7 @@ A corpus containing files from all the 22 most common languages listed above. Co
 * Public-domain texts from Wikitexts.
 For some languages, these sources were insufficient to collect a representative range of source files, and I have searched other public domain sources.
 
-There are also two multilingual files, included for variety. 
+There are also two multilingual files, included for variety: khuyen.txt and sake.txt. 
 
 N.B. English was specifically excluded as other corpora adequately cover this.
 

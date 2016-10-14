@@ -136,9 +136,11 @@ DCC_SMALL_CORPUS_GROUPED['English'] = STANDARD_CORPUS_GROUPED['ASCII']
 DCC_SMALL_CORPUS_GROUPED['Non-English'] = [
   'dcc_small/ar-tabula.txt',
   'dcc_small/hin-baital.txt',
+  'dcc_small/ita-histo.txt',
   'dcc_small/lah-udhr.txt',
   'dcc_small/rus-mosco.txt',
   'dcc_small/tel-kolla.txt',
+  'dcc_small/spa-trans.txt',
   'dcc_small/zho-hua.txt',
   'dcc_small/zho-lie.txt',
   'dcc_small/zho-you.txt',
@@ -147,6 +149,52 @@ DCC_SMALL_CORPUS_GROUPED['Binary'] = [
   'canterbury/canterbury/kennedy.xls',
   'canterbury/canterbury/ptt5',
   'canterbury/canterbury/sum',
+]
+
+DCC_SMALL_CAPPED_CORPUS = collections.OrderedDict(DCC_SMALL_CORPUS)
+DCC_SMALL_CAPPED_CORPUS['single_language'] = [
+  'dcc_small_capped/ar-tabula.txt',
+  'dcc_small_capped/ben-kobita.txt',
+  'dcc_small_capped/hin-baital.txt',
+  'dcc_small_capped/jav-tuban.txt',
+  'dcc_small_capped/jpn-yujo.txt',
+  'dcc_small_capped/lah-udhr.txt',
+  'dcc_small_capped/por-branco.txt',
+  'dcc_small_capped/rus-mosco.txt',
+  'dcc_small_capped/spa-trans.txt',
+  'dcc_small_capped/zho-you.txt',
+]
+
+DCC_SMALL_CAPPED_CORPUS_GROUPED = collections.OrderedDict(DCC_SMALL_CORPUS_GROUPED)
+DCC_SMALL_CAPPED_CORPUS_GROUPED['Non-English'] = [ 
+  'dcc_small_capped/ar-tabula.txt',
+  'dcc_small_capped/ben-kobita.txt',
+  'dcc_small_capped/hin-baital.txt',
+  'dcc_small_capped/jav-tuban.txt',
+  'dcc_small_capped/jpn-yujo.txt',
+  'dcc_small_capped/lah-udhr.txt',
+  'dcc_small_capped/por-branco.txt',
+  'dcc_small_capped/rus-mosco.txt',
+  'dcc_small_capped/spa-trans.txt',
+  'dcc_small_capped/zho-you.txt',
+]
+
+DCC_SMALL_COMBINED_CORPUS = collections.OrderedDict(DCC_SMALL_CORPUS)
+DCC_SMALL_COMBINED_CORPUS['single_language'] = [
+  'dcc_small/ar-tabula.txt', # both
+  'dcc_small_capped/ben-kobita.txt', # capped only
+  'dcc_small/hin-baital.txt', # both
+  'dcc_small_capped/jav-tuban.txt', # capped only
+  'dcc_small_capped/jpn-yujo.txt', # capped only
+  'dcc_small/ita-histo.txt', # uncapped only
+  'dcc_small/lah-udhr.txt', # both
+  'dcc_small_capped/por-branco.txt', # capped only
+  'dcc_small/rus-mosco.txt', # both
+  'dcc_small/tel-kolla.txt', # uncapped only
+  'dcc_small/spa-trans.txt', # both
+  'dcc_small/zho-hua.txt', # uncapped only
+  'dcc_small/zho-lie.txt', # uncapped only
+  'dcc_small/zho-you.txt', # both
 ]
 
 DCC_LARGE_CORPUS = collections.OrderedDict()
@@ -315,7 +363,11 @@ DCC_LARGE_CORPUS['zho'] = [
 	'dcc_large/zho/you.txt',
 ]
 
-DCC_CORPUS_GROUPED = collections.OrderedDict(DCC_SMALL_CORPUS_GROUPED)
+DCC_CORPUS_GROUPED = collections.OrderedDict()
+DCC_CORPUS_GROUPED['English'] = STANDARD_CORPUS_GROUPED['ASCII']
+DCC_CORPUS_GROUPED['Binary'] = DCC_SMALL_CORPUS_GROUPED['Binary']
+DCC_CORPUS_GROUPED['Small uncapped'] = DCC_SMALL_CORPUS_GROUPED['Non-English']
+DCC_CORPUS_GROUPED['Small capped'] = DCC_SMALL_CAPPED_CORPUS_GROUPED['Non-English']
 DCC_CORPUS_GROUPED['Large Corpus'] = list(itertools.chain(*DCC_LARGE_CORPUS.values()))
 
 FILE_ABBREVIATIONS = {
@@ -336,6 +388,8 @@ FILE_ABBREVIATIONS = {
 FILE_ABBREVIATIONS.update(abbreviate_by_fname('canterbury/canterbury'))
 FILE_ABBREVIATIONS.update(abbreviate_by_fname('training/'))
 FILE_ABBREVIATIONS.update(abbreviate_by_fname('dcc_small/'))
+# some of these are abbreviated to the same as in dcc_small, but that's OK (same contents)
+FILE_ABBREVIATIONS.update(abbreviate_by_fname('dcc_small_capped/'))
 
 ## Algorithms
 
@@ -560,32 +614,37 @@ SCORE_TABLES = {
   #   ],
   #   'files': STANDARD_CORPUS,
   # },
-  'dcc_small_longtable1': {
-    'algos': [
-      ('Static', ['none_uniform_byte', 'none_uniform_token']),
-      ('Adaptive', ['crp_uniform_byte', 'crp_uniform_token', 'none_polya_token']),
-      ('LZW', ['ref_compress', 'none_lzw_byte', 'lzw_uniform_byte', 'lzw_uniform_token', 'lzw_polya_token']),
-    ],
-    'files': DCC_SMALL_CORPUS,
-    'column_type': long_column_type,
-    'padding': long_padding,
-    'scale': (1.0, 6.0),
-  },
-  'dcc_small_longtable2': {
-    'algos': [
-      ('PPM',
-       ['ppm_training_group_opt_uniform_byte', 'ppm_training_group_opt_uniform_token',
-        'ppm_training_group_opt_polya_token', 'ppm_training_group_5_uniform_byte', 'ref_PPMd']
-       ),
-      ('Reference', ['ref_SCSU', 'ref_gzip', 'ref_bzip2', 'ref_cmix', 'ref_paq8hp12']),
-    ],
-    'files': DCC_SMALL_CORPUS,
-    'column_type': long_column_type,
-    'padding': long_padding,
-    'scale': (1.0, 6.0),
-    'files_last': True,
-  },
 }
+
+def longtable(prefix, files):
+  return {
+    prefix + '_long1': {
+      'algos': [
+        ('Static', ['none_uniform_byte', 'none_uniform_token']),
+        ('Adaptive', ['crp_uniform_byte', 'crp_uniform_token', 'none_polya_token']),
+        ('LZW', ['ref_compress', 'none_lzw_byte', 'lzw_uniform_byte', 'lzw_uniform_token', 'lzw_polya_token']),
+      ],
+      'files': files,
+      'column_type': long_column_type,
+      'padding': long_padding,
+      'scale': (1.0, 6.0),
+    },
+    prefix + '_long2': {
+      'algos': [
+        ('PPM',
+         ['ppm_training_group_opt_uniform_byte', 'ppm_training_group_opt_uniform_token',
+          'ppm_training_group_opt_polya_token', 'ppm_training_group_5_uniform_byte', 'ref_PPMd']
+         ),
+        ('Reference', ['ref_SCSU', 'ref_gzip', 'ref_bzip2', 'ref_cmix', 'ref_paq8hp12']),
+      ],
+      'files': files,
+      'column_type': long_column_type,
+      'padding': long_padding,
+      'scale': (1.0, 6.0),
+      'files_last': True,
+    },
+  }
+SCORE_TABLES.update(longtable('dcc_small_combined', DCC_SMALL_COMBINED_CORPUS))
 
 ## Score tables for presentation (one column for each file)
 CANTERBURY_TEXT = [
@@ -644,17 +703,9 @@ SCORE_SUMMARIES = {
   },
   'dcc_lzw_summary': {
     'algos': ['none_lzw_byte', 'lzw_uniform_byte', 'lzw_polya_token', 'ref_gzip', 'ref_bzip2'],
-    'files': DCC_SMALL_CORPUS_GROUPED,
-  },
-  'dcc_large_lzw_summary': {
-    'algos': ['none_lzw_byte', 'lzw_uniform_byte', 'lzw_polya_token', 'ref_gzip', 'ref_bzip2'],
     'files': DCC_CORPUS_GROUPED,
   },
   'dcc_ppm_summary': {
-    'algos': BEST_ALGOS,
-    'files': DCC_SMALL_CORPUS_GROUPED,
-  },
-  'dcc_large_ppm_summary': {
     'algos': BEST_ALGOS,
     'files': DCC_CORPUS_GROUPED,
   },

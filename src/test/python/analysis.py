@@ -93,6 +93,7 @@ def process_score_settings(raw):
   res['sizes'] = res.get('sizes', True)
   res['omit_files_col'] = res.get('omit_files_col', False)
   res['files_last'] = res.get('files_last', False)
+  res['label_groups'] = res.get('label_groups', False)
   res['column_type'] = res.get('column_type', config.default_column_type)
   res['padding'] = res.get('padding', config.default_padding)
   res['font'] = res.get('font', config.default_font)
@@ -153,6 +154,7 @@ def generate_score_table(test, settings, data):
 
   res = []
   res.append(r'\setlength{\tabcolsep}{1ex}')
+  res.append(r'\hspace{' + config.label_groups_shift + r'}')
 
   algos = settings['algos']
   cols = ''
@@ -167,6 +169,8 @@ def generate_score_table(test, settings, data):
       cols += filecols
     else:
       cols = filecols + cols
+  if settings['label_groups']:
+    cols = 'm{0em}' + cols
   res.append(r'\begin{tabular}{' + cols + '}')
   res.append(r'\toprule')
 
@@ -178,6 +182,8 @@ def generate_score_table(test, settings, data):
       headings = [r'\textbf{File}']
       if settings['sizes']:
         headings.append(r'\multicolumn{1}{c}{\textbf{Size}}')
+      if settings['label_groups']:
+        headings = [''] + headings
       if settings['files_last']:
         group_row = group_row + headings
       else:
@@ -193,6 +199,8 @@ def generate_score_table(test, settings, data):
 
   if not settings['omit_files_col']:
     headings2 = [r'']
+    if settings['label_groups']:
+      headings2 = [''] + headings2
     if settings['sizes']:
       headings2.append(r'\multicolumn{1}{c}{\textbf{(KiB)}}')
 
@@ -205,6 +213,10 @@ def generate_score_table(test, settings, data):
   res.append(r'\midrule')
 
   for file_group, files in settings['files'].items():
+    if settings['label_groups']:
+      label = r'\multirow{' + str(len(files)) + r'}' + \
+              r'{*}{\hspace{-' + config.label_groups_shift + r'}\rotatebox{65}{\emph{' + file_group + r'}~}}'
+      res.append(label)
     for file in files:
       filedata = effectiveness[file]
       file_abbrev = r'\code{' + config.FILE_ABBREVIATIONS[file] + r'}'
@@ -220,6 +232,8 @@ def generate_score_table(test, settings, data):
         row.append(val)
 
       preface = [file_abbrev]
+      if settings['label_groups']:
+        preface = [''] + preface
       if settings['sizes']:
         preface.append(size)
       if not settings['omit_files_col']:

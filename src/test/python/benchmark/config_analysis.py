@@ -153,8 +153,23 @@ DCC_SMALL_CORPUS_GROUPED['Binary'] = [
   'canterbury/canterbury/sum',
 ]
 
-DCC_SMALL_CAPPED_CORPUS = collections.OrderedDict(DCC_SMALL_CORPUS)
-DCC_SMALL_CAPPED_CORPUS['single_language'] = [
+DCC_SMALL_CAPPED_CORPUS = collections.OrderedDict()
+DCC_SMALL_CAPPED_CORPUS['ASCII'] = [
+  'canterbury/canterbury/alice29.txt',
+  'canterbury/canterbury/asyoulik.txt',
+  'canterbury/canterbury/cp.html',
+  'canterbury/canterbury/fields.c',
+  'canterbury/canterbury/grammar.lsp',
+  'canterbury/canterbury/lcet10.txt',
+  'canterbury/canterbury/plrabn12.txt',
+  'canterbury/canterbury/xargs.1'
+]
+DCC_SMALL_CAPPED_CORPUS['Binary'] = [
+  'canterbury/canterbury/kennedy.xls',
+  'canterbury/canterbury/ptt5',
+  'canterbury/canterbury/sum',
+]
+DCC_SMALL_CAPPED_CORPUS['Unicode'] = [
   'dcc_small_capped/ara-tabula.txt',
   'dcc_small_capped/ben-kobita.txt',
   'dcc_small_capped/hin-baital.txt',
@@ -165,6 +180,8 @@ DCC_SMALL_CAPPED_CORPUS['single_language'] = [
   'dcc_small_capped/rus-mosco.txt',
   'dcc_small_capped/spa-trans.txt',
   'dcc_small_capped/zho-you.txt',
+  'dcc_small/khuyen.txt',
+  'dcc_small/sake.txt'
 ]
 
 DCC_SMALL_CAPPED_CORPUS_GROUPED = collections.OrderedDict(DCC_SMALL_CORPUS_GROUPED)
@@ -491,6 +508,7 @@ def long_padding(algo):
     return ('', '')
 
 default_font = 'Palatino'
+label_groups_shift = '2em'
 
 # Colors
 
@@ -614,12 +632,13 @@ SCORE_TABLES = {
   },
   'dcc_master': {
     'algos': [
-      ('LZW', ['none_lzw_byte', 'lzw_uniform_byte', 'lzw_uniform_stoken', 'lzw_polya_stoken_uniform_token', 'lzw_polya_stoken_uniform_byte']),
+      ('LZW', ['lzw_uniform_byte', 'lzw_uniform_stoken', 'lzw_polya_stoken_uniform_byte']),
       ('PPM', ['ppm_training_group_opt_uniform_byte', 'ppm_training_group_opt_uniform_stoken',
-               'ppm_training_group_opt_polya_stoken_uniform_byte', 'ppm_training_group_opt_polya_stoken_uniform_byte', 'ppm_training_group_5_uniform_byte', 'ref_PPMd'])
+               'ppm_training_group_opt_polya_stoken_uniform_byte', 'ref_PPMd'])
     ],
     'font': 'Computer Modern',
     'files': DCC_SMALL_CAPPED_CORPUS,
+    'label_groups': True,
   }
   # 'new_polya': {
   #   'algos': [
@@ -731,10 +750,10 @@ SCORE_SUMMARIES = {
     'files': DCC_CORPUS_GROUPED,
   },
   'dcc_master_summary': {
-    'algos': ['lzw_uniform_byte', 'lzw_uniform_token', 'lzw_polya_token',
-              'ppm_training_group_opt_uniform_byte', 'ppm_training_group_opt_uniform_token',
-              'ppm_training_group_opt_polya_token', 'ppm_training_group_5_uniform_byte',
-              'ref_PPMd'],
+    'algos': ['none_lzw_byte', 'lzw_uniform_byte', 'lzw_uniform_stoken', 'lzw_polya_stoken_uniform_byte',
+              'ppm_training_group_opt_uniform_byte', 'ppm_training_group_opt_uniform_stoken',
+              'ppm_training_group_opt_polya_stoken_uniform_byte',
+              'ppm_training_group_5_uniform_byte', 'ref_PPMd'],
     'files': DCC_SMALL_CAPPED_CORPUS_GROUPED,
   }
 }

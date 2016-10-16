@@ -91,7 +91,7 @@ def group_parameters(group, prior):
     print("WARNING: could not open " + path)
 
 for group, prior in itertools.product(['training', 'test'],
-                                      ['uniform_byte', 'uniform_token', 'polya_token',
+                                      ['uniform_byte', 'uniform_token', 'uniform_stoken', 'polya_token',
                                        'polya_stoken_uniform_byte', 'polya_stoken_uniform_token']):
   group_parameters(group, prior)
 

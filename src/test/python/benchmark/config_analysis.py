@@ -115,7 +115,7 @@ FULL_CORPUS['training'] = [
 DCC_SMALL_CORPUS = collections.OrderedDict()
 DCC_SMALL_CORPUS['cantb'] = STANDARD_CORPUS['cantb']
 DCC_SMALL_CORPUS['single_language'] = [
-  'dcc_small/ar-tabula.txt',
+  'dcc_small/ara-tabula.txt',
   'dcc_small/hin-baital.txt',
   'dcc_small/ita-histo.txt',
   'dcc_small/lah-udhr.txt',
@@ -134,7 +134,7 @@ DCC_SMALL_CORPUS['mixed_language'] = [
 DCC_SMALL_CORPUS_GROUPED = collections.OrderedDict()
 DCC_SMALL_CORPUS_GROUPED['ASCII'] = STANDARD_CORPUS_GROUPED['ASCII']
 DCC_SMALL_CORPUS_GROUPED['Unicode'] = [
-  'dcc_small/ar-tabula.txt',
+  'dcc_small/ara-tabula.txt',
   'dcc_small/hin-baital.txt',
   'dcc_small/ita-histo.txt',
   'dcc_small/lah-udhr.txt',
@@ -155,7 +155,7 @@ DCC_SMALL_CORPUS_GROUPED['Binary'] = [
 
 DCC_SMALL_CAPPED_CORPUS = collections.OrderedDict(DCC_SMALL_CORPUS)
 DCC_SMALL_CAPPED_CORPUS['single_language'] = [
-  'dcc_small_capped/ar-tabula.txt',
+  'dcc_small_capped/ara-tabula.txt',
   'dcc_small_capped/ben-kobita.txt',
   'dcc_small_capped/hin-baital.txt',
   'dcc_small_capped/jav-tuban.txt',
@@ -169,7 +169,7 @@ DCC_SMALL_CAPPED_CORPUS['single_language'] = [
 
 DCC_SMALL_CAPPED_CORPUS_GROUPED = collections.OrderedDict(DCC_SMALL_CORPUS_GROUPED)
 DCC_SMALL_CAPPED_CORPUS_GROUPED['Unicode'] = [
-  'dcc_small_capped/ar-tabula.txt',
+  'dcc_small_capped/ara-tabula.txt',
   'dcc_small_capped/ben-kobita.txt',
   'dcc_small_capped/hin-baital.txt',
   'dcc_small_capped/jav-tuban.txt',
@@ -185,7 +185,7 @@ DCC_SMALL_CAPPED_CORPUS_GROUPED['Unicode'] = [
 
 DCC_SMALL_COMBINED_CORPUS = collections.OrderedDict(DCC_SMALL_CORPUS)
 DCC_SMALL_COMBINED_CORPUS['single_language'] = [
-  'dcc_small/ar-tabula.txt', # both
+  'dcc_small/ara-tabula.txt', # both
   'dcc_small_capped/ben-kobita.txt', # capped only
   'dcc_small/hin-baital.txt', # both
   'dcc_small_capped/jav-tuban.txt', # capped only
@@ -409,6 +409,7 @@ ALGO_ABBREVIATIONS = {
   'none_lzw_byte': r'\nonelzwbyte',
   'lzw_uniform_byte': r'\lzwuniformbyte',
   'lzw_uniform_token': r'\lzwuniformtoken',
+  'lzw_uniform_stoken': r'\lzwuniformstoken',
   'lzw_polya_token': r'\lzwpolyatoken',
   'lzw_polya_token_broken': r'\lzwpolyatokenbroken',
   'lzw_polya_stoken_uniform_token': r'\lzwpolyastokenuniformtoken',
@@ -417,6 +418,7 @@ ALGO_ABBREVIATIONS = {
   'ppm_training_group_opt_uniform_byte': r'\ppmtraininguniformbyte',
   'ppm_training_group_5_uniform_byte': r'\ppmtraininguniformbytefive',
   'ppm_training_group_opt_uniform_token': r'\ppmtraininguniformtoken',
+  'ppm_training_group_opt_uniform_stoken': r'\ppmtraininguniformstoken',
   'ppm_training_group_opt_polya_token': r'\ppmtrainingpolyatoken',
   'ppm_training_group_opt_polya_token_broken': r'\ppmtrainingpolyatokenbroken',
   'ppm_training_group_opt_polya_stoken_uniform_token': r'\ppmtrainingpolyastokenuniformtoken',
@@ -612,9 +614,9 @@ SCORE_TABLES = {
   },
   'dcc_master': {
     'algos': [
-      ('LZW', ['lzw_uniform_byte', 'lzw_uniform_token', 'lzw_polya_token']),
-      ('PPM', ['ppm_training_group_opt_uniform_byte', 'ppm_training_group_opt_uniform_token',
-               'ppm_training_group_opt_polya_token', 'ppm_training_group_5_uniform_byte', 'ref_PPMd'])
+      ('LZW', ['none_lzw_byte', 'lzw_uniform_byte', 'lzw_uniform_stoken', 'lzw_polya_stoken_uniform_token', 'lzw_polya_stoken_uniform_byte']),
+      ('PPM', ['ppm_training_group_opt_uniform_byte', 'ppm_training_group_opt_uniform_stoken',
+               'ppm_training_group_opt_polya_stoken_uniform_byte', 'ppm_training_group_opt_polya_stoken_uniform_byte', 'ppm_training_group_5_uniform_byte', 'ref_PPMd'])
     ],
     'font': 'Computer Modern',
     'files': DCC_SMALL_CAPPED_CORPUS,

@@ -95,6 +95,7 @@ def process_score_settings(raw):
   res['files_last'] = res.get('files_last', False)
   res['column_type'] = res.get('column_type', config.default_column_type)
   res['padding'] = res.get('padding', config.default_padding)
+  res['font'] = res.get('font', config.default_font)
   if type(res['algos'][0]) == tuple:
     algo_groups = res['algos']
     flat_algos = []
@@ -118,7 +119,7 @@ def autoscale(settings, data):
           subset.append(data[f][a])
   return min(subset), max(subset)
 
-def effectiveness_format(x, is_best, scale, leading, fg_cm, bg_cm):
+def effectiveness_format(x, is_best, scale, leading, font, fg_cm, bg_cm):
   smallest, largest = scale
 
   if x == float('inf'): # failure
@@ -135,7 +136,10 @@ def effectiveness_format(x, is_best, scale, leading, fg_cm, bg_cm):
     val = '\hspace{0.5em}' * pad + val
 
   if is_best:
+    bold_kern = config.FONT_BOLD_ADJUSTMENTS[font]
     val = r'\textbf{' + val + r'}'
+    if bold_kern:
+      val = r'\kern-' + bold_kern + r'em' + val + r'\kern-' + bold_kern + 'em'
   return r'{\kern-0.35em\colorbox[rgb]{' + '{0},{1},{2}'.format(*bg) + r'}{\textcolor[rgb]{' + \
          '{0},{1},{2}'.format(*fg) + r'}{' + val + '}}\kern-0.35em}'
 
@@ -211,7 +215,8 @@ def generate_score_table(test, settings, data):
         efficiency = filedata[algo]
         is_best = efficiency == best
         leading = config.get_leading(algo)
-        val = effectiveness_format(efficiency, is_best, scale, leading, config.FG_COLORMAP, config.BG_COLORMAP)
+        val = effectiveness_format(efficiency, is_best, scale, leading, settings['font'],
+                                   config.FG_COLORMAP, config.BG_COLORMAP)
         row.append(val)
 
       preface = [file_abbrev]
@@ -263,7 +268,8 @@ def generate_score_table_files_col(test, settings, data):
     for file in files:
       filedata = effectiveness[file]
       efficiency = filedata[algo]
-      val = effectiveness_format(efficiency, False, scale, 1, config.FG_COLORMAP, config.BG_COLORMAP)
+      val = effectiveness_format(efficiency, False, scale, 1, config.default_font,
+                                 config.FG_COLORMAP, config.BG_COLORMAP)
       row.append(val)
     res.append(generate_row(row))
 

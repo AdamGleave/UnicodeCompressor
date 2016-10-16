@@ -127,13 +127,13 @@ DCC_SMALL_CORPUS['single_language'] = [
   'dcc_small/zho-you.txt',
 ]
 DCC_SMALL_CORPUS['mixed_language'] = [
-  'dcc_small/nguyenkuhyen.txt',
+  'dcc_small/khuyen.txt',
   'dcc_small/sake.txt'
 ]
 
 DCC_SMALL_CORPUS_GROUPED = collections.OrderedDict()
-DCC_SMALL_CORPUS_GROUPED['English'] = STANDARD_CORPUS_GROUPED['ASCII']
-DCC_SMALL_CORPUS_GROUPED['Non-English'] = [
+DCC_SMALL_CORPUS_GROUPED['ASCII'] = STANDARD_CORPUS_GROUPED['ASCII']
+DCC_SMALL_CORPUS_GROUPED['Unicode'] = [
   'dcc_small/ar-tabula.txt',
   'dcc_small/hin-baital.txt',
   'dcc_small/ita-histo.txt',
@@ -144,6 +144,8 @@ DCC_SMALL_CORPUS_GROUPED['Non-English'] = [
   'dcc_small/zho-hua.txt',
   'dcc_small/zho-lie.txt',
   'dcc_small/zho-you.txt',
+  'dcc_small/sake.txt',
+  'dcc_small/khuyen.txt',
 ]
 DCC_SMALL_CORPUS_GROUPED['Binary'] = [
   'canterbury/canterbury/kennedy.xls',
@@ -159,24 +161,26 @@ DCC_SMALL_CAPPED_CORPUS['single_language'] = [
   'dcc_small_capped/jav-tuban.txt',
   'dcc_small_capped/jpn-yujo.txt',
   'dcc_small_capped/lah-udhr.txt',
-  'dcc_small_capped/por-branco.txt',
+  'dcc_small_capped/por-noites.txt',
   'dcc_small_capped/rus-mosco.txt',
   'dcc_small_capped/spa-trans.txt',
   'dcc_small_capped/zho-you.txt',
 ]
 
 DCC_SMALL_CAPPED_CORPUS_GROUPED = collections.OrderedDict(DCC_SMALL_CORPUS_GROUPED)
-DCC_SMALL_CAPPED_CORPUS_GROUPED['Non-English'] = [ 
+DCC_SMALL_CAPPED_CORPUS_GROUPED['Unicode'] = [
   'dcc_small_capped/ar-tabula.txt',
   'dcc_small_capped/ben-kobita.txt',
   'dcc_small_capped/hin-baital.txt',
   'dcc_small_capped/jav-tuban.txt',
   'dcc_small_capped/jpn-yujo.txt',
   'dcc_small_capped/lah-udhr.txt',
-  'dcc_small_capped/por-branco.txt',
+  'dcc_small_capped/por-noites.txt',
   'dcc_small_capped/rus-mosco.txt',
   'dcc_small_capped/spa-trans.txt',
   'dcc_small_capped/zho-you.txt',
+  'dcc_small/sake.txt',
+  'dcc_small/khuyen.txt',
 ]
 
 DCC_SMALL_COMBINED_CORPUS = collections.OrderedDict(DCC_SMALL_CORPUS)
@@ -188,7 +192,7 @@ DCC_SMALL_COMBINED_CORPUS['single_language'] = [
   'dcc_small_capped/jpn-yujo.txt', # capped only
   'dcc_small/ita-histo.txt', # uncapped only
   'dcc_small/lah-udhr.txt', # both
-  'dcc_small_capped/por-branco.txt', # capped only
+  'dcc_small_capped/por-noites.txt', # capped only
   'dcc_small/rus-mosco.txt', # both
   'dcc_small/tel-kolla.txt', # uncapped only
   'dcc_small/spa-trans.txt', # both
@@ -291,7 +295,7 @@ DCC_LARGE_CORPUS['msa'] = [
 	'dcc_large/msa/udhr.txt',
 ]
 DCC_LARGE_CORPUS['multilingual'] = [
-	'dcc_large/multilingual/nguyenkuhyen.txt',
+	'dcc_large/multilingual/khuyen.txt',
 	'dcc_large/multilingual/sake.txt',
 ]
 DCC_LARGE_CORPUS['por'] = [
@@ -366,8 +370,8 @@ DCC_LARGE_CORPUS['zho'] = [
 DCC_CORPUS_GROUPED = collections.OrderedDict()
 DCC_CORPUS_GROUPED['English'] = STANDARD_CORPUS_GROUPED['ASCII']
 DCC_CORPUS_GROUPED['Binary'] = DCC_SMALL_CORPUS_GROUPED['Binary']
-DCC_CORPUS_GROUPED['Small uncapped'] = DCC_SMALL_CORPUS_GROUPED['Non-English']
-DCC_CORPUS_GROUPED['Small capped'] = DCC_SMALL_CAPPED_CORPUS_GROUPED['Non-English']
+DCC_CORPUS_GROUPED['Small uncapped'] = DCC_SMALL_CORPUS_GROUPED['Unicode']
+DCC_CORPUS_GROUPED['Small capped'] = DCC_SMALL_CAPPED_CORPUS_GROUPED['Unicode']
 DCC_CORPUS_GROUPED['Large Corpus'] = list(itertools.chain(*DCC_LARGE_CORPUS.values()))
 
 FILE_ABBREVIATIONS = {
@@ -484,6 +488,8 @@ def long_padding(algo):
   else:
     return ('', '')
 
+default_font = 'Palatino'
+
 # Colors
 
 def constant_colormap(r, g, b, a):
@@ -515,6 +521,10 @@ BG_COLORMAP = narrowed_colormap(plt.cm.BuGn, 0, 0.8)
 FG_COLORMAP = clip_colormap(invert_colormap(BG_COLORMAP))
 ERROR_COLOUR = ((1, 0, 0), (1, 1, 1))
 
+FONT_BOLD_ADJUSTMENTS = {
+  'Palatino': None,
+  'Computer Modern': '0.17',
+}
 # Output tables
 
 SCORE_TABLES = {
@@ -600,6 +610,15 @@ SCORE_TABLES = {
     'scale': (1.0, 6.0),
     'files_last': True,
   },
+  'dcc_master': {
+    'algos': [
+      ('LZW', ['lzw_uniform_byte', 'lzw_uniform_token', 'lzw_polya_token']),
+      ('PPM', ['ppm_training_group_opt_uniform_byte', 'ppm_training_group_opt_uniform_token',
+               'ppm_training_group_opt_polya_token', 'ppm_training_group_5_uniform_byte', 'ref_PPMd'])
+    ],
+    'font': 'Computer Modern',
+    'files': DCC_SMALL_CAPPED_CORPUS,
+  }
   # 'new_polya': {
   #   'algos': [
   #     ('Polya', ['none_polya_token_broken', 'none_polya_token',
@@ -709,6 +728,13 @@ SCORE_SUMMARIES = {
     'algos': BEST_ALGOS,
     'files': DCC_CORPUS_GROUPED,
   },
+  'dcc_master_summary': {
+    'algos': ['lzw_uniform_byte', 'lzw_uniform_token', 'lzw_polya_token',
+              'ppm_training_group_opt_uniform_byte', 'ppm_training_group_opt_uniform_token',
+              'ppm_training_group_opt_polya_token', 'ppm_training_group_5_uniform_byte',
+              'ref_PPMd'],
+    'files': DCC_SMALL_CAPPED_CORPUS_GROUPED,
+  }
 }
 
 ## Parameters

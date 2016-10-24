@@ -127,8 +127,8 @@ DCC_SMALL_CORPUS['single_language'] = [
   'dcc_small/zho-you.txt',
 ]
 DCC_SMALL_CORPUS['mixed_language'] = [
-  'dcc_small/khuyen.txt',
-  'dcc_small/sake.txt'
+  'dcc_small/mix-khuyen.txt',
+  'dcc_small/mix-sake.txt'
 ]
 
 DCC_SMALL_CORPUS_GROUPED = collections.OrderedDict()
@@ -144,8 +144,8 @@ DCC_SMALL_CORPUS_GROUPED['Unicode'] = [
   'dcc_small/zho-hua.txt',
   'dcc_small/zho-lie.txt',
   'dcc_small/zho-you.txt',
-  'dcc_small/sake.txt',
-  'dcc_small/khuyen.txt',
+  'dcc_small/mix-sake.txt',
+  'dcc_small/mix-khuyen.txt',
 ]
 DCC_SMALL_CORPUS_GROUPED['Binary'] = [
   'canterbury/canterbury/kennedy.xls',
@@ -180,8 +180,8 @@ DCC_SMALL_CAPPED_CORPUS['Unicode'] = [
   'dcc_small_capped/rus-mosco.txt',
   'dcc_small_capped/spa-trans.txt',
   'dcc_small_capped/zho-you.txt',
-  'dcc_small/khuyen.txt',
-  'dcc_small/sake.txt'
+  'dcc_small/mix-khuyen.txt',
+  'dcc_small/mix-sake.txt'
 ]
 
 DCC_SMALL_CAPPED_CORPUS_GROUPED = collections.OrderedDict(DCC_SMALL_CORPUS_GROUPED)
@@ -196,8 +196,8 @@ DCC_SMALL_CAPPED_CORPUS_GROUPED['Unicode'] = [
   'dcc_small_capped/rus-mosco.txt',
   'dcc_small_capped/spa-trans.txt',
   'dcc_small_capped/zho-you.txt',
-  'dcc_small/sake.txt',
-  'dcc_small/khuyen.txt',
+  'dcc_small/mix-sake.txt',
+  'dcc_small/mix-khuyen.txt',
 ]
 
 DCC_SMALL_COMBINED_CORPUS = collections.OrderedDict(DCC_SMALL_CORPUS)
@@ -312,8 +312,8 @@ DCC_LARGE_CORPUS['msa'] = [
 	'dcc_large/msa/udhr.txt',
 ]
 DCC_LARGE_CORPUS['multilingual'] = [
-	'dcc_large/multilingual/khuyen.txt',
-	'dcc_large/multilingual/sake.txt',
+	'dcc_large/multilingual/mix-khuyen.txt',
+	'dcc_large/multilingual/mix-sake.txt',
 ]
 DCC_LARGE_CORPUS['por'] = [
 	'dcc_large/por/bastos.txt',

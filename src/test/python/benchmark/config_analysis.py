@@ -312,8 +312,8 @@ DCC_LARGE_CORPUS['msa'] = [
 	'dcc_large/msa/udhr.txt',
 ]
 DCC_LARGE_CORPUS['multilingual'] = [
-	'dcc_large/multilingual/mix-khuyen.txt',
-	'dcc_large/multilingual/mix-sake.txt',
+	'dcc_large/multilingual/khuyen.txt',
+	'dcc_large/multilingual/sake.txt',
 ]
 DCC_LARGE_CORPUS['por'] = [
 	'dcc_large/por/bastos.txt',

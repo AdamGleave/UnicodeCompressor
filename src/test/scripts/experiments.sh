@@ -7,7 +7,7 @@ BASE=/home/experiments/project/
 OPTIMISE="${BASE}/src/test/python/optimise.py --verbose"
 BENCHMARK="${BASE}/src/test/python/benchmark.py --verbose"
 
-EXTENDED_CORPUS="--exclude canterbury/artificial/* unit_tests/* mixed_language/cedict.txt binary/medium-git canterbury/large/* resource_consumption/* diagnostics/*"
+EXTENDED_CORPUS="--exclude canterbury/artificial/* unit_tests/* mixed_language/cedict.txt binary/medium-git canterbury/large/* resource_consumption/* diagnostics/* metadata/* scripts/*"
 STANDARD_CORPUS="${EXTENDED_CORPUS} training/*"
 TEXT_TEST_CORPUS="--include canterbury/canterbury/*.txt canterbury/canterbury/cp.html canterbury/canterbury/fields.c canterbury/canterbury/grammar.lsp canterbury/canterbury/xargs.1 single_language/* single_language/genji/* mixed_language/creativecommonsukranian.html"
 

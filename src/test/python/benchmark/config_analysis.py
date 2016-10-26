@@ -164,11 +164,6 @@ DCC_SMALL_CAPPED_CORPUS['ASCII'] = [
   'canterbury/canterbury/plrabn12.txt',
   'canterbury/canterbury/xargs.1'
 ]
-DCC_SMALL_CAPPED_CORPUS['Binary'] = [
-  'canterbury/canterbury/kennedy.xls',
-  'canterbury/canterbury/ptt5',
-  'canterbury/canterbury/sum',
-]
 DCC_SMALL_CAPPED_CORPUS[r'\utfeight'] = [
   'dcc_small_capped/ara-tabula.txt',
   'dcc_small_capped/ben-kobita.txt',
@@ -182,6 +177,11 @@ DCC_SMALL_CAPPED_CORPUS[r'\utfeight'] = [
   'dcc_small_capped/zho-you.txt',
   'dcc_small/mix-khuyen.txt',
   'dcc_small/mix-sake.txt'
+]
+DCC_SMALL_CAPPED_CORPUS['Binary'] = [
+  'canterbury/canterbury/kennedy.xls',
+  'canterbury/canterbury/ptt5',
+  'canterbury/canterbury/sum',
 ]
 
 DCC_SMALL_COMBINED_CORPUS = collections.OrderedDict(DCC_SMALL_CORPUS)

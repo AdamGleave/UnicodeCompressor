@@ -169,7 +169,7 @@ DCC_SMALL_CAPPED_CORPUS['Binary'] = [
   'canterbury/canterbury/ptt5',
   'canterbury/canterbury/sum',
 ]
-DCC_SMALL_CAPPED_CORPUS['Unicode'] = [
+DCC_SMALL_CAPPED_CORPUS[r'\utfeight'] = [
   'dcc_small_capped/ara-tabula.txt',
   'dcc_small_capped/ben-kobita.txt',
   'dcc_small_capped/hin-baital.txt',
@@ -182,22 +182,6 @@ DCC_SMALL_CAPPED_CORPUS['Unicode'] = [
   'dcc_small_capped/zho-you.txt',
   'dcc_small/mix-khuyen.txt',
   'dcc_small/mix-sake.txt'
-]
-
-DCC_SMALL_CAPPED_CORPUS_GROUPED = collections.OrderedDict(DCC_SMALL_CORPUS_GROUPED)
-DCC_SMALL_CAPPED_CORPUS_GROUPED['Unicode'] = [
-  'dcc_small_capped/ara-tabula.txt',
-  'dcc_small_capped/ben-kobita.txt',
-  'dcc_small_capped/hin-baital.txt',
-  'dcc_small_capped/jav-tuban.txt',
-  'dcc_small_capped/jpn-yujo.txt',
-  'dcc_small_capped/lah-udhr.txt',
-  'dcc_small_capped/por-noites.txt',
-  'dcc_small_capped/rus-mosco.txt',
-  'dcc_small_capped/spa-trans.txt',
-  'dcc_small_capped/zho-you.txt',
-  'dcc_small/mix-sake.txt',
-  'dcc_small/mix-khuyen.txt',
 ]
 
 DCC_SMALL_COMBINED_CORPUS = collections.OrderedDict(DCC_SMALL_CORPUS)
@@ -388,7 +372,7 @@ DCC_CORPUS_GROUPED = collections.OrderedDict()
 DCC_CORPUS_GROUPED['English'] = STANDARD_CORPUS_GROUPED['ASCII']
 DCC_CORPUS_GROUPED['Binary'] = DCC_SMALL_CORPUS_GROUPED['Binary']
 DCC_CORPUS_GROUPED['Small uncapped'] = DCC_SMALL_CORPUS_GROUPED['Unicode']
-DCC_CORPUS_GROUPED['Small capped'] = DCC_SMALL_CAPPED_CORPUS_GROUPED['Unicode']
+DCC_CORPUS_GROUPED['Small capped'] = DCC_SMALL_CAPPED_CORPUS[r'\utfeight']
 DCC_CORPUS_GROUPED['Large Corpus'] = list(itertools.chain(*DCC_LARGE_CORPUS.values()))
 
 FILE_ABBREVIATIONS = {
@@ -752,9 +736,8 @@ SCORE_SUMMARIES = {
   'dcc_master_summary': {
     'algos': ['none_lzw_byte', 'lzw_uniform_byte', 'lzw_uniform_stoken', 'lzw_polya_stoken_uniform_byte',
               'ppm_training_group_opt_uniform_byte', 'ppm_training_group_opt_uniform_stoken',
-              'ppm_training_group_opt_polya_stoken_uniform_byte',
-              'ppm_training_group_5_uniform_byte', 'ref_PPMd'],
-    'files': DCC_SMALL_CAPPED_CORPUS_GROUPED,
+              'ppm_training_group_opt_polya_stoken_uniform_byte', 'ref_PPMd'],
+    'files': DCC_SMALL_CAPPED_CORPUS,
   }
 }
 

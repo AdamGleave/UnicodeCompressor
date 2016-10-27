@@ -154,7 +154,7 @@ DCC_SMALL_CORPUS_GROUPED['Binary'] = [
 ]
 
 DCC_SMALL_CAPPED_CORPUS = collections.OrderedDict()
-DCC_SMALL_CAPPED_CORPUS['ASCII'] = [
+DCC_SMALL_CAPPED_CORPUS[r'\ascii'] = [
   'canterbury/canterbury/alice29.txt',
   'canterbury/canterbury/asyoulik.txt',
   'canterbury/canterbury/cp.html',
@@ -434,6 +434,8 @@ ALGO_ABBREVIATIONS = {
   'ref_cmix': r'\cmix'
 }
 
+DCC_ALGO_ABBREVIATIONS = {k: r'\SAFE' + v[1:] for (k,v) in ALGO_ABBREVIATIONS.items()}
+
 ## Score tables
 
 def get_leading(algo):
@@ -616,10 +618,11 @@ SCORE_TABLES = {
   },
   'dcc_master': {
     'algos': [
-      ('LZW', ['lzw_uniform_byte', 'lzw_uniform_stoken', 'lzw_polya_stoken_uniform_byte']),
-      ('PPM', ['ppm_training_group_opt_uniform_byte', 'ppm_training_group_opt_uniform_stoken',
+      (r'\SAFElzw', ['lzw_uniform_byte', 'lzw_uniform_stoken', 'lzw_polya_stoken_uniform_byte']),
+      (r'\SAFEppm', ['ppm_training_group_opt_uniform_byte', 'ppm_training_group_opt_uniform_stoken',
                'ppm_training_group_opt_polya_stoken_uniform_byte', 'ref_PPMd'])
     ],
+    'algo_abbreviations': DCC_ALGO_ABBREVIATIONS,
     'font': 'Computer Modern',
     'files': DCC_SMALL_CAPPED_CORPUS,
     'label_groups': True,
@@ -737,6 +740,7 @@ SCORE_SUMMARIES = {
     'algos': ['none_lzw_byte', 'lzw_uniform_byte', 'lzw_uniform_stoken', 'lzw_polya_stoken_uniform_byte',
               'ppm_training_group_opt_uniform_byte', 'ppm_training_group_opt_uniform_stoken',
               'ppm_training_group_opt_polya_stoken_uniform_byte', 'ref_PPMd'],
+    'algo_abbreviations': DCC_ALGO_ABBREVIATIONS,
     'files': DCC_SMALL_CAPPED_CORPUS,
   }
 }

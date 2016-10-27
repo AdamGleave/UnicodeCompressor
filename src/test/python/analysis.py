@@ -191,8 +191,9 @@ def generate_score_table(test, settings, data):
     res.append(generate_row(group_row))
 
   algo_row = []
+  algo_abbreviations = settings.get('algo_abbreviations', config.ALGO_ABBREVIATIONS)
   for algo in algos:
-    abbrev = config.ALGO_ABBREVIATIONS[algo]
+    abbrev =  algo_abbreviations[algo]
     left_padding, right_padding = settings['padding'](algo)
     abbrev = left_padding + abbrev + right_padding
     algo_row.append(abbrev)
@@ -329,6 +330,7 @@ def mean_effectiveness(data, files, algo):
 
 def generate_score_summary(test, settings, data):
   algos = settings['algos']
+  algo_abbreviations = settings.get('algo_abbreviations', config.ALGO_ABBREVIATIONS)
 
   res = []
   # stretch table to fill width of page
@@ -337,7 +339,7 @@ def generate_score_summary(test, settings, data):
 
   algo_row = [r'\textbf{Group}']
   for algo in algos:
-    abbrev = config.ALGO_ABBREVIATIONS[algo]
+    abbrev = algo_abbreviations[algo]
     algo_row.append(abbrev)
   res.append(generate_row(algo_row))
   res.append(r'\midrule')

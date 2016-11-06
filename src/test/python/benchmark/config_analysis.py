@@ -170,12 +170,11 @@ DCC_SMALL_CAPPED_CORPUS[r'\utfeight'] = [
   'dcc_small_capped/hin-baital.txt',
   'dcc_small_capped/jav-tuban.txt',
   'dcc_small_capped/jpn-yujo.txt',
-  'dcc_small_capped/lah-udhr.txt',
+  'dcc_small_capped/lah-wiki.txt',
   'dcc_small_capped/por-noites.txt',
   'dcc_small_capped/rus-mosco.txt',
   'dcc_small_capped/spa-trans.txt',
   'dcc_small_capped/zho-you.txt',
-  'dcc_small/mix-khuyen.txt',
   'dcc_small/mix-sake.txt'
 ]
 DCC_SMALL_CAPPED_CORPUS['Binary'] = [
@@ -742,6 +741,7 @@ SCORE_SUMMARIES = {
               'ppm_training_group_opt_polya_stoken_uniform_byte', 'ref_PPMd'],
     'algo_abbreviations': DCC_ALGO_ABBREVIATIONS,
     'files': DCC_SMALL_CAPPED_CORPUS,
+    'overall': True,
   }
 }
 

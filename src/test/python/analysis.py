@@ -16,7 +16,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-import argparse, csv, functools, math, os
+import argparse, csv, functools, itertools, math, os
 
 import numpy as np
 
@@ -344,14 +344,16 @@ def generate_score_summary(test, settings, data):
   res.append(generate_row(algo_row))
   res.append(r'\midrule')
 
-  for file_group, files in settings['files'].items():
-    efficiencies = []
-    for algo in algos:
-      efficiency = mean_effectiveness(data, files, algo)
-      efficiencies.append(efficiency)
+  files = settings['files']
+  overall = settings.get('overall', False)
+  if overall:
+    files = files.copy()
+    files['All'] = list(itertools.chain(*files.values()))
+  for group_name, group_files in files.items():
+    efficiencies = [mean_effectiveness(data, group_files, algo) for algo in algos]
 
     best = np.min(efficiencies)
-    row = [file_group]
+    row = [group_name]
     for x in efficiencies:
       val = '{0:.3f}'.format(x)
       if x == best:

@@ -435,6 +435,13 @@ ALGO_ABBREVIATIONS = {
 
 DCC_ALGO_ABBREVIATIONS = {k: r'\SAFE' + v[1:] for (k,v) in ALGO_ABBREVIATIONS.items()}
 
+DCC_ALGO_ONEPAGE_ABBREVIATIONS = {
+  'lzw_uniform_byte': r'\lzworiginal',
+  'lzw_polya_stoken_uniform_byte': r'\lzwpolya',
+  'ppm_training_group_opt_uniform_byte': r'\ppmoriginal',
+  'ppm_training_group_opt_polya_stoken_uniform_byte': r'\ppmpolya',
+}
+
 ## Score tables
 
 def get_leading(algo):
@@ -742,7 +749,14 @@ SCORE_SUMMARIES = {
     'algo_abbreviations': DCC_ALGO_ABBREVIATIONS,
     'files': DCC_SMALL_CAPPED_CORPUS,
     'overall': True,
-  }
+  },
+  'dcc_master_1page_summary': {
+    'algos': ['lzw_uniform_byte', 'lzw_polya_stoken_uniform_byte',
+              'ppm_training_group_opt_uniform_byte', 'ppm_training_group_opt_polya_stoken_uniform_byte'],
+    'algo_abbreviations': DCC_ALGO_ONEPAGE_ABBREVIATIONS,
+    'files': DCC_SMALL_CAPPED_CORPUS,
+    'overall': True,
+  },
 }
 
 ## Parameters

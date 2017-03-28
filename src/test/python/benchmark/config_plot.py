@@ -28,7 +28,7 @@ def set_rcs_common():
   texinputs = subprocess.check_output(['kpsexpand', '$TEXINPUTS'])
   texinputs = DISSERTATION_DIR + ':' + texinputs.decode('utf-8').strip()
   os.putenv('TEXINPUTS', texinputs)
-  rc('text.latex', preamble=r'\usepackage{algoabbrev},\usepackage[binary-units=true]{siunitx}')
+  rc('text.latex', preamble=r'\usepackage{abbreviations},\usepackage[binary-units=true]{siunitx}')
   rc('figure', autolayout=True)
 
   rc('font', size=10)

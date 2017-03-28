@@ -777,6 +777,8 @@ PARAMETER_TABLES = {
 ## Resources
 
 RESOURCE_ALGOS = BEST_ALGOS
+OUR_ALGOS = ['ppm_training_group_opt_uniform_byte',
+             'ppm_training_group_opt_polya_token']
 RESOURCE_ALPHA = 0.95 # uncertainty in confidence intervals
 
 RESOURCE_TABLES = {
@@ -804,7 +806,21 @@ RESOURCE_FIGURES = {
     'file': 'single_language/genji/chapter2.txt',
     'algos': RESOURCE_ALGOS,
     'style': '1col_double',
-  }
+  },
+  'runtime_fig_poster': {
+    'col': 'runtime',
+    'file': 'single_language/genji/chapter2.txt',
+    'algos': OUR_ALGOS,
+    'scale': 'linear',
+    'style': '1col_double',
+  },
+  'memory_fig_poster': {
+    'col': 'memory',
+    'file': 'single_language/genji/chapter2.txt',
+    'algos': OUR_ALGOS,
+    'scale': 'mebi',
+    'style': '1col_double',
+  },
 }
 
 ## All tables

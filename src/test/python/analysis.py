@@ -485,20 +485,31 @@ def generate_resource_figure(test, settings, data):
   yerr = [z[1] for z in flattened]
 
   xticks = list(map(config.ALGO_ABBREVIATIONS.get, algos))
-  colors = ppl.brewer2mpl.get_map('Set2', 'qualitative', len(algos)).mpl_colors
+  num_colors = max(3, len(algos)) # brewer needs at least 3 colors
+  colors = ppl.brewer2mpl.get_map('Set2', 'qualitative', num_colors).mpl_colors[:len(algos)]
 
   if settings['style']:
     plot.set_style(settings['style'])
   plot.new_figure()
   fig, ax = plt.subplots()
-  rects = ppl.bar(x, y, xticklabels=xticks, yerr=yerr, log=True, grid='y', color=colors)
+  
+  scale = settings.get('scale', 'log')
+  log_scale = scale == 'log'
+  if scale == 'mebi': # in megabytes
+      height = [x / 1024 for x in y]
+      yerr = [x / 1024 for x in yerr]
+  else: # in bytes
+      height = [x * 1024 for x in y]
+      yerr = [x * 1024 for x in yerr]
+
+  rects = ppl.bar(x, height, xticklabels=xticks, yerr=yerr, log=log_scale, grid='y', color=colors)
 
   # Annotate
-  for rect in rects:
+  for rect, y in zip(rects, y):
     bar_x = rect.get_x() + rect.get_width()/2.
     bar_y = rect.get_height()
 
-    label = format(bar_y)
+    label = format(y)
     plt.annotate(label, xy=(bar_x, bar_y), xytext=(0, 10), textcoords='offset points',
                  horizontalalignment='center', verticalalignment='bottom')
 
@@ -506,8 +517,10 @@ def generate_resource_figure(test, settings, data):
   if settings['col'] == 'runtime':
     plt.ylabel(r'Runtime (\si{\second})')
   elif settings['col'] == 'memory':
-    plt.ylabel(r'Memory (\si{\byte})')
-    ax.set_yscale('log', basey=2) # units are in powers of two, so scale should be as well
+    prefix = r'\mebi' if scale == 'mebi' else ''
+    plt.ylabel(r'Memory (\si{' + prefix + r'\byte})')
+    if log_scale:
+        ax.set_yscale('log', basey=2) # units are in powers of two, so scale should be as well
 
     # hack to make labels fit
     ymin, ymax = plt.ylim()

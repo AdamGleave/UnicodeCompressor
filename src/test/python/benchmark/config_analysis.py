@@ -777,8 +777,10 @@ PARAMETER_TABLES = {
 ## Resources
 
 RESOURCE_ALGOS = BEST_ALGOS
-OUR_ALGOS = ['ppm_training_group_opt_uniform_byte',
-             'ppm_training_group_opt_polya_token']
+OUR_ALGOS = ['lzw_uniform_byte',
+             'lzw_polya_stoken_uniform_byte',
+             'ppm_training_group_opt_uniform_byte',
+             'ppm_training_group_opt_polya_stoken_uniform_byte']
 RESOURCE_ALPHA = 0.95 # uncertainty in confidence intervals
 
 RESOURCE_TABLES = {
@@ -811,7 +813,7 @@ RESOURCE_FIGURES = {
     'col': 'runtime',
     'file': 'single_language/genji/chapter2.txt',
     'algos': OUR_ALGOS,
-    'xticks': ['PPM', r'PPM\textsuperscript{+}'],
+    'algo_abbreviations': DCC_ALGO_ONEPAGE_ABBREVIATIONS, 
     'scale': 'linear',
     'style': 'poster',
     'labelpad': 18,
@@ -820,7 +822,7 @@ RESOURCE_FIGURES = {
     'col': 'memory',
     'file': 'single_language/genji/chapter2.txt',
     'algos': OUR_ALGOS,
-    'xticks': ['PPM', r'PPM\textsuperscript{+}'],
+    'algo_abbreviations': DCC_ALGO_ONEPAGE_ABBREVIATIONS, 
     'scale': 'mebi',
     'style': 'poster',
     'labelpad': 18,

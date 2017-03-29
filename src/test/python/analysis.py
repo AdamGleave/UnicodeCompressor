@@ -484,9 +484,8 @@ def generate_resource_figure(test, settings, data):
   y = [z[0] for z in flattened]
   yerr = [z[1] for z in flattened]
 
-  xticks = settings.get('xticks', None)
-  if xticks is None:
-    xticks = list(map(config.ALGO_ABBREVIATIONS.get, algos))
+  algo_abbreviations = settings.get('algo_abbreviations', config.ALGO_ABBREVIATIONS)
+  xticks = list(map(algo_abbreviations.get, algos))
   num_colors = max(3, len(algos)) # brewer needs at least 3 colors
   colors = ppl.brewer2mpl.get_map('Set2', 'qualitative', num_colors).mpl_colors[:len(algos)]
 

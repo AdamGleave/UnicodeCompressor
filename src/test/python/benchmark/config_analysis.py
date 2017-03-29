@@ -811,15 +811,19 @@ RESOURCE_FIGURES = {
     'col': 'runtime',
     'file': 'single_language/genji/chapter2.txt',
     'algos': OUR_ALGOS,
+    'xticks': ['PPM', r'PPM\textsuperscript{+}'],
     'scale': 'linear',
-    'style': '1col_double',
+    'style': 'poster',
+    'labelpad': 18,
   },
   'memory_fig_poster': {
     'col': 'memory',
     'file': 'single_language/genji/chapter2.txt',
     'algos': OUR_ALGOS,
+    'xticks': ['PPM', r'PPM\textsuperscript{+}'],
     'scale': 'mebi',
-    'style': '1col_double',
+    'style': 'poster',
+    'labelpad': 18,
   },
 }
 

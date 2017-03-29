@@ -58,11 +58,18 @@ def set_rcs_twocol():
   # Slightly less than half of onecol so there's some whitespace between
   set_width(2.69)
 
+def set_rcs_poster():
+    set_rcs_common()
+    set_width(9.5)
+    rc('font', size=24)
+    rc('legend', fontsize=24)
+
 STYLES = {
   '1col': set_rcs_onecol,
   '1col_double': set_rcs_onecol_double,
   '1col_square': set_rcs_onecol_square,
   '2col': set_rcs_twocol,
+  'poster': set_rcs_poster,
 }
 
 DEFAULT_STYLE = '1col'

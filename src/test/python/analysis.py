@@ -433,8 +433,8 @@ def process_resource_data(settings, data):
     resources = runtimes
     format = lambda s : general.human_readable_time_latex(s * 1000)
   elif col == 'memory':
-    resources = memories
-    format = lambda s : general.human_readable_size_latex(s * 1024.0)
+    resources = {k1: {k2: [x * 1024 for x in v2] for k2, v2 in v1.items()} for k1, v1 in memories.items()}
+    format = lambda s : general.human_readable_size_latex(s)
   else:
     assert(False)
 
@@ -484,7 +484,9 @@ def generate_resource_figure(test, settings, data):
   y = [z[0] for z in flattened]
   yerr = [z[1] for z in flattened]
 
-  xticks = list(map(config.ALGO_ABBREVIATIONS.get, algos))
+  xticks = settings.get('xticks', None)
+  if xticks is None:
+    xticks = list(map(config.ALGO_ABBREVIATIONS.get, algos))
   num_colors = max(3, len(algos)) # brewer needs at least 3 colors
   colors = ppl.brewer2mpl.get_map('Set2', 'qualitative', num_colors).mpl_colors[:len(algos)]
 
@@ -495,12 +497,10 @@ def generate_resource_figure(test, settings, data):
   
   scale = settings.get('scale', 'log')
   log_scale = scale == 'log'
-  if scale == 'mebi': # in megabytes
-      height = [x / 1024 for x in y]
-      yerr = [x / 1024 for x in yerr]
-  else: # in bytes
-      height = [x * 1024 for x in y]
-      yerr = [x * 1024 for x in yerr]
+  height = y
+  if settings['col'] == 'memory' and scale == 'mebi': # in megabytes
+      height = [x / (1024 * 1024) for x in y]
+      yerr = [x / (1024 * 1024) for x in yerr]
 
   rects = ppl.bar(x, height, xticklabels=xticks, yerr=yerr, log=log_scale, grid='y', color=colors)
 
@@ -514,11 +514,12 @@ def generate_resource_figure(test, settings, data):
                  horizontalalignment='center', verticalalignment='bottom')
 
   plt.xlabel('Compressor')
+  labelpad = settings.get('labelpad', None)
   if settings['col'] == 'runtime':
-    plt.ylabel(r'Runtime (\si{\second})')
+    plt.ylabel(r'Runtime (\si{\second})', labelpad=labelpad)
   elif settings['col'] == 'memory':
     prefix = r'\mebi' if scale == 'mebi' else ''
-    plt.ylabel(r'Memory (\si{' + prefix + r'\byte})')
+    plt.ylabel(r'Memory (\si{' + prefix + r'\byte})', labelpad=labelpad)
     if log_scale:
         ax.set_yscale('log', basey=2) # units are in powers of two, so scale should be as well
 

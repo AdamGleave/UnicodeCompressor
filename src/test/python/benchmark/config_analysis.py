@@ -816,6 +816,7 @@ RESOURCE_FIGURES = {
     'algo_abbreviations': DCC_ALGO_ONEPAGE_ABBREVIATIONS, 
     'scale': 'linear',
     'style': 'poster',
+    'barlabel_fontsize': 24,
     'labelpad': 18,
   },
   'memory_fig_poster': {
@@ -825,6 +826,7 @@ RESOURCE_FIGURES = {
     'algo_abbreviations': DCC_ALGO_ONEPAGE_ABBREVIATIONS, 
     'scale': 'mebi',
     'style': 'poster',
+    'barlabel_fontsize': 24,
     'labelpad': 18,
   },
 }

@@ -509,8 +509,9 @@ def generate_resource_figure(test, settings, data):
     bar_y = rect.get_height()
 
     label = format(y)
+    fontsize = settings.get('barlabel_fontsize')
     plt.annotate(label, xy=(bar_x, bar_y), xytext=(0, 10), textcoords='offset points',
-                 horizontalalignment='center', verticalalignment='bottom')
+                 horizontalalignment='center', verticalalignment='bottom', fontsize=fontsize)
 
   plt.xlabel('Compressor')
   labelpad = settings.get('labelpad', None)

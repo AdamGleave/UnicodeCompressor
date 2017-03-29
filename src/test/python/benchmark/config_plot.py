@@ -61,7 +61,7 @@ def set_rcs_twocol():
 def set_rcs_poster():
     set_rcs_common()
     set_width(9.5)
-    rc('font', size=24)
+    rc('font', size=32)
     rc('legend', fontsize=24)
 
 STYLES = {
